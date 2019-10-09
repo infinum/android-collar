@@ -1,0 +1,2 @@
+include ':core', ':plugin'
+rootProject.name='Collar'

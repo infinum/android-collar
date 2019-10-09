@@ -1,0 +1,36 @@
+buildscript {
+
+    ext.buildConfig = [
+        "minSdk"    : 10,
+        "compileSdk": 29,
+        "targetSdk" : 29,
+
+        "buildTools": "29.0.2"
+    ]
+
+    apply from: "dependencies.gradle"
+
+    repositories {
+        google()
+        jcenter()
+
+    }
+    dependencies {
+        classpath packages.gradle
+        classpath packages.nexus
+        classpath packages.aspectj.tools
+        classpath packages.bintray
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

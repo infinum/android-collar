@@ -1,0 +1,12 @@
+apply plugin: 'groovy'
+apply plugin: 'nexus'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation packages.gradle
+    implementation packages.aspectj.runtime
+    implementation packages.aspectj.tools
+
+    testImplementation packages.junit
+}

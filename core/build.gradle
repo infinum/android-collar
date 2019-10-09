@@ -1,0 +1,40 @@
+apply plugin: "com.android.library"
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        versionCode 1
+        versionName "1.0.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            consumerProguardFiles "consumer-proguard-rules.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compileOnly packages.annotations
+    compileOnly packages.aspectj.runtime
+
+    testCompileOnly packages.aspectj.runtime
+    testImplementation packages.junit
+    testImplementation packages.mockito
+    testImplementation packages.truth
+}
+
+apply from: "../tasks.gradle"
+//apply from: "bintray.gradle"
+
+//preBuild.dependsOn ':core:generateReadme'
