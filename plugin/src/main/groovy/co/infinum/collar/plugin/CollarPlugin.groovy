@@ -12,8 +12,8 @@ class CollarPlugin implements Plugin<Project> {
     void apply(Project project) {
 
         project.dependencies {
-            implementation "org.aspectj:aspectjrt:1.9.4"
-            implementation "co.infinum:collar:1.0.0"
+            implementation packages.aspectj.runtime
+            implementation packages.collar
         }
 
         project.android.applicationVariants.all { variant ->

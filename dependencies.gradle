@@ -7,11 +7,16 @@ ext.versions = [
     "mockito"    : "2.28.2",
     "truth"      : "1.0",
     "nexus"      : "0.7",
-    "bintray"    : "1.8.4"
+    "bintray"    : "1.8.4",
+    "collar"     : "1.0.0"
 ]
 
 ext.packages = [
     "gradle"     : "com.android.tools.build:gradle:${versions.gradle}",
+    "kotlin"     : [
+        "plugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
+        "core"  : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+    ],
     "annotations": "org.jetbrains:annotations-java5:${versions.annotations}",
     "aspectj"    : [
         "runtime": "org.aspectj:aspectjrt:${versions.aspectj}",
@@ -21,5 +26,6 @@ ext.packages = [
     "mockito"    : "org.mockito:mockito-core:${versions.mockito}",
     "truth"      : "com.google.truth:truth:${versions.truth}",
     "nexus"      : "org.gradle.api.plugins:gradle-nexus-plugin:${versions.nexus}",
-    "bintray"    : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
+    "bintray"    : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}",
+    "collar"     : "co.infinum:collar:${versions.collar}"
 ]

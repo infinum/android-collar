@@ -1,2 +1,2 @@
-include ':core', ':plugin'
+include ':core', ':plugin', ':sample'
 rootProject.name='Collar'

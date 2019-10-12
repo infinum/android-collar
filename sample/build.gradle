@@ -1,0 +1,30 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  compileSdkVersion buildConfig.compileSdk
+  buildToolsVersion buildConfig.buildTools
+
+  defaultConfig {
+    applicationId "co.infinum.collar.sample"
+    minSdkVersion buildConfig.minSdk
+    targetSdkVersion buildConfig.targetSdk
+    versionCode 1
+    versionName "1.0.0"
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+    test.java.srcDirs += 'src/test/kotlin'
+  }
+}
+
+dependencies {
+  implementation packages.kotlin.core
+  implementation project(":core")
+
+  testImplementation packages.junit
+  testImplementation packages.truth
+
+}

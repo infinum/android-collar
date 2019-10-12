@@ -18,6 +18,7 @@ buildscript {
     dependencies {
         classpath packages.gradle
         classpath packages.nexus
+        classpath packages.kotlin.plugin
         classpath packages.aspectj.tools
         classpath packages.bintray
     }
