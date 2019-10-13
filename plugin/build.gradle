@@ -5,6 +5,8 @@ plugins {
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
+    implementation packages.aspectj.tools
+    implementation packages.gradle
 
     testImplementation packages.junit
 }
