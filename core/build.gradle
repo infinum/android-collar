@@ -1,6 +1,14 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.archinamon:android-gradle-aspectj:3.4.0"
+    }
+}
+
 apply plugin: "com.android.library"
 apply plugin: 'com.archinamon.aspectj-provides'
-apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -15,7 +23,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false // TODO: Check this why it eats my annotations
             consumerProguardFiles "consumer-proguard-rules.pro"
         }
     }
@@ -34,53 +42,7 @@ dependencies {
     testImplementation packages.truth
 }
 
-group = 'co.infinum.collar'
-version = '1.0.0'
-
-task sourcesJarCore(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    archiveClassifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifactId = 'collar-core'
-            artifact sourcesJarCore
-            artifact javadocJar
-            pom {
-                name = 'Collar Core'
-                description = 'Gradle plugin which provides single point for analytics collection.'
-                url = 'https://github.com/infinum/Android-Collar'
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-            }
-        }
-    }
-}
-
-aspectj {
-    ajc '1.9.4' // default value
-    debugInfo true
-    weaveInfo true
-    ajcArgs << '-referenceInfo' << '-warn:deprecation' << '-verbose'
-}
-
+apply from: "bintray.gradle"
 apply from: "../tasks.gradle"
-apply from: "../bintray.gradle"
 
 //preBuild.dependsOn ':core:generateReadme'

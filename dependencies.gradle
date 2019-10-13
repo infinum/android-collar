@@ -1,4 +1,5 @@
 ext.versions = [
+    "collar"     : "1.0.0",
     "gradle"     : "3.5.1",
     "kotlin"     : "1.3.50",
     "annotations": "17.0.0",
@@ -15,10 +16,6 @@ ext.packages = [
     "kotlin"     : [
         "plugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
         "core"  : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
-    ],
-    "aspectj"    : [
-        "runtime": "org.aspectj:aspectjrt:${versions.aspectj}",
-        "tools"  : "org.aspectj:aspectjtools:${versions.aspectj}"
     ],
     "annotations": "org.jetbrains:annotations-java5:${versions.annotations}",
     "junit"      : "junit:junit:${versions.junit}",
