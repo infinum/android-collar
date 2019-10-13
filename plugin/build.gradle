@@ -1,12 +1,39 @@
 apply plugin: 'groovy'
 apply plugin: 'nexus'
+apply plugin: 'maven-publish'
 
 dependencies {
     implementation gradleApi()
     implementation localGroovy()
     implementation packages.gradle
-    implementation packages.aspectj.runtime
-    implementation packages.aspectj.tools
 
     testImplementation packages.junit
+}
+
+group = 'co.infinum.collar'
+version = '1.0.0'
+
+task sourcesJarPlugin(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier = 'sources'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'collar-plugin'
+            artifact sourcesJarPlugin
+            pom {
+                name = 'Collar Plugin'
+                description = 'Gradle plugin which provides single point for analytics collection.'
+                url = 'https://github.com/infinum/Android-Collar'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+        }
+    }
 }

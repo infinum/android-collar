@@ -16,7 +16,7 @@ public class User implements Trackable {
     }
 
     @Override
-    public Map<String, Object> getTrackableAttributes() {
+    public Map<String, Object> trackableAttributes() {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", email);
         attributes.put("name", name);

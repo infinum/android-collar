@@ -45,7 +45,7 @@ public class CollarTest {
 
         collar.trackEvent("event_name", attributes);
 
-        verify(eventCollector).onEventTracked(eventCaptor.capture());
+        verify(eventCollector).onEventCollected(eventCaptor.capture());
 
         assertThat(eventCaptor.getValue().name).isEqualTo("event_name");
         assertThat(eventCaptor.getValue().attributes).containsExactly("key", "value");
@@ -67,7 +67,7 @@ public class CollarTest {
 
         collar.onAspectEventTriggered(event, attributes);
 
-        verify(eventCollector).onEventTracked(eventCaptor.capture());
+        verify(eventCollector).onEventCollected(eventCaptor.capture());
 
         assertThat(eventCaptor.getValue().name).isEqualTo("event_name");
         assertThat(eventCaptor.getValue().attributes).containsExactly("key", "value");
@@ -77,7 +77,7 @@ public class CollarTest {
     public void trackWithEvent() {
         collar.trackEvent("event_name");
 
-        verify(eventCollector).onEventTracked(eventCaptor.capture());
+        verify(eventCollector).onEventCollected(eventCaptor.capture());
 
         assertThat(eventCaptor.getValue().name).isEqualTo("event_name");
         assertThat(eventCaptor.getValue().attributes).isNull();
@@ -93,7 +93,7 @@ public class CollarTest {
 
         collar.trackEvent("event_name", attributes);
 
-        verify(eventCollector).onEventTracked(eventCaptor.capture());
+        verify(eventCollector).onEventCollected(eventCaptor.capture());
 
         assertThat(eventCaptor.getValue().name).isEqualTo("event_name");
         assertThat(eventCaptor.getValue().attributes).containsExactly("key3", "value3");
@@ -106,7 +106,7 @@ public class CollarTest {
 
         collar.trackEvent("event_name");
 
-        verify(eventCollector).onEventTracked(eventCaptor.capture());
+        verify(eventCollector).onEventCollected(eventCaptor.capture());
 
         assertThat(eventCaptor.getValue().name).isEqualTo("event_name");
         assertThat(eventCaptor.getValue().superAttributes).containsExactly("key1", "value1");
@@ -126,7 +126,7 @@ public class CollarTest {
 
         collar.trackEvent("event_name", attributes);
 
-        verify(eventCollector).onEventTracked(eventCaptor.capture());
+        verify(eventCollector).onEventCollected(eventCaptor.capture());
 
         assertThat(eventCaptor.getValue().name).isEqualTo("event_name");
         assertThat(eventCaptor.getValue().attributes).containsExactly("key4", "value4");
@@ -142,7 +142,7 @@ public class CollarTest {
 
         collar.trackEvent("event_name");
 
-        verify(eventCollector).onEventTracked(eventCaptor.capture());
+        verify(eventCollector).onEventCollected(eventCaptor.capture());
 
         assertThat(eventCaptor.getValue().name).isEqualTo("event_name");
         assertThat(eventCaptor.getValue().superAttributes).containsExactly("key2", "value2");
@@ -158,6 +158,6 @@ public class CollarTest {
 
         collar.trackEvent("event", attributes);
 
-        verify(eventLogger).log("event-> {key=value}, super attrs: {}, filters: null");
+        verify(eventLogger).onEventLogged("event-> {key=value}, super attrs: {}, filters: null");
     }
 }

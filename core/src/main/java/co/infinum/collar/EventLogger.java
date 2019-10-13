@@ -1,10 +1,10 @@
 package co.infinum.collar;
 
 /**
- * Subscribe to the pre-formatted log message stream.
- * Once there is a subscriber, log message will be sent through this interface
+ * Subscribe to the pre-formatted onEventLogged message stream.
+ * Once there is a subscriber, onEventLogged message will be sent through this interface
  */
 public interface EventLogger {
 
-    void log(String message);
+    void onEventLogged(String message);
 }

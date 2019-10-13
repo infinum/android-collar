@@ -4,7 +4,7 @@ import co.infinum.collar.annotations.TrackEvent;
 
 public class Foo {
 
-    @TrackEvent("event_java")
+    @TrackEvent("trackFooJava")
     public void trackFoo() {
 
     }

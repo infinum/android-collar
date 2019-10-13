@@ -31,39 +31,6 @@ public class CollarAspect {
         CollarAspect.aspectListener = listener;
     }
 
-    @Around("methodAnnotatedWithSuperAttribute() || constructorAnnotatedWithSuperAttribute()")
-    public void weaveJoinPointSuperAttribute(ProceedingJoinPoint joinPoint) throws Throwable {
-        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-
-        // method parameters
-        Object[] fields = joinPoint.getArgs();
-        Annotation[][] annotations = method.getParameterAnnotations();
-        addSuperAttributesFromParameters(annotations, fields);
-    }
-
-    private void addSuperAttributesFromParameters(Annotation[][] keys, Object[] values) {
-        if (keys == null || values == null) {
-            return;
-        }
-        for (int i = 0, size = keys.length; i < size; i++) {
-            if (keys[i].length == 0) {
-                continue;
-            }
-            Object value = values[i];
-            Annotation annotation = keys[i][0];
-            if (annotation instanceof Attribute) {
-                Attribute attribute = (Attribute) annotation;
-                Object result = null;
-                if (value != null) {
-                    result = value;
-                } else if (attribute.defaultValue().length() != 0) {
-                    result = attribute.defaultValue();
-                }
-                addSuperAttribute(attribute.value(), result);
-            }
-        }
-    }
-
     @Pointcut("execution(@co.infinum.collar.annotations.TrackEvent * *(..))")
     public void methodAnnotatedWithTrackEvent() {
         // No implementation is needed
@@ -100,8 +67,8 @@ public class CollarAspect {
 
         if (method.isAnnotationPresent(TrackAttribute.class) && Trackable.class.isAssignableFrom(declaringClass)) {
             Trackable trackable = (Trackable) joinPoint.getThis();
-            if (trackable.getTrackableAttributes() != null) {
-                attributes.putAll(trackable.getTrackableAttributes());
+            if (trackable.trackableAttributes() != null) {
+                attributes.putAll(trackable.trackableAttributes());
             }
         }
 
@@ -239,9 +206,9 @@ public class CollarAspect {
             if (annotation instanceof TrackAttribute) {
                 if (value instanceof Trackable) {
                     Trackable trackable = (Trackable) value;
-                    Map<String, Object> trackableValues = trackable.getTrackableAttributes();
+                    Map<String, Object> trackableValues = trackable.trackableAttributes();
                     if (trackableValues != null) {
-                        attributes.putAll(trackable.getTrackableAttributes());
+                        attributes.putAll(trackable.trackableAttributes());
                     }
                 } else {
                     throw new ClassCastException("Trackable interface must be implemented for the parameter type");

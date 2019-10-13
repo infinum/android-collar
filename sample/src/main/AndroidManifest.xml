@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="co.infinum.collar.sample">
 
-    <application android:label="Collar Sample"
+    <application
+        android:name=".SampleApplication"
+        android:label="Collar Sample"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -11,6 +13,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>

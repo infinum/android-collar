@@ -54,7 +54,7 @@ public class Collar implements AspectListener {
     }
 
     private void trackEvent(@NotNull Event event) {
-        eventCollector.onEventTracked(event);
+        eventCollector.onEventCollected(event);
         log(event);
     }
 
@@ -73,7 +73,7 @@ public class Collar implements AspectListener {
             .append(", filters: ")
             .append(Arrays.toString(event.filters));
 
-        eventLogger.log(builder.toString());
+        eventLogger.onEventLogged(builder.toString());
     }
 
     public void setEventLogger(@Nullable EventLogger logger) {

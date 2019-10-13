@@ -10,5 +10,5 @@ import co.infinum.collar.annotations.TrackAttribute;
  */
 public interface Trackable {
 
-    Map<String, Object> getTrackableAttributes();
+    Map<String, Object> trackableAttributes();
 }

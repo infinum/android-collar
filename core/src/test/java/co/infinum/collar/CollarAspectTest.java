@@ -361,7 +361,7 @@ public class CollarAspectTest {
         class Bar implements Trackable {
 
             @Override
-            public Map<String, Object> getTrackableAttributes() {
+            public Map<String, Object> trackableAttributes() {
                 Map<String, Object> values = new HashMap<>();
                 values.put("key1", "value1");
                 values.put("key2", "value2");
@@ -394,7 +394,7 @@ public class CollarAspectTest {
         class Bar implements Trackable {
 
             @Override
-            public Map<String, Object> getTrackableAttributes() {
+            public Map<String, Object> trackableAttributes() {
                 return null;
             }
         }
@@ -608,7 +608,7 @@ public class CollarAspectTest {
         class Foo implements Trackable {
 
             @Override
-            public Map<String, Object> getTrackableAttributes() {
+            public Map<String, Object> trackableAttributes() {
                 Map<String, Object> map = new HashMap<>();
                 map.put("key", "value");
                 return map;
@@ -637,7 +637,7 @@ public class CollarAspectTest {
         class Foo implements Trackable {
 
             @Override
-            public Map<String, Object> getTrackableAttributes() {
+            public Map<String, Object> trackableAttributes() {
                 Map<String, Object> map = new HashMap<>();
                 map.put("key", "value");
                 return map;
@@ -664,7 +664,7 @@ public class CollarAspectTest {
         class Foo implements Trackable {
 
             @Override
-            public Map<String, Object> getTrackableAttributes() {
+            public Map<String, Object> trackableAttributes() {
                 return null;
             }
 

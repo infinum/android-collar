@@ -8,5 +8,5 @@ package co.infinum.collar;
  */
 public interface EventCollector {
 
-    void onEventTracked(Event event);
+    void onEventCollected(Event event);
 }

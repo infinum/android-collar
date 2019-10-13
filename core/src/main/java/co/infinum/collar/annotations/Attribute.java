@@ -8,21 +8,21 @@ import java.lang.annotation.RetentionPolicy;
  * <p>
  * {@link Attribute} can be used for the following use cases:
  * <ul>
- * <li>On method signature:</li>
+ * <li>
+ * On method signature:
  * When the method returns a value and you want to be able to use this value for attribute,
  * use it on the method signature. For the following case, returned value ("value") will be
  * used for the attribute ("key")
- * <pre>
- *     <code>class Foo{
- *      {@literal @}TrackEvent("event_name")
- *      {@literal @}Attribute(key="key")
- *       public String foo(){
- *         return "value"
- *       }
- *     }
- *     </code>
- *   </pre>
- * <li>On method parameter:</li>
+ * <code>class Foo{
+ * {@literal @}TrackEvent("event_name")
+ * {@literal @}Attribute(key="key")
+ * public String foo(){
+ * return "value"
+ * }
+ * }
+ * </code>
+ * </li>
+ * <li>On method parameter:
  * When you want to use any method parameter as attribute, annotate them with Attribute
  * For the following example, "name" value will be used for attribute value
  * <pre>
@@ -33,6 +33,7 @@ import java.lang.annotation.RetentionPolicy;
  *     }
  *     </code>
  *   </pre>
+ * </li>
  * </ul>
  */
 @Retention(RetentionPolicy.RUNTIME)

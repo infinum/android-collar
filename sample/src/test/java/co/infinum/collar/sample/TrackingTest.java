@@ -6,10 +6,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import co.infinum.collar.Collar;
-import co.infinum.collar.Event;
-import co.infinum.collar.EventCollector;
-
 import static com.google.common.truth.Truth.assertThat;
 
 public class TrackingTest {
@@ -20,7 +16,7 @@ public class TrackingTest {
     public void setup() {
         Collar.attach(new EventCollector() {
             @Override
-            public void onEventTracked(Event event) {
+            public void onEventCollected(Event event) {
                 triggeredEvents.put(event.name, event);
             }
         });
