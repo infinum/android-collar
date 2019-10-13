@@ -24,6 +24,7 @@ buildscript {
         classpath packages.kotlin.plugin
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath packages.bintray
+        classpath "co.infinum.collar:collar-plugin:1.0.0"
     }
 }
 

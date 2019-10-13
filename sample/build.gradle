@@ -1,21 +1,7 @@
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        mavenLocal()
-        maven { url "https://dl.bintray.com/knobtviker/maven" }
-        maven { url "http://dl.bintray.com/infinum/android" }
-    }
-    dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.0.0"
-    }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'co.infinum.collar.plugin'
-//apply plugin: "com.archinamon.aspectj" //this works
 
 android {
     compileSdkVersion 29
@@ -47,10 +33,6 @@ android {
         test.java.srcDirs += 'src/test/kotlin'
     }
 }
-
-//aspectj {
-//    includeAspectsFromJar 'core' // this works
-//}
 
 dependencies {
     implementation packages.kotlin.core

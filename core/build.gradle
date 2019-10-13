@@ -1,14 +1,4 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.archinamon:android-gradle-aspectj:3.4.0"
-    }
-}
-
 apply plugin: "com.android.library"
-apply plugin: 'com.archinamon.aspectj-provides'
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -36,6 +26,7 @@ android {
 
 dependencies {
     compileOnly packages.annotations
+    compileOnly packages.aspectj.runtime
 
     testImplementation packages.junit
     testImplementation packages.mockito
