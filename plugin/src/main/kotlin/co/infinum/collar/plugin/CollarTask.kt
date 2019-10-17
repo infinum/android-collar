@@ -36,7 +36,7 @@ internal open class CollarTask : AbstractCompile() {
     internal class Builder(private val project: Project) {
 
         private lateinit var plugin: Plugin<Project>
-        private lateinit var config: CollarExtension
+        private lateinit var extension: CollarExtension
         private lateinit var javaCompiler: JavaCompile
         private lateinit var variantName: String
         private lateinit var taskName: String
@@ -46,8 +46,8 @@ internal open class CollarTask : AbstractCompile() {
             return this
         }
 
-        fun config(extension: CollarExtension): Builder {
-            this.config = extension
+        fun extension(extension: CollarExtension): Builder {
+            this.extension = extension
             return this
         }
 
@@ -66,7 +66,7 @@ internal open class CollarTask : AbstractCompile() {
             return this
         }
 
-        fun buildAndAttach(android: Config) {
+        fun buildAndAttach(config: Config) {
             val options = mutableMapOf(
                 "overwrite" to true,
                 "dependsOn" to javaCompiler.name,
@@ -75,42 +75,56 @@ internal open class CollarTask : AbstractCompile() {
                 "type" to CollarTask::class.java
             )
 
+            /*
+ def destinationDir = javaCompile.destinationDir.toString()
+def classPath = javaCompile.classpath.asPath
+def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
+String[] args = [
+        "-showWeaveInfo",
+        "-1.7",
+        "-inpath", destinationDir, //
+        "-aspectpath", classPath,
+        "-d", destinationDir,
+        "-classpath", classPath,
+        "-bootclasspath", bootClassPath //
+ */
+
             val task = project.task(options, taskName) as CollarTask
             with(task) {
                 destinationDir = javaCompiler.destinationDir
                 aspectJWeaver = AspectJWeaver(project).apply {
-                    inPath append this@with.destinationDir
-
-                    targetCompatibility = config.java.toString()
-                    sourceCompatibility = config.java.toString()
-                    destinationDir = this@with.destinationDir.absolutePath
-                    bootClasspath = android.getBootClasspath().joinToString(separator = File.pathSeparator)
                     encoding = javaCompiler.options.encoding
+                    targetCompatibility = extension.java.toString()
+                    sourceCompatibility = extension.java.toString()
 
-                    compilationLogFile = config.compilationLogFile
-                    debugInfo = config.debugInfo
-                    ignoreErrors = config.ignoreErrors
-                    breakOnError = config.breakOnError
-                    ajcArgs appendAll config.ajcArgs
+                    inPath append this@with.destinationDir // correct
+                    destinationDir = this@with.destinationDir.absolutePath // correct
+                    bootClasspath = config.getBootClasspath().joinToString(separator = File.pathSeparator) // correct
+
+                    compilationLogFile = extension.compilationLogFile
+                    debugInfo = extension.debugInfo
+                    ignoreErrors = extension.ignoreErrors
+                    breakOnError = extension.breakOnError
+                    ajcArgs appendAll extension.ajcArgs
+                    aspectPath = classpath().files
                 }
 
                 classpath = classpath()
-                doFirst { classpath += javaCompiler.classpath }
-
-                findCompiledAspectsInClasspath(this@with)
+//                findCompiledAspectsInClasspath(this@with)
             }
 
             // javaCompile.classpath does not contain exploded-aar/**/jars/*.jars till first run
             javaCompiler.doLast {
                 task.classpath = classpath()
-                findCompiledAspectsInClasspath(task)
+                task.aspectJWeaver.aspectPath = classpath().files
+//                findCompiledAspectsInClasspath(task)
             }
 
             // finally apply behavior
             javaCompiler.finalizedBy(task)
         }
 
-        private fun classpath(): FileCollection = ClasspathFileCollection(setOf(javaCompiler.destinationDir).plus(javaCompiler.classpath))
+        private fun classpath(): FileCollection = javaCompiler.classpath
 
         private fun findCompiledAspectsInClasspath(task: CollarTask) {
             val aspects: MutableSet<File> = mutableSetOf()

@@ -8,3 +8,8 @@ internal infix fun <E> MutableCollection<in E>.append(elem: E): MutableCollectio
 internal infix fun <E> MutableCollection<in E>.appendAll(elems: Collection<E>) {
     this.addAll(elems)
 }
+
+internal inline operator fun <reified E> MutableCollection<in E>.plus(elem: E): MutableCollection<in E> {
+    this.add(elem)
+    return this
+}

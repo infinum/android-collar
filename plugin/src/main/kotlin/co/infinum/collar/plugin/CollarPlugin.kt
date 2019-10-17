@@ -15,23 +15,37 @@ class CollarPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val config = Config(project)
+        val settings = project.extensions.create("collar", CollarExtension::class.java)
 
-        configProject(
-            project,
-            config,
-            project.extensions.create("collar", CollarExtension::class.java)
-        )
+        configProject(project, settings)
+
+        project.whenEvaluated {
+            configureCompiler(project, config)
+            if (settings.buildTimeLog) {
+                project.gradle.addListener(BuildTimeListener())
+            }
+        }
 
         project.extensions
             .getByType(AppExtension::class.java)
-            .registerTransform(
-                AspectJTransform(project)
-                    .withConfig(config)
-                    .prepareProject()
-            )
+            .registerTransform(AspectJTransform(project, config))
+
+        /*
+         def destinationDir = javaCompile.destinationDir.toString()
+        def classPath = javaCompile.classpath.asPath
+        def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
+        String[] args = [
+                "-showWeaveInfo",
+                "-1.7",
+                "-inpath", destinationDir,
+                "-aspectpath", classPath,
+                "-d", destinationDir,
+                "-classpath", classPath,
+                "-bootclasspath", bootClassPath
+         */
     }
 
-    private fun configProject(project: Project, config: Config, settings: CollarExtension) {
+    private fun configProject(project: Project, settings: CollarExtension) {
         with(project) {
             with(repositories) {
                 jcenter()
@@ -43,25 +57,18 @@ class CollarPlugin : Plugin<Project> {
                 add("implementation", "org.aspectj:aspectjrt:${settings.ajc}")
                 add("implementation", "co.infinum.collar:collar-core:1.0.0")
             }
-
-            whenEvaluated {
-                configureCompiler(project, config)
-                if (settings.buildTimeLog) {
-                    project.gradle.addListener(BuildTimeListener())
-                }
-            }
         }
     }
 
     private fun configureCompiler(project: Project, config: Config) {
-        variantDataList(config.plugin).forEach variantScanner@{ variant ->
+        variantDataList(config.plugin).forEach { variant ->
             val variantName = variant.name.capitalize()
 
             val taskName = "compile${variantName}Collar"
 
             CollarTask.Builder(project)
                 .plugin(project.plugins.getPlugin(CollarPlugin::class.java))
-                .config(project.extensions.getByType(CollarExtension::class.java))
+                .extension(project.extensions.getByType(CollarExtension::class.java))
                 .compiler(javaTask(variant))
                 .variant(variant.name)
                 .name(taskName)

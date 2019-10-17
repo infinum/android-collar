@@ -5,6 +5,7 @@ import co.infinum.collar.plugin.extensions.append
 import co.infinum.collar.plugin.extensions.appendAll
 import co.infinum.collar.plugin.logger.logAugmentationFinish
 import co.infinum.collar.plugin.logger.logAugmentationStart
+import co.infinum.collar.plugin.logger.logJarAspectAdded
 import co.infinum.collar.plugin.logger.logNoAugmentation
 import co.infinum.collar.plugin.utils.javaTask
 import co.infinum.collar.plugin.utils.variantDataList
@@ -27,22 +28,18 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
-class AspectJTransform(private val project: Project) : Transform() {
+class AspectJTransform(
+    private val project: Project,
+    private val config: Config
+) : Transform() {
 
     companion object {
         private const val TRANSFORM_NAME = "collar"
     }
 
-    private lateinit var config: Config
-
     private val aspectJWeaver: AspectJWeaver = AspectJWeaver(project)
 
-    fun withConfig(config: Config): AspectJTransform {
-        this.config = config
-        return this
-    }
-
-    fun prepareProject(): AspectJTransform {
+    init {
         project.afterEvaluate {
             variantDataList(config.plugin).forEach(::setupVariant)
 
@@ -55,18 +52,7 @@ class AspectJTransform(private val project: Project) : Transform() {
                 aspectJWeaver.ajcArgs appendAll ajcArgs
             }
         }
-
-        return this
     }
-
-    private fun <T : BaseVariantData> setupVariant(variantData: T) {
-        val javaTask = javaTask(variantData)
-        aspectJWeaver.encoding = javaTask.options.encoding
-        aspectJWeaver.sourceCompatibility = config.collar().java.toString()
-        aspectJWeaver.targetCompatibility = config.collar().java.toString()
-    }
-
-    /* External API */
 
     override fun getName(): String {
         return TRANSFORM_NAME
@@ -120,8 +106,6 @@ class AspectJTransform(private val project: Project) : Transform() {
 
         logAugmentationStart()
 
-        // attaching source classes compiled by compile${variantName}Collar task
-        includeCompiledAspects(transformInvocation, outputDir)
         val inputs = transformInvocation.referencedInputs
         inputs.forEach proceedInputs@{ input ->
             if (input.directoryInputs.isEmpty() && input.jarInputs.isEmpty())
@@ -132,8 +116,12 @@ class AspectJTransform(private val project: Project) : Transform() {
                 aspectJWeaver.classPath append dir.file
             }
             input.jarInputs.forEach { jar ->
-                aspectJWeaver.classPath append jar.file
-
+                if (jar.file.absolutePath.contains("collar-core")) {
+//                    aspectJWeaver.aspectPath append jar.file
+                } else {
+//                    aspectJWeaver.classPath append jar.file
+//                    aspectJWeaver.inPath append jar.file
+                }
             }
         }
 
@@ -150,6 +138,13 @@ class AspectJTransform(private val project: Project) : Transform() {
         copyUnprocessedFiles(inputs, outputDir)
 
         logAugmentationFinish()
+    }
+
+    private fun <T : BaseVariantData> setupVariant(variantData: T) {
+        val javaTask = javaTask(variantData)
+        aspectJWeaver.encoding = javaTask.options.encoding
+        aspectJWeaver.sourceCompatibility = config.collar().java.toString()
+        aspectJWeaver.targetCompatibility = config.collar().java.toString()
     }
 
     private fun copyUnprocessedFiles(inputs: Collection<TransformInput>, outputDir: File) {
@@ -172,17 +167,6 @@ class AspectJTransform(private val project: Project) : Transform() {
             } else {
                 Files.copy(inFile, outFile)
             }
-        }
-    }
-
-    // TODO: Potentially remove this class as no *.aj files are supported
-    private fun includeCompiledAspects(transformInvocation: TransformInvocation, outputDir: File) {
-        val compiledAj = project.file("${project.buildDir}/collar/${(transformInvocation.context as TransformTask).variantName}")
-        if (compiledAj.exists()) {
-            aspectJWeaver.aspectPath append compiledAj
-
-            //copy compiled .class files to output directory
-            FileUtil.copyDir(compiledAj, outputDir)
         }
     }
 }

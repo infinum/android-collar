@@ -27,7 +27,7 @@ internal fun logJarAspectAdded(file: File) {
 }
 
 internal fun logExtraAjcArgumentAlreadyExists(arg: String) {
-    println("extra AjC argument $arg already exists in build config")
+    println("extra AjC argument $arg already exists in build extension")
 }
 
 internal fun logBuildParametersAdapted(args: MutableCollection<String?>, logfile: String) {
@@ -46,6 +46,6 @@ internal fun logBuildParametersAdapted(args: MutableCollection<String?>, logfile
         .filterNotNull()
         .joinToString(transform = ::extractParamsToString)
 
-    println("Collar config: $params\n")
+    println("Collar extension: $params\n")
     println("Detailed log in $logfile")
 }

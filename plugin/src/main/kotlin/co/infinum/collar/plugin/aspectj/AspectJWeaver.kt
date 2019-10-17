@@ -10,7 +10,7 @@ import org.gradle.api.Project
 import java.io.File
 import java.util.*
 
-internal class AspectJWeaver(private val project: Project) {
+class AspectJWeaver(private val project: Project) {
 
     private val errorReminder = "Look into %s file for details"
 
@@ -35,12 +35,6 @@ internal class AspectJWeaver(private val project: Project) {
     var breakOnError: Boolean = false
     var ajcArgs = LinkedHashSet<String>()
 
-    @Suppress("SetterBackingFieldAssignment")
-    var ajSources: MutableSet<File> = LinkedHashSet()
-        internal set(ajSources) {
-            ajSources.forEach { field.add(it) }
-        }
-
     var aspectPath: MutableSet<File> = LinkedHashSet()
     var inPath: MutableSet<File> = LinkedHashSet()
     var classPath: MutableSet<File> = LinkedHashSet()
@@ -63,10 +57,6 @@ internal class AspectJWeaver(private val project: Project) {
             "-classpath", classPath.joinToString(separator = File.pathSeparator)
         )
 
-        if (ajSources.isNotEmpty()) {
-            args + "-sourceroots" + ajSources.joinToString(separator = File.pathSeparator)
-        }
-
         if (inPath.isNotEmpty()) {
             args + "-inpath" + inPath.joinToString(separator = File.pathSeparator)
         }
@@ -79,8 +69,8 @@ internal class AspectJWeaver(private val project: Project) {
         }
         println("BOJAN: $aspectPath")
 
-        if (getLogFile().isNotBlank()) {
-            args + "-log" + getLogFile()
+        if (logFile().isNotBlank()) {
+            args + "-log" + logFile()
         }
 
         if (debugInfo) {
@@ -99,7 +89,7 @@ internal class AspectJWeaver(private val project: Project) {
             ajcArgs.forEach { extra ->
                 if (extra.startsWith('-') && args.contains(extra)) {
                     logExtraAjcArgumentAlreadyExists(extra)
-                    log.writeText("[warning] Duplicate argument found while composing ajc config! Build may be corrupted.\n\n")
+                    log.writeText("[warning] Duplicate argument found while composing ajc extension! Build may be corrupted.\n\n")
                 }
                 args + extra
             }
@@ -114,7 +104,7 @@ internal class AspectJWeaver(private val project: Project) {
             when (message.kind) {
                 IMessage.ERROR -> {
                     log.writeText("[error]" + message?.message + "${message?.thrown}\n\n")
-                    if (breakOnError) throw GradleException (errorReminder.format(getLogFile()))
+                    if (breakOnError) throw GradleException (errorReminder.format(logFile()))
                 }
                 IMessage.FAIL, IMessage.ABORT -> {
                     log.writeText("[error]" + message?.message + "${message?.thrown}\n\n")
@@ -122,7 +112,7 @@ internal class AspectJWeaver(private val project: Project) {
                 }
                 IMessage.INFO, IMessage.DEBUG, IMessage.WARNING -> {
                     log.writeText("[warning]" + message?.message + "${message?.thrown}\n\n")
-                    if (getLogFile().isNotBlank()) log.writeText("${errorReminder.format(getLogFile())}\n\n")
+                    if (logFile().isNotBlank()) log.writeText("${errorReminder.format(logFile())}\n\n")
                 }
             }
         }
@@ -130,30 +120,25 @@ internal class AspectJWeaver(private val project: Project) {
         detectErrors()
     }
 
-    private fun getLogFile(): String = compilationLogFile ?: transformLogFile.orEmpty()
+    private fun logFile(): String = compilationLogFile ?: transformLogFile.orEmpty()
 
     private fun prepareLogger(): File {
-        val lf = project.file(getLogFile())
-        if (lf.exists()) {
-            lf.delete()
+        val logFile = project.file(logFile())
+        if (logFile.exists()) {
+            logFile.delete()
         }
 
-        return lf
+        return logFile
     }
 
     private fun detectErrors() {
-        val lf: File  = project.file(getLogFile())
-        if (lf.exists()) {
-            lf.readLines().reversed().forEach { line ->
+        val logFile: File  = project.file(logFile())
+        if (logFile.exists()) {
+            logFile.readLines().reversed().forEach { line ->
                 if (line.contains("[error]") && breakOnError) {
-                    throw GradleException ("$line\n${errorReminder.format(getLogFile())}")
+                    throw GradleException ("$line\n${errorReminder.format(logFile())}")
                 }
             }
         }
-    }
-
-    private inline operator fun <reified E> MutableCollection<in E>.plus(elem: E): MutableCollection<in E> {
-        this.add(elem)
-        return this
     }
 }
