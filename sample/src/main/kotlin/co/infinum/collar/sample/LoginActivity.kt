@@ -36,6 +36,7 @@ class LoginActivity : Activity(), Trackable {
         FooKotlin().trackFoo()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @TrackEvent("onItemSelectedKotlin")
     @ConvertAttributes(keys = [1, 2], values = ["finishedKotlin", "acceptedKotlin"])
     private fun onItemSelected(@ConvertAttribute("statusKotlin") position: Int) {

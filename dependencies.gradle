@@ -7,7 +7,6 @@ ext.versions = [
     "junit"      : "4.12",
     "mockito"    : "2.28.2",
     "truth"      : "1.0",
-    "nexus"      : "0.7",
     "bintray"    : "1.8.4"
 ]
 
@@ -15,7 +14,7 @@ ext.packages = [
     "gradle"     : "com.android.tools.build:gradle:${versions.gradle}",
     "kotlin"     : [
         "plugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
-        "core"  : "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}",
+        "core"  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
     ],
     "aspectj"    : [
         "runtime": "org.aspectj:aspectjrt:${versions.aspectj}",

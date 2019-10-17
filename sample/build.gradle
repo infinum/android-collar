@@ -1,3 +1,23 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url "https://dl.bintray.com/knobtviker/maven" }
+    }
+    dependencies {
+        classpath packages.gradle
+        classpath "co.infinum.collar:collar-plugin:1.0.0"
+    }
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+    maven { url "https://dl.bintray.com/knobtviker/maven" }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -39,4 +59,11 @@ dependencies {
 
     testImplementation packages.junit
     testImplementation packages.truth
+}
+
+collar {
+    java = JavaVersion.VERSION_1_7
+    weaveInfo true
+    debugInfo true
+    buildTimeLog true
 }

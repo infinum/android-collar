@@ -1,3 +1,20 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath packages.gradle
+    }
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
 apply plugin: "com.android.library"
 
 android {
@@ -29,6 +46,7 @@ dependencies {
     compileOnly packages.aspectj.runtime
 
     testImplementation packages.junit
+    testImplementation packages.aspectj.runtime
     testImplementation packages.mockito
     testImplementation packages.truth
 }
