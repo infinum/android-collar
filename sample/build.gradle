@@ -7,15 +7,15 @@ buildscript {
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.0.0"
+//        classpath "co.infinum.collar:collar-plugin:1.0.0"
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'co.infinum.collar.plugin'
-//apply plugin: "com.archinamon.aspectj" //this works
+//apply plugin: 'co.infinum.collar.plugin'
+apply plugin: "com.archinamon.aspectj" //this works
 
 android {
     compileSdkVersion 29
@@ -48,12 +48,13 @@ android {
     }
 }
 
-//aspectj {
-//    includeAspectsFromJar 'core' // this works
-//}
+aspectj {
+    includeAspectsFromJar 'collar-core' // this works
+}
 
 dependencies {
     implementation packages.kotlin.core
+    implementation "co.infinum.collar:collar-core:1.0.0"
 
     testImplementation packages.junit
     testImplementation packages.truth
