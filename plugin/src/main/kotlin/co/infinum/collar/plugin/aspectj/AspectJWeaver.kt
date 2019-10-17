@@ -16,14 +16,14 @@ internal class AspectJWeaver(private val project: Project) {
 
     var compilationLogFile: String? = null
         internal set(name) {
-            if (name?.length!! > 0) {
+            if (name.isNullOrBlank().not()) {
                 field = project.buildDir.absolutePath + File.separator + name
             }
         }
 
     var transformLogFile: String? = null
         internal set(name) {
-            if (name?.length!! > 0) {
+            if (name.isNullOrBlank().not()) {
                 field = project.buildDir.absolutePath + File.separator + name
             }
         }
@@ -73,7 +73,11 @@ internal class AspectJWeaver(private val project: Project) {
 
         if (aspectPath.isNotEmpty()) {
             args + "-aspectpath" + aspectPath.joinToString(separator = File.pathSeparator)
+//        } else {
+//            aspectPath = mutableSetOf(File("/Users/bojan/.gradle/caches/transforms-2/files-2.1/d32a188cbf0f672150ce46f5f2d0a018/collar-core-1.0.0/jars/classes.jar\n"))
+//            args + "-aspectpath" + aspectPath.joinToString(separator = File.pathSeparator)
         }
+        println("BOJAN: $aspectPath")
 
         if (getLogFile().isNotBlank()) {
             args + "-log" + getLogFile()
@@ -126,9 +130,7 @@ internal class AspectJWeaver(private val project: Project) {
         detectErrors()
     }
 
-    private fun getLogFile(): String {
-        return compilationLogFile ?: transformLogFile!!
-    }
+    private fun getLogFile(): String = compilationLogFile ?: transformLogFile.orEmpty()
 
     private fun prepareLogger(): File {
         val lf = project.file(getLogFile())

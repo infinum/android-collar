@@ -1,6 +1,6 @@
 package co.infinum.collar.plugin.aspectj
 
-import co.infinum.collar.plugin.config.AndroidConfig
+import co.infinum.collar.plugin.config.Config
 import co.infinum.collar.plugin.extensions.append
 import co.infinum.collar.plugin.extensions.appendAll
 import co.infinum.collar.plugin.logger.logAugmentationFinish
@@ -17,9 +17,11 @@ import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformInvocationBuilder
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.build.gradle.internal.pipeline.TransformTask
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.utils.FileUtils
 import com.google.common.collect.Sets
+import org.aspectj.util.FileUtil
 import org.gradle.api.Project
 import java.io.File
 import java.nio.file.Files
@@ -31,11 +33,11 @@ class AspectJTransform(private val project: Project) : Transform() {
         private const val TRANSFORM_NAME = "collar"
     }
 
-    private lateinit var config: AndroidConfig
+    private lateinit var config: Config
 
     private val aspectJWeaver: AspectJWeaver = AspectJWeaver(project)
 
-    fun withConfig(config: AndroidConfig): AspectJTransform {
+    fun withConfig(config: Config): AspectJTransform {
         this.config = config
         return this
     }
@@ -118,6 +120,8 @@ class AspectJTransform(private val project: Project) : Transform() {
 
         logAugmentationStart()
 
+        // attaching source classes compiled by compile${variantName}Collar task
+        includeCompiledAspects(transformInvocation, outputDir)
         val inputs = transformInvocation.referencedInputs
         inputs.forEach proceedInputs@{ input ->
             if (input.directoryInputs.isEmpty() && input.jarInputs.isEmpty())
@@ -168,6 +172,17 @@ class AspectJTransform(private val project: Project) : Transform() {
             } else {
                 Files.copy(inFile, outFile)
             }
+        }
+    }
+
+    // TODO: Potentially remove this class as no *.aj files are supported
+    private fun includeCompiledAspects(transformInvocation: TransformInvocation, outputDir: File) {
+        val compiledAj = project.file("${project.buildDir}/collar/${(transformInvocation.context as TransformTask).variantName}")
+        if (compiledAj.exists()) {
+            aspectJWeaver.aspectPath append compiledAj
+
+            //copy compiled .class files to output directory
+            FileUtil.copyDir(compiledAj, outputDir)
         }
     }
 }

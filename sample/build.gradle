@@ -56,13 +56,14 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
+    implementation "co.infinum.collar:collar-core:1.0.0"
 
     testImplementation packages.junit
     testImplementation packages.truth
 }
 
 collar {
-    java = JavaVersion.VERSION_1_7
+    java = JavaVersion.VERSION_1_8
     weaveInfo true
     debugInfo true
     buildTimeLog true

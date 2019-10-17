@@ -11,7 +11,7 @@ internal fun logCompilationFinish() {
 }
 
 internal fun logAugmentationStart() {
-    println("---------- Starting augmentation with AspectJ transformer ----------")
+    println("---------- Starting augmentation with Collar transformer ----------")
 }
 
 internal fun logAugmentationFinish() {
@@ -23,7 +23,7 @@ internal fun logNoAugmentation() {
 }
 
 internal fun logJarAspectAdded(file: File) {
-    println("include aspects appendAll :: ${file.absolutePath}")
+    println("include aspects from :: ${file.absolutePath}")
 }
 
 internal fun logExtraAjcArgumentAlreadyExists(arg: String) {
@@ -34,10 +34,11 @@ internal fun logBuildParametersAdapted(args: MutableCollection<String?>, logfile
     fun extractParamsToString(it: String): String {
         return when {
             it.startsWith('-') -> "$it :: "
-            else -> when {
-                it.length > 200 -> "[ list files ],\n"
-                else -> "$it, "
-            }
+            else -> "$it, \n"
+//            else -> when {
+//                it.length > 200 -> "[ list files ],\n"
+//                else -> "$it, "
+//            }
         }
     }
 
@@ -45,6 +46,6 @@ internal fun logBuildParametersAdapted(args: MutableCollection<String?>, logfile
         .filterNotNull()
         .joinToString(transform = ::extractParamsToString)
 
-    println("Collar config: $params")
+    println("Collar config: $params\n")
     println("Detailed log in $logfile")
 }

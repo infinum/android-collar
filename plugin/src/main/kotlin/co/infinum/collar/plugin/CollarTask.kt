@@ -1,7 +1,7 @@
 package co.infinum.collar.plugin
 
 import co.infinum.collar.plugin.aspectj.AspectJWeaver
-import co.infinum.collar.plugin.config.AndroidConfig
+import co.infinum.collar.plugin.config.Config
 import co.infinum.collar.plugin.extensions.append
 import co.infinum.collar.plugin.extensions.appendAll
 import co.infinum.collar.plugin.logger.logCompilationFinish
@@ -33,7 +33,7 @@ internal open class CollarTask : AbstractCompile() {
         logCompilationFinish()
     }
 
-    internal class Builder(val project: Project) {
+    internal class Builder(private val project: Project) {
 
         private lateinit var plugin: Plugin<Project>
         private lateinit var config: CollarExtension
@@ -66,7 +66,7 @@ internal open class CollarTask : AbstractCompile() {
             return this
         }
 
-        fun buildAndAttach(android: AndroidConfig) {
+        fun buildAndAttach(android: Config) {
             val options = mutableMapOf(
                 "overwrite" to true,
                 "dependsOn" to javaCompiler.name,
@@ -77,7 +77,7 @@ internal open class CollarTask : AbstractCompile() {
 
             val task = project.task(options, taskName) as CollarTask
             with(task) {
-                destinationDir = obtainBuildDirectory()
+                destinationDir = javaCompiler.destinationDir
                 aspectJWeaver = AspectJWeaver(project).apply {
                     inPath append this@with.destinationDir
 
@@ -94,7 +94,7 @@ internal open class CollarTask : AbstractCompile() {
                     ajcArgs appendAll config.ajcArgs
                 }
 
-                classpath = classpath(withJavaCp = true)
+                classpath = classpath()
                 doFirst { classpath += javaCompiler.classpath }
 
                 findCompiledAspectsInClasspath(this@with)
@@ -102,7 +102,7 @@ internal open class CollarTask : AbstractCompile() {
 
             // javaCompile.classpath does not contain exploded-aar/**/jars/*.jars till first run
             javaCompiler.doLast {
-                task.classpath = classpath(withJavaCp = true)
+                task.classpath = classpath()
                 findCompiledAspectsInClasspath(task)
             }
 
@@ -110,25 +110,19 @@ internal open class CollarTask : AbstractCompile() {
             javaCompiler.finalizedBy(task)
         }
 
-        private fun obtainBuildDirectory(): File? {
-            return project.file("${project.buildDir}/collar/$variantName")
-        }
-
-        private fun classpath(withJavaCp: Boolean): FileCollection =
-            ClasspathFileCollection(setOf(javaCompiler.destinationDir)).apply {
-                if (withJavaCp) plus(javaCompiler.classpath)
-            }
+        private fun classpath(): FileCollection = ClasspathFileCollection(setOf(javaCompiler.destinationDir).plus(javaCompiler.classpath))
 
         private fun findCompiledAspectsInClasspath(task: CollarTask) {
             val aspects: MutableSet<File> = mutableSetOf()
 
-            val classpath: FileCollection = task.classpath
-            classpath.forEach { file ->
-                logJarAspectAdded(file)
-                aspects append file
-            }
+            javaCompiler.classpath
+                .filter { it.absolutePath.contains("collar-core") }
+                .forEach { file ->
+                    logJarAspectAdded(file)
+                    aspects.add(file)
+                }
 
-            if (aspects.isNotEmpty()) task.aspectJWeaver.aspectPath appendAll aspects
+            task.aspectJWeaver.aspectPath appendAll aspects
         }
     }
 }

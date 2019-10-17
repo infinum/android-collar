@@ -1,7 +1,7 @@
 package co.infinum.collar.plugin
 
 import co.infinum.collar.plugin.aspectj.AspectJTransform
-import co.infinum.collar.plugin.config.AndroidConfig
+import co.infinum.collar.plugin.config.Config
 import co.infinum.collar.plugin.extensions.whenEvaluated
 import co.infinum.collar.plugin.listeners.BuildTimeListener
 import co.infinum.collar.plugin.utils.javaTask
@@ -14,19 +14,24 @@ import java.net.URI
 class CollarPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val config = AndroidConfig(project)
-        val settings = project.extensions.create("collar", CollarExtension::class.java)
+        val config = Config(project)
 
-        configProject(project, config, settings)
+        configProject(
+            project,
+            config,
+            project.extensions.create("collar", CollarExtension::class.java)
+        )
 
-        val transformer = AspectJTransform(project)
-        val module = project.extensions.getByType(AppExtension::class.java)
-
-        transformer.withConfig(config).prepareProject()
-        module.registerTransform(transformer)
+        project.extensions
+            .getByType(AppExtension::class.java)
+            .registerTransform(
+                AspectJTransform(project)
+                    .withConfig(config)
+                    .prepareProject()
+            )
     }
 
-    private fun configProject(project: Project, config: AndroidConfig, settings: CollarExtension) {
+    private fun configProject(project: Project, config: Config, settings: CollarExtension) {
         with(project) {
             with(repositories) {
                 jcenter()
@@ -48,19 +53,19 @@ class CollarPlugin : Plugin<Project> {
         }
     }
 
-    private fun configureCompiler(project: Project, config: AndroidConfig) {
+    private fun configureCompiler(project: Project, config: Config) {
         variantDataList(config.plugin).forEach variantScanner@{ variant ->
             val variantName = variant.name.capitalize()
 
             val taskName = "compile${variantName}Collar"
-            val ajc = CollarTask.Builder(project)
+
+            CollarTask.Builder(project)
                 .plugin(project.plugins.getPlugin(CollarPlugin::class.java))
                 .config(project.extensions.getByType(CollarExtension::class.java))
                 .compiler(javaTask(variant))
                 .variant(variant.name)
                 .name(taskName)
-
-            ajc.buildAndAttach(config)
+                .buildAndAttach(config)
         }
     }
 }

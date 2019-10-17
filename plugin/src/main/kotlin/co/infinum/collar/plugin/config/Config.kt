@@ -13,7 +13,7 @@ import java.io.File
 private const val TAG = "Collar:"
 private const val PLUGIN_EXCEPTION = "$TAG You must apply the Android plugin"
 
-class AndroidConfig(private val project: Project) {
+class Config(private val project: Project) {
 
     private val baseExtension: BaseExtension
     val plugin: BasePlugin<out BaseExtension2>
