@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements Trackable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
@@ -47,6 +48,7 @@ public class MainActivity extends Activity implements Trackable {
         return attributes;
     }
 
+    @TrackEvent("showLogin")
     private void showLogin() {
         startActivity(new Intent(this, LoginActivity.class));
     }

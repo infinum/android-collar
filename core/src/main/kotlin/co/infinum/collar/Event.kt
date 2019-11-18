@@ -29,7 +29,7 @@ class Event {
         filters: IntArray? = null,
         tags: Array<String>? = null,
         attributes: Map<String, Any>? = null,
-        superAttributes: Map<String, Any>
+        superAttributes: Map<String, Any> = mapOf()
     ) {
         this.name = eventName
         this.filters = filters
@@ -41,7 +41,7 @@ class Event {
     constructor(
         trackEvent: TrackEvent,
         attributes: Map<String, Any>,
-        superAttributes: Map<String, Any>
+        superAttributes: Map<String, Any> = mapOf()
     ) {
         this.name = trackEvent.value
         this.filters = trackEvent.filters

@@ -6,12 +6,23 @@ import java.util.HashMap
 class Collar private constructor(
     private val eventCollector: EventCollector
 ) {
-
     companion object {
+
+        private var INSTANCE: Collar? = null
 
         @JvmStatic
         fun attach(eventCollector: EventCollector): Collar {
-            return Collar(eventCollector)
+            val newInstance = Collar(eventCollector)
+            INSTANCE = newInstance
+            return newInstance
+        }
+
+        fun trackEvent(eventName: String) {
+            INSTANCE?.trackEvent(eventName)
+        }
+
+        fun trackEvent(eventName: String, attributes: Map<String, Any>) {
+            INSTANCE?.trackEvent(eventName, attributes)
         }
     }
 

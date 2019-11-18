@@ -18,7 +18,6 @@ class LoginActivity : Activity(), Trackable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         button.setOnClickListener {
             doFoo()
         }
