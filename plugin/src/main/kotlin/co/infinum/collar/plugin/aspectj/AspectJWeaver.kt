@@ -5,15 +5,13 @@ import co.infinum.collar.plugin.logger.logExtraAjcArgumentAlreadyExists
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
-import org.gradle.api.GradleException
 import org.gradle.api.Project
 import java.io.File
-import java.util.*
+import java.util.LinkedHashSet
 
-class AspectJWeaver(private val project: Project) {
-
-    private val errorReminder = "Look into %s file for details"
-
+class AspectJWeaver(
+    private val project: Project
+) {
     var compilationLogFile: String? = null
         internal set(name) {
             if (name.isNullOrBlank().not()) {
@@ -31,8 +29,6 @@ class AspectJWeaver(private val project: Project) {
     var encoding: String? = null
     var weaveInfo: Boolean = false
     var debugInfo: Boolean = false
-    var ignoreErrors: Boolean = false
-    var breakOnError: Boolean = false
     var ajcArgs = LinkedHashSet<String>()
 
     var aspectPath: MutableSet<File> = LinkedHashSet()
@@ -43,7 +39,7 @@ class AspectJWeaver(private val project: Project) {
     var targetCompatibility: String? = null
     var destinationDir: String? = null
 
-    internal fun doWeave() {
+    fun weave() {
         val log = prepareLogger()
 
         // http://www.eclipse.org/aspectj/doc/released/devguide/ajc-ref.html
@@ -58,16 +54,18 @@ class AspectJWeaver(private val project: Project) {
         )
 
         if (inPath.isNotEmpty()) {
-            args + "-inpath" + inPath.joinToString(separator = File.pathSeparator)
+            args.add("-inpath")
+            args.add(inPath.joinToString(separator = File.pathSeparator))
+        } else {
+            println("VANJA inPath IS EMPTY!!!")
         }
 
         if (aspectPath.isNotEmpty()) {
-            args + "-aspectpath" + aspectPath.joinToString(separator = File.pathSeparator)
-//        } else {
-//            aspectPath = mutableSetOf(File("/Users/bojan/.gradle/caches/transforms-2/files-2.1/d32a188cbf0f672150ce46f5f2d0a018/collar-core-1.0.0/jars/classes.jar\n"))
-//            args + "-aspectpath" + aspectPath.joinToString(separator = File.pathSeparator)
+            args.add("-aspectpath")
+            args.add(aspectPath.joinToString(separator = File.pathSeparator))
+        } else {
+            println("ĐANI aspectPath IS EMPTY!!!")
         }
-        println("BOJAN: $aspectPath")
 
         if (logFile().isNotBlank()) {
             args + "-log" + logFile()
@@ -81,10 +79,6 @@ class AspectJWeaver(private val project: Project) {
             args + "-showWeaveInfo"
         }
 
-        if (ignoreErrors) {
-            args + "-proceedOnError" + "-noImportError"
-        }
-
         if (ajcArgs.isNotEmpty()) {
             ajcArgs.forEach { extra ->
                 if (extra.startsWith('-') && args.contains(extra)) {
@@ -95,29 +89,31 @@ class AspectJWeaver(private val project: Project) {
             }
         }
 
-        log.writeText("Full Collar AjC build args: ${args.joinToString()}\n\n")
         logBuildParametersAdapted(args, log.name)
 
         val handler = MessageHandler(true)
         Main().run(args.toTypedArray(), handler)
+
         for (message in handler.getMessages(null, true)) {
             when (message.kind) {
-                IMessage.ERROR -> {
-                    log.writeText("[error]" + message?.message + "${message?.thrown}\n\n")
-                    if (breakOnError) throw GradleException (errorReminder.format(logFile()))
+                IMessage.ERROR, IMessage.FAIL, IMessage.ABORT -> {
+                    project.logger.error(message?.message, message?.thrown)
+                    log.writeText("[error] " + message?.message + " ${message?.thrown} " + message?.sourceLocation?.sourceFileName + "\n\n")
                 }
-                IMessage.FAIL, IMessage.ABORT -> {
-                    log.writeText("[error]" + message?.message + "${message?.thrown}\n\n")
-                    throw GradleException (message.message)
+                IMessage.INFO -> {
+                    project.logger.info(message?.message, message?.thrown)
+                    log.writeText("[info] " + message?.message + " ${message?.thrown} " + message?.sourceLocation?.sourceFileName + "\n\n")
                 }
-                IMessage.INFO, IMessage.DEBUG, IMessage.WARNING -> {
-                    log.writeText("[warning]" + message?.message + "${message?.thrown}\n\n")
-                    if (logFile().isNotBlank()) log.writeText("${errorReminder.format(logFile())}\n\n")
+                IMessage.DEBUG -> {
+                    project.logger.debug(message?.message, message?.thrown)
+                    log.writeText("[debug] " + message?.message + " ${message?.thrown} " + message?.sourceLocation?.sourceFileName + "\n\n")
+                }
+                IMessage.WARNING -> {
+                    project.logger.warn(message?.message, message?.thrown)
+                    log.writeText("[warning] " + message?.message + " ${message?.thrown} " + message?.sourceLocation?.sourceFileName + "\n\n")
                 }
             }
         }
-
-        detectErrors()
     }
 
     private fun logFile(): String = compilationLogFile ?: transformLogFile.orEmpty()
@@ -129,16 +125,5 @@ class AspectJWeaver(private val project: Project) {
         }
 
         return logFile
-    }
-
-    private fun detectErrors() {
-        val logFile: File  = project.file(logFile())
-        if (logFile.exists()) {
-            logFile.readLines().reversed().forEach { line ->
-                if (line.contains("[error]") && breakOnError) {
-                    throw GradleException ("$line\n${errorReminder.format(logFile())}")
-                }
-            }
-        }
     }
 }

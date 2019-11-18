@@ -33,19 +33,15 @@ internal fun logExtraAjcArgumentAlreadyExists(arg: String) {
 internal fun logBuildParametersAdapted(args: MutableCollection<String?>, logfile: String) {
     fun extractParamsToString(it: String): String {
         return when {
-            it.startsWith('-') -> "$it :: "
-            else -> "$it, \n"
-//            else -> when {
-//                it.length > 200 -> "[ list files ],\n"
-//                else -> "$it, "
-//            }
+            it.startsWith('-') -> "\n$it "
+            else -> "$it \n"
         }
     }
 
     val params = args
         .filterNotNull()
-        .joinToString(transform = ::extractParamsToString)
+        .joinToString(separator = "", transform = ::extractParamsToString)
 
-    println("Collar extension: $params\n")
+    println("Collar extension:$params\n")
     println("Detailed log in $logfile")
 }

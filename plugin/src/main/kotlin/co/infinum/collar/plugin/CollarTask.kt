@@ -25,10 +25,10 @@ internal open class CollarTask : AbstractCompile() {
     override fun compile() {
         logCompilationStart()
 
-        destinationDir.deleteRecursively()
-
-        aspectJWeaver.classPath = LinkedHashSet(classpath.files)
-        aspectJWeaver.doWeave()
+//        destinationDir.deleteRecursively()
+//
+//        aspectJWeaver.classPath = LinkedHashSet(classpath.files)
+        aspectJWeaver.weave()
 
         logCompilationFinish()
     }
@@ -70,24 +70,10 @@ internal open class CollarTask : AbstractCompile() {
             val options = mutableMapOf(
                 "overwrite" to true,
                 "dependsOn" to javaCompiler.name,
-                "group" to "build",
+                "group" to "other",
                 "description" to "Compile .aj source files into java .class with meta instructions",
                 "type" to CollarTask::class.java
             )
-
-            /*
- def destinationDir = javaCompile.destinationDir.toString()
-def classPath = javaCompile.classpath.asPath
-def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
-String[] args = [
-        "-showWeaveInfo",
-        "-1.7",
-        "-inpath", destinationDir, //
-        "-aspectpath", classPath,
-        "-d", destinationDir,
-        "-classpath", classPath,
-        "-bootclasspath", bootClassPath //
- */
 
             val task = project.task(options, taskName) as CollarTask
             with(task) {
@@ -97,26 +83,26 @@ String[] args = [
                     targetCompatibility = extension.java.toString()
                     sourceCompatibility = extension.java.toString()
 
-                    inPath append this@with.destinationDir // correct
-                    destinationDir = this@with.destinationDir.absolutePath // correct
-                    bootClasspath = config.getBootClasspath().joinToString(separator = File.pathSeparator) // correct
+                    classPath = javaCompiler.classpath.files
+                    aspectPath = javaCompiler.classpath.files
+
+                    inPath  = mutableSetOf(javaCompiler.destinationDir)
+                    destinationDir = javaCompiler.destinationDir.absolutePath
+                    bootClasspath = config.getBootClasspath().joinToString(separator = File.pathSeparator)
 
                     compilationLogFile = extension.compilationLogFile
                     debugInfo = extension.debugInfo
-                    ignoreErrors = extension.ignoreErrors
-                    breakOnError = extension.breakOnError
                     ajcArgs appendAll extension.ajcArgs
-                    aspectPath = classpath().files
+                    weaveInfo = extension.weaveInfo
+                    debugInfo = extension.debugInfo
                 }
 
-                classpath = classpath()
 //                findCompiledAspectsInClasspath(this@with)
             }
 
             // javaCompile.classpath does not contain exploded-aar/**/jars/*.jars till first run
             javaCompiler.doLast {
                 task.classpath = classpath()
-                task.aspectJWeaver.aspectPath = classpath().files
 //                findCompiledAspectsInClasspath(task)
             }
 
@@ -124,7 +110,7 @@ String[] args = [
             javaCompiler.finalizedBy(task)
         }
 
-        private fun classpath(): FileCollection = javaCompiler.classpath
+        private fun classpath(): FileCollection = ClasspathFileCollection(setOf(javaCompiler.destinationDir).plus(javaCompiler.classpath))
 
         private fun findCompiledAspectsInClasspath(task: CollarTask) {
             val aspects: MutableSet<File> = mutableSetOf()

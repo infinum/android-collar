@@ -1,6 +1,6 @@
 ext.versions = [
     "collar"     : "1.0.0",
-    "gradle"     : "3.5.1",
+    "gradle"     : "3.5.2",
     "kotlin"     : "1.3.50",
     "annotations": "17.0.0",
     "aspectj"    : "1.9.4",

@@ -12,10 +12,7 @@ open class CollarExtension {
     open var weaveInfo = true
     open var debugInfo = false
 
-    open var ignoreErrors = false
-    open var breakOnError = true
-
-    open var buildTimeLog = true
+    open var buildTimeLog = false
 
     open var transformLogFile = "collar-transform.log"
     open var compilationLogFile = "collar-compile.log"

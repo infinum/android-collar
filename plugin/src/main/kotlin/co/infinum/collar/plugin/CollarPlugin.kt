@@ -1,12 +1,10 @@
 package co.infinum.collar.plugin
 
-import co.infinum.collar.plugin.aspectj.AspectJTransform
 import co.infinum.collar.plugin.config.Config
 import co.infinum.collar.plugin.extensions.whenEvaluated
 import co.infinum.collar.plugin.listeners.BuildTimeListener
 import co.infinum.collar.plugin.utils.javaTask
 import co.infinum.collar.plugin.utils.variantDataList
-import com.android.build.gradle.AppExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.net.URI
@@ -15,37 +13,19 @@ class CollarPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val config = Config(project)
-        val settings = project.extensions.create("collar", CollarExtension::class.java)
+        val extension = project.extensions.create("collar", CollarExtension::class.java)
 
-        configProject(project, settings)
+        addDependencies(project, extension)
 
         project.whenEvaluated {
             configureCompiler(project, config)
-            if (settings.buildTimeLog) {
+            if (extension.buildTimeLog) {
                 project.gradle.addListener(BuildTimeListener())
             }
         }
-
-        project.extensions
-            .getByType(AppExtension::class.java)
-            .registerTransform(AspectJTransform(project, config))
-
-        /*
-         def destinationDir = javaCompile.destinationDir.toString()
-        def classPath = javaCompile.classpath.asPath
-        def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
-        String[] args = [
-                "-showWeaveInfo",
-                "-1.7",
-                "-inpath", destinationDir,
-                "-aspectpath", classPath,
-                "-d", destinationDir,
-                "-classpath", classPath,
-                "-bootclasspath", bootClassPath
-         */
     }
 
-    private fun configProject(project: Project, settings: CollarExtension) {
+    private fun addDependencies(project: Project, settings: CollarExtension) {
         with(project) {
             with(repositories) {
                 jcenter()
