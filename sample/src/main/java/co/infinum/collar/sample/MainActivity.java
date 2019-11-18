@@ -15,12 +15,12 @@ import co.infinum.collar.annotations.ConvertAttribute;
 import co.infinum.collar.annotations.ConvertAttributes;
 import co.infinum.collar.annotations.ScreenName;
 import co.infinum.collar.annotations.TrackAttribute;
-import co.infinum.collar.annotations.TrackEvent;
+import co.infinum.collar.annotations.AnalyticsEvent;
 
 @ScreenName(value = "MainScreen")
 public class MainActivity extends Activity implements Trackable {
 
-    @TrackEvent("onCreate")
+    @AnalyticsEvent("onCreate")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +29,7 @@ public class MainActivity extends Activity implements Trackable {
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
 
-            @TrackEvent("buttonClick")
+            @AnalyticsEvent("buttonClick")
             @ConstantAttribute(key = "buttonName", value = "showLogin")
             @Override
             public void onClick(View v) {
@@ -48,17 +48,17 @@ public class MainActivity extends Activity implements Trackable {
         return attributes;
     }
 
-    @TrackEvent("showLogin")
+    @AnalyticsEvent("showLogin")
     private void showLogin() {
         startActivity(new Intent(this, LoginActivity.class));
     }
 
-    @TrackEvent("onLoggedIn")
+    @AnalyticsEvent("onLoggedIn")
     private void onLoggedIn(@TrackAttribute User user, @Attribute("id") String id) {
         // do something cool indeed
     }
 
-    @TrackEvent("onItemSelected")
+    @AnalyticsEvent("onItemSelected")
     @ConvertAttributes(
         keys = {1, 2},
         values = {"finished", "accepted"}
@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements Trackable {
         // do something cool with selected item
     }
 
-    @TrackEvent("someEvent")
+    @AnalyticsEvent("someEvent")
     @Attribute("userId") // This attribute will use return value as attribute value.
     private String userId() {
         return "7110";

@@ -1,10 +1,10 @@
 package co.infinum.collar.sample;
 
-import co.infinum.collar.annotations.TrackEvent;
+import co.infinum.collar.annotations.AnalyticsEvent;
 
 public class Foo {
 
-    @TrackEvent("trackFooJava")
+    @AnalyticsEvent("trackFooJava")
     public void trackFoo() {
 
     }

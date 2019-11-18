@@ -8,13 +8,13 @@ import co.infinum.collar.annotations.ConstantAttribute
 import co.infinum.collar.annotations.ConvertAttribute
 import co.infinum.collar.annotations.ConvertAttributes
 import co.infinum.collar.annotations.ScreenName
-import co.infinum.collar.annotations.TrackEvent
+import co.infinum.collar.annotations.AnalyticsEvent
 import kotlinx.android.synthetic.main.activity_login.*
 
 @ScreenName(value = "LoginScreen")
 class LoginActivity : Activity(), Trackable {
 
-    @TrackEvent("onCreate")
+    @AnalyticsEvent("onCreate")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -29,20 +29,20 @@ class LoginActivity : Activity(), Trackable {
             "accepted" to true
         )
 
-    @TrackEvent("buttonClickKotlin")
+    @AnalyticsEvent("buttonClickKotlin")
     @ConstantAttribute(key = "buttonNameKotlin", value = "trackFooKotlin")
     private fun doFoo() {
         FooKotlin().trackFoo()
     }
 
     @Suppress("UNUSED_PARAMETER")
-    @TrackEvent("onItemSelectedKotlin")
+    @AnalyticsEvent("onItemSelectedKotlin")
     @ConvertAttributes(keys = [1, 2], values = ["finishedKotlin", "acceptedKotlin"])
     private fun onItemSelected(@ConvertAttribute("statusKotlin") position: Int) {
         // do something cool with selected item
     }
 
-    @TrackEvent("someEventKotlin")
+    @AnalyticsEvent("someEventKotlin")
     @Attribute("userIdKotlin") // This attribute will use return value as attribute value.
     private fun userId(): String {
         return "471104"

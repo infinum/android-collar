@@ -1,10 +1,10 @@
 package co.infinum.collar.sample
 
-import co.infinum.collar.annotations.TrackEvent
+import co.infinum.collar.annotations.AnalyticsEvent
 
 class FooKotlin {
 
-    @TrackEvent("trackFooKotlin")
+    @AnalyticsEvent("trackFooKotlin")
     fun trackFoo() {
         //do nothing
     }

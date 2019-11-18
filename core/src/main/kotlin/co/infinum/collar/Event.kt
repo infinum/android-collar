@@ -2,7 +2,7 @@ package co.infinum.collar
 
 import java.util.HashMap
 
-import co.infinum.collar.annotations.TrackEvent
+import co.infinum.collar.annotations.AnalyticsEvent
 
 /**
  * This is the container model for the triggered tracking analytics event.
@@ -39,7 +39,7 @@ class Event {
     }
 
     constructor(
-        trackEvent: TrackEvent,
+        trackEvent: AnalyticsEvent,
         attributes: Map<String, Any>,
         superAttributes: Map<String, Any> = mapOf()
     ) {
