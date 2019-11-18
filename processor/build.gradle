@@ -22,6 +22,8 @@ dependencies {
     compileOnly project(':annotations')
     implementation packages.kotlin.core
     implementation 'com.squareup:kotlinpoet:1.4.3'
+    compileOnly "net.ltgt.gradle.incap:incap:0.2"
+    kapt "net.ltgt.gradle.incap:incap-processor:0.2"
     implementation "me.eugeniomarletti.kotlin.metadata:kotlin-metadata:1.4.0"
 }
 

@@ -15,6 +15,8 @@ import me.eugeniomarletti.kotlin.metadata.kotlinMetadata
 import me.eugeniomarletti.kotlin.metadata.modality
 import me.eugeniomarletti.kotlin.metadata.shadow.metadata.ProtoBuf
 import me.eugeniomarletti.kotlin.processing.KotlinAbstractProcessor
+import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
+import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 import java.io.File
 import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedSourceVersion
@@ -24,7 +26,7 @@ import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-//@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.DYNAMIC)
+@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
 class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
     companion object {
@@ -113,15 +115,14 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
             if (element !is TypeElement) {
                 // Inner element is not a class
-                messager.printMessage(Diagnostic.Kind.WARNING, "$element is not a kotlin class.")
+                //messager.printMessage(Diagnostic.Kind.WARNING, "$element is not a kotlin class.A")
                 continue
             } else if (!typeUtils.directSupertypes(type).contains(supertype)) {
                 // Inner class does not extend from the enclosing sealed class
                 messager.printMessage(Diagnostic.Kind.WARNING, "$element does not extend from $analyticsElement.")
                 continue
             }
-            val kotlinMetadata = element.kotlinMetadata
-                as KotlinClassMetadata
+            val kotlinMetadata = element.kotlinMetadata as KotlinClassMetadata
 
             // Make use of KotlinPoet's ClassName to easily get the class' name.
             val eventClass = element.asClassName()
@@ -131,10 +132,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
             val nameResolver = kotlinMetadata.data.nameResolver
 
             if (proto.constructorCount == 0) {
-                messager.printMessage(
-                    Diagnostic.Kind.WARNING,
-                    "$element has no constructor."
-                )
+                messager.printMessage(Diagnostic.Kind.WARNING, "$element has no constructor.")
                 continue
             }
 
