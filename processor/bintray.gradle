@@ -8,15 +8,18 @@ properties.load(new FileInputStream(file(rootProject.file('bintray.properties'))
 group = 'co.infinum.collar'
 version = '1.0.0'
 
-task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
-    classifier = 'sources'
+task sourcesJar(type: Jar, dependsOn: assemble) {
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: JavaPlugin.JAVADOC_TASK_NAME) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-//    appendAll("$buildDir/docs")
+task javadocs(type: Javadoc) {
+    source = sourceSets.main.allSource
+}
+
+task javadocsJar(type: Jar, dependsOn: javadocs) {
+    archiveClassifier = 'javadoc'
+    from javadocs.destinationDir
 }
 
 publishing {
@@ -24,7 +27,7 @@ publishing {
         mavenJava(MavenPublication) {
             artifactId = 'collar-processor'
             artifact sourcesJar
-            artifact javadocJar
+            artifact javadocsJar
             pom {
                 name = 'Collar Processor'
                 description = 'Annotations processor which provides single point for analytics collection.'

@@ -15,6 +15,7 @@ repositories {
     mavenCentral()
 }
 
+apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 compileKotlin {
@@ -34,3 +35,5 @@ targetCompatibility = "7"
 dependencies {
     implementation packages.kotlin.core
 }
+
+apply from: "bintray.gradle"

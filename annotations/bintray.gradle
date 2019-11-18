@@ -8,25 +8,28 @@ properties.load(new FileInputStream(file(rootProject.file('bintray.properties'))
 group = 'co.infinum.collar'
 version = '1.0.0'
 
-task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
-    classifier = 'sources'
+task sourcesJar(type: Jar, dependsOn: assemble) {
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: JavaPlugin.JAVADOC_TASK_NAME) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-//    appendAll("$buildDir/docs")
+task javadocs(type: Javadoc) {
+    source = sourceSets.main.allSource
+}
+
+task javadocsJar(type: Jar, dependsOn: javadocs) {
+    archiveClassifier = 'javadoc'
+    from javadocs.destinationDir
 }
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            artifactId = 'collar-plugin'
+        Publication(MavenPublication) {
+            artifactId = 'collar-annotations'
             artifact sourcesJar
-            artifact javadocJar
+            artifact javadocsJar
             pom {
-                name = 'Collar Plugin'
+                name = 'Collar Annotations'
                 description = 'Gradle plugin which provides single point for analytics collection.'
                 url = 'https://github.com/infinum/Android-Collar'
                 licenses {
@@ -56,9 +59,9 @@ bintray {
 
     pkg {
         repo = 'maven'
-        name = 'collar-plugin'
+        name = 'collar-annotations'
         userOrg = 'knobtviker'
-        desc = 'Collar Plugin test packages'
+        desc = 'Collar Annotations test packages'
         websiteUrl = 'https://github.com/infinum/Android-Collar'
         issueTrackerUrl = 'https://github.com/infinum/Android-Collar/issues'
         vcsUrl = 'https://github.com/infinum/Android-Collar.git'
@@ -84,12 +87,12 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging 'jar'
+                packaging 'aar'
                 groupId 'co.infinum.collar'
-                artifactId 'collar-plugin'
+                artifactId 'collar-annotations'
 
-                name 'collar-plugin'
-                description 'Collar Plugin'
+                name 'collar-annotations'
+                description 'Collar Annotations'
                 url 'https://github.com/infinum/Android-Collar'
 
                 licenses {

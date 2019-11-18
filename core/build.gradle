@@ -3,6 +3,8 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { url "https://dl.bintray.com/knobtviker/maven" }
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
@@ -13,6 +15,8 @@ repositories {
     google()
     jcenter()
     mavenCentral()
+    maven { url "https://dl.bintray.com/knobtviker/maven" }
+    maven { url "http://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: "com.android.library"
@@ -47,14 +51,10 @@ android {
 }
 
 dependencies {
-    compileOnly project(':annotations')
+    implementation "co.infinum.collar:collar-annotations:1.0.0"
     implementation packages.kotlin.core
     compileOnly packages.annotations
-
-    testImplementation packages.junit
-    testImplementation packages.mockito
-    testImplementation packages.truth
 }
 
-//apply from: "bintray.gradle"
+apply from: "bintray.gradle"
 apply from: "../tasks.gradle"

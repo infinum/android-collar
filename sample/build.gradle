@@ -4,6 +4,7 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url "https://dl.bintray.com/knobtviker/maven" }
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
@@ -16,6 +17,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven { url "https://dl.bintray.com/knobtviker/maven" }
+    maven { url "http://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: 'com.android.application'
@@ -56,15 +58,12 @@ android {
 }
 
 dependencies {
-    implementation project(':annotations')
-    kapt project(':processor')
-    implementation project(':core')
+    kapt "co.infinum.collar:collar-processor:1.0.0"
+    implementation "co.infinum.collar:collar-core:1.0.0"
+    implementation "co.infinum.collar:collar-annotations:1.0.0"
     implementation "androidx.core:core-ktx:1.1.0"
 
     implementation packages.kotlin.core
-
-    testImplementation packages.junit
-    testImplementation packages.truth
 }
 
 //collar {
