@@ -16,14 +16,14 @@ repositories {
 }
 
 apply plugin: 'kotlin'
-
-compileKotlin { kotlinOptions { jvmTarget = "1.8" } }
-compileTestKotlin { kotlinOptions { jvmTarget = "1.8" } }
+apply plugin: 'kotlin-kapt'
 
 dependencies {
+    compileOnly project(':annotations')
     implementation packages.kotlin.core
-    compileOnly gradleApi()
-    compileOnly packages.gradle
+    implementation "com.google.auto.service:auto-service:1.0-rc4"
+    kapt "com.google.auto.service:auto-service:1.0-rc4"
+    implementation 'com.squareup:kotlinpoet:1.4.3'
 }
 
-apply from: "bintray.gradle"
+//apply from: "bintray.gradle"

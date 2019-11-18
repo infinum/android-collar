@@ -3,6 +3,8 @@ package co.infinum.collar.sample;
 import android.app.Application;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
 import co.infinum.collar.Collar;
 import co.infinum.collar.Event;
 import co.infinum.collar.EventCollector;
@@ -22,11 +24,11 @@ public class SampleApplication extends Application {
             @Override
             public void onEventCollected(Event event) {
                 // Send your events to Firebase, Amplitude, Fabric, Mixpanel, ...
-                Log.d("onEventCollected", event.name);
+                Log.d("onEventCollected", event.getName());
             }
         }).setEventLogger(new EventLogger() {
             @Override
-            public void onEventLogged(String message) {
+            public void onEventLogged(@NotNull String message) {
                 // Set your logger here, like Log, Timber, ...
                 Log.d("onEventLogged", message);
             }

@@ -1,0 +1,117 @@
+apply plugin: 'maven-publish'
+apply plugin: "com.jfrog.bintray"
+apply plugin: 'com.github.dcendents.android-maven'
+
+Properties properties = new Properties()
+properties.load(new FileInputStream(file(rootProject.file('bintray.properties'))))
+
+group = 'co.infinum.collar'
+version = '1.0.0'
+
+task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: JavaPlugin.JAVADOC_TASK_NAME) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+//    appendAll("$buildDir/docs")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'collar-processor'
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = 'Collar Processor'
+                description = 'Annotations processor which provides single point for analytics collection.'
+                url = 'https://github.com/infinum/Android-Collar'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+            pom.withXml {
+                def root = asNode()
+                def dependenciesNode = root.appendNode('dependencies')
+                configurations.implementation.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    pkg {
+        repo = 'maven'
+        name = 'collar-processor'
+        userOrg = 'knobtviker'
+        desc = 'Collar annotations processor test packages'
+        websiteUrl = 'https://github.com/infinum/Android-Collar'
+        issueTrackerUrl = 'https://github.com/infinum/Android-Collar/issues'
+        vcsUrl = 'https://github.com/infinum/Android-Collar.git'
+        licenses = ['Apache-2.0']
+        version {
+            name = "${versions.collar}"
+            released = new Date()
+            vcsTag = "${versions.collar}"
+            gpg {
+                sign = true
+                passphrase = properties.getProperty("bintray.gpg_passphrase")
+            }
+        }
+        publish = true
+        override = true
+        publicDownloadNumbers = true
+    }
+
+    configurations = ['archives']
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'jar'
+                groupId 'co.infinum.collar'
+                artifactId 'collar-processor'
+
+                name 'collar-processor'
+                description 'Collar annotations processor'
+                url 'https://github.com/infinum/Android-Collar'
+
+                licenses {
+                    license {
+                        name 'Apache'
+                        url 'https://github.com/infinum/Android-Collar/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'knobtviker'
+                        name 'Bojan Komljenović'
+                        email 'bojan.komljenovic@infinum.hr'
+                    }
+                }
+                scm {
+                    connection 'https://github.com/infinum/Android-Collar.git'
+                    developerConnection 'https://github.com/infinum/Android-Collar.git'
+                    url 'https://github.com/infinum/Android-Collar'
+
+                }
+            }
+        }
+    }
+}

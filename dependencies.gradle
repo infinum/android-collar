@@ -16,14 +16,9 @@ ext.packages = [
         "plugin": "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
         "core"  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
     ],
-    "aspectj"    : [
-        "runtime": "org.aspectj:aspectjrt:${versions.aspectj}",
-        "tools"  : "org.aspectj:aspectjtools:${versions.aspectj}"
-    ],
     "annotations": "org.jetbrains:annotations-java5:${versions.annotations}",
     "junit"      : "junit:junit:${versions.junit}",
     "mockito"    : "org.mockito:mockito-core:${versions.mockito}",
     "truth"      : "com.google.truth:truth:${versions.truth}",
-    "nexus"      : "org.gradle.api.plugins:gradle-nexus-plugin:${versions.nexus}",
     "bintray"    : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
 ]
