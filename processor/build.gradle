@@ -22,6 +22,7 @@ dependencies {
     compileOnly project(':annotations')
     implementation packages.kotlin.core
     implementation 'com.squareup:kotlinpoet:1.4.3'
+    implementation "me.eugeniomarletti.kotlin.metadata:kotlin-metadata:1.4.0"
 }
 
 //apply from: "bintray.gradle"

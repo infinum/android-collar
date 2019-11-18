@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId "co.infinum.collar.sample"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
@@ -59,6 +59,7 @@ dependencies {
     implementation project(':annotations')
     kapt project(':processor')
     implementation project(':core')
+    implementation "androidx.core:core-ktx:1.1.0"
 
     implementation packages.kotlin.core
 

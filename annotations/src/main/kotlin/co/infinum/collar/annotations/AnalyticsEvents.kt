@@ -5,4 +5,4 @@ package co.infinum.collar.annotations
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class AnalyticsEvent
+annotation class AnalyticsEvents
