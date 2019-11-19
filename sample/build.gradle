@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath packages.gradle
-//        classpath "co.infinum.collar:collar-plugin:1.0.0"
+        classpath "co.infinum.collar:collar-plugin:1.0.0"
     }
 }
 
@@ -22,9 +22,8 @@ repositories {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'co.infinum.collar.plugin'
+apply plugin: 'co.infinum.collar.plugin'
 
 android {
     compileSdkVersion 29
@@ -58,14 +57,10 @@ android {
 }
 
 dependencies {
-    kapt "co.infinum.collar:collar-processor:1.0.0"
-    implementation "co.infinum.collar:collar-core:1.0.0"
-    implementation "co.infinum.collar:collar-annotations:1.0.0"
-    implementation "androidx.core:core-ktx:1.1.0"
-
     implementation packages.kotlin.core
 }
 
-//collar {
-//    version "1.0.0"
-//}
+collar {
+    version "1.0.0"
+    extended false
+}
