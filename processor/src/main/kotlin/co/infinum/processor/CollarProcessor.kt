@@ -2,6 +2,8 @@ package co.infinum.processor
 
 import co.infinum.collar.annotations.AnalyticsEvents
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.annotations.EventName
+import co.infinum.collar.annotations.EventParameterName
 import co.infinum.processor.extensions.toLowerSnakeCase
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -30,8 +32,16 @@ import javax.tools.Diagnostic
 class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
     companion object {
+        private const val COUNT_MAX_EVENTS = 500
+        private const val COUNT_MAX_EVENT_PARAMETERS = 25
+        private const val SIZE_EVENT_NAME = 40
+
+        private val RESERVED_PREFIXES = listOf("firebase_", "google_", "ga_")
+
         private val ANNOTATION_SCREEN_NAME = ScreenName::class.java
         private val ANNOTATION_ANALYTICS_EVENTS = AnalyticsEvents::class.java
+        private val ANNOTATION_ANALYTICS_EVENT_NAME = EventName::class.java
+        private val ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME = EventParameterName::class.java
 
         private const val PARAMETER_NAME_EVENT = "event"
         private const val PARAMETER_NAME_EVENT_NAME = "name"
@@ -47,7 +57,9 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
     override fun getSupportedAnnotationTypes(): MutableSet<String> =
         mutableSetOf(
             ANNOTATION_SCREEN_NAME.name,
-            ANNOTATION_ANALYTICS_EVENTS.name
+            ANNOTATION_ANALYTICS_EVENTS.name,
+            ANNOTATION_ANALYTICS_EVENT_NAME.name,
+            ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name
         )
 
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latestSupported()
@@ -58,7 +70,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
     ): Boolean {
         val outputDir = generatedDir
         if (outputDir == null) {
-            messager.printMessage(Diagnostic.Kind.ERROR, "Cannot find generated output dir.")
+            showError("Cannot find generated output dir.")
             return false
         }
 
@@ -74,7 +86,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
             if (declaredAnalyticsEvents.isEmpty()) {
                 // No declared Analytics Event, skip this class.
-                messager.printMessage(Diagnostic.Kind.WARNING, "$analyticsElement has no valid inner class.")
+                showWarning("$analyticsElement has no valid inner class.")
                 continue
             }
 
@@ -88,64 +100,84 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         val kotlinMetadata = element.kotlinMetadata
         if (kotlinMetadata !is KotlinClassMetadata || element !is TypeElement) {
             // Not a Kotlin class
-            messager.printMessage(Diagnostic.Kind.WARNING, "$element is not a Kotlin class.")
+            showWarning("$element is not a Kotlin class.")
             return null
         }
         val proto = kotlinMetadata.data.classProto
         if (proto.modality != ProtoBuf.Modality.SEALED) {
             // Is not a sealed class
-            messager.printMessage(Diagnostic.Kind.WARNING, "$element is not a sealed Kotlin class.")
+            showWarning("$element is not a sealed Kotlin class.")
             return null
         }
         return element
     }
 
-    private fun getDeclaredAnalyticsEvents(
-        analyticsElement: TypeElement
-    ): Map<ClassName, List<String>> {
+    private fun getDeclaredAnalyticsEvents(analyticsElement: TypeElement): Map<ClassName, List<String>> {
         val analyticsEvents = mutableMapOf<ClassName, List<String>>()
 
         val enclosedElements = analyticsElement.enclosedElements
 
-        val supertype = analyticsElement.asType()
+        if (enclosedElements.size > COUNT_MAX_EVENTS) {
+            showWarning("You can report up to $COUNT_MAX_EVENTS different events per app. Current size is ${enclosedElements.size}.")
+        } else {
+            val supertype = analyticsElement.asType()
 
-        for (element in enclosedElements) {
+            for (element in enclosedElements) {
 
-            val type = element.asType()
+                val type = element.asType()
 
-            if (element !is TypeElement) {
-                // Inner element is not a class
-                //messager.printMessage(Diagnostic.Kind.WARNING, "$element is not a kotlin class.A")
-                continue
-            } else if (!typeUtils.directSupertypes(type).contains(supertype)) {
-                // Inner class does not extend from the enclosing sealed class
-                messager.printMessage(Diagnostic.Kind.WARNING, "$element does not extend from $analyticsElement.")
-                continue
-            }
-            val kotlinMetadata = element.kotlinMetadata as KotlinClassMetadata
-
-            // Make use of KotlinPoet's ClassName to easily get the class' name.
-            val eventClass = element.asClassName()
-
-            // Extract the primary constructor and its parameters as the event's parameters.
-            val proto = kotlinMetadata.data.classProto
-            val nameResolver = kotlinMetadata.data.nameResolver
-
-            if (proto.constructorCount == 0) {
-                messager.printMessage(Diagnostic.Kind.WARNING, "$element has no constructor.")
-                continue
-            }
-
-            val mainConstructor = proto.constructorList[0]
-            val eventParameters = mainConstructor.valueParameterList
-                .map { valueParameter ->
-                    // Resolve the constructor parameter's name
-                    // using nameResolver.
-                    nameResolver.getString(valueParameter.name)
+                if (element !is TypeElement) {
+                    // Inner element is not a class
+                    //showWarning( "$element is not a kotlin class.")
+                    continue
+                } else if (!typeUtils.directSupertypes(type).contains(supertype)) {
+                    // Inner class does not extend from the enclosing sealed class
+                    showWarning("$element does not extend from $analyticsElement.")
+                    continue
                 }
 
-            analyticsEvents[eventClass] = eventParameters
+                val kotlinMetadata = element.kotlinMetadata as KotlinClassMetadata
+
+                // Make use of KotlinPoet's ClassName to easily get the class' name.
+                val eventClass = element.asClassName()
+
+                val eventClassSimpleName = eventClass.simpleName
+                if (eventClassSimpleName.length > SIZE_EVENT_NAME) {
+                    showWarning("Event names can be up to $SIZE_EVENT_NAME characters long. $eventClassSimpleName is ${eventClassSimpleName.length} long.")
+                    continue
+                }
+                if (eventClassSimpleName.matches(Regex("^[a-zA-Z0-9_]*$")).not()) {
+                    showWarning("Event name may only contain alphanumeric characters and underscores (\"_\"). $eventClassSimpleName does not.")
+                    continue
+                }
+                if (eventClassSimpleName.first().isLetter().not()) {
+                    showWarning("Event name must start with an alphabetic character. ${eventClassSimpleName.first()} in $eventClassSimpleName is not a letter.")
+                    continue
+                }
+                if (RESERVED_PREFIXES.any { eventClassSimpleName.startsWith(it) }) {
+                    showWarning("The ${RESERVED_PREFIXES.joinToString { "\"$it\"" }} prefixes are reserved and should not be used like in ${eventClassSimpleName}.")
+                    continue
+                }
+
+                // Extract the primary constructor and its parameters as the event's parameters.
+                val proto = kotlinMetadata.data.classProto
+                val nameResolver = kotlinMetadata.data.nameResolver
+
+                if (proto.constructorCount == 0) {
+                    showWarning("$element has no constructor.")
+                    continue
+                }
+
+                val mainConstructor = proto.constructorList[0]
+                val eventParameters = mainConstructor.valueParameterList
+                if (eventParameters.size > COUNT_MAX_EVENT_PARAMETERS) {
+                    showWarning("You can associate up to $COUNT_MAX_EVENT_PARAMETERS unique parameters with each event. Current size is ${eventParameters.size}.")
+                } else {
+                    analyticsEvents[eventClass] = eventParameters.map { valueParameter -> nameResolver.getString(valueParameter.name) }
+                }
+            }
         }
+
         return analyticsEvents
     }
 
@@ -231,4 +263,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
             .build()
             .writeTo(outputDir)
     }
+
+    private fun showError(message: String) = messager.printMessage(Diagnostic.Kind.ERROR, message)
+
+    private fun showWarning(message: String) = messager.printMessage(Diagnostic.Kind.WARNING, message)
 }
