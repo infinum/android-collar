@@ -5,6 +5,7 @@ import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.annotations.EventName
 import co.infinum.collar.annotations.EventParameterName
 import co.infinum.processor.extensions.toLowerSnakeCase
+import co.infinum.processor.models.DeclaredAnalyticsEvent
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -112,8 +113,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         return element
     }
 
-    private fun getDeclaredAnalyticsEvents(analyticsElement: TypeElement): Map<ClassName, List<String>> {
-        val analyticsEvents = mutableMapOf<ClassName, List<String>>()
+    private fun getDeclaredAnalyticsEvents(analyticsElement: TypeElement): Map<DeclaredAnalyticsEvent, List<String>> {
+        val analyticsEvents = mutableMapOf<DeclaredAnalyticsEvent, List<String>>()
 
         val enclosedElements = analyticsElement.enclosedElements
 
@@ -140,8 +141,14 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
                 // Make use of KotlinPoet's ClassName to easily get the class' name.
                 val eventClass = element.asClassName()
+                val eventClassSimpleName = if (element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_NAME) == null) {
+                    // Make use of KotlinPoet's ClassName to easily get the class' name.
+                    eventClass.simpleName.toLowerSnakeCase()
+                } else {
+                    // Or use annotation value
+                    element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_NAME).value
+                }
 
-                val eventClassSimpleName = eventClass.simpleName
                 if (eventClassSimpleName.length > SIZE_EVENT_NAME) {
                     showWarning("Event names can be up to $SIZE_EVENT_NAME characters long. $eventClassSimpleName is ${eventClassSimpleName.length} long.")
                     continue
@@ -173,7 +180,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                 if (eventParameters.size > COUNT_MAX_EVENT_PARAMETERS) {
                     showWarning("You can associate up to $COUNT_MAX_EVENT_PARAMETERS unique parameters with each event. Current size is ${eventParameters.size}.")
                 } else {
-                    analyticsEvents[eventClass] = eventParameters.map { valueParameter -> nameResolver.getString(valueParameter.name) }
+                    analyticsEvents[DeclaredAnalyticsEvent(className = eventClass, resolvedName = eventClassSimpleName)] = eventParameters.map { valueParameter -> nameResolver.getString(valueParameter.name) }
                 }
             }
         }
@@ -183,7 +190,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
     private fun generateExtension(
         analyticsElement: TypeElement,
-        analyticEvents: Map<ClassName, List<String>>,
+        analyticEvents: Map<DeclaredAnalyticsEvent, List<String>>,
         outputDir: File
     ) {
         val className = analyticsElement.asClassName()
@@ -205,14 +212,14 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
             .addStatement("val %L: %T", PARAMETER_NAME_PARAMS, CLASS_BUNDLE)
             .beginControlFlow("when (%L)", PARAMETER_NAME_EVENT)
 
-        for ((eventName, eventParamList) in analyticEvents) {
+        for ((declaredAnalyticsEvent, eventParamList) in analyticEvents) {
             val codeBlock = CodeBlock.builder()
-                .addStatement("is %T -> {", eventName)
+                .addStatement("is %T -> {", declaredAnalyticsEvent.className)
                 .indent()
                 .addStatement(
                     "%L = %S",
                     PARAMETER_NAME_EVENT_NAME,
-                    eventName.simpleName.toLowerSnakeCase()
+                    declaredAnalyticsEvent.resolvedName
                 )
                 .apply {
                     if (eventParamList.isNotEmpty()) {
