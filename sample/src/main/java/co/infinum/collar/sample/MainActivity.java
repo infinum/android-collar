@@ -44,6 +44,6 @@ public class MainActivity extends Activity {
     }
 
     private void onItemSelected(int position) {
-        Collar.trackEvent(new AnalyticsEvent.OnItemSelected(position));
+        Collar.trackEvent(new AnalyticsEvent.OnItemSelected(position, true));
     }
 }

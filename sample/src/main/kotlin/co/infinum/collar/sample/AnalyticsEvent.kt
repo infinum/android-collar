@@ -6,16 +6,33 @@ import co.infinum.collar.annotations.EventParameterName
 
 @AnalyticsEvents
 sealed class AnalyticsEvent {
+
     data class OnCreate(
-        @EventParameterName("NIKA")
+
+        @EventParameterName("SCREEN")
         val screen: String
+
     ) : AnalyticsEvent()
+
     class Foo : AnalyticsEvent()
+
     class TrackFoo : AnalyticsEvent()
+
     class DoFoo : AnalyticsEvent()
-    @EventName("BOJAN")
+
+    @EventName("FOO_KOTLIN")
     class FooKotlin : AnalyticsEvent()
+
     class TrackFooKotlin : AnalyticsEvent()
+
     class DoFooKotlin : AnalyticsEvent()
-    data class OnItemSelected(val position: Int) : AnalyticsEvent()
+
+    data class OnItemSelected(
+
+        @EventParameterName("itemSelectedIndex")
+        val position: Int,
+
+        @EventParameterName("IS_EMPTY")
+        val nothingSelected: Boolean
+    ) : AnalyticsEvent()
 }

@@ -5,7 +5,8 @@ import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.annotations.EventName
 import co.infinum.collar.annotations.EventParameterName
 import co.infinum.processor.extensions.toLowerSnakeCase
-import co.infinum.processor.models.DeclaredAnalyticsEvent
+import co.infinum.processor.models.EventHolder
+import co.infinum.processor.models.EventParameterHolder
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -25,6 +26,7 @@ import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedSourceVersion
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
+import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
@@ -75,7 +77,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
             return false
         }
 
-        // Get all elements that has been annotated with our annotation
+        // Get all elements that had been annotated with our annotation
         val annotatedElements = roundEnv.getElementsAnnotatedWith(ANNOTATION_ANALYTICS_EVENTS)
 
         for (annotatedElement in annotatedElements) {
@@ -113,13 +115,13 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         return element
     }
 
-    private fun getDeclaredAnalyticsEvents(analyticsElement: TypeElement): Map<DeclaredAnalyticsEvent, List<String>> {
-        val analyticsEvents = mutableMapOf<DeclaredAnalyticsEvent, List<String>>()
+    private fun getDeclaredAnalyticsEvents(analyticsElement: TypeElement): Map<EventHolder, List<EventParameterHolder>> {
+        val analyticsEvents = mutableMapOf<EventHolder, List<EventParameterHolder>>()
 
         val enclosedElements = analyticsElement.enclosedElements
 
         if (enclosedElements.size > COUNT_MAX_EVENTS) {
-            showWarning("You can report up to $COUNT_MAX_EVENTS different events per app. Current size is ${enclosedElements.size}.")
+            showError("You can report up to $COUNT_MAX_EVENTS different events per app. Current size is ${enclosedElements.size}.")
         } else {
             val supertype = analyticsElement.asType()
 
@@ -150,19 +152,19 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                 }
 
                 if (eventClassSimpleName.length > SIZE_EVENT_NAME) {
-                    showWarning("Event names can be up to $SIZE_EVENT_NAME characters long. $eventClassSimpleName is ${eventClassSimpleName.length} long.")
+                    showError("Event names can be up to $SIZE_EVENT_NAME characters long. $eventClassSimpleName is ${eventClassSimpleName.length} long.")
                     continue
                 }
                 if (eventClassSimpleName.matches(Regex("^[a-zA-Z0-9_]*$")).not()) {
-                    showWarning("Event name may only contain alphanumeric characters and underscores (\"_\"). $eventClassSimpleName does not.")
+                    showError("Event name may only contain alphanumeric characters and underscores (\"_\"). $eventClassSimpleName does not.")
                     continue
                 }
                 if (eventClassSimpleName.first().isLetter().not()) {
-                    showWarning("Event name must start with an alphabetic character. ${eventClassSimpleName.first()} in $eventClassSimpleName is not a letter.")
+                    showError("Event name must start with an alphabetic character. ${eventClassSimpleName.first()} in $eventClassSimpleName is not a letter.")
                     continue
                 }
                 if (RESERVED_PREFIXES.any { eventClassSimpleName.startsWith(it) }) {
-                    showWarning("The ${RESERVED_PREFIXES.joinToString { "\"$it\"" }} prefixes are reserved and should not be used like in ${eventClassSimpleName}.")
+                    showError("The ${RESERVED_PREFIXES.joinToString { "\"$it\"" }} prefixes are reserved and should not be used like in ${eventClassSimpleName}.")
                     continue
                 }
 
@@ -175,12 +177,19 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                     continue
                 }
 
-                val mainConstructor = proto.constructorList[0]
-                val eventParameters = mainConstructor.valueParameterList
+                val eventParameters = proto.constructorList.first().valueParameterList
                 if (eventParameters.size > COUNT_MAX_EVENT_PARAMETERS) {
                     showWarning("You can associate up to $COUNT_MAX_EVENT_PARAMETERS unique parameters with each event. Current size is ${eventParameters.size}.")
                 } else {
-                    analyticsEvents[DeclaredAnalyticsEvent(className = eventClass, resolvedName = eventClassSimpleName)] = eventParameters.map { valueParameter -> nameResolver.getString(valueParameter.name) }
+                    val mapKey = EventHolder(className = eventClass, resolvedName = eventClassSimpleName)
+                    val mapValue = eventParameters.map { valueParameter ->
+                        val parameterName = nameResolver.getString(valueParameter.name)
+                        EventParameterHolder(
+                            variableName = parameterName,
+                            resolvedName = resolveParameterName(element, parameterName)
+                        )
+                    }
+                    analyticsEvents[mapKey] = mapValue
                 }
             }
         }
@@ -188,9 +197,20 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         return analyticsEvents
     }
 
+    private fun resolveParameterName(element: TypeElement, parameterName: String): String =
+        element.enclosedElements
+            .first { it.kind == ElementKind.FIELD && it.simpleName.toString() == parameterName }
+            .let {
+                if (it.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME) == null) {
+                    parameterName.toLowerSnakeCase()
+                } else {
+                    it.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME).value
+                }
+            }
+
     private fun generateExtension(
         analyticsElement: TypeElement,
-        analyticEvents: Map<DeclaredAnalyticsEvent, List<String>>,
+        analyticEvents: Map<EventHolder, List<EventParameterHolder>>,
         outputDir: File
     ) {
         val className = analyticsElement.asClassName()
@@ -227,16 +247,15 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                         indent()
                         for ((index, parameter) in eventParamList.withIndex()) {
                             val size = eventParamList.size
-                            val separator = if (index == size - 1) {
-                                ""
-                            } else {
-                                ","
+                            val separator = when (index) {
+                                size - 1 -> ""
+                                else -> ","
                             }
                             addStatement(
                                 "%S to %L.%L%L",
-                                parameter.toLowerSnakeCase(),
+                                parameter.resolvedName,
                                 PARAMETER_NAME_EVENT,
-                                parameter,
+                                parameter.variableName,
                                 separator
                             )
                         }

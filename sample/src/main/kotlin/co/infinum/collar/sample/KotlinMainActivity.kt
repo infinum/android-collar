@@ -25,6 +25,6 @@ class KotlinMainActivity : Activity() {
     }
 
     private fun onItemSelected(position: Int) {
-        trackEvent(AnalyticsEvent.OnItemSelected(position))
+        trackEvent(AnalyticsEvent.OnItemSelected(position, false))
     }
 }
