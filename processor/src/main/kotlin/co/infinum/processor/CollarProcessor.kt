@@ -1,9 +1,9 @@
 package co.infinum.processor
 
 import co.infinum.collar.annotations.AnalyticsEvents
-import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.annotations.EventName
 import co.infinum.collar.annotations.EventParameterName
+import co.infinum.collar.annotations.ScreenName
 import co.infinum.processor.extensions.toLowerSnakeCase
 import co.infinum.processor.models.EventHolder
 import co.infinum.processor.models.EventParameterHolder
@@ -22,24 +22,27 @@ import me.eugeniomarletti.kotlin.processing.KotlinAbstractProcessor
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 import java.io.File
+import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
-import javax.annotation.processing.SupportedSourceVersion
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
 class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
     companion object {
-        private const val COUNT_MAX_EVENTS = 500
-        private const val COUNT_MAX_EVENT_PARAMETERS = 25
-        private const val SIZE_EVENT_NAME = 40
+        private const val DEFAULT_COUNT_MAX_EVENTS = 500
+        private const val DEFAULT_COUNT_MAX_EVENT_PARAMETERS = 25
+        private const val DEFAULT_SIZE_EVENT_NAME = 40
+        private val DEFAULT_RESERVED_PREFIXES = listOf("firebase_", "google_", "ga_")
 
-        private val RESERVED_PREFIXES = listOf("firebase_", "google_", "ga_")
+        private const val OPTION_EVENTS_COUNT = "events_count"
+        private const val OPTION_EVENT_PARAMETERS_COUNT = "event_parameters_count"
+        private const val OPTION_EVENT_NAME_LENGTH = "event_name_length"
+        private const val OPTION_RESERVED_PREFIXES = "reserved_prefixes"
 
         private val ANNOTATION_SCREEN_NAME = ScreenName::class.java
         private val ANNOTATION_ANALYTICS_EVENTS = AnalyticsEvents::class.java
@@ -57,6 +60,11 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         private val FUNCTION_BUNDLE_OF = ClassName("androidx.core.os", "bundleOf")
     }
 
+    private var maxEventsCount = DEFAULT_COUNT_MAX_EVENTS
+    private var maxEventParametersCount = DEFAULT_COUNT_MAX_EVENT_PARAMETERS
+    private var maxEventNameSize = DEFAULT_SIZE_EVENT_NAME
+    private var reservedPrefixes = DEFAULT_RESERVED_PREFIXES
+
     override fun getSupportedAnnotationTypes(): MutableSet<String> =
         mutableSetOf(
             ANNOTATION_SCREEN_NAME.name,
@@ -66,6 +74,20 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         )
 
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latestSupported()
+
+    override fun getSupportedOptions(): Set<String> =
+        setOf(OPTION_EVENTS_COUNT, OPTION_EVENT_PARAMETERS_COUNT, OPTION_EVENT_NAME_LENGTH, OPTION_RESERVED_PREFIXES)
+
+    override fun init(processingEnv: ProcessingEnvironment) {
+        super.init(processingEnv)
+
+        with(processingEnv.options) {
+            this[OPTION_EVENTS_COUNT]?.let { maxEventsCount = it.toInt() }
+            this[OPTION_EVENT_PARAMETERS_COUNT]?.let { maxEventParametersCount = it.toInt() }
+            this[OPTION_EVENT_NAME_LENGTH]?.let { maxEventNameSize = it.toInt() }
+            this[OPTION_RESERVED_PREFIXES]?.let { reservedPrefixes = it.split(",") }
+        }
+    }
 
     override fun process(
         annotations: Set<TypeElement>,
@@ -120,8 +142,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
         val enclosedElements = analyticsElement.enclosedElements
 
-        if (enclosedElements.size > COUNT_MAX_EVENTS) {
-            showError("You can report up to $COUNT_MAX_EVENTS different events per app. Current size is ${enclosedElements.size}.")
+        if (enclosedElements.size > maxEventsCount) {
+            showError("You can report up to $maxEventsCount different events per app. Current size is ${enclosedElements.size}.")
         } else {
             val supertype = analyticsElement.asType()
 
@@ -151,8 +173,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                     element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_NAME).value
                 }
 
-                if (eventClassSimpleName.length > SIZE_EVENT_NAME) {
-                    showError("Event names can be up to $SIZE_EVENT_NAME characters long. $eventClassSimpleName is ${eventClassSimpleName.length} long.")
+                if (eventClassSimpleName.length > maxEventNameSize) {
+                    showError("Event names can be up to $maxEventNameSize characters long. $eventClassSimpleName is ${eventClassSimpleName.length} long.")
                     continue
                 }
                 if (eventClassSimpleName.matches(Regex("^[a-zA-Z0-9_]*$")).not()) {
@@ -163,8 +185,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                     showError("Event name must start with an alphabetic character. ${eventClassSimpleName.first()} in $eventClassSimpleName is not a letter.")
                     continue
                 }
-                if (RESERVED_PREFIXES.any { eventClassSimpleName.startsWith(it) }) {
-                    showError("The ${RESERVED_PREFIXES.joinToString { "\"$it\"" }} prefixes are reserved and should not be used like in ${eventClassSimpleName}.")
+                if (reservedPrefixes.any { eventClassSimpleName.startsWith(it) }) {
+                    showError("The ${reservedPrefixes.joinToString { "\"$it\"" }} prefixes are reserved and cannot be used in ${eventClassSimpleName}.")
                     continue
                 }
 
@@ -178,8 +200,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                 }
 
                 val eventParameters = proto.constructorList.first().valueParameterList
-                if (eventParameters.size > COUNT_MAX_EVENT_PARAMETERS) {
-                    showWarning("You can associate up to $COUNT_MAX_EVENT_PARAMETERS unique parameters with each event. Current size is ${eventParameters.size}.")
+                if (eventParameters.size > maxEventParametersCount) {
+                    showError("You can associate up to $maxEventParametersCount unique parameters with each event. Current size is ${eventParameters.size}.")
                 } else {
                     val mapKey = EventHolder(className = eventClass, resolvedName = eventClassSimpleName)
                     val mapValue = eventParameters.map { valueParameter ->
