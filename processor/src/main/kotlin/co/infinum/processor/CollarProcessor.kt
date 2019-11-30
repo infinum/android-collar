@@ -61,7 +61,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         private const val FUNCTION_NAME_TRACK_SCREEN = "trackScreen"
         private const val FUNCTION_NAME_TRACK_EVENT = "trackEvent"
 
-        private val CLASS_LIFECYCLE_OWNER = ClassName("androidx.lifecycle", "LifecycleOwner")
+        private val CLASS_COMPONENT_ACTIVITY = ClassName("androidx.core.app", "ComponentActivity")
         private val CLASS_ACTIVITY = ClassName("android.app", "Activity")
         private val CLASS_FRAGMENT = ClassName("android.app", "Fragment")
         private val CLASS_SUPPORT_FRAGMENT = ClassName("android.support.v4.app", "Fragment")
@@ -75,7 +75,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         private val FUNCTION_BUNDLE_OF = ClassName("androidx.core.os", "bundleOf")
     }
 
-    private var typeLifeCycleOwner: TypeElement? = null
+    private var typeComponentActivity: TypeElement? = null
     private var typeActivity: TypeElement? = null
     private var typeFragment: TypeElement? = null
     private var typeSupportFragment: TypeElement? = null
@@ -118,10 +118,10 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         }
 
         with(processingEnv.elementUtils) {
-            typeLifeCycleOwner = getTypeElement("androidx.lifecycle.LifecycleOwner")
             typeActivity = getTypeElement("android.app.Activity")
             typeFragment = getTypeElement("android.app.Fragment")
             typeSupportFragment = getTypeElement("android.support.v4.app.Fragment")
+            typeComponentActivity = getTypeElement("androidx.core.app.ComponentActivity")
             typeAndroidXFragment = getTypeElement("androidx.fragment.app.Fragment")
         }
     }
@@ -228,7 +228,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
                     extensionFunSpecBuilder.addCode(codeBlockBuilder.build())
                     extensionFunSpecBuilder.endControlFlow()
-                    if (it == CLASS_LIFECYCLE_OWNER) {
+                    if (it == CLASS_COMPONENT_ACTIVITY) {
                         extensionFunSpecBuilder.addStatement(
                             "%L?.let { %T(%L) { %T.%L(%L, it) } }",
                             PARAMETER_NAME_EVENT_NAME,
@@ -237,6 +237,16 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                             CLASS_COLLAR,
                             FUNCTION_NAME_TRACK_SCREEN,
                             PARAMETER_NAME_SCREEN
+                        )
+                    } else if (it == CLASS_ANDROIDX_FRAGMENT) {
+                        extensionFunSpecBuilder.addStatement(
+                            "%L?.let { %L.activity?.let { activity -> %T(%L) { %T.%L(activity, it) } } }",
+                            PARAMETER_NAME_EVENT_NAME,
+                            PARAMETER_NAME_SCREEN,
+                            CLASS_LIFECYCLE_LAZY,
+                            PARAMETER_NAME_SCREEN,
+                            CLASS_COLLAR,
+                            FUNCTION_NAME_TRACK_SCREEN
                         )
                     } else if (it == CLASS_ACTIVITY) {
                         extensionFunSpecBuilder.addStatement(
@@ -267,7 +277,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
     private fun resolveParameterClass(typeElement: TypeElement): ClassName? =
         when (typeElement) {
-            typeLifeCycleOwner -> CLASS_LIFECYCLE_OWNER
+            typeComponentActivity -> CLASS_COMPONENT_ACTIVITY
             typeActivity -> CLASS_ACTIVITY
             typeAndroidXFragment -> CLASS_ANDROIDX_FRAGMENT
             typeSupportFragment -> CLASS_SUPPORT_FRAGMENT
@@ -457,7 +467,7 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
     private fun resolveTypeElement(element: Element): TypeElement? {
         val elementType = element.asType()
         return when {
-            typeLifeCycleOwner != null && typeUtils.isSubtype(elementType, typeLifeCycleOwner?.asType()) -> typeLifeCycleOwner
+            typeComponentActivity != null && typeUtils.isSubtype(elementType, typeComponentActivity?.asType()) -> typeComponentActivity
             typeActivity != null && typeUtils.isSubtype(elementType, typeActivity?.asType()) -> typeActivity
             typeAndroidXFragment != null && typeUtils.isSubtype(elementType, typeAndroidXFragment?.asType()) -> typeAndroidXFragment
             typeSupportFragment != null && typeUtils.isSubtype(elementType, typeSupportFragment?.asType()) -> typeSupportFragment

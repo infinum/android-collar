@@ -67,6 +67,8 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
+    implementation "androidx.fragment:fragment:1.2.0-rc02"
+    implementation "androidx.appcompat:appcompat:1.1.0"
 }
 
 collar {

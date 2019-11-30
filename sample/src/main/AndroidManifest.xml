@@ -14,6 +14,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".KotlinMainActivity" />
+        <activity android:name=".KotlinAndroidXActivity" />
     </application>
 
 </manifest>
