@@ -71,5 +71,5 @@ dependencies {
 
 collar {
     version "1.0.0"
-    extended false
+    extended true
 }

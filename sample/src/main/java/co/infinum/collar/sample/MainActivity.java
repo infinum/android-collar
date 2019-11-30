@@ -7,7 +7,7 @@ import android.view.View;
 
 import co.infinum.collar.annotations.ScreenName;
 
-@ScreenName(value = "MainScreen")
+@ScreenName(value = "MainActivity")
 public class MainActivity extends Activity {
 
     @Override

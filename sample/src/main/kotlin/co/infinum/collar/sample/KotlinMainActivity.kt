@@ -5,7 +5,7 @@ import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
 import kotlinx.android.synthetic.main.activity_login.*
 
-@ScreenName(value = "KotlinMainScreen")
+@ScreenName(value = "KotlinMainActivity")
 class KotlinMainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
