@@ -5,4 +5,4 @@ import com.squareup.kotlinpoet.ClassName
 data class EventHolder(
     val className: ClassName,
     val resolvedName: String
-)
+) : Holder

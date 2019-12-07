@@ -16,14 +16,14 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        Collar.trackEvent(new AnalyticsEvent.OnCreate("Main"));
+        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.OnCreate("Main"));
 
         findViewById(R.id.buttonFoo).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 doFoo();
-                Collar.trackEvent(new AnalyticsEvent.DoFoo());
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.DoFoo());
             }
         });
         findViewById(R.id.buttonKotlin).setOnClickListener(new View.OnClickListener() {
@@ -44,6 +44,6 @@ public class MainActivity extends Activity {
     }
 
     private void onItemSelected(int position) {
-        Collar.trackEvent(new AnalyticsEvent.OnItemSelected(position, true));
+        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.OnItemSelected(position, true));
     }
 }

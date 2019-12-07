@@ -20,6 +20,12 @@ class KotlinMainActivity : Activity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        trackScreen()
+    }
+
     private fun doFoo() {
         FooKotlin().trackFoo()
     }

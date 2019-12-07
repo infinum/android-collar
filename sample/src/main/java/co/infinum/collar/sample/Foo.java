@@ -3,10 +3,10 @@ package co.infinum.collar.sample;
 public class Foo {
 
     public Foo() {
-        Collar.trackEvent(new AnalyticsEvent.Foo());
+        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Foo());
     }
 
     public void trackFoo() {
-        Collar.trackEvent(new AnalyticsEvent.TrackFoo());
+        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.TrackFoo());
     }
 }

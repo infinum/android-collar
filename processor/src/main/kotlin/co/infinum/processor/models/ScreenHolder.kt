@@ -7,4 +7,4 @@ data class ScreenHolder(
     val typeElement: TypeElement,
     val className: ClassName,
     val screenName: String
-)
+) : Holder
