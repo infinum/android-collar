@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
 import kotlinx.android.synthetic.main.activity_login.*
+import trackScreen
 
 @ScreenName(value = "KotlinMainActivity")
 class KotlinMainActivity : Activity() {
