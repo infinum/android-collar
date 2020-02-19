@@ -1,7 +1,6 @@
 package co.infinum.processor.specs
 
 import co.infinum.processor.models.ScreenHolder
-import co.infinum.processor.options.ProcessorOptions
 import co.infinum.processor.validators.TypeElementValidator
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -15,9 +14,7 @@ class ScreenNameSpec private constructor(
     private val packageName: String,
     private val simpleName: String,
     private val holders: List<ScreenHolder>,
-    private val typeElementValidator: TypeElementValidator,
-    private val processorOptions: ProcessorOptions,
-    private val warningAction: (String) -> Unit
+    private val typeElementValidator: TypeElementValidator
 ) : Spec {
 
     companion object {
@@ -25,7 +22,7 @@ class ScreenNameSpec private constructor(
 
         private const val FUNCTION_NAME_TRACK_SCREEN = "trackScreen"
 
-        private const val DEFAULT_PACKAGE_NAME = ""
+        private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
         private const val DEFAULT_SIMPLE_NAME = "ScreenNames"
     }
 
@@ -34,18 +31,14 @@ class ScreenNameSpec private constructor(
         private var packageName: String = DEFAULT_PACKAGE_NAME,
         private var simpleName: String = DEFAULT_SIMPLE_NAME,
         private var holders: List<ScreenHolder> = listOf(),
-        private var typeElementValidator: TypeElementValidator? = null,
-        private var processorOptions: ProcessorOptions? = null,
-        private var warningAction: ((String) -> Unit)? = null
+        private var typeElementValidator: TypeElementValidator? = null
     ) {
         fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
         fun packageName(packageName: String) = apply { this.packageName = packageName }
         fun simpleName(simpleName: String) = apply { this.simpleName = simpleName }
         fun holders(holders: List<ScreenHolder>) = apply { this.holders = holders }
         fun typeElementValidator(typeElementValidator: TypeElementValidator) = apply { this.typeElementValidator = typeElementValidator }
-        fun processorOptions(processorOptions: ProcessorOptions) = apply { this.processorOptions = processorOptions }
-        fun warningAction(warningAction: (String) -> Unit) = apply { this.warningAction = warningAction }
-        fun build() = ScreenNameSpec(outputDir!!, packageName, simpleName, holders, typeElementValidator!!, processorOptions!!, warningAction!!)
+        fun build() = ScreenNameSpec(outputDir!!, packageName, simpleName, holders, typeElementValidator!!)
     }
 
     init {
@@ -76,16 +69,13 @@ class ScreenNameSpec private constructor(
                 .mapNotNull { mapEntry ->
                     typeElementValidator.resolve(mapEntry.key)?.let {
                         val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
+
                             .receiver(it)
                             .beginControlFlow("when (this) {")
 
                         val codeBlockBuilder = CodeBlock.builder()
                             .indent()
                         for (screenHolder in mapEntry.value) {
-                            if (screenHolder.screenName.length > processorOptions.maxScreenNameSize) {
-                                warningAction("Screen names can be up to ${processorOptions.maxScreenNameSize} characters long. ${screenHolder.screenName} is ${screenHolder.screenName.length} long.")
-                                continue
-                            }
                             codeBlockBuilder.addStatement("is %T -> %S", screenHolder.className, screenHolder.screenName)
                         }
                         codeBlockBuilder.addStatement("else -> null")

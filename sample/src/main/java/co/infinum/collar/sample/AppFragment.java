@@ -7,5 +7,9 @@ import co.infinum.collar.annotations.ScreenName;
 @ScreenName("AppFragment")
 public class AppFragment extends Fragment {
 
-    // whatever
+    @Override
+    public void onResume() {
+        super.onResume();
+//        CollarScreenNames.trackScreen()
+    }
 }

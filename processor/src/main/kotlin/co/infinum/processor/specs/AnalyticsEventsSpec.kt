@@ -1,11 +1,7 @@
 package co.infinum.processor.specs
 
-import co.infinum.processor.CollarProcessor
 import co.infinum.processor.models.EventHolder
 import co.infinum.processor.models.EventParameterHolder
-import co.infinum.processor.models.ScreenHolder
-import co.infinum.processor.options.ProcessorOptions
-import co.infinum.processor.validators.TypeElementValidator
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock

@@ -51,7 +51,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
     ): Boolean =
         consume {
             annotationProvider.collectScreenNames(roundEnv)
-                .mapNotNull(transform = transformToScreenHolder())
+                .filter(predicate = validateElements())
+                .map(transform = transformToScreenHolder())
                 .also(block = processScreenNames())
 
             annotationProvider.collectAnalyticsEvents(roundEnv)
@@ -59,17 +60,27 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
                 .forEach { processAnalyticsEvents(it) }
         }
 
-    private fun transformToScreenHolder(): (Element?) -> ScreenHolder? = { element ->
-        typeElementValidator.isAllowed(element)?.let {
-            ScreenHolder(
-                typeElement = it,
-                className = (element as TypeElement).asClassName(),
-                screenName = annotationProvider.screenName(element)
-            )
-        } ?: run {
+    private fun validateElements(): (Element) -> Boolean = {element ->
+        if (typeElementValidator.isAllowed(element) != null) {
+            val screenName = annotationProvider.screenName(element)
+            if (screenName.length > processorOptions.maxScreenNameSize) {
+                showWarning("Screen names can be up to ${processorOptions.maxScreenNameSize} characters long. $screenName is ${screenName.length} long.")
+                false
+            } else {
+                true
+            }
+        } else {
             showWarning("$element is not eligible as a screen.")
-            null
+            false
         }
+    }
+
+    private fun transformToScreenHolder(): (Element?) -> ScreenHolder = { element ->
+        ScreenHolder(
+            typeElement = typeElementValidator.isAllowed(element) as TypeElement,
+            className = (element as TypeElement).asClassName(),
+            screenName = annotationProvider.screenName(element)
+        )
     }
 
     // TODO: Try to remove Pair from this
@@ -101,9 +112,8 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
             screenNameSpec {
                 outputDir(outputDir)
                 holders(screenHolders)
+                packageName("co.infinum.collar")
                 typeElementValidator(typeElementValidator)
-                processorOptions(processorOptions)
-                warningAction { showWarning(it) }
             }
         } ?: run {
             showError("Cannot find generated output dir.")
