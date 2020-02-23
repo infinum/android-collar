@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import co.infinum.collar.Collar;
 import co.infinum.collar.Event;
 import co.infinum.collar.Collector;
+import co.infinum.collar.Property;
 import co.infinum.collar.Screen;
 
 public class SampleApplication extends Application {
@@ -32,6 +33,12 @@ public class SampleApplication extends Application {
             public void onEvent(@NotNull Event event) {
                 // Send your events to Firebase, Amplitude, Fabric, Mixpanel, ...
                 Log.d("onEvent", event.toString());
+            }
+
+            @Override
+            public void onProperty(@NotNull Property property) {
+                // Send your user properties to Firebase, Amplitude, Fabric, Mixpanel, ...
+                Log.d("onProperty", property.toString());
             }
         });
     }

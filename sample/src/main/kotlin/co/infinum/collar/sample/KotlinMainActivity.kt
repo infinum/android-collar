@@ -3,8 +3,8 @@ package co.infinum.collar.sample
 import android.app.Activity
 import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.trackScreen
 import kotlinx.android.synthetic.main.activity_login.*
-import trackScreen
 
 @ScreenName(value = "KotlinMainActivity")
 class KotlinMainActivity : Activity() {

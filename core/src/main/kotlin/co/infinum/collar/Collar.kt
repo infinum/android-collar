@@ -21,26 +21,57 @@ class Collar private constructor(
             INSTANCE?.trackScreen(activity, screenName)
         }
 
+        fun trackScreen(screen: Screen) {
+            INSTANCE?.trackScreen(screen)
+        }
+
         fun trackEvent(eventName: String, params: Bundle) {
             INSTANCE?.trackEvent(eventName, params)
         }
+
+        fun trackEvent(event: Event) {
+            INSTANCE?.trackEvent(event)
+        }
+
+        fun trackProperty(name: String, property: String) {
+            INSTANCE?.trackProperty(name, property)
+        }
+
+        fun trackProperty(property: Property) {
+            INSTANCE?.trackProperty(property)
+        }
     }
 
-    fun trackScreen(activity: Activity, screenName: String) {
+    fun trackScreen(activity: Activity, screenName: String) =
         collector.onScreen(
             Screen(
                 activity = activity,
                 name = screenName
             )
         )
-    }
 
-    fun trackEvent(eventName: String, params: Bundle) {
+    fun trackScreen(screen: Screen) =
+        collector.onScreen(screen)
+
+    fun trackEvent(eventName: String, params: Bundle) =
         collector.onEvent(
             Event(
                 name = eventName,
                 params = if (params.isEmpty) null else params
             )
         )
-    }
+
+    fun trackEvent(event: Event) =
+        collector.onEvent(event)
+
+    fun trackProperty(name: String, property: String) =
+        collector.onProperty(
+            Property(
+                name = name,
+                property = property
+            )
+        )
+
+    fun trackProperty(property: Property) =
+        collector.onProperty(property)
 }

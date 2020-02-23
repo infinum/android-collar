@@ -10,9 +10,15 @@ interface Provider {
 
     fun collectAnalyticsEvents(roundEnvironment: RoundEnvironment): MutableSet<out Element>
 
+    fun collectUserProperties(roundEnvironment: RoundEnvironment): MutableSet<out Element>
+
     fun screenName(element: Element): String
 
     fun eventName(element: TypeElement): String
 
     fun eventParameterName(element: TypeElement, parameterName: String): String
+
+    fun propertyName(element: TypeElement): String
+
+    fun propertyParameterName(element: TypeElement, parameterName: String): String
 }

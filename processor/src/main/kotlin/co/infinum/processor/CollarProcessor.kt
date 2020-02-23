@@ -5,10 +5,13 @@ import co.infinum.processor.extensions.showError
 import co.infinum.processor.extensions.showWarning
 import co.infinum.processor.models.EventHolder
 import co.infinum.processor.models.EventParameterHolder
+import co.infinum.processor.models.PropertyHolder
+import co.infinum.processor.models.PropertyParameterHolder
 import co.infinum.processor.models.ScreenHolder
 import co.infinum.processor.options.ProcessorOptions
 import co.infinum.processor.providers.AnnotationProvider
 import co.infinum.processor.specs.analyticsEventsSpec
+import co.infinum.processor.specs.userPropertiesSpec
 import co.infinum.processor.specs.screenNameSpec
 import co.infinum.processor.validators.TypeElementValidator
 import com.squareup.kotlinpoet.ClassName
@@ -58,9 +61,13 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
             annotationProvider.collectAnalyticsEvents(roundEnv)
                 .mapNotNull(transform = transformToEventHolderPair())
                 .forEach { processAnalyticsEvents(it) }
+
+            annotationProvider.collectUserProperties(roundEnv)
+                .mapNotNull(transform = transformToPropertyHolderPair())
+                .forEach { processUserProperties(it) }
         }
 
-    private fun validateElements(): (Element) -> Boolean = {element ->
+    private fun validateElements(): (Element) -> Boolean = { element ->
         if (typeElementValidator.isAllowed(element) != null) {
             val screenName = annotationProvider.screenName(element)
             if (screenName.length > processorOptions.maxScreenNameSize) {
@@ -93,10 +100,18 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         }
     }
 
+    private fun transformToPropertyHolderPair(): (Element) -> Pair<TypeElement, Map<PropertyHolder, List<PropertyParameterHolder>>>? = { annotatedElement ->
+        typeElementValidator.verify(annotatedElement)?.let { analyticsElement ->
+            analyticsElement to mapElementToPropertyHolder(analyticsElement)
+        } ?: run {
+            showWarning("$annotatedElement is not a sealed Kotlin class.")
+            null
+        }
+    }
+
     private fun processScreenNames(): (List<ScreenHolder>) -> Unit = { holders ->
-        when (holders.isEmpty()) {
-            true -> showWarning("No annotated screen names found.")
-            false -> screenNamesExtension(holders)
+        if (holders.isNotEmpty()) {
+            screenNamesExtension(holders)
         }
     }
 
@@ -105,6 +120,13 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         when (elementHolderPair.second.values.isEmpty()) {
             true -> showWarning("${elementHolderPair.first} has no valid inner class.")
             false -> analyticsEventsExtension(className = elementHolderPair.first.asClassName(), holders = elementHolderPair.second)
+        }
+
+    // TODO: Try to remove Pair from this
+    private fun processUserProperties(elementHolderPair: Pair<TypeElement, Map<PropertyHolder, List<PropertyParameterHolder>>>) =
+        when (elementHolderPair.second.values.isEmpty()) {
+            true -> showWarning("${elementHolderPair.first} has no valid inner class.")
+            false -> userPropertiesExtension(className = elementHolderPair.first.asClassName(), holders = elementHolderPair.second)
         }
 
     private fun screenNamesExtension(screenHolders: List<ScreenHolder>) {
@@ -123,6 +145,18 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
     private fun analyticsEventsExtension(className: ClassName, holders: Map<EventHolder, List<EventParameterHolder>>) {
         generatedDir?.let { outputDir ->
             analyticsEventsSpec {
+                outputDir(outputDir)
+                className(className)
+                holders(holders)
+            }
+        } ?: run {
+            showError("Cannot find generated output dir.")
+        }
+    }
+
+    private fun userPropertiesExtension(className: ClassName, holders: Map<PropertyHolder, List<PropertyParameterHolder>>) {
+        generatedDir?.let { outputDir ->
+            userPropertiesSpec {
                 outputDir(outputDir)
                 className(className)
                 holders(holders)
@@ -207,5 +241,73 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
         }
 
         return analyticsEvents
+    }
+
+    private fun mapElementToPropertyHolder(propertiesElement: TypeElement): Map<PropertyHolder, List<PropertyParameterHolder>> {
+        val userProperties = mutableMapOf<PropertyHolder, List<PropertyParameterHolder>>()
+
+        val enclosedElements = propertiesElement.enclosedElements
+
+        if (enclosedElements.size > processorOptions.maxPropertiesCount) {
+            showError("You can report up to ${processorOptions.maxPropertiesCount} different user properties per app. Current size is ${enclosedElements.size}.")
+        } else {
+            val supertype = propertiesElement.asType()
+
+            for (element in enclosedElements) {
+
+                val type = element.asType()
+
+                if (element !is TypeElement) {
+                    // Inner element is not a class
+                    //showWarning( "$element is not a kotlin class.")
+                    continue
+                } else if (!typeUtils.directSupertypes(type).contains(supertype)) {
+                    // Inner class does not extend from the enclosing sealed class
+                    showWarning("$element does not extend from $propertiesElement.")
+                    continue
+                }
+
+                val kotlinMetadata = element.kotlinMetadata as KotlinClassMetadata
+
+                // Make use of KotlinPoet's ClassName to easily get the class' name.
+                val propertyClass = element.asClassName()
+                val propertyClassSimpleName = annotationProvider.propertyName(element)
+
+                if (propertyClassSimpleName.matches(Regex("^[a-zA-Z0-9_]*$")).not()) {
+                    showError("Property name may only contain alphanumeric characters and underscores (\"_\"). $propertyClassSimpleName does not.")
+                    continue
+                }
+                if (processorOptions.reservedProperties.any { propertyClassSimpleName.equals(it, false) }) {
+                    showError("The ${processorOptions.reservedProperties.joinToString { "\"$it\"" }} user properties are reserved and cannot be used in ${propertyClassSimpleName}.")
+                    continue
+                }
+
+                // Extract the primary constructor and its parameters as the property's parameters.
+                val proto = kotlinMetadata.data.classProto
+                val nameResolver = kotlinMetadata.data.nameResolver
+
+                if (proto.constructorCount == 0) {
+                    showWarning("$element has no constructor.")
+                    continue
+                }
+
+                val propertyParameters = proto.constructorList.first().valueParameterList
+                if (propertyParameters.size > 1) {
+                    showError("You can associate up to 1 unique parameter with each user property. Current size is ${propertyParameters.size}.")
+                } else {
+                    val mapKey = PropertyHolder(className = propertyClass, resolvedName = propertyClassSimpleName)
+                    val mapValue = propertyParameters.map { valueParameter ->
+                        val parameterName = nameResolver.getString(valueParameter.name)
+                        PropertyParameterHolder(
+                            variableName = parameterName,
+                            resolvedName = annotationProvider.propertyParameterName(element, parameterName)
+                        )
+                    }
+                    userProperties[mapKey] = mapValue
+                }
+            }
+        }
+
+        return userProperties
     }
 }

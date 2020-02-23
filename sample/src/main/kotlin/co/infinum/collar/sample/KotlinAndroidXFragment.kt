@@ -2,7 +2,7 @@ package co.infinum.collar.sample
 
 import androidx.fragment.app.Fragment
 import co.infinum.collar.annotations.ScreenName
-import trackScreen
+import co.infinum.collar.trackScreen
 
 @ScreenName("KotlinAndroidXFragment")
 class KotlinAndroidXFragment : Fragment() {

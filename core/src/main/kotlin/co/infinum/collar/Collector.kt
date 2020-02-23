@@ -11,4 +11,6 @@ interface Collector {
     fun onScreen(screen: Screen)
 
     fun onEvent(event: Event)
+
+    fun onProperty(property: Property)
 }

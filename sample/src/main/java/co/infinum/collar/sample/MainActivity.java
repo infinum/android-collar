@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
 
 @ScreenName(value = "MainActivity")
@@ -33,6 +34,12 @@ public class MainActivity extends Activity {
                 showKotlin();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CollarScreenNames.trackScreen(this);
     }
 
     private void doFoo() {
