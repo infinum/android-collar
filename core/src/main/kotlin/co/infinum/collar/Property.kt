@@ -5,5 +5,5 @@ package co.infinum.collar
  */
 data class Property(
     val name: String,
-    val property: String
+    val value: String
 )

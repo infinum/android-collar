@@ -34,6 +34,8 @@ public class MainActivity extends Activity {
                 showKotlin();
             }
         });
+
+        CollarUserProperty.trackProperty(new UserProperty.UserTypeRetail("corporate"));
     }
 
     @Override

@@ -19,6 +19,8 @@ class KotlinMainActivity : Activity() {
             doFoo()
             trackEvent(AnalyticsEvent.DoFooKotlin())
         }
+
+        trackProperty(UserProperty.UserType1(value = "retail"))
     }
 
     override fun onResume() {
