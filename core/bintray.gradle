@@ -9,7 +9,7 @@ group = 'co.infinum.collar'
 version = '1.0.0'
 
 task sourcesJar(type: Jar, dependsOn: assemble) {
-    archiveClassifier = 'sources'
+    archiveClassifier.set('sources')
     from android.sourceSets.main.java.source
 }
 
@@ -19,7 +19,7 @@ task javadocs(type: Javadoc) {
 }
 
 task javadocsJar(type: Jar, dependsOn: javadocs) {
-    archiveClassifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadocs.destinationDir
 }
 
@@ -32,7 +32,7 @@ publishing {
             pom {
                 name = 'Collar Core'
                 description = 'Gradle plugin which provides single point for analytics collection.'
-                url = 'https://github.com/infinum/Android-Collar'
+                url = 'https://github.com/infinum/android-collar'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -59,13 +59,13 @@ bintray {
     key = properties.getProperty("bintray.apikey")
 
     pkg {
-        repo = 'maven'
+        repo = 'android'
         name = 'collar-core'
-        userOrg = 'knobtviker'
-        desc = 'Collar Core test packages'
-        websiteUrl = 'https://github.com/infinum/Android-Collar'
-        issueTrackerUrl = 'https://github.com/infinum/Android-Collar/issues'
-        vcsUrl = 'https://github.com/infinum/Android-Collar.git'
+        userOrg = 'infinum'
+        desc = 'Collar Core package'
+        websiteUrl = 'https://github.com/infinum/android-collar'
+        issueTrackerUrl = 'https://github.com/infinum/android-collar/issues'
+        vcsUrl = 'https://github.com/infinum/android-collar.git'
         licenses = ['Apache-2.0']
         version {
             name = "${versions.collar}"
@@ -94,12 +94,12 @@ install {
 
                 name 'collar-core'
                 description 'Collar Core'
-                url 'https://github.com/infinum/Android-Collar'
+                url 'https://github.com/infinum/android-collar'
 
                 licenses {
                     license {
                         name 'Apache'
-                        url 'https://github.com/infinum/Android-Collar/LICENSE'
+                        url 'https://github.com/infinum/android-collar/LICENSE'
                     }
                 }
                 developers {
@@ -110,9 +110,9 @@ install {
                     }
                 }
                 scm {
-                    connection 'https://github.com/infinum/Android-Collar.git'
-                    developerConnection 'https://github.com/infinum/Android-Collar.git'
-                    url 'https://github.com/infinum/Android-Collar'
+                    connection 'https://github.com/infinum/android-collar.git'
+                    developerConnection 'https://github.com/infinum/android-collar.git'
+                    url 'https://github.com/infinum/android-collar'
 
                 }
             }

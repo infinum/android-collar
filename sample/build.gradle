@@ -3,7 +3,6 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url "https://dl.bintray.com/knobtviker/maven" }
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
@@ -16,7 +15,6 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-    maven { url "https://dl.bintray.com/knobtviker/maven" }
     maven { url "http://dl.bintray.com/infinum/android" }
 }
 

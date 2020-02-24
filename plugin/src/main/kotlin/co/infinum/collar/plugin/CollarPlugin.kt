@@ -19,7 +19,6 @@ class CollarPlugin : Plugin<Project> {
             google()
             jcenter()
             mavenCentral()
-            maven {}.url = URI("https://dl.bintray.com/knobtviker/maven")
             maven {}.url = URI("http://dl.bintray.com/infinum/android")
         }
     }
