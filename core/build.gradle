@@ -1,14 +1,26 @@
 buildscript {
     repositories {
+        google()
         jcenter()
+        mavenCentral()
+        maven { url "https://dl.bintray.com/knobtviker/maven" }
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "com.archinamon:android-gradle-aspectj:3.4.0"
+        classpath packages.gradle
     }
 }
 
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+    maven { url "https://dl.bintray.com/knobtviker/maven" }
+    maven { url "http://dl.bintray.com/infinum/android" }
+}
+
 apply plugin: "com.android.library"
-apply plugin: 'com.archinamon.aspectj-provides'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -23,26 +35,27 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false // TODO: Check this why it eats my annotations
+            minifyEnabled false
             consumerProguardFiles "consumer-proguard-rules.pro"
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
 dependencies {
+    implementation "co.infinum.collar:collar-annotations:1.0.0"
+    implementation packages.kotlin.core
     compileOnly packages.annotations
-
-    testImplementation packages.junit
-    testImplementation packages.mockito
-    testImplementation packages.truth
+    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0"
 }
 
 apply from: "bintray.gradle"
 apply from: "../tasks.gradle"
-
-//preBuild.dependsOn ':core:generateReadme'

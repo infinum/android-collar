@@ -8,16 +8,23 @@ properties.load(new FileInputStream(file(rootProject.file('bintray.properties'))
 group = 'co.infinum.collar'
 version = '1.0.0'
 
-task sourcesJarPlugin(type: Jar) {
+task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
+    classifier = 'sources'
     from sourceSets.main.allSource
-    archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: JavaPlugin.JAVADOC_TASK_NAME) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+//    appendAll("$buildDir/docs")
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId = 'collar-plugin'
-            artifact sourcesJarPlugin
+            artifact sourcesJar
+            artifact javadocJar
             pom {
                 name = 'Collar Plugin'
                 description = 'Gradle plugin which provides single point for analytics collection.'
@@ -108,20 +115,3 @@ install {
         }
     }
 }
-
-//bintray {
-//    pkg {
-//        repo = 'android'
-//        name = "collar"
-//        userOrg = 'infinum'
-//        licenses = ['Apache-2.0']
-//        vcsUrl = 'https://github.com/infinum/Android-Collar.git'
-//        publicDownloadNumbers = true
-//
-//        version {
-//            name = "${versions.collar}"
-//            released = new Date()
-//            vcsTag = "${versions.collar}"
-//        }
-//    }
-//}

@@ -23,12 +23,6 @@ task javadocsJar(type: Jar, dependsOn: javadocs) {
     from javadocs.destinationDir
 }
 
-afterEvaluate {
-    javadocs.classpath += files(android.libraryVariants.collect { variant ->
-        variant.javaCompile.classpath.files
-    })
-}
-
 publishing {
     publications {
         Publication(MavenPublication) {
@@ -125,20 +119,3 @@ install {
         }
     }
 }
-
-//bintray {
-//    pkg {
-//        repo = 'android'
-//        name = "collar"
-//        userOrg = 'infinum'
-//        licenses = ['Apache-2.0']
-//        vcsUrl = 'https://github.com/infinum/Android-Collar.git'
-//        publicDownloadNumbers = true
-//
-//        version {
-//            name = "${versions.collar}"
-//            released = new Date()
-//            vcsTag = "${versions.collar}"
-//        }
-//    }
-//}

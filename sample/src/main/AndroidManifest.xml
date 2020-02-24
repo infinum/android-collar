@@ -13,7 +13,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".KotlinMainActivity" />
+        <activity android:name=".KotlinAndroidXActivity" />
     </application>
 
 </manifest>

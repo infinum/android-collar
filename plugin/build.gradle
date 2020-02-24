@@ -1,22 +1,29 @@
 buildscript {
     repositories {
+        google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath "com.archinamon:android-gradle-aspectj:3.4.0"
+        classpath packages.gradle
     }
 }
 
-
-plugins {
-    id 'groovy'
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
 }
 
-dependencies {
-    implementation gradleApi()
-    implementation localGroovy()
+apply plugin: 'kotlin'
 
-    testImplementation packages.junit
+compileKotlin { kotlinOptions { jvmTarget = "1.8" } }
+compileTestKotlin { kotlinOptions { jvmTarget = "1.8" } }
+
+dependencies {
+    implementation packages.kotlin.core
+    compileOnly gradleApi()
+    compileOnly packages.gradle
 }
 
 apply from: "bintray.gradle"

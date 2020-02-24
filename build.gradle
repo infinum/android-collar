@@ -13,28 +13,14 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenLocal()
-        maven { url "https://dl.bintray.com/knobtviker/maven" }
-        maven { url "http://dl.bintray.com/infinum/android" }
+        mavenCentral()
     }
 
     dependencies {
         classpath packages.gradle
-        classpath packages.nexus
-        classpath packages.kotlin.plugin
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
         classpath packages.bintray
-        classpath 'com.archinamon:android-gradle-aspectj:3.4.0'
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        mavenLocal()
-        maven { url "https://dl.bintray.com/knobtviker/maven" }
-        maven { url "http://dl.bintray.com/infinum/android" }
+        classpath packages.kotlin.plugin
     }
 }
 

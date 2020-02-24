@@ -2,20 +2,28 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenLocal()
+        mavenCentral()
         maven { url "https://dl.bintray.com/knobtviker/maven" }
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-//        classpath "co.infinum.collar:collar-plugin:1.0.0"
+        classpath packages.gradle
+        classpath "co.infinum.collar:collar-plugin:1.0.0"
     }
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+    maven { url "https://dl.bintray.com/knobtviker/maven" }
+    maven { url "http://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'co.infinum.collar.plugin'
-apply plugin: "com.archinamon.aspectj" //this works
+apply plugin: 'co.infinum.collar.plugin'
 
 android {
     compileSdkVersion 29
@@ -23,7 +31,7 @@ android {
 
     defaultConfig {
         applicationId "co.infinum.collar.sample"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
         versionName "1.0.0"
@@ -33,6 +41,15 @@ android {
                 debug {
                     debuggable true
                 }
+            }
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                argument "events_count", "100"
+                argument "event_parameters_count", "10"
+                argument "event_name_length", "20"
+                argument "reserved_prefixes", "ga_,fb_"
             }
         }
     }
@@ -48,14 +65,13 @@ android {
     }
 }
 
-aspectj {
-    includeAspectsFromJar 'collar-core' // this works
-}
-
 dependencies {
     implementation packages.kotlin.core
-    implementation "co.infinum.collar:collar-core:1.0.0"
+    implementation "androidx.fragment:fragment:1.2.2"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+}
 
-    testImplementation packages.junit
-    testImplementation packages.truth
+collar {
+    version "1.0.0"
+    extended true
 }

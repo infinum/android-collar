@@ -3,10 +3,13 @@ package co.infinum.collar.sample;
 import android.app.Application;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
 import co.infinum.collar.Collar;
 import co.infinum.collar.Event;
-import co.infinum.collar.EventCollector;
-import co.infinum.collar.EventLogger;
+import co.infinum.collar.Collector;
+import co.infinum.collar.Property;
+import co.infinum.collar.Screen;
 
 public class SampleApplication extends Application {
 
@@ -18,17 +21,24 @@ public class SampleApplication extends Application {
     }
 
     private void attachCollar() {
-        Collar.attach(new EventCollector() {
+        Collar.attach(new Collector() {
+
             @Override
-            public void onEventCollected(Event event) {
-                // Send your events to Firebase, Amplitude, Fabric, Mixpanel, ...
-                Log.d("onEventCollected", event.name);
+            public void onScreen(@NotNull Screen screen) {
+                // Send your screen views to Firebase, Amplitude, Fabric, Mixpanel, ...
+                Log.d("onScreen", screen.toString());
             }
-        }).setEventLogger(new EventLogger() {
+
             @Override
-            public void onEventLogged(String message) {
-                // Set your logger here, like Log, Timber, ...
-                Log.d("onEventLogged", message);
+            public void onEvent(@NotNull Event event) {
+                // Send your events to Firebase, Amplitude, Fabric, Mixpanel, ...
+                Log.d("onEvent", event.toString());
+            }
+
+            @Override
+            public void onProperty(@NotNull Property property) {
+                // Send your user properties to Firebase, Amplitude, Fabric, Mixpanel, ...
+                Log.d("onProperty", property.toString());
             }
         });
     }
