@@ -22,7 +22,7 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    implementation "co.infinum.collar:collar-annotations:1.0.0"
+    implementation packages.collar.annotations
     implementation packages.kotlin.core
     implementation packages.kotlin.metadata
     implementation packages.kotlin.poet

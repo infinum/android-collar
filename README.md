@@ -64,7 +64,7 @@ Screen names can be annotated on top of **Activities** or **Fragments**. No othe
 
 ```kotlin
 @ScreenName(AnalyticsKeys.ScreenName.BRAND_DETAILS)
-class BrandFragment : BaseFragment<BrandState, BrandEvent>(R.layout.fragment_brand) {
+class BrandFragment : Fragment(R.layout.fragment_brand) {
 
     ...
 
@@ -114,7 +114,7 @@ However, you can always use _Collar_ methods explicitly besides the extension on
   
 ```kotlin
 @ScreenName(AnalyticsKeys.ScreenName.BRAND_DETAILS)
-class BrandFragment : BaseFragment<BrandState, BrandEvent>(R.layout.fragment_brand) {
+class BrandFragment : Fragment(R.layout.fragment_brand) {
 
     ...
 
@@ -162,7 +162,7 @@ However, you can always use _Collar_ methods explicitly besides the extension on
   
 ```kotlin
 @ScreenName(AnalyticsKeys.ScreenName.BRAND_DETAILS)
-class BrandFragment : BaseFragment<BrandState, BrandEvent>(R.layout.fragment_brand) {
+class BrandFragment : Fragment(R.layout.fragment_brand) {
     
     ...
 

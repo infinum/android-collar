@@ -49,10 +49,10 @@ android {
 }
 
 dependencies {
-    implementation "co.infinum.collar:collar-annotations:1.0.0"
+    implementation packages.collar.annotations
     implementation packages.kotlin.core
     compileOnly packages.annotations
-    implementation "androidx.lifecycle:lifecycle-runtime:2.2.0"
+    implementation packages.androidx.lifecycle
 }
 
 apply from: "bintray.gradle"
