@@ -6,7 +6,7 @@ Properties properties = new Properties()
 properties.load(new FileInputStream(file(rootProject.file('bintray.properties'))))
 
 group = 'co.infinum.collar'
-version = '1.0.0'
+version = versions.collar
 
 task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
     archiveClassifier.set('sources')
