@@ -33,7 +33,7 @@ class Collar private constructor(
             INSTANCE?.trackEvent(event)
         }
 
-        fun trackProperty(name: String, value: String) {
+        fun trackProperty(name: String, value: String?) {
             INSTANCE?.trackProperty(name, value)
         }
 
@@ -64,7 +64,7 @@ class Collar private constructor(
     fun trackEvent(event: Event) =
         collector.onEvent(event)
 
-    fun trackProperty(name: String, value: String) =
+    fun trackProperty(name: String, value: String?) =
         collector.onProperty(
             Property(
                 name = name,

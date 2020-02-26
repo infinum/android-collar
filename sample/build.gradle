@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath packages.gradle
-        classpath "co.infinum.collar:collar-plugin:1.0.0"
+        classpath packages.collar.plugin
     }
 }
 
@@ -24,13 +24,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'co.infinum.collar.plugin'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
         applicationId "co.infinum.collar.sample"
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
         versionCode 1
         versionName "1.0.0"
 

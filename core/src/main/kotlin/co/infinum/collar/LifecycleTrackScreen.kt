@@ -11,18 +11,16 @@ import java.io.Serializable
 
 private object UninitializedValue
 
-/**
- * This was copied from SynchronizedLazyImpl but modified to automatically initialize in ON_RESUME.
- */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class lifecycleAwareLazy<out T>(
-    private val owner: LifecycleOwner, initializer: () -> T
+class LifecycleTrackScreen<out T>(
+    private val owner: LifecycleOwner,
+    initializer: () -> T
 ) : Lazy<T>, Serializable {
 
     private var initializer: (() -> T)? = initializer
 
     @Volatile
-    private var _value: Any? = UninitializedValue
+    private var internalValue: Any? = UninitializedValue
 
     // final field is required to enable safe publication of constructed instance
     private val lock = this
@@ -31,7 +29,9 @@ class lifecycleAwareLazy<out T>(
         owner.lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
             fun onResume() {
-                if (!isInitialized()) value
+                if (!isInitialized()) {
+                    value
+                }
                 owner.lifecycle.removeObserver(this)
             }
         })
@@ -39,26 +39,26 @@ class lifecycleAwareLazy<out T>(
 
     override val value: T
         get() {
-            val _v1 = _value
-            if (_v1 !== UninitializedValue) {
+            val oldValue = internalValue
+            if (oldValue !== UninitializedValue) {
                 @Suppress("UNCHECKED_CAST")
-                return _v1 as T
+                return oldValue as T
             }
 
             return synchronized(lock) {
-                val _v2 = _value
-                if (_v2 !== UninitializedValue) {
-                    @Suppress("UNCHECKED_CAST") (_v2 as T)
+                val newValue = internalValue
+                if (newValue !== UninitializedValue) {
+                    @Suppress("UNCHECKED_CAST") (newValue as T)
                 } else {
                     val typedValue = initializer!!()
-                    _value = typedValue
+                    internalValue = typedValue
                     initializer = null
                     typedValue
                 }
             }
         }
 
-    override fun isInitialized(): Boolean = _value !== UninitializedValue
+    override fun isInitialized(): Boolean = internalValue !== UninitializedValue
 
-    override fun toString(): String = if (isInitialized()) value.toString() else "Lazy value not initialized yet."
+    override fun toString(): String = if (isInitialized()) value.toString() else UninitializedValue.toString()
 }

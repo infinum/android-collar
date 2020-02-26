@@ -1,12 +1,14 @@
 ext.versions = [
     "collar"         : "1.0.0",
-    "gradle"         : '3.5.3',
+    "gradle"         : '3.6.0',
     "kotlin"         : "1.3.61",
     "kotlin_metadata": "1.4.0",
     "poet"           : "1.4.3",
     "annotations"    : "17.0.0",
     "incap"          : "0.2",
-    "bintray"        : "1.8.4"
+    "bintray"        : "1.8.4",
+    "lifecycle"      : "2.2.0",
+    "maven"          : "2.0"
 ]
 
 ext.packages = [
@@ -22,5 +24,17 @@ ext.packages = [
         "core"     : "net.ltgt.gradle.incap:incap:${versions.incap}",
         "processor": "net.ltgt.gradle.incap:incap-processor:${versions.incap}"
     ],
-    "bintray"    : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}"
+    "bintray"    : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}",
+    "collar"     : [
+        "annotations": "co.infinum.collar:collar-annotations:${versions.collar}",
+        "core"       : "co.infinum.collar:collar-core:${versions.collar}",
+        "processor"  : "co.infinum.collar:collar-processor:${versions.collar}",
+        "plugin"     : "co.infinum.collar:collar-plugin:${versions.collar}"
+    ],
+    "androidx"   : [
+        "lifecycle": "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
+    ],
+    "maven"      : [
+        "plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.maven}"
+    ]
 ]
