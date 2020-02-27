@@ -19,14 +19,11 @@ import co.infinum.collar.ui.data.room.entity.ScreenEntity
 internal abstract class CollarDatabase : RoomDatabase() {
 
     companion object {
-        private const val DATABASE_NAME = "collar.db"
 
-        fun create(context: Context): CollarDatabase {
-
-            return Room.databaseBuilder(context, CollarDatabase::class.java, DATABASE_NAME)
+        fun create(context: Context): CollarDatabase =
+            Room.inMemoryDatabaseBuilder(context, CollarDatabase::class.java)
                 .fallbackToDestructiveMigration()
                 .build()
-        }
     }
 
     abstract fun screensDao(): ScreensDao
