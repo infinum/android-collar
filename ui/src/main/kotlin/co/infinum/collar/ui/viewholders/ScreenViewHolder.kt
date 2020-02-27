@@ -1,7 +1,7 @@
 package co.infinum.collar.ui.viewholders
 
 import android.view.View
-import co.infinum.collar.ui.entries.ScreenEntry
+import co.infinum.collar.ui.data.room.entity.ScreenEntity
 import kotlinx.android.synthetic.main.item_screen.view.*
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -9,11 +9,11 @@ import java.util.Locale
 
 class ScreenViewHolder(
     private val view: View
-) : CollarViewHolder<ScreenEntry>(view) {
+) : CollarViewHolder<ScreenEntity>(view) {
 
-    override fun bind(entry: ScreenEntry) {
+    override fun bind(entry: ScreenEntity) {
         with(view) {
-            timeView.text = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date(entry.timestamp))
+            timeView.text = entry.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
             nameView.text = entry.name
         }
     }

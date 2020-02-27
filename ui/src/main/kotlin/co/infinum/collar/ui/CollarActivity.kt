@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import co.infinum.collar.ui.decorations.LastDotDecoration
 import kotlinx.android.synthetic.main.activity_collar.*
 
 class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
@@ -31,6 +32,7 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
 
     private fun setupRecyclerView() {
         with(recyclerView) {
+            addItemDecoration(LastDotDecoration(context))
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = entryAdapter
         }
@@ -38,13 +40,21 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this).get(CollarViewModel::class.java)
-        viewModel.items.observe(this) {
+        viewModel.screens().observe(this) {
+            entryAdapter.addItems(it)
+        }
+        viewModel.events().observe(this) {
+            entryAdapter.addItems(it)
+        }
+        viewModel.properties().observe(this) {
             entryAdapter.addItems(it)
         }
     }
 
     override fun onDestroy() {
-        viewModel.items.removeObservers(this)
+        viewModel.screens().removeObservers(this)
+        viewModel.events().removeObservers(this)
+        viewModel.properties().removeObservers(this)
         super.onDestroy()
     }
 }
