@@ -1,7 +1,11 @@
-package co.infinum.collar.ui
+package co.infinum.collar.ui.viewholders
 
 import android.view.View
+import co.infinum.collar.ui.entries.EventEntry
 import kotlinx.android.synthetic.main.item_event.view.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class EventViewHolder(
     private val view: View
@@ -9,9 +13,7 @@ class EventViewHolder(
 
     override fun bind(entry: EventEntry) {
         with(view) {
-            timeView.text = entry.timestamp.toString()
-            iconView.setBackgroundColor(entry.color)
-            iconView.setImageResource(entry.icon)
+            timeView.text = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date(entry.timestamp))
             nameView.text = entry.name
             valueView.text = entry.parameters.run {
                 val map = mutableMapOf<String, String>()

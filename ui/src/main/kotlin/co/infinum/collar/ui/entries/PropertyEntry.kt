@@ -1,9 +1,9 @@
-package co.infinum.collar.ui
+package co.infinum.collar.ui.entries
+
+import co.infinum.collar.ui.entries.CollarEntry
 
 data class PropertyEntry(
     override val timestamp: Long,
-    override val color: Int,
-    override val icon: Int,
     override val name: String,
     val value: String?
 ) : CollarEntry

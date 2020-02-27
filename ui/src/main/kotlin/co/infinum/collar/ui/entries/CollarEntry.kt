@@ -1,8 +1,6 @@
-package co.infinum.collar.ui
+package co.infinum.collar.ui.entries
 
 interface CollarEntry {
     val timestamp: Long
-    val color: Int
-    val icon: Int
     val name: String
 }

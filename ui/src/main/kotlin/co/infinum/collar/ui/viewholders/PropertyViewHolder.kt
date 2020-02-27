@@ -1,8 +1,11 @@
-package co.infinum.collar.ui
+package co.infinum.collar.ui.viewholders
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
+import co.infinum.collar.ui.entries.PropertyEntry
 import kotlinx.android.synthetic.main.item_property.view.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class PropertyViewHolder(
     private val view: View
@@ -10,9 +13,7 @@ class PropertyViewHolder(
 
     override fun bind(entry: PropertyEntry) {
         with(view) {
-            timeView.text = entry.timestamp.toString()
-            iconView.setBackgroundColor(entry.color)
-            iconView.setImageResource(entry.icon)
+            timeView.text = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date(entry.timestamp))
             nameView.text = entry.name
             valueView.text = entry.value
         }

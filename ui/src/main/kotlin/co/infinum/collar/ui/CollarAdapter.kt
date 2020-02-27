@@ -3,6 +3,15 @@ package co.infinum.collar.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import co.infinum.collar.ui.entries.CollarEntry
+import co.infinum.collar.ui.entries.EventEntry
+import co.infinum.collar.ui.entries.PropertyEntry
+import co.infinum.collar.ui.entries.ScreenEntry
+import co.infinum.collar.ui.entries.UnknownEntry
+import co.infinum.collar.ui.viewholders.EventViewHolder
+import co.infinum.collar.ui.viewholders.PropertyViewHolder
+import co.infinum.collar.ui.viewholders.ScreenViewHolder
+import co.infinum.collar.ui.viewholders.UnknownViewHolder
 
 class CollarAdapter(
     private var items: List<CollarEntry> = listOf()
