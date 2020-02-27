@@ -7,7 +7,6 @@ buildscript {
     }
     dependencies {
         classpath packages.gradle
-        classpath packages.collar.plugin
     }
 }
 
@@ -18,43 +17,28 @@ repositories {
     maven { url "http://dl.bintray.com/infinum/android" }
 }
 
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'co.infinum.collar.plugin'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        applicationId "co.infinum.collar.sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
-        versionName "1.0.0"
-
-        buildTypes {
-            debug {
-                debug {
-                    debuggable true
-                }
-            }
-        }
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                argument "events_count", "100"
-                argument "event_parameters_count", "10"
-                argument "event_name_length", "20"
-                argument "reserved_prefixes", "ga_,fb_"
-            }
-        }
+        versionName versions.collar
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     sourceSets {
@@ -65,12 +49,12 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
-    implementation "androidx.fragment:fragment:1.2.2"
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation project(":ui")
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    implementation "com.google.android.material:material:1.1.0"
 }
 
-collar {
-    version "1.0.0"
-    extended true
-}
+apply from: "bintray.gradle"

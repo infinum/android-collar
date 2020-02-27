@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="co.infinum.collar.ui">
+
+    <application>
+        <activity
+            android:name="co.infinum.collar.ui.CollarActivity"
+            android:label="@string/collar_name"
+            android:launchMode="singleTask"
+            android:taskAffinity="co.infinum.collar.task"
+            android:theme="@style/Collar.Theme" />
+    </application>
+
+</manifest>

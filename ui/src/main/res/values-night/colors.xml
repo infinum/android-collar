@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="collar_color_primary">#ffa000</color>
+    <color name="collar_color_primary_variant">#121212</color>
+    <color name="collar_color_background">#121212</color>
+    <color name="collar_color_surface">#121212</color>
+    <color name="collar_color_secondary">#005fff</color>
+    <color name="collar_color_error">#F44336</color>
+    <color name="collar_color_on_primary">#000000</color>
+    <color name="collar_color_on_secondary">#000000</color>
+    <color name="collar_color_on_background">#ffffff</color>
+    <color name="collar_color_on_surface">#ffffff</color>
+    <color name="collar_color_on_error">#000000</color>
+
+    <color name="collar_color_screen">#00ffa0</color>
+    <color name="collar_color_event">#005fff</color>
+    <color name="collar_color_property">#ffa000</color>
+    <color name="collar_color_unknown">#F44336</color>
+</resources>

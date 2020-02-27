@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.trackScreen
+import co.infinum.collar.ui.CollarActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 @ScreenName(value = "KotlinMainActivity")
@@ -21,6 +22,10 @@ class KotlinMainActivity : Activity() {
         }
 
         trackProperty(UserProperty.UserType1(value = "retail"))
+
+        buttonUi.setOnClickListener {
+            CollarActivity.start(this)
+        }
     }
 
     override fun onResume() {
