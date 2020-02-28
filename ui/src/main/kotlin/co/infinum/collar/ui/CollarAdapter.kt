@@ -2,6 +2,7 @@ package co.infinum.collar.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.util.TimeUtils
 import androidx.recyclerview.widget.RecyclerView
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 import co.infinum.collar.ui.data.room.entity.EventEntity
@@ -11,6 +12,7 @@ import co.infinum.collar.ui.viewholders.EventViewHolder
 import co.infinum.collar.ui.viewholders.PropertyViewHolder
 import co.infinum.collar.ui.viewholders.ScreenViewHolder
 import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 class CollarAdapter(
@@ -77,7 +79,7 @@ class CollarAdapter(
             else -> {
                 val currentItem = items[position]
                 val previousItem = items[position - 1]
-                abs((currentItem.timestamp ?: 0) - (previousItem.timestamp ?: 0)) >= 1000
+                abs((currentItem.timestamp ?: 0) - (previousItem.timestamp ?: 0)) >= TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS)
             }
         }
 }

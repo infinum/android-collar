@@ -12,42 +12,53 @@ import co.infinum.collar.ui.data.room.entity.PropertyEntity
 import co.infinum.collar.ui.data.room.entity.ScreenEntity
 import co.infinum.collar.ui.data.room.repository.EntityRepository
 
-open class LiveCollector(context: Context) : Collector {
+open class LiveCollector(
+    context: Context,
+    val showNotification: Boolean = true
+) : Collector {
+
+    private val notificationProvider: NotificationProvider = NotificationProvider(context)
 
     init {
         EntityRepository.initialize(context)
     }
 
     @CallSuper
-    override fun onEvent(event: Event) {
-        EntityRepository.saveEvent(
-            EventEntity(
-                timestamp = System.currentTimeMillis(),
-                name = event.name,
-                parameters = event.params?.let { bundleToMap(it) }
-            )
+    override fun onScreen(screen: Screen) {
+        val entity = ScreenEntity(
+            timestamp = System.currentTimeMillis(),
+            name = screen.name
         )
+        EntityRepository.saveScreen(entity)
+        if (showNotification) {
+            notificationProvider.showScreen(entity)
+        }
+    }
+
+    @CallSuper
+    override fun onEvent(event: Event) {
+        val entity = EventEntity(
+            timestamp = System.currentTimeMillis(),
+            name = event.name,
+            parameters = event.params?.let { bundleToMap(it) }
+        )
+        EntityRepository.saveEvent(entity)
+        if (showNotification) {
+            notificationProvider.showEvent(entity)
+        }
     }
 
     @CallSuper
     override fun onProperty(property: Property) {
-        EntityRepository.saveProperty(
-            PropertyEntity(
-                timestamp = System.currentTimeMillis(),
-                name = property.name,
-                value = property.value
-            )
+        val entity = PropertyEntity(
+            timestamp = System.currentTimeMillis(),
+            name = property.name,
+            value = property.value
         )
-    }
-
-    @CallSuper
-    override fun onScreen(screen: Screen) {
-        EntityRepository.saveScreen(
-            ScreenEntity(
-                timestamp = System.currentTimeMillis(),
-                name = screen.name
-            )
-        )
+        EntityRepository.saveProperty(entity)
+        if (showNotification) {
+            notificationProvider.showProperty(entity)
+        }
     }
 
     private fun bundleToMap(bundle: Bundle): String {

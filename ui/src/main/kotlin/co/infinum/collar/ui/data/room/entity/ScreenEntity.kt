@@ -9,11 +9,11 @@ data class ScreenEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Long? = null,
+    override var id: Long? = null,
 
     @ColumnInfo(name = "timestamp")
     override var timestamp: Long?,
 
     @ColumnInfo(name = "name")
-    var name: String?
+    override var name: String?
 ) : CollarEntity

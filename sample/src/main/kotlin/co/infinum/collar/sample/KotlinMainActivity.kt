@@ -5,14 +5,14 @@ import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.trackScreen
 import co.infinum.collar.ui.CollarActivity
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_main_kotlin.*
 
-@ScreenName(value = "KotlinMainActivity")
+@ScreenName(value = KotlinScreenNames.MAIN_SCREEN)
 class KotlinMainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_main_kotlin)
 
         trackEvent(AnalyticsEvent.OnCreate("KotlinMain"))
 
