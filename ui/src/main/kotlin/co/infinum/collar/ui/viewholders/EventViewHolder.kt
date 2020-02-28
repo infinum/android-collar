@@ -11,8 +11,13 @@ class EventViewHolder(
     private val view: View
 ) : CollarViewHolder<EventEntity>(view) {
 
-    override fun bind(entry: EventEntity) {
+    override fun bind(entry: EventEntity, showTimestamp: Boolean) {
         with(view) {
+            if (showTimestamp) {
+                timeView.visibility = View.VISIBLE
+            } else {
+                timeView.visibility = View.INVISIBLE
+            }
             timeView.text = entry.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
             nameView.text = entry.name
             valueView.text = entry.parameters
@@ -20,5 +25,8 @@ class EventViewHolder(
     }
 
     override fun unbind() {
+        with(view) {
+            timeView.visibility = View.INVISIBLE
+        }
     }
 }

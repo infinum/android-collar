@@ -10,6 +10,8 @@ import co.infinum.collar.ui.data.room.entity.ScreenEntity
 import co.infinum.collar.ui.viewholders.EventViewHolder
 import co.infinum.collar.ui.viewholders.PropertyViewHolder
 import co.infinum.collar.ui.viewholders.ScreenViewHolder
+import java.time.temporal.ChronoUnit
+import kotlin.math.abs
 
 class CollarAdapter(
     private var items: List<CollarEntity> = listOf()
@@ -38,9 +40,9 @@ class CollarAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when {
-            items[position] is ScreenEntity -> (holder as ScreenViewHolder).bind(items[position] as ScreenEntity)
-            items[position] is EventEntity -> (holder as EventViewHolder).bind(items[position] as EventEntity)
-            items[position] is PropertyEntity -> (holder as PropertyViewHolder).bind(items[position] as PropertyEntity)
+            items[position] is ScreenEntity -> (holder as ScreenViewHolder).bind(items[position] as ScreenEntity, shouldShowTimestamp(position))
+            items[position] is EventEntity -> (holder as EventViewHolder).bind(items[position] as EventEntity, shouldShowTimestamp(position))
+            items[position] is PropertyEntity -> (holder as PropertyViewHolder).bind(items[position] as PropertyEntity, shouldShowTimestamp(position))
             else -> Unit
         }
 
@@ -68,4 +70,14 @@ class CollarAdapter(
         items = newItems.plus(items).sortedByDescending { it.timestamp }
         notifyDataSetChanged()
     }
+
+    private fun shouldShowTimestamp(position: Int): Boolean =
+        when (position) {
+            0 -> true
+            else -> {
+                val currentItem = items[position]
+                val previousItem = items[position - 1]
+                abs((currentItem.timestamp ?: 0) - (previousItem.timestamp ?: 0)) >= 1000
+            }
+        }
 }

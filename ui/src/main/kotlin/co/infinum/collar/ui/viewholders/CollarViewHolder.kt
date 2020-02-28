@@ -11,7 +11,7 @@ abstract class CollarViewHolder<in Entry>(
         const val FORMAT_DATETIME = "HH:mm:ss"
     }
 
-    abstract fun bind(entry: Entry)
+    abstract fun bind(entry: Entry, showTimestamp: Boolean)
 
     abstract fun unbind()
 }

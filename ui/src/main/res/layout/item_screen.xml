@@ -19,6 +19,7 @@
         android:maxLength="8"
         android:maxLines="1"
         android:minHeight="56dp"
+        android:visibility="invisible"
         tools:text="20:00:00" />
 
     <FrameLayout

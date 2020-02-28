@@ -11,8 +11,13 @@ class PropertyViewHolder(
     private val view: View
 ) : CollarViewHolder<PropertyEntity>(view) {
 
-    override fun bind(entry: PropertyEntity) {
+    override fun bind(entry: PropertyEntity, showTimestamp: Boolean) {
         with(view) {
+            if (showTimestamp) {
+                timeView.visibility = View.VISIBLE
+            } else {
+                timeView.visibility = View.INVISIBLE
+            }
             timeView.text = entry.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
             nameView.text = entry.name
             valueView.text = entry.value
@@ -20,5 +25,8 @@ class PropertyViewHolder(
     }
 
     override fun unbind() {
+        with(view) {
+            timeView.visibility = View.INVISIBLE
+        }
     }
 }
