@@ -12,11 +12,11 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/buttonProduceEvent3"
+            android:id="@+id/buttonProduceEvent2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Produce event 3" />
+            android:text="Produce event 2" />
 
     </FrameLayout>
 
@@ -26,11 +26,11 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/buttonShowKotlinChild"
+            android:id="@+id/buttonShowKotlinMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Show Kotlin child screen" />
+            android:text="Show Kotlin main screen" />
 
     </FrameLayout>
 

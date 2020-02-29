@@ -31,6 +31,14 @@ android {
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
         versionName versions.collar
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                    "room.incremental":"true",
+                ]
+            }
+        }
     }
 
     compileOptions {

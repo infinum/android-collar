@@ -54,9 +54,9 @@ class NotificationProvider(private val context: Context) {
     }
 
     private fun addToBuffer(entity: CollarEntity) {
-        entity.id?.let {
+        entity.timestamp?.let {
             synchronized(buffer) {
-                idsSet.add(it)
+                idsSet.add(entity.hashCode().toLong())
                 buffer.put(it, entity)
                 if (buffer.size() > BUFFER_SIZE) {
                     buffer.removeAt(0)
