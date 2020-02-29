@@ -2,12 +2,8 @@ package co.infinum.collar.ui.data.room.repository
 
 import android.content.Context
 import co.infinum.collar.ui.data.room.CollarDatabase
-import co.infinum.collar.ui.data.room.dao.EventsDao
-import co.infinum.collar.ui.data.room.dao.PropertiesDao
-import co.infinum.collar.ui.data.room.dao.ScreensDao
-import co.infinum.collar.ui.data.room.entity.EventEntity
-import co.infinum.collar.ui.data.room.entity.PropertyEntity
-import co.infinum.collar.ui.data.room.entity.ScreenEntity
+import co.infinum.collar.ui.data.room.dao.EntitiesDao
+import co.infinum.collar.ui.data.room.entity.CollarEntity
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -15,43 +11,33 @@ internal object EntityRepository {
 
     private val executor: Executor = Executors.newSingleThreadExecutor()
 
-    private lateinit var screens: ScreensDao
-    private lateinit var events: EventsDao
-    private lateinit var properties: PropertiesDao
+    private lateinit var entities: EntitiesDao
 
     fun initialize(context: Context) {
         val database = CollarDatabase.create(context)
-        screens = database.screensDao()
-        events = database.eventsDao()
-        properties = database.propertiesDao()
+        entities = database.entitiesDao()
     }
 
-    fun saveScreen(entity: ScreenEntity) =
+    fun saveScreen(entity: CollarEntity) =
         executor.execute {
-            screens.save(entity)
+            entities.save(entity)
         }
 
-    fun saveEvent(entity: EventEntity) =
+    fun saveEvent(entity: CollarEntity) =
         executor.execute {
-            events.save(entity)
+            entities.save(entity)
         }
 
-    fun saveProperty(entity: PropertyEntity) =
+    fun saveProperty(entity: CollarEntity) =
         executor.execute {
-            properties.save(entity)
+            entities.save(entity)
         }
 
-    fun loadScreens() = screens.load()
-
-    fun loadEvents() = events.load()
-
-    fun loadProperties() = properties.load()
+    fun loadAll() = entities.load()
 
     fun clearAll() {
         executor.execute {
-            screens.delete()
-            events.delete()
-            properties.delete()
+            entities.delete()
         }
     }
 }

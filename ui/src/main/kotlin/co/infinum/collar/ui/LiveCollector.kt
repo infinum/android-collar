@@ -7,9 +7,8 @@ import co.infinum.collar.Collector
 import co.infinum.collar.Event
 import co.infinum.collar.Property
 import co.infinum.collar.Screen
-import co.infinum.collar.ui.data.room.entity.EventEntity
-import co.infinum.collar.ui.data.room.entity.PropertyEntity
-import co.infinum.collar.ui.data.room.entity.ScreenEntity
+import co.infinum.collar.ui.data.room.entity.CollarEntity
+import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.data.room.repository.EntityRepository
 
 open class LiveCollector(
@@ -25,7 +24,8 @@ open class LiveCollector(
 
     @CallSuper
     override fun onScreen(screen: Screen) {
-        val entity = ScreenEntity(
+        val entity = CollarEntity(
+            type = EntityType.SCREEN,
             timestamp = System.currentTimeMillis(),
             name = screen.name
         )
@@ -37,7 +37,8 @@ open class LiveCollector(
 
     @CallSuper
     override fun onEvent(event: Event) {
-        val entity = EventEntity(
+        val entity = CollarEntity(
+            type = EntityType.EVENT,
             timestamp = System.currentTimeMillis(),
             name = event.name,
             parameters = event.params?.let { bundleToMap(it) }
@@ -50,7 +51,8 @@ open class LiveCollector(
 
     @CallSuper
     override fun onProperty(property: Property) {
-        val entity = PropertyEntity(
+        val entity = CollarEntity(
+            type = EntityType.PROPERTY,
             timestamp = System.currentTimeMillis(),
             name = property.name,
             value = property.value

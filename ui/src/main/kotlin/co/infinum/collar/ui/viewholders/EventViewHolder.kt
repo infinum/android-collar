@@ -1,7 +1,7 @@
 package co.infinum.collar.ui.viewholders
 
 import android.view.View
-import co.infinum.collar.ui.data.room.entity.EventEntity
+import co.infinum.collar.ui.data.room.entity.CollarEntity
 import kotlinx.android.synthetic.main.item_event.view.*
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -9,9 +9,9 @@ import java.util.Locale
 
 class EventViewHolder(
     private val view: View
-) : CollarViewHolder<EventEntity>(view) {
+) : CollarViewHolder(view) {
 
-    override fun bind(entry: EventEntity, showTimestamp: Boolean) {
+    override fun bind(entry: CollarEntity, showTimestamp: Boolean) {
         with(view) {
             if (showTimestamp) {
                 timeView.visibility = View.VISIBLE

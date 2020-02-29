@@ -10,9 +10,6 @@ import android.util.LongSparseArray
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import co.infinum.collar.ui.data.room.entity.CollarEntity
-import co.infinum.collar.ui.data.room.entity.EventEntity
-import co.infinum.collar.ui.data.room.entity.PropertyEntity
-import co.infinum.collar.ui.data.room.entity.ScreenEntity
 
 class NotificationProvider(private val context: Context) {
 
@@ -38,17 +35,17 @@ class NotificationProvider(private val context: Context) {
         }
     }
 
-    fun showScreen(entity: ScreenEntity) {
+    fun showScreen(entity: CollarEntity) {
         addToBuffer(entity)
         buildNotification()
     }
 
-    fun showEvent(entity: EventEntity) {
+    fun showEvent(entity: CollarEntity) {
         addToBuffer(entity)
         buildNotification()
     }
 
-    fun showProperty(entity: PropertyEntity) {
+    fun showProperty(entity: CollarEntity) {
         addToBuffer(entity)
         buildNotification()
     }

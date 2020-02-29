@@ -48,21 +48,17 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
 
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this).get(CollarViewModel::class.java)
-        viewModel.screens().observe(this) {
-            entryAdapter.addItems(it)
-        }
-        viewModel.events().observe(this) {
-            entryAdapter.addItems(it)
-        }
-        viewModel.properties().observe(this) {
-            entryAdapter.addItems(it)
+        if (viewModel.entities().hasObservers().not()) {
+            viewModel.entities().observe(this) {
+                entryAdapter.addItems(it)
+            }
         }
     }
 
     override fun onDestroy() {
-        viewModel.screens().removeObservers(this)
-        viewModel.events().removeObservers(this)
-        viewModel.properties().removeObservers(this)
+        if (viewModel.entities().hasObservers()) {
+            viewModel.entities().removeObservers(this)
+        }
         super.onDestroy()
     }
 

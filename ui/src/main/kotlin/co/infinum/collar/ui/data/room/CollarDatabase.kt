@@ -4,18 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import co.infinum.collar.ui.data.room.dao.EventsDao
-import co.infinum.collar.ui.data.room.dao.PropertiesDao
-import co.infinum.collar.ui.data.room.dao.ScreensDao
-import co.infinum.collar.ui.data.room.entity.EventEntity
-import co.infinum.collar.ui.data.room.entity.PropertyEntity
-import co.infinum.collar.ui.data.room.entity.ScreenEntity
+import androidx.room.TypeConverters
+import co.infinum.collar.ui.data.room.dao.EntitiesDao
+import co.infinum.collar.ui.data.room.entity.CollarEntity
+import co.infinum.collar.ui.data.room.typeconverters.CollarTypeConverter
 
-@Database(entities = [
-    ScreenEntity::class,
-    EventEntity::class,
-    PropertyEntity::class
-], version = 1, exportSchema = false)
+@Database(entities = [CollarEntity::class], version = 1, exportSchema = false)
+@TypeConverters(value = [CollarTypeConverter::class])
 internal abstract class CollarDatabase : RoomDatabase() {
 
     companion object {
@@ -26,9 +21,5 @@ internal abstract class CollarDatabase : RoomDatabase() {
                 .build()
     }
 
-    abstract fun screensDao(): ScreensDao
-
-    abstract fun eventsDao(): EventsDao
-
-    abstract fun propertiesDao(): PropertiesDao
+    abstract fun entitiesDao(): EntitiesDao
 }

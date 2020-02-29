@@ -2,16 +2,13 @@ package co.infinum.collar.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.util.TimeUtils
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import co.infinum.collar.ui.data.room.entity.CollarEntity
-import co.infinum.collar.ui.data.room.entity.EventEntity
-import co.infinum.collar.ui.data.room.entity.PropertyEntity
-import co.infinum.collar.ui.data.room.entity.ScreenEntity
+import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.viewholders.EventViewHolder
 import co.infinum.collar.ui.viewholders.PropertyViewHolder
 import co.infinum.collar.ui.viewholders.ScreenViewHolder
-import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
@@ -41,10 +38,10 @@ class CollarAdapter(
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        when {
-            items[position] is ScreenEntity -> (holder as ScreenViewHolder).bind(items[position] as ScreenEntity, shouldShowTimestamp(position))
-            items[position] is EventEntity -> (holder as EventViewHolder).bind(items[position] as EventEntity, shouldShowTimestamp(position))
-            items[position] is PropertyEntity -> (holder as PropertyViewHolder).bind(items[position] as PropertyEntity, shouldShowTimestamp(position))
+        when (items[position].type) {
+            EntityType.SCREEN -> (holder as ScreenViewHolder).bind(items[position], shouldShowTimestamp(position))
+            EntityType.EVENT -> (holder as EventViewHolder).bind(items[position], shouldShowTimestamp(position))
+            EntityType.PROPERTY -> (holder as PropertyViewHolder).bind(items[position], shouldShowTimestamp(position))
             else -> Unit
         }
 
@@ -59,18 +56,21 @@ class CollarAdapter(
     override fun getItemCount(): Int = items.size
 
     override fun getItemViewType(position: Int): Int =
-        when {
-            items[position] is ScreenEntity -> VIEW_TYPE_SCREEN
-            items[position] is EventEntity -> VIEW_TYPE_EVENT
-            items[position] is PropertyEntity -> VIEW_TYPE_PROPERTY
+        when (items[position].type) {
+            EntityType.SCREEN -> VIEW_TYPE_SCREEN
+            EntityType.EVENT -> VIEW_TYPE_EVENT
+            EntityType.PROPERTY -> VIEW_TYPE_PROPERTY
             else -> VIEW_TYPE_UNKNOWN
         }
 
     override fun getItemId(position: Int): Long = items[position].hashCode().toLong()
 
     fun addItems(newItems: List<CollarEntity>) {
-        items = newItems.plus(items).sortedByDescending { it.timestamp }
-        notifyDataSetChanged()
+        val diffCallback = CollarDiffCallback(items.sortedByDescending { it.timestamp }, newItems.sortedByDescending { it.timestamp })
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        items = listOf()
+        items = newItems.sortedByDescending { it.timestamp }
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun clear() {
