@@ -73,6 +73,11 @@ class CollarAdapter(
         notifyDataSetChanged()
     }
 
+    fun clear() {
+        items = listOf()
+        notifyDataSetChanged()
+    }
+
     private fun shouldShowTimestamp(position: Int): Boolean =
         when (position) {
             0 -> true

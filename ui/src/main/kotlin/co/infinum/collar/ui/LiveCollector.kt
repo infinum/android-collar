@@ -14,7 +14,7 @@ import co.infinum.collar.ui.data.room.repository.EntityRepository
 
 open class LiveCollector(
     context: Context,
-    val showNotification: Boolean = true
+    private val showNotification: Boolean = true
 ) : Collector {
 
     private val notificationProvider: NotificationProvider = NotificationProvider(context)

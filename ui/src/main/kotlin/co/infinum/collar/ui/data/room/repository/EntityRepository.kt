@@ -46,4 +46,12 @@ internal object EntityRepository {
     fun loadEvents() = events.load()
 
     fun loadProperties() = properties.load()
+
+    fun clearAll() {
+        executor.execute {
+            screens.delete()
+            events.delete()
+            properties.delete()
+        }
+    }
 }

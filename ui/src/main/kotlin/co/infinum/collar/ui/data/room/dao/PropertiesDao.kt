@@ -14,4 +14,7 @@ internal interface PropertiesDao {
 
     @Query("SELECT * FROM properties")
     fun load(): LiveData<List<PropertyEntity>>
+
+    @Query("DELETE FROM properties")
+    fun delete()
 }

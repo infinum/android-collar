@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="collar_name" translatable="false">Collar</string>
+    <string name="clear">Clear</string>
 </resources>

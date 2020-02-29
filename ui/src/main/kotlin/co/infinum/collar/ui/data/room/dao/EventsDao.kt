@@ -14,4 +14,7 @@ internal interface EventsDao {
 
     @Query("SELECT * FROM events")
     fun load(): LiveData<List<EventEntity>>
+
+    @Query("DELETE FROM events")
+    fun delete()
 }

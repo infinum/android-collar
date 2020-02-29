@@ -27,7 +27,15 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
         }
 
     private fun setupToolbar() {
-        toolbar.subtitle = applicationInfo.loadLabel(packageManager)
+        with(toolbar) {
+            subtitle = applicationInfo.loadLabel(packageManager)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.clear -> clear()
+                }
+                true
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -56,5 +64,10 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
         viewModel.events().removeObservers(this)
         viewModel.properties().removeObservers(this)
         super.onDestroy()
+    }
+
+    private fun clear() {
+        entryAdapter.clear()
+        viewModel.clearAll()
     }
 }

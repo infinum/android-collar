@@ -10,4 +10,6 @@ class CollarViewModel : ViewModel() {
     fun events() = EntityRepository.loadEvents()
 
     fun properties() = EntityRepository.loadProperties()
+
+    fun clearAll() = EntityRepository.clearAll()
 }
