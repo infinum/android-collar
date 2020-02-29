@@ -11,7 +11,5 @@ class KotlinChildActivity : AppCompatActivity(R.layout.activity_child_kotlin) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainerKotlin, KotlinChildFragment())
             .commit()
-
-        trackProperty(UserProperty.LanguageType(value = "Kotlin"))
     }
 }

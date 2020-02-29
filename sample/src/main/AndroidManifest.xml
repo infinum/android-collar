@@ -6,7 +6,7 @@
     <application
         android:name=".SampleApplication"
         android:label="Collar Sample"
-        android:theme="@style/Collar.Theme"
+        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
             <intent-filter>
