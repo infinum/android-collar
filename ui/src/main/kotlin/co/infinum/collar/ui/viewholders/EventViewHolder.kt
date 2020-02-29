@@ -20,7 +20,7 @@ class EventViewHolder(
             }
             timeView.text = entry.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
             nameView.text = entry.name
-            valueView.text = entry.parameters
+            valueView.text = entry.parameters?.let { it } ?: "-"
         }
     }
 
