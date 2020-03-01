@@ -35,7 +35,7 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
-                    "room.incremental":"true",
+                    "room.incremental": "true",
                 ]
             }
         }
@@ -58,14 +58,14 @@ android {
 dependencies {
     implementation packages.kotlin.core
     implementation packages.collar.core
-    implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "androidx.core:core-ktx:1.2.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
-    implementation "com.google.android.material:material:1.1.0"
-    implementation "androidx.room:room-runtime:2.2.3"
-    kapt "androidx.room:room-compiler:2.2.3"
+    implementation packages.androidx.appcompat
+    implementation packages.androidx.core
+    implementation packages.androidx.recyclerview
+    implementation packages.androidx.lifecycle.viewmodel
+    implementation packages.androidx.lifecycle.livedata
+    implementation packages.google.design
+    implementation packages.androidx.room.runtime
+    kapt packages.androidx.room.compiler
 }
 
 apply from: "bintray.gradle"

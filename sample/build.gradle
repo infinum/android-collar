@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath packages.gradle
-        classpath "co.infinum.collar:collar-plugin:1.0.0"
+        classpath packages.collar.plugin
     }
 }
 
@@ -67,10 +67,10 @@ dependencies {
     implementation packages.kotlin.core
     implementation "androidx.fragment:fragment:1.2.2"
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation project(":ui")
+    implementation packages.collar.ui
 }
 
 collar {
-    version "1.0.0"
+    version "1.1.0"
     extended true
 }

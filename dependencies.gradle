@@ -12,7 +12,14 @@ ext.versions = [
     "annotations"    : "17.0.0",
     "incap"          : "0.2",
     "bintray"        : "1.8.4",
+    "core"           : "1.2.0",
+    "appcompat"      : "1.1.0",
     "lifecycle"      : "2.2.0",
+    "viewmodel"      : "2.2.0",
+    "livedata"       : "2.2.0",
+    "recyclerview"   : "1.1.0",
+    "room"           : "2.2.3",
+    "design"         : "1.1.0",
     "maven"          : "2.0"
 ]
 
@@ -34,10 +41,25 @@ ext.packages = [
         "annotations": "co.infinum.collar:collar-annotations:${versions.collar}",
         "core"       : "co.infinum.collar:collar-core:${versions.collar}",
         "processor"  : "co.infinum.collar:collar-processor:${versions.collar}",
-        "plugin"     : "co.infinum.collar:collar-plugin:${versions.collar}"
+        "plugin"     : "co.infinum.collar:collar-plugin:${versions.collar}",
+        "ui"         : "co.infinum.collar:collar-ui:${versions.collar}"
     ],
     "androidx"   : [
-        "lifecycle": "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
+        "core"        : "androidx.core:core-ktx:${versions.core}",
+        "appcompat"   : "androidx.appcompat:appcompat:${versions.appcompat}",
+        "lifecycle"   : [
+            "runtime"  : "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}",
+            "viewmodel": "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.viewmodel}",
+            "livedata" : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.livedata}"
+        ],
+        "recyclerview": "androidx.recyclerview:recyclerview:${versions.recyclerview}",
+        "room"        : [
+            "compiler": "androidx.room:room-compiler:${versions.room}",
+            "runtime" : "androidx.room:room-runtime:${versions.room}"
+        ]
+    ],
+    "google"     : [
+        "design": "com.google.android.material:material:${versions.design}"
     ],
     "maven"      : [
         "plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.maven}"
