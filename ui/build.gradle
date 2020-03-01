@@ -30,7 +30,7 @@ android {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
-        versionName versions.collar
+        versionName collar.version
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -64,8 +64,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     implementation "com.google.android.material:material:1.1.0"
-    implementation "androidx.room:room-runtime:2.2.4"
-    kapt "androidx.room:room-compiler:2.2.4"
+    implementation "androidx.room:room-runtime:2.2.3"
+    kapt "androidx.room:room-compiler:2.2.3"
 }
 
 apply from: "bintray.gradle"

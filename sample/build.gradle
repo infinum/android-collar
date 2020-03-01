@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath packages.gradle
-        classpath packages.collar.plugin
+        classpath "co.infinum.collar:collar-plugin:1.0.0"
     }
 }
 

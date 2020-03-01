@@ -216,7 +216,7 @@ You can set a specific _Collar_ version to be used.
 If you set _extended_ to false then _Collar_ will not provide all necessary external dependencies out of the box, like _AndroidX Core-KTX_, but it is your responsibility to provide them in your own project setup.  
 These are, at the moment:
 ```gradle
-implementation "androidx.core:core-ktx:1.1.0"
+implementation "androidx.core:core-ktx:1.2.0"
 ```   
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
