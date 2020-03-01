@@ -37,15 +37,15 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
                     R.id.clear -> clear()
                     R.id.screens -> {
                         it.isChecked = !it.isChecked
-                        toggleFilter(EntityType.SCREEN)
+                        viewModel.filter(EntityType.SCREEN, it.isChecked)
                     }
                     R.id.events -> {
                         it.isChecked = !it.isChecked
-                        toggleFilter(EntityType.SCREEN)
+                        viewModel.filter(EntityType.EVENT, it.isChecked)
                     }
                     R.id.properties -> {
                         it.isChecked = !it.isChecked
-                        toggleFilter(EntityType.SCREEN)
+                        viewModel.filter(EntityType.PROPERTY, it.isChecked)
                     }
                 }
                 true
@@ -103,19 +103,8 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
 
     private fun clear() {
         entryAdapter.clear()
-        viewModel.clearAll()
+        viewModel.delete()
     }
 
-    private fun search(query: String?) = viewModel.setSearch(query)
-
-    private fun toggleFilter(entityType: EntityType) {
-        if (viewModel.entities().hasObservers()) {
-            viewModel.entities().removeObservers(this)
-        }
-        if (viewModel.entities().hasObservers().not()) {
-            viewModel.entities().observe(this) {
-                entryAdapter.addItems(it)
-            }
-        }
-    }
+    private fun search(query: String?) = viewModel.search(query)
 }

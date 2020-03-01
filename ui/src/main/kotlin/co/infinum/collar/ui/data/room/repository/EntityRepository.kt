@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import co.infinum.collar.ui.data.room.CollarDatabase
 import co.infinum.collar.ui.data.room.dao.EntitiesDao
 import co.infinum.collar.ui.data.room.entity.CollarEntity
+import co.infinum.collar.ui.data.room.entity.EntityType
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -43,4 +44,6 @@ internal object EntityRepository {
     }
 
     fun load(query: String): LiveData<List<CollarEntity>> = entities.load(query)
+
+    fun load(filters: List<EntityType>): LiveData<List<CollarEntity>> = entities.load(filters)
 }

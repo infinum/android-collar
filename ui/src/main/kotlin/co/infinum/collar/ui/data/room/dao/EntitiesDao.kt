@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import co.infinum.collar.ui.data.room.entity.CollarEntity
+import co.infinum.collar.ui.data.room.entity.EntityType
 
 @Dao
 internal interface EntitiesDao {
@@ -17,6 +18,9 @@ internal interface EntitiesDao {
 
     @Query("SELECT * FROM entities WHERE name LIKE '%' || :query || '%' OR value LIKE '%' || :query || '%' OR parameters LIKE '%' || :query || '%' ORDER BY timestamp DESC")
     fun load(query: String): LiveData<List<CollarEntity>>
+
+    @Query("SELECT * FROM entities WHERE type IN (:filters) ORDER BY timestamp DESC")
+    fun load(filters: List<EntityType>): LiveData<List<CollarEntity>>
 
     @Query("DELETE FROM entities")
     fun delete()
