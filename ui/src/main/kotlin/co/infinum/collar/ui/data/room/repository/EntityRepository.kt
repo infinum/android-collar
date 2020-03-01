@@ -1,6 +1,7 @@
 package co.infinum.collar.ui.data.room.repository
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import co.infinum.collar.ui.data.room.CollarDatabase
 import co.infinum.collar.ui.data.room.dao.EntitiesDao
 import co.infinum.collar.ui.data.room.entity.CollarEntity
@@ -40,4 +41,6 @@ internal object EntityRepository {
             entities.delete()
         }
     }
+
+    fun load(query: String): LiveData<List<CollarEntity>> = entities.load(query)
 }

@@ -66,10 +66,10 @@ class CollarAdapter(
     override fun getItemId(position: Int): Long = items[position].hashCode().toLong()
 
     fun addItems(newItems: List<CollarEntity>) {
-        val diffCallback = CollarDiffCallback(items.sortedByDescending { it.timestamp }, newItems.sortedByDescending { it.timestamp })
+        val diffCallback = CollarDiffCallback(items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         items = listOf()
-        items = newItems.sortedByDescending { it.timestamp }
+        items = newItems
         diffResult.dispatchUpdatesTo(this)
     }
 

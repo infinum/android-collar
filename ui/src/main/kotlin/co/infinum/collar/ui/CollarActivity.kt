@@ -1,12 +1,15 @@
 package co.infinum.collar.ui
 
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.decorations.LastDotDecoration
 import kotlinx.android.synthetic.main.activity_collar.*
 
@@ -32,8 +35,44 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.clear -> clear()
+                    R.id.screens -> {
+                        it.isChecked = !it.isChecked
+                        toggleFilter(EntityType.SCREEN)
+                    }
+                    R.id.events -> {
+                        it.isChecked = !it.isChecked
+                        toggleFilter(EntityType.SCREEN)
+                    }
+                    R.id.properties -> {
+                        it.isChecked = !it.isChecked
+                        toggleFilter(EntityType.SCREEN)
+                    }
                 }
                 true
+            }
+            val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+            (menu.findItem(R.id.search).actionView as SearchView).apply {
+                setSearchableInfo(searchManager.getSearchableInfo(componentName))
+                setIconifiedByDefault(true)
+                isSubmitButtonEnabled = false
+                isQueryRefinementEnabled = true
+                maxWidth = Integer.MAX_VALUE
+                setOnQueryTextFocusChangeListener { _, hasFocus ->
+                    menu.findItem(R.id.filter).isVisible = hasFocus.not()
+                    menu.findItem(R.id.clear).isVisible = hasFocus.not()
+                }
+                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        search(query)
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        search(newText)
+                        return true
+                    }
+                })
             }
         }
     }
@@ -65,5 +104,18 @@ class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
     private fun clear() {
         entryAdapter.clear()
         viewModel.clearAll()
+    }
+
+    private fun search(query: String?) = viewModel.setSearch(query)
+
+    private fun toggleFilter(entityType: EntityType) {
+        if (viewModel.entities().hasObservers()) {
+            viewModel.entities().removeObservers(this)
+        }
+        if (viewModel.entities().hasObservers().not()) {
+            viewModel.entities().observe(this) {
+                entryAdapter.addItems(it)
+            }
+        }
     }
 }

@@ -3,6 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_filter"
+        android:title="@string/filter"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="all">
+                <item
+                    android:id="@+id/screens"
+                    android:checked="true"
+                    android:icon="@drawable/ic_screen_black"
+                    android:title="@string/screens" />
+                <item
+                    android:id="@+id/events"
+                    android:checked="true"
+                    android:icon="@drawable/ic_event_black"
+                    android:title="@string/events" />
+                <item
+                    android:id="@+id/properties"
+                    android:checked="true"
+                    android:icon="@drawable/ic_property_black"
+                    android:title="@string/properties" />
+            </group>
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/clear"
         android:icon="@drawable/ic_clear"
         android:title="@string/clear"

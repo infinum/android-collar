@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="collar_name" translatable="false">Collar</string>
+    <string name="search">Search</string>
     <string name="clear">Clear</string>
+    <string name="filter">Filter</string>
+    <string name="screens">Screens</string>
+    <string name="events">Events</string>
+    <string name="properties">Properties</string>
 </resources>
