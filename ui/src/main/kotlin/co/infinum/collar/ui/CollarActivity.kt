@@ -11,9 +11,9 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.decorations.LastDotDecoration
-import kotlinx.android.synthetic.main.activity_collar.*
+import kotlinx.android.synthetic.main.collar_activity_collar.*
 
-class CollarActivity : AppCompatActivity(R.layout.activity_collar) {
+class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
 
     companion object {
         fun start(context: Context) = context.startActivity(Intent(context, CollarActivity::class.java))

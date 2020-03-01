@@ -30,9 +30,9 @@ class CollarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         LayoutInflater.from(parent.context).run {
             when (viewType) {
-                VIEW_TYPE_SCREEN -> ScreenViewHolder(this.inflate(R.layout.item_screen, parent, false))
-                VIEW_TYPE_EVENT -> EventViewHolder(this.inflate(R.layout.item_event, parent, false))
-                VIEW_TYPE_PROPERTY -> PropertyViewHolder(this.inflate(R.layout.item_property, parent, false))
+                VIEW_TYPE_SCREEN -> ScreenViewHolder(this.inflate(R.layout.collar_item_screen, parent, false))
+                VIEW_TYPE_EVENT -> EventViewHolder(this.inflate(R.layout.collar_item_event, parent, false))
+                VIEW_TYPE_PROPERTY -> PropertyViewHolder(this.inflate(R.layout.collar_item_property, parent, false))
                 else -> throw NotImplementedError()
             }
         }

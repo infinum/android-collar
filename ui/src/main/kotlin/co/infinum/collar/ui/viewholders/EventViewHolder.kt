@@ -2,7 +2,7 @@ package co.infinum.collar.ui.viewholders
 
 import android.view.View
 import co.infinum.collar.ui.data.room.entity.CollarEntity
-import kotlinx.android.synthetic.main.item_event.view.*
+import kotlinx.android.synthetic.main.collar_item_event.view.*
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

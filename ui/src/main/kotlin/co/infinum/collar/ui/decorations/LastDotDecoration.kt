@@ -11,9 +11,9 @@ import co.infinum.collar.ui.R
 
 class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
-    private val divider = ContextCompat.getDrawable(context, R.drawable.decoration_dot)
+    private val divider = ContextCompat.getDrawable(context, R.drawable.collar_decoration_dot)
 
-    private val startMargin = context.resources.getDimensionPixelSize(R.dimen.divider_start_margin)
+    private val startMargin = context.resources.getDimensionPixelSize(R.dimen.collar_divider_start_margin)
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)

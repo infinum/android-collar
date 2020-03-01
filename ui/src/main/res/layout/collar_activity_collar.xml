@@ -15,8 +15,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/collar"
-            app:navigationIcon="@drawable/ic_logo"
+            app:menu="@menu/collar_menu"
+            app:navigationIcon="@drawable/collar_ic_logo"
             app:title="@string/collar_name" />
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -73,7 +73,7 @@ class NotificationProvider(private val context: Context) {
                 )
             )
             .setLocalOnly(true)
-            .setSmallIcon(R.drawable.ic_notification)
+            .setSmallIcon(R.drawable.collar_ic_notification)
             .setColor(ContextCompat.getColor(context, R.color.collar_color_primary))
             .setContentTitle(context.getString(R.string.collar_name))
             .setAutoCancel(true)

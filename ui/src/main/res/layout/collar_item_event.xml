@@ -33,16 +33,16 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/shape_background_icon" />
+            android:background="@drawable/collar_shape_background_icon" />
 
         <ImageView
             android:id="@+id/iconView"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/shape_background_property"
+            android:background="@drawable/collar_shape_background_event"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_property" />
+            android:src="@drawable/collar_ic_event" />
 
     </FrameLayout>
 
@@ -61,14 +61,14 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="test_property_name" />
+            tools:text="test_event_name" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/valueView"
             style="@style/TextAppearance.MaterialComponents.Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="test_property_value" />
+            tools:text="test_event_key1 = test_event_value1\ntest_event_key2 = test_event_value2" />
 
     </LinearLayout>
 
