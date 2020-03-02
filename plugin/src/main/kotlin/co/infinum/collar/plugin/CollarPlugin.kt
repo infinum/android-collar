@@ -1,5 +1,6 @@
 package co.infinum.collar.plugin
 
+import co.infinum.collar.plugin.tasks.GenerateTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.net.URI
@@ -12,6 +13,14 @@ class CollarPlugin : Plugin<Project> {
         addRepositories(project)
         addDependencies(project, extension)
         addProcessorDependecy(project, extension)
+
+        project.tasks.create<GenerateTask>(
+            "collarGenerate",
+            GenerateTask::class.java
+        ).run {
+            description = "Generate Collar files"
+            group = "CollarPlugin"
+        }
     }
 
     private fun addRepositories(project: Project) {
