@@ -11,6 +11,8 @@ The project is organized in the following modules:
 - `core` - plugin implementation core, depends on the `annotations` module
 - `processor` - annotation processor generating and transforming classes for plugin, depends on the `annotations` module
 - `plugin` - the Gradle plugin that adds all necessary dependencies to the project
+- `ui` - contains a single screen UI that provides visual tracking of sent events
+- `ui-no-op` - contains a stub for easy release implementation of UI package
 - `sample` - a sample app for testing the Gradle plugin
 
 ## Usage
