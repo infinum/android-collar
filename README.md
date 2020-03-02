@@ -230,6 +230,26 @@ In your app `build.gradle` add:
 debugImplementation "co.infinum.collar:collar-ui:1.1.0"
 releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.0"
 ```
+In order to start tracking with UI you must use _LiveCollector_ as in this example:
+```kotlin
+ Collar.attach(object : LiveCollector(context, true) {
+
+    override fun onScreen(screen: Screen) =
+        super.onScreen(screen).run {
+            analyticsProvider.sendScreenName(activity = screen.activity, screenName = screen.name)
+        }
+
+    override fun onEvent(event: Event) =
+        super.onEvent(event).run {
+            analyticsProvider.sendEvent(eventName = event.name, eventParameters = event.params ?: Bundle.EMPTY)
+        }
+
+    override fun onProperty(property: Property) =
+        super.onProperty(property).run {
+            analyticsProvider.sendProperty(property.name, property.value)
+        }
+})
+```
 A notification will show once analytics are gathered and clicking on it will open a dedicated screen.
 
 ![Notification](notification.jpg)![UI](ui.jpg)
