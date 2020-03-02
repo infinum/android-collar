@@ -212,7 +212,7 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.0.0"
+    version "1.1.0"
     extended true
 }
 ```        
