@@ -227,8 +227,7 @@ debugImplementation "co.infinum.collar:collar-ui:1.1.0"
 releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.0"
 ```
 A notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
-![Notification](notification.png =250x)
-![UI](ui.jpg =250x)
+![Notification](notification.jpg)![UI](ui.jpg)
 
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
