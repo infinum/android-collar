@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/infinum/android/collar-plugin/images/download.svg) ](https://bintray.com/infinum/android/collar-plugin/_latestVersion)
+
 # Collar Android plugin
 
 Gradle plugin which collects all analytics screen names, events and user properties for Android projects.  
