@@ -43,7 +43,7 @@ ext.packages = [
         "processor"  : "co.infinum.collar:collar-processor:${versions.collar}",
         "plugin"     : "co.infinum.collar:collar-plugin:${versions.collar}",
         "ui"         : "co.infinum.collar:collar-ui:${versions.collar}",
-        "ui-no-op"   : "co.infinum.collar:collar-ui-no-op:${versions.collar}"
+        "ui_no_op"   : "co.infinum.collar:collar-ui-no-op:${versions.collar}"
     ],
     "androidx"   : [
         "core"        : "androidx.core:core-ktx:${versions.core}",
