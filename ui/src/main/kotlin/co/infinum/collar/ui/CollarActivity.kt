@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ShareCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
 
     companion object {
         fun start(context: Context) = context.startActivity(Intent(context, CollarActivity::class.java))
+        private const val FORMAT_DATETIME = "dd.MM.yyyy. HH:mm:ss"
     }
 
     private lateinit var viewModel: CollarViewModel
@@ -133,11 +135,11 @@ class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
             .setTitle(entity.type?.name?.toLowerCase()?.capitalize())
             .setView(
                 LayoutInflater.from(this).inflate(R.layout.collar_view_detail, null).apply {
-                    this.findViewById<MaterialTextView>(R.id.timeView).text = entity.timestamp?.let { SimpleDateFormat("dd.MM.yyyy. HH:mm:ss", Locale.getDefault()).format(Date(it)) }
+                    this.findViewById<MaterialTextView>(R.id.timeView).text = entity.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
                     this.findViewById<MaterialTextView>(R.id.nameView).text = entity.name
                     this.findViewById<MaterialTextView>(R.id.valueCaptionView).text = when (entity.type) {
-                        EntityType.EVENT -> entity.parameters?.let { getString(R.string.parameters) }
-                        EntityType.PROPERTY -> getString(R.string.value)
+                        EntityType.EVENT -> entity.parameters?.let { getString(R.string.collar_parameters) }
+                        EntityType.PROPERTY -> getString(R.string.collar_value)
                         else -> null
                     }.also {
                         if (it.isNullOrBlank()) {
@@ -155,7 +157,24 @@ class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
                     }
                 }
             )
+            .setNeutralButton(R.string.collar_share) { _, _ -> share(entity) }
             .create()
             .show()
+    }
+
+    private fun share(entity: CollarEntity) {
+        ShareCompat.IntentBuilder.from(this)
+            .setChooserTitle(R.string.collar_name)
+            .setType("text/plain")
+            .setText(
+                listOfNotNull(
+                    entity.timestamp?.let { "time: ${SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it))}" },
+                    entity.name?.let { "name: $it" },
+                    entity.type?.let { "type: ${it.name.toLowerCase(Locale.getDefault())}" },
+                    entity.value?.let { "value: $it" },
+                    entity.parameters?.let { "parameters: $it" }
+                ).joinToString("\n")
+            )
+            .startChooser()
     }
 }
