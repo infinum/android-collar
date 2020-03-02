@@ -3,11 +3,13 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        mavenLocal()
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
-        classpath packages.collar.plugin
+//        classpath packages.collar.plugin
+        classpath "co.infinum.collar:collar-plugin:1.0.0"
     }
 }
 
@@ -72,4 +74,6 @@ dependencies {
 collar {
     version "1.0.0"
     extended true
+    filePath = "${project.projectDir}/src/main/assets/example.json"
+    outputPath = "${project.projectDir}/src/main/java/co/infinum/collar/sample/analytics"
 }

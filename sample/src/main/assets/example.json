@@ -1,0 +1,57 @@
+{
+  "events": [
+    {
+      "name": "login user",
+      "description": "User clicked on login button",
+      "properties": [
+        {
+          "name": "loginType",
+          "description": "Type of login clicked",
+          "type": "text",
+          "values": ["facebook", "google", "in app"]
+        }
+      ]
+    }, {
+      "name": "buy items",
+      "description": "user clicked on buy action",
+      "properties": [
+        {
+          "name": "items",
+          "description": "list of bought items",
+          "type": "list",
+          "listType": "text"
+        }
+      ]
+    }
+  ],
+  "userProperties": [
+    {
+      "name": "price",
+      "type": "number",
+      "androidType": "float",
+      "iosType": "double",
+      "description": "user's price"
+    }, {
+      "name": "age",
+      "type": "number",
+      "androidType": "int",
+      "iosType": "int",
+      "description": "..."
+    }, {
+      "name": "gender",
+      "type": "text",
+      "values": ["male", "female", "unknown"],
+      "description": "..."
+    }, {
+      "name": "educated",
+      "type": "bool",
+      "description": "Whether the user finished highschool"
+    }
+  ],
+  "screens": [
+    {
+      "name": "User settings",
+      "description": "Settings screen opened if user is logged in"
+    }
+  ]
+}
