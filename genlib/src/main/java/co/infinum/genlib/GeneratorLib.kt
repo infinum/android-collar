@@ -1,5 +1,8 @@
 package co.infinum.genlib
 
+import co.infinum.collar.annotations.AnalyticsEvents
+import co.infinum.collar.annotations.EventName
+import co.infinum.collar.annotations.EventParameterName
 import co.infinum.collar.annotations.PropertyName
 import co.infinum.collar.annotations.UserProperties
 import co.infinum.genlib.dependencies.MoshiModule
@@ -13,6 +16,7 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.moshi.JsonAdapter
@@ -41,50 +45,12 @@ public class GeneratorLib(
                 }
 
                 if (it.events.isNotEmpty()) {
-                    //todo
+                    generateEvents(it, output)
                 }
             }
         })
         executor.await()
         return collarModel.toString() ?: "didn't parse"
-    }
-
-    private fun generateUserProperties(it: CollarModel, output: String) {
-        val userPropertyClass = TypeSpec.classBuilder("UserProperty")
-        userPropertyClass.addAnnotation(UserProperties::class)
-        userPropertyClass.addModifiers(KModifier.SEALED)
-
-        it.userProperties.forEach { userProperty ->
-            val name = userProperty.name.toCamelCase()
-            val propertyClass = TypeSpec.classBuilder(name)
-            propertyClass.addModifiers(KModifier.DATA)
-            propertyClass.primaryConstructor(
-                FunSpec.constructorBuilder()
-                    .addParameter("value", String::class)
-                    .build()
-            )
-            propertyClass.addProperty(PropertySpec.builder("value", String::class)
-                            .initializer("value")
-                            .build())
-
-            propertyClass.addKdoc(userProperty.description)
-            propertyClass.superclass(ClassName("", "UserProperty"))
-            val propertyNameAnnotation = AnnotationSpec.builder(PropertyName::class)
-                .addMember("value = %S", userProperty.name).build()
-
-            propertyClass.addAnnotation(propertyNameAnnotation)
-            userPropertyClass
-                .addType(
-                    propertyClass
-                        .build()
-                )
-        }
-
-        val file = FileSpec.builder(getPackageFromPath(output), "UserProperty")
-            .addType(userPropertyClass.build())
-            .build()
-
-        file.writeTo(Paths.get(getOutputFromPath(output)))
     }
 
     private fun generateScreens(it: CollarModel, output: String) {
@@ -103,6 +69,93 @@ public class GeneratorLib(
 
         val file = FileSpec.builder(getPackageFromPath(output), "AnalyticsScreens")
             .addType(screenObject.build())
+            .build()
+
+        file.writeTo(Paths.get(getOutputFromPath(output)))
+    }
+
+    private fun generateUserProperties(it: CollarModel, output: String) {
+        val userPropertiesClass = TypeSpec.classBuilder("UserProperty")
+        userPropertiesClass.addAnnotation(UserProperties::class)
+        userPropertiesClass.addModifiers(KModifier.SEALED)
+
+        it.userProperties.forEach { userProperty ->
+            val name = userProperty.name.toCamelCase()
+            val userPropertyClass = TypeSpec.classBuilder(name)
+            userPropertyClass.addModifiers(KModifier.DATA)
+            userPropertyClass.primaryConstructor(
+                FunSpec.constructorBuilder()
+                    .addParameter("value", String::class)
+                    .build()
+            )
+            userPropertyClass.addProperty(
+                PropertySpec.builder("value", String::class)
+                    .initializer("value")
+                    .build()
+            )
+
+            userPropertyClass.addKdoc(userProperty.description)
+            userPropertyClass.superclass(ClassName("", "UserProperty"))
+            val propertyNameAnnotation = AnnotationSpec.builder(PropertyName::class)
+                .addMember("value = %S", userProperty.name).build()
+
+            userPropertyClass.addAnnotation(propertyNameAnnotation)
+            userPropertiesClass
+                .addType(
+                    userPropertyClass
+                        .build()
+                )
+        }
+
+        val file = FileSpec.builder(getPackageFromPath(output), "UserProperty")
+            .addType(userPropertiesClass.build())
+            .build()
+
+        file.writeTo(Paths.get(getOutputFromPath(output)))
+    }
+
+    private fun generateEvents(it: CollarModel, output: String) {
+        val eventsClass = TypeSpec.classBuilder("AnalyticsEvent")
+        eventsClass.addAnnotation(AnalyticsEvents::class)
+        eventsClass.addModifiers(KModifier.SEALED)
+
+        it.events.forEach { event ->
+            val name = event.name.toCamelCase()
+            val eventClass = TypeSpec.classBuilder(name)
+            eventClass.addModifiers(KModifier.DATA)
+            val constructorBuilder = FunSpec.constructorBuilder()
+            event.properties.forEach {
+                val constructorParamBuild = ParameterSpec.builder(it.name.toCamelCase().decapitalize(), String::class)
+                constructorParamBuild.addKdoc(it.description)
+                val constructorParamAnnot = AnnotationSpec.builder(EventParameterName::class)
+                    .addMember("value = %S", it.name).build()
+                constructorParamBuild.addAnnotation(constructorParamAnnot)
+                val constParam = constructorParamBuild.build()
+                constructorBuilder.addParameter(constParam)
+
+                eventClass.addProperty(
+                    PropertySpec.builder(it.name.toCamelCase().decapitalize(), String::class)
+                        .initializer(it.name.toCamelCase().decapitalize())
+                        .build()
+                )
+            }
+            eventClass.primaryConstructor(constructorBuilder.build())
+
+            eventClass.addKdoc(event.description)
+            eventClass.superclass(ClassName("", "AnalyticsEvent"))
+            val eventNameAnnotation = AnnotationSpec.builder(EventName::class)
+                .addMember("value = %S", event.name).build()
+
+            eventClass.addAnnotation(eventNameAnnotation)
+            eventsClass
+                .addType(
+                    eventClass
+                        .build()
+                )
+        }
+
+        val file = FileSpec.builder(getPackageFromPath(output), "AnalyticsEvent")
+            .addType(eventsClass.build())
             .build()
 
         file.writeTo(Paths.get(getOutputFromPath(output)))
