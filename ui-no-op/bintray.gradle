@@ -25,12 +25,12 @@ task javadocsJar(type: Jar, dependsOn: javadocs) {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'collar-ui'
+            artifactId = 'collar-ui-no-op'
             artifact sourcesJar
             artifact javadocsJar
             pom {
-                name = 'Collar UI'
-                description = 'UI which provides single point for analytics collection preview.'
+                name = 'Collar UI no op'
+                description = 'No op UI which provides single point for analytics collection preview.'
                 url = 'https://github.com/infinum/android-collar'
                 licenses {
                     license {
@@ -59,9 +59,9 @@ bintray {
 
     pkg {
         repo = 'android'
-        name = 'collar-ui'
+        name = 'collar-ui-no-op'
         userOrg = 'infinum'
-        desc = 'Collar UI packages'
+        desc = 'Collar no op UI packages'
         websiteUrl = 'https://github.com/infinum/android-collar'
         issueTrackerUrl = 'https://github.com/infinum/android-collar/issues'
         vcsUrl = 'https://github.com/infinum/android-collar.git'
@@ -89,10 +89,10 @@ install {
             project {
                 packaging 'jar'
                 groupId 'co.infinum.collar'
-                artifactId 'collar-ui'
+                artifactId 'collar-ui-no-op'
 
-                name 'collar-ui'
-                description 'Collar UI'
+                name 'collar-ui-no-op'
+                description 'Collar UI no op'
                 url 'https://github.com/infinum/android-collar'
 
                 licenses {
