@@ -7,6 +7,7 @@ import co.infinum.collar.Event
 import co.infinum.collar.Property
 import co.infinum.collar.Screen
 
+@Suppress("UNUSED_PARAMETER")
 open class LiveCollector(
     context: Context,
     private val showNotification: Boolean = false
