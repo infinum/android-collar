@@ -6,12 +6,12 @@ import co.infinum.collar.annotations.UserProperties
 @UserProperties
 sealed class UserProperty {
 
-    @PropertyName(value = "user_type_corporate")
-    data class UserType1(
+    data class LanguageType(
         val value: String
     ) : UserProperty()
 
-    data class UserTypeRetail(
-        val someCoolValue: String
+    @PropertyName(value = "user_id")
+    data class UserUUID(
+        val uuid: String
     ) : UserProperty()
 }

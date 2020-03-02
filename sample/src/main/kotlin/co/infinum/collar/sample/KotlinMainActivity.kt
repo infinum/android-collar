@@ -1,26 +1,30 @@
 package co.infinum.collar.sample
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.trackScreen
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_main_kotlin.*
 
-@ScreenName(value = "KotlinMainActivity")
+@ScreenName(value = KotlinScreenNames.MAIN_SCREEN)
 class KotlinMainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
-        trackEvent(AnalyticsEvent.OnCreate("KotlinMain"))
+        setContentView(R.layout.activity_main_kotlin)
 
-        button.setOnClickListener {
-            doFoo()
-            trackEvent(AnalyticsEvent.DoFooKotlin())
+        buttonProduceEvent3.setOnClickListener {
+            trackEvent(AnalyticsEvent.EventThree())
         }
 
-        trackProperty(UserProperty.UserType1(value = "retail"))
+        buttonShowKotlinChild.setOnClickListener {
+            showKotlinChild()
+        }
+
+        trackProperty(UserProperty.LanguageType(value = "Kotlin"))
     }
 
     override fun onResume() {
@@ -29,11 +33,5 @@ class KotlinMainActivity : Activity() {
         trackScreen()
     }
 
-    private fun doFoo() {
-        FooKotlin().trackFoo()
-    }
-
-    private fun onItemSelected(position: Int) {
-        trackEvent(AnalyticsEvent.OnItemSelected(position, false))
-    }
+    private fun showKotlinChild() = startActivity(Intent(this, KotlinChildActivity::class.java))
 }

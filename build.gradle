@@ -1,7 +1,7 @@
 buildscript {
 
     ext.buildConfig = [
-        "minSdk"    : 14,
+        "minSdk"    : 16,
         "compileSdk": 29,
         "targetSdk" : 29,
 
@@ -26,4 +26,8 @@ buildscript {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += [ "--release", "8" ]
 }
