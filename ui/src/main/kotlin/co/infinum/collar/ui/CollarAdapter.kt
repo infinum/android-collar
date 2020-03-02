@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 class CollarAdapter(
-    private var items: List<CollarEntity> = listOf()
+    private var items: List<CollarEntity> = listOf(),
+    private val onClick: (CollarEntity) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -39,9 +40,9 @@ class CollarAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (items[position].type) {
-            EntityType.SCREEN -> (holder as ScreenViewHolder).bind(items[position], shouldShowTimestamp(position))
-            EntityType.EVENT -> (holder as EventViewHolder).bind(items[position], shouldShowTimestamp(position))
-            EntityType.PROPERTY -> (holder as PropertyViewHolder).bind(items[position], shouldShowTimestamp(position))
+            EntityType.SCREEN -> (holder as ScreenViewHolder).bind(items[position], shouldShowTimestamp(position), onClick)
+            EntityType.EVENT -> (holder as EventViewHolder).bind(items[position], shouldShowTimestamp(position), onClick)
+            EntityType.PROPERTY -> (holder as PropertyViewHolder).bind(items[position], shouldShowTimestamp(position), onClick)
             else -> Unit
         }
 

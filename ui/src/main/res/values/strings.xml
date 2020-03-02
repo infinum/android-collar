@@ -7,4 +7,8 @@
     <string name="collar_screens">Screens</string>
     <string name="collar_events">Events</string>
     <string name="collar_properties">Properties</string>
+    <string name="sent_at">Sent at</string>
+    <string name="name">Name</string>
+    <string name="value">Value</string>
+    <string name="parameters">Parameters</string>
 </resources>

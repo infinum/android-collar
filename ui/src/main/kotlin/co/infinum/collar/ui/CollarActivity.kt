@@ -1,17 +1,26 @@
 package co.infinum.collar.ui
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import co.infinum.collar.ui.data.room.entity.CollarEntity
 import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.decorations.LastDotDecoration
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.android.synthetic.main.collar_activity_collar.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
 
@@ -20,7 +29,9 @@ class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
     }
 
     private lateinit var viewModel: CollarViewModel
-    private val entryAdapter: CollarAdapter = CollarAdapter()
+    private val entryAdapter: CollarAdapter = CollarAdapter(
+        onClick = this@CollarActivity::showDetail
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) =
         super.onCreate(savedInstanceState).run {
@@ -107,4 +118,44 @@ class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
     }
 
     private fun search(query: String?) = viewModel.search(query)
+
+    @SuppressLint("DefaultLocale", "InflateParams")
+    private fun showDetail(entity: CollarEntity) {
+        MaterialAlertDialogBuilder(this)
+            .setIcon(
+                when (entity.type) {
+                    EntityType.SCREEN -> R.drawable.collar_ic_screen_black
+                    EntityType.EVENT -> R.drawable.collar_ic_event_black
+                    EntityType.PROPERTY -> R.drawable.collar_ic_property_black
+                    else -> 0
+                }
+            )
+            .setTitle(entity.type?.name?.toLowerCase()?.capitalize())
+            .setView(
+                LayoutInflater.from(this).inflate(R.layout.collar_view_detail, null).apply {
+                    this.findViewById<MaterialTextView>(R.id.timeView).text = entity.timestamp?.let { SimpleDateFormat("dd.MM.yyyy. HH:mm:ss", Locale.getDefault()).format(Date(it)) }
+                    this.findViewById<MaterialTextView>(R.id.nameView).text = entity.name
+                    this.findViewById<MaterialTextView>(R.id.valueCaptionView).text = when (entity.type) {
+                        EntityType.EVENT -> entity.parameters?.let { getString(R.string.parameters) }
+                        EntityType.PROPERTY -> getString(R.string.value)
+                        else -> null
+                    }.also {
+                        if (it.isNullOrBlank()) {
+                            this.findViewById<MaterialTextView>(R.id.valueView).visibility = View.GONE
+                            this.findViewById<MaterialTextView>(R.id.valueCaptionView).visibility = View.GONE
+                        } else {
+                            this.findViewById<MaterialTextView>(R.id.valueView).visibility = View.VISIBLE
+                            this.findViewById<MaterialTextView>(R.id.valueCaptionView).visibility = View.VISIBLE
+                            this.findViewById<MaterialTextView>(R.id.valueView).text = when (entity.type) {
+                                EntityType.EVENT -> entity.parameters
+                                EntityType.PROPERTY -> entity.value
+                                else -> null
+                            }
+                        }
+                    }
+                }
+            )
+            .create()
+            .show()
+    }
 }

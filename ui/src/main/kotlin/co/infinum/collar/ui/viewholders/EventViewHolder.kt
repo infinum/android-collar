@@ -11,21 +11,23 @@ class EventViewHolder(
     private val view: View
 ) : CollarViewHolder(view) {
 
-    override fun bind(entry: CollarEntity, showTimestamp: Boolean) {
+    override fun bind(entity: CollarEntity, showTimestamp: Boolean, onClick: (CollarEntity) -> Unit) {
         with(view) {
             if (showTimestamp) {
                 timeView.visibility = View.VISIBLE
             } else {
                 timeView.visibility = View.INVISIBLE
             }
-            timeView.text = entry.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
-            nameView.text = entry.name
-            valueView.text = entry.parameters?.let { it } ?: "-"
+            timeView.text = entity.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
+            nameView.text = entity.name
+            valueView.text = entity.parameters?.let { it }
+            rootLayout.setOnClickListener { onClick(entity) }
         }
     }
 
     override fun unbind() {
         with(view) {
+            rootLayout.setOnClickListener(null)
             timeView.visibility = View.INVISIBLE
         }
     }
