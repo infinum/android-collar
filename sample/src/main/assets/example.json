@@ -52,6 +52,14 @@
     {
       "name": "User settings",
       "description": "Settings screen opened if user is logged in"
+    },
+    {
+      "name": "Home screen",
+      "description": "Settings screen opened if user is logged in"
+    },
+    {
+      "name": "Login Screen",
+      "description": "Settings screen opened if user is logged in"
     }
   ]
 }

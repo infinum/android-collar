@@ -31,7 +31,7 @@ open class GenerateTask : BaseTask() {
         taskUtils.logger.logWarning("Files will be generated on path:")
         taskUtils.logger.logWarning(extension.outputPath)
         taskUtils.logger.logWarning(
-            stubGenLib.generateStubs(
+            stubGenLib.generate(
                 extension.filePath,
                 extension.outputPath
             )
