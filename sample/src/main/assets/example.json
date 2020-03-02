@@ -32,18 +32,18 @@
       "iosType": "double",
       "description": "user's price"
     }, {
-      "name": "age",
+      "name": "age born",
       "type": "number",
       "androidType": "int",
       "iosType": "int",
       "description": "..."
     }, {
-      "name": "gender",
+      "name": "genderGo",
       "type": "text",
       "values": ["male", "female", "unknown"],
       "description": "..."
     }, {
-      "name": "educated",
+      "name": "Educated",
       "type": "bool",
       "description": "Whether the user finished highschool"
     }

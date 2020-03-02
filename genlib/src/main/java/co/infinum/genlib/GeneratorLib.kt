@@ -1,13 +1,17 @@
 package co.infinum.genlib
 
+import co.infinum.collar.annotations.PropertyName
+import co.infinum.collar.annotations.UserProperties
 import co.infinum.genlib.dependencies.MoshiModule
 import co.infinum.genlib.logging.Log4jLogger
 import co.infinum.genlib.logging.Logger
 import co.infinum.genlib.models.CollarModel
-import co.infinum.genlib.models.Screen
 import co.infinum.genlib.utils.FileUtils
 import co.infinum.genlib.utils.SynchronousExecutor
+import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
@@ -25,28 +29,19 @@ public class GeneratorLib(
         var string: String
         var collarModel: CollarModel? = null
         executor.start(Runnable {
-            //todo make this better
             string = FileUtils.readFromFile(filePath)
             collarModel = adapter.fromJson(string)
             collarModel?.let {
                 if (it.screens.isNotEmpty()) {
-                    val screenObject = TypeSpec.objectBuilder("AnalyticsScreens")
+                    generateScreens(it, output)
+                }
 
-                    it.screens.forEach { screen ->
-                        val name = prepareScreen(screen)
-                        screenObject
-                            .addProperty(
-                                PropertySpec.builder(name, String::class, KModifier.CONST)
-                                    .initializer("%S", screen.name)
-                                    .build()
-                            )
-                    }
+                if (it.userProperties.isNotEmpty()) {
+                    generateUserProperties(it, output)
+                }
 
-                    val file = FileSpec.builder(getPackageFromPath(output), "AnalyticsScreens")
-                        .addType(screenObject.build())
-                        .build()
-
-                    file.writeTo(Paths.get(getOutputFromPath(output)))
+                if (it.events.isNotEmpty()) {
+                    //todo
                 }
             }
         })
@@ -54,7 +49,66 @@ public class GeneratorLib(
         return collarModel.toString() ?: "didn't parse"
     }
 
-    private fun prepareScreen(screen: Screen) = screen.name.toUpperCase().replace(" ", "_")
+    private fun generateUserProperties(it: CollarModel, output: String) {
+        val userPropertyClass = TypeSpec.classBuilder("UserProperty")
+        userPropertyClass.addAnnotation(UserProperties::class)
+        userPropertyClass.addModifiers(KModifier.SEALED)
+
+        it.userProperties.forEach { userProperty ->
+            val name = userProperty.name.toCamelCase()
+            val propertyClass = TypeSpec.classBuilder(name)
+            propertyClass.addModifiers(KModifier.DATA)
+            propertyClass.primaryConstructor(
+                FunSpec.constructorBuilder()
+                    .addParameter("value", String::class)
+                    .build()
+            )
+            propertyClass.addProperty(PropertySpec.builder("value", String::class)
+                            .initializer("value")
+                            .build())
+
+            propertyClass.addKdoc(userProperty.description)
+            propertyClass.superclass(ClassName("", "UserProperty"))
+            val propertyNameAnnotation = AnnotationSpec.builder(PropertyName::class)
+                .addMember("value = %S", userProperty.name).build()
+
+            propertyClass.addAnnotation(propertyNameAnnotation)
+            userPropertyClass
+                .addType(
+                    propertyClass
+                        .build()
+                )
+        }
+
+        val file = FileSpec.builder(getPackageFromPath(output), "UserProperty")
+            .addType(userPropertyClass.build())
+            .build()
+
+        file.writeTo(Paths.get(getOutputFromPath(output)))
+    }
+
+    private fun generateScreens(it: CollarModel, output: String) {
+        val screenObject = TypeSpec.objectBuilder("AnalyticsScreens")
+
+        it.screens.forEach { screen ->
+            val name = prepareScreen(screen.name)
+            screenObject
+                .addProperty(
+                    PropertySpec.builder(name, String::class, KModifier.CONST)
+                        .initializer("%S", screen.name)
+                        .addKdoc(screen.description)
+                        .build()
+                )
+        }
+
+        val file = FileSpec.builder(getPackageFromPath(output), "AnalyticsScreens")
+            .addType(screenObject.build())
+            .build()
+
+        file.writeTo(Paths.get(getOutputFromPath(output)))
+    }
+
+    private fun prepareScreen(property: String) = property.toUpperCase().replace(" ", "_")
 
     private fun getPackageFromPath(path: String): String {
         return when {
@@ -87,4 +141,7 @@ public class GeneratorLib(
             }
         }
     }
+
+    private fun String.toCamelCase(): String = split(" ").map { it.capitalize() }.joinToString("")
+
 }
