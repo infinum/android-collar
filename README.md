@@ -217,7 +217,19 @@ If you set _extended_ to false then _Collar_ will not provide all necessary exte
 These are, at the moment:
 ```gradle
 implementation "androidx.core:core-ktx:1.2.0"
-```   
+```
+## Debug UI
+A separate package and no-op package is provided if you want to visually track what has been sent through Collar.  
+You can search, filter and clear all sent analytics.  
+In your app `build.gradle` add:
+```gradle
+debugImplementation "co.infinum.collar:collar-ui:1.1.0"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.0"
+```
+A notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
+![UI](notification.ong)
+![UI](ui.jpg)
+
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
 - Provide a separate test artifact

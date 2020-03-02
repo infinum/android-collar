@@ -67,7 +67,7 @@ dependencies {
     implementation packages.kotlin.core
     implementation "androidx.fragment:fragment:1.2.2"
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation packages.collar.ui_no_op
+    implementation packages.collar.ui
 }
 
 collar {
