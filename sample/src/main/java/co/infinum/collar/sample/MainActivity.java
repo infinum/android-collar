@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.UUID;
+
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
 
-@ScreenName(value = "MainActivity")
+@ScreenName(value = JavaScreenNames.MAIN_SCREEN)
 public class MainActivity extends Activity {
 
     @Override
@@ -17,25 +19,24 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.OnCreate("Main"));
-
-        findViewById(R.id.buttonFoo).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonProduceEvent1).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                doFoo();
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.DoFoo());
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1());
             }
         });
-        findViewById(R.id.buttonKotlin).setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.buttonShowChild).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                showKotlin();
+                showChildScreen();
             }
         });
 
-        CollarUserProperty.trackProperty(new UserProperty.UserTypeRetail("corporate"));
+        CollarUserProperty.trackProperty(new UserProperty.UserUUID(UUID.randomUUID().toString()));
+        CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));
     }
 
     @Override
@@ -44,15 +45,7 @@ public class MainActivity extends Activity {
         CollarScreenNames.trackScreen(this);
     }
 
-    private void doFoo() {
-        new Foo().trackFoo();
-    }
-
-    private void showKotlin() {
-        startActivity(new Intent(this, KotlinMainActivity.class));
-    }
-
-    private void onItemSelected(int position) {
-        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.OnItemSelected(position, true));
+    private void showChildScreen() {
+        startActivity(new Intent(this, ChildActivity.class));
     }
 }

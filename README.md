@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/infinum/android/collar-plugin/images/download.svg) ](https://bintray.com/infinum/android/collar-plugin/_latestVersion)
+
 # Collar Android plugin
 
 Gradle plugin which collects all analytics screen names, events and user properties for Android projects.  
@@ -9,6 +11,8 @@ The project is organized in the following modules:
 - `core` - plugin implementation core, depends on the `annotations` module
 - `processor` - annotation processor generating and transforming classes for plugin, depends on the `annotations` module
 - `plugin` - the Gradle plugin that adds all necessary dependencies to the project
+- `ui` - contains a single screen UI that provides visual tracking of sent events
+- `ui-no-op` - contains a stub for easy release implementation of UI package
 - `sample` - a sample app for testing the Gradle plugin
 
 ## Usage
@@ -216,8 +220,40 @@ You can set a specific _Collar_ version to be used.
 If you set _extended_ to false then _Collar_ will not provide all necessary external dependencies out of the box, like _AndroidX Core-KTX_, but it is your responsibility to provide them in your own project setup.  
 These are, at the moment:
 ```gradle
-implementation "androidx.core:core-ktx:1.1.0"
-```   
+implementation "androidx.core:core-ktx:1.2.0"
+```
+## Debug UI
+A separate package and no-op package is provided if you want to visually track what has been sent through Collar.  
+You can search, filter and clear all sent analytics.  
+In your app `build.gradle` add:
+```gradle
+debugImplementation "co.infinum.collar:collar-ui:1.1.0"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.0"
+```
+In order to start tracking with UI you must use _LiveCollector_ as in this example:
+```kotlin
+ Collar.attach(object : LiveCollector(context, true) {
+
+    override fun onScreen(screen: Screen) =
+        super.onScreen(screen).run {
+            analyticsProvider.sendScreenName(activity = screen.activity, screenName = screen.name)
+        }
+
+    override fun onEvent(event: Event) =
+        super.onEvent(event).run {
+            analyticsProvider.sendEvent(eventName = event.name, eventParameters = event.params ?: Bundle.EMPTY)
+        }
+
+    override fun onProperty(property: Property) =
+        super.onProperty(property).run {
+            analyticsProvider.sendProperty(property.name, property.value)
+        }
+})
+```
+A notification will show once analytics are gathered and clicking on it will open a dedicated screen.
+
+![Notification](notification.jpg)![UI](ui.jpg)
+
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
 - Provide a separate test artifact

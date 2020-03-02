@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="collar_name" translatable="false">Collar</string>
+    <string name="collar_search">Search</string>
+    <string name="collar_clear">Clear</string>
+    <string name="collar_filter">Filter</string>
+    <string name="collar_screens">Screens</string>
+    <string name="collar_events">Events</string>
+    <string name="collar_properties">Properties</string>
+    <string name="collar_sent_at">Sent at</string>
+    <string name="collar_name_caption">Name</string>
+    <string name="collar_value">Value</string>
+    <string name="collar_parameters">Parameters</string>
+    <string name="collar_share">Share</string>
+</resources>

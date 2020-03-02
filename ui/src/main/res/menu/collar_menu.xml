@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/collar_ic_search"
+        android:title="@string/collar_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/collar_ic_filter"
+        android:title="@string/collar_filter"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="all">
+                <item
+                    android:id="@+id/screens"
+                    android:checked="true"
+                    android:icon="@drawable/collar_ic_screen_black"
+                    android:title="@string/collar_screens" />
+                <item
+                    android:id="@+id/events"
+                    android:checked="true"
+                    android:icon="@drawable/collar_ic_event_black"
+                    android:title="@string/collar_events" />
+                <item
+                    android:id="@+id/properties"
+                    android:checked="true"
+                    android:icon="@drawable/collar_ic_property_black"
+                    android:title="@string/collar_properties" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/clear"
+        android:icon="@drawable/collar_ic_clear"
+        android:title="@string/collar_clear"
+        app:showAsAction="always" />
+</menu>

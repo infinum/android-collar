@@ -5,8 +5,8 @@ apply plugin: 'com.github.dcendents.android-maven'
 Properties properties = new Properties()
 properties.load(new FileInputStream(file(rootProject.file('bintray.properties'))))
 
-group = 'co.infinum.collar'
-version = versions.collar
+group = collar.group
+version = collar.version
 
 task sourcesJar(type: Jar, dependsOn: assemble) {
     archiveClassifier.set('sources')

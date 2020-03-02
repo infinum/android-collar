@@ -69,10 +69,11 @@ dependencies {
     implementation packages.kotlin.core
     implementation "androidx.fragment:fragment:1.2.2"
     implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation packages.collar.ui
 }
 
 collar {
-    version "1.0.0"
+    version "1.1.0"
     extended true
     filePath = "${project.projectDir}/src/main/assets/example.json"
     outputPath = "${project.projectDir}/src/main/java/co/infinum/collar/sample/analytics"
