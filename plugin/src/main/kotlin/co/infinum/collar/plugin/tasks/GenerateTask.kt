@@ -15,13 +15,13 @@ open class GenerateTask : BaseTask() {
         val extension: CollarExtension =
             project.extensions.findByName("collar") as CollarExtension
         if (extension.filePath.isBlank()) {
-            throw  TaskExecutionException(
+            throw TaskExecutionException(
                 this,
                 Exception("Task collarGenerate failed; filePath should be specified")
             )
         }
         if (extension.outputPath.isBlank()) {
-            throw  TaskExecutionException(
+            throw TaskExecutionException(
                 this,
                 Exception("Task collarGenerate failed; outputPath should be specified")
             )
@@ -30,12 +30,22 @@ open class GenerateTask : BaseTask() {
         taskUtils.logger.logWarning(extension.filePath)
         taskUtils.logger.logWarning("Files will be generated on path:")
         taskUtils.logger.logWarning(extension.outputPath)
-        taskUtils.logger.logWarning(
-            stubGenLib.generate(
-                extension.filePath,
-                extension.outputPath
+        try {
+            if(stubGenLib.generate(extension.filePath, extension.outputPath)) {
+                taskUtils.logger.logSuccess("Done! Files are generated")
+            } else {
+                taskUtils.logger.logError("Task collarGenerate failed;")
+                throw  TaskExecutionException(
+                    this,
+                    Exception("Task collarGenerate failed;")
+                )
+            }
+        } catch (e: Exception) {
+            taskUtils.logger.logDebug(e.stackTrace.toString())
+            throw  TaskExecutionException(
+                this,
+                Exception("Task collarGenerate failed;")
             )
-        )
-        taskUtils.logger.logSuccess("Done! Files are generated")
+        }
     }
 }

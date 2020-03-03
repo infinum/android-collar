@@ -28,14 +28,10 @@
     {
       "name": "price",
       "type": "number",
-      "androidType": "float",
-      "iosType": "double",
       "description": "user's price"
     }, {
       "name": "age born",
       "type": "number",
-      "androidType": "int",
-      "iosType": "int",
       "description": "..."
     }, {
       "name": "genderGo",

@@ -76,5 +76,5 @@ collar {
     version "1.1.0"
     extended true
     filePath = "${project.projectDir}/src/main/assets/example.json"
-    outputPath = "${project.projectDir}/src/main/java/co/infinum/collar/sample/analytics"
+    outputPath = "${project.projectDir}/src/main/kotlin/co/infinum/collar/sample/analytics"
 }
