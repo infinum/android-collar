@@ -254,6 +254,29 @@ A notification will show once analytics are gathered and clicking on it will ope
 
 ![Notification](notification.jpg)![UI](ui.jpg)
 
+## CollarGenerate Gradle Task
+
+This library supports code generation from the `.json` file. To do that you will need to specify `filePath` and `outputPath` in  `collar` plugin extension. For example:
+
+```
+collar {
+    version "1.1.0"
+    extended true
+    filePath = "${project.projectDir}/src/main/assets/example.json"
+    outputPath = "${project.projectDir}/src/main/kotlin/co/infinum/collar/sample/analytics"
+}
+```
+Important: `outputPath` needs to have `/kotlin` or `/java` so we can know how to prepare package values for new generated classes.
+
+`.json` file has to be formatted in the same way as it is in `Sample` project. 
+
+To run the task you can:
+
+- Open `gradle` panel on right side, find `collarplugin` task group and run `collarGenerate` task 
+- Type `./gradlew collarGenerate` in terminal
+
+Gradle task will generate classes prepared for the Collar lib.
+
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
 - Provide a separate test artifact
