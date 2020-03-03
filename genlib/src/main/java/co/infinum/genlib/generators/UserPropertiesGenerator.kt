@@ -3,7 +3,7 @@ package co.infinum.genlib.generators
 import co.infinum.collar.annotations.PropertyName
 import co.infinum.collar.annotations.UserProperties
 import co.infinum.genlib.extensions.toCamelCase
-import co.infinum.genlib.models.UserProperty
+import co.infinum.genlib.models.Property
 import co.infinum.genlib.utils.PathUtils
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -18,7 +18,7 @@ const val USER_PROPERTY_CLASS_NAME = "UserProperty"
 const val PROPERTY_PARAMETER_NAME = "value"
 const val PROPERTY_NAME_ANNOTATION_FORMAT = "value = %S"
 
-class UserPropertiesGenerator(private val userProperties: List<UserProperty>, private val outputPath: String) {
+class UserPropertiesGenerator(private val userProperties: List<Property>, private val outputPath: String) {
 
     fun generate() {
         val userPropertiesClass = TypeSpec.classBuilder(USER_PROPERTY_CLASS_NAME).apply {
@@ -37,14 +37,14 @@ class UserPropertiesGenerator(private val userProperties: List<UserProperty>, pr
                     FunSpec.constructorBuilder()
                         .addParameter(
                             PROPERTY_PARAMETER_NAME,
-                            GeneratorUtils.getClassNameFromTypeAndListType(userProperty.type, userProperty.listType)
+                            GeneratorUtils.getClassName(userProperty)
                         )
                         .build()
                 )
                 addProperty(
                     PropertySpec.builder(
                         PROPERTY_PARAMETER_NAME,
-                        GeneratorUtils.getClassNameFromTypeAndListType(userProperty.type, userProperty.listType)
+                        GeneratorUtils.getClassName(userProperty)
                     )
                         .initializer(PROPERTY_PARAMETER_NAME)
                         .build()

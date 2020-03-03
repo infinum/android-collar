@@ -36,21 +36,54 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
             event.properties.forEach {
                 val constructorParamAnnotation = AnnotationSpec.builder(EventParameterName::class)
                     .addMember(EVENT_PARAMETER_NAME_ANNOTATION_FORMAT, it.name).build()
+
+                val type = GeneratorUtils.getClassName(it)
+
                 val constructorParamBuilder = ParameterSpec.builder(
-                    it.name.toCamelCase().decapitalize(),
-                    GeneratorUtils.getClassNameFromTypeAndListType(it.type, it.listType)
+                    GeneratorUtils.getParameterName(it.name), type
                 ).apply {
                     addKdoc(it.description)
                     addAnnotation(constructorParamAnnotation)
                 }
                 constructorBuilder.addParameter(constructorParamBuilder.build())
 
+
+                if (it.values?.isNotEmpty() == true) {
+                    val enumBuilder = TypeSpec.enumBuilder(GeneratorUtils.getParameterEnumName(it.name))
+                        .primaryConstructor(
+                            FunSpec.constructorBuilder()
+                                .addParameter("value", String::class)
+                                .build()
+                        )
+                        .addProperty(
+                            PropertySpec.builder("value", String::class)
+                                .initializer("value")
+                                .build()
+                        )
+                        .addFunction(
+                            FunSpec.builder("toString")
+                                .addModifiers(KModifier.OVERRIDE)
+                                .addStatement("return value")
+                                .build()
+                        )
+
+                    it.values.forEach { value ->
+                        enumBuilder.addEnumConstant(
+                            GeneratorUtils.getParameterValueEnumName(value), TypeSpec.anonymousClassBuilder()
+                            .addSuperclassConstructorParameter("%S", value)
+                            .build()
+                        )
+                    }
+
+                    eventClass.addType(enumBuilder.build())
+                }
+
                 eventClass.addProperty(
                     PropertySpec.builder(
-                        it.name.toCamelCase().decapitalize(),
-                        GeneratorUtils.getClassNameFromTypeAndListType(it.type, it.listType)
+                        GeneratorUtils.getParameterName(it.name),
+                        type
                     )
-                        .initializer(it.name.toCamelCase().decapitalize())
+                        .initializer(GeneratorUtils.getParameterName(it.name))
                         .build()
                 )
             }

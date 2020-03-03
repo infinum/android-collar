@@ -9,6 +9,13 @@
           "description": "Type of login clicked",
           "type": "text",
           "values": ["facebook", "google", "in app"]
+        },
+        {
+          "name": "otherType",
+          "description": "Type of login clicked",
+          "type": "list",
+          "listType": "text",
+          "values": ["facebook", "google", "in app"]
         }
       ]
     }, {
