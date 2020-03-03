@@ -1,7 +1,7 @@
 package co.infinum.collar.plugin.tasks
 
-import co.infinum.genlib.GeneratorLib
-import co.infinum.genlib.logging.Logger
+import co.infinum.generator.GeneratorLib
+import co.infinum.generator.logging.Logger
 import org.fusesource.jansi.Ansi
 import org.gradle.api.DefaultTask
 

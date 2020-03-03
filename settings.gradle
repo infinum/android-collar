@@ -1,2 +1,2 @@
-include ":core", ":plugin", ":genlib", ":annotations", ":processor", ":ui", ":ui-no-op", ":sample"
+include ":core", ":plugin", ':generator', ":annotations", ":processor", ":ui", ":ui-no-op", ":sample"
 rootProject.name = "Collar"

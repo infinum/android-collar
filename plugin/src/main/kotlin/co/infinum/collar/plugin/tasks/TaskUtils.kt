@@ -1,6 +1,6 @@
 package co.infinum.collar.plugin.tasks
 
-import co.infinum.genlib.logging.Logger
+import co.infinum.generator.logging.Logger
 import java.util.NoSuchElementException
 import java.util.Scanner
 
