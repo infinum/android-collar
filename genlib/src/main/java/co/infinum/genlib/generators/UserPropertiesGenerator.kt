@@ -54,6 +54,35 @@ class UserPropertiesGenerator(private val userProperties: List<Property>, privat
                 superclass(ClassName("", USER_PROPERTY_CLASS_NAME))
                 addAnnotation(propertyNameAnnotation)
             }
+            if (userProperty.values?.isNotEmpty() == true) {
+                val enumBuilder = TypeSpec.enumBuilder(GeneratorUtils.getParameterEnumName(userProperty.name))
+                    .primaryConstructor(
+                        FunSpec.constructorBuilder()
+                            .addParameter("value", String::class)
+                            .build()
+                    )
+                    .addProperty(
+                        PropertySpec.builder("value", String::class)
+                            .initializer("value")
+                            .build()
+                    )
+                    .addFunction(
+                        FunSpec.builder("toString")
+                            .addModifiers(KModifier.OVERRIDE)
+                            .addStatement("return value")
+                            .build()
+                    )
+
+                userProperty.values.forEach { value ->
+                    enumBuilder.addEnumConstant(
+                        GeneratorUtils.getParameterValueEnumName(value), TypeSpec.anonymousClassBuilder()
+                        .addSuperclassConstructorParameter("%S", value)
+                        .build()
+                    )
+                }
+
+                userPropertyClass.addType(enumBuilder.build())
+            }
             userPropertiesClass.addType(userPropertyClass.build())
         }
 
