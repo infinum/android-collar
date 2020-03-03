@@ -1,5 +1,6 @@
 package co.infinum.genlib.generators
 
+import co.infinum.genlib.extensions.hasDigits
 import co.infinum.genlib.extensions.toCamelCase
 import co.infinum.genlib.models.DataType
 import co.infinum.genlib.models.ListType
@@ -58,7 +59,11 @@ class GeneratorUtils private constructor() {
         fun getParameterEnumName(parameter: String) = parameter.toCamelCase() + "Enum"
 
         fun getParameterValueEnumName(value: String): String {
-            return value.toUpperCase(Locale.ENGLISH).replace(" ", "_").replace(".","_")
+            var parameterValueEnumName = value.toUpperCase(Locale.ENGLISH).replace(" ", "_").replace(".", "_")
+            if (value.hasDigits()) {
+                parameterValueEnumName = "NUMBER_$parameterValueEnumName"
+            }
+            return parameterValueEnumName
         }
     }
 }

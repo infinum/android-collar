@@ -16,6 +16,13 @@
           "type": "list",
           "listType": "text",
           "values": ["facebook", "google", "in app"]
+        },
+        {
+          "name": "numberType",
+          "description": "Type of login clicked",
+          "type": "list",
+          "listType": "decimal",
+          "values": ["0.1", "0.2", "0.3"]
         }
       ]
     }, {
