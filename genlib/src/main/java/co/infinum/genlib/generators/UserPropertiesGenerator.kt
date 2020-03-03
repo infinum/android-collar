@@ -35,11 +35,17 @@ class UserPropertiesGenerator(private val userProperties: List<UserProperty>, pr
                 addModifiers(KModifier.DATA)
                 primaryConstructor(
                     FunSpec.constructorBuilder()
-                        .addParameter(PROPERTY_PARAMETER_NAME, String::class)
+                        .addParameter(
+                            PROPERTY_PARAMETER_NAME,
+                            GeneratorUtils.getClassNameFromTypeAndListType(userProperty.type, userProperty.listType)
+                        )
                         .build()
                 )
                 addProperty(
-                    PropertySpec.builder(PROPERTY_PARAMETER_NAME, String::class)
+                    PropertySpec.builder(
+                        PROPERTY_PARAMETER_NAME,
+                        GeneratorUtils.getClassNameFromTypeAndListType(userProperty.type, userProperty.listType)
+                    )
                         .initializer(PROPERTY_PARAMETER_NAME)
                         .build()
                 )

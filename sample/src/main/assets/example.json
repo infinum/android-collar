@@ -12,14 +12,52 @@
         }
       ]
     }, {
-      "name": "buy items",
-      "description": "user clicked on buy action",
+      "name": "check types",
+      "description": "We need to check types here",
       "properties": [
         {
-          "name": "items",
-          "description": "list of bought items",
+          "name": "checkBool",
+          "description": "checki if bool is ok",
+          "type": "bool"
+        },
+        {
+          "name": "checkText",
+          "description": "check if text is ok",
+          "type": "text"
+        },
+        {
+          "name": "checkNumber",
+          "description": "check if number is ok",
+          "type": "number"
+        },
+        {
+          "name": "checkDecimal",
+          "description": "check if decimal is ok",
+          "type": "decimal"
+        },
+        {
+          "name": "checkListText",
+          "description": "check if list with text type is ok",
           "type": "list",
           "listType": "text"
+        },
+        {
+          "name": "checkListBool",
+          "description": "check if list with bool type is ok",
+          "type": "list",
+          "listType": "bool"
+        },
+        {
+          "name": "checkListNumber",
+          "description": "check if list with number type is ok",
+          "type": "list",
+          "listType": "number"
+        },
+        {
+          "name": "checkListDecimal",
+          "description": "check if list with decimal type is ok",
+          "type": "list",
+          "listType": "decimal"
         }
       ]
     }
@@ -27,7 +65,7 @@
   "userProperties": [
     {
       "name": "price",
-      "type": "number",
+      "type": "decimal",
       "description": "user's price"
     }, {
       "name": "age born",
@@ -41,6 +79,12 @@
     }, {
       "name": "Educated",
       "type": "bool",
+      "description": "Whether the user finished highschool"
+    },
+    {
+      "name": "Grades",
+      "type": "list",
+      "listType": "text",
       "description": "Whether the user finished highschool"
     }
   ],

@@ -36,14 +36,20 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
             event.properties.forEach {
                 val constructorParamAnnotation = AnnotationSpec.builder(EventParameterName::class)
                     .addMember(EVENT_PARAMETER_NAME_ANNOTATION_FORMAT, it.name).build()
-                val constructorParamBuilder = ParameterSpec.builder(it.name.toCamelCase().decapitalize(), String::class).apply {
+                val constructorParamBuilder = ParameterSpec.builder(
+                    it.name.toCamelCase().decapitalize(),
+                    GeneratorUtils.getClassNameFromTypeAndListType(it.type, it.listType)
+                ).apply {
                     addKdoc(it.description)
                     addAnnotation(constructorParamAnnotation)
                 }
                 constructorBuilder.addParameter(constructorParamBuilder.build())
 
                 eventClass.addProperty(
-                    PropertySpec.builder(it.name.toCamelCase().decapitalize(), String::class)
+                    PropertySpec.builder(
+                        it.name.toCamelCase().decapitalize(),
+                        GeneratorUtils.getClassNameFromTypeAndListType(it.type, it.listType)
+                    )
                         .initializer(it.name.toCamelCase().decapitalize())
                         .build()
                 )
