@@ -7,11 +7,11 @@ import org.gradle.api.DefaultTask
 
 open class BaseTask: DefaultTask() {
 
-    val stubGenLib: GeneratorLib
+    val generatorLib: GeneratorLib
     val taskUtils: TaskUtils
 
     init {
-        stubGenLib = GeneratorLib(logger = object : Logger {
+        generatorLib = GeneratorLib(logger = object : Logger {
             override fun logError(message: String) {
                 logger.error(Ansi.ansi().fg(Ansi.Color.RED).a(message).reset().toString())
             }
@@ -30,6 +30,6 @@ open class BaseTask: DefaultTask() {
             }
 
         })
-        taskUtils = TaskUtils(stubGenLib.logger)
+        taskUtils = TaskUtils(generatorLib.logger)
     }
 }

@@ -11,7 +11,7 @@ open class GenerateTask : BaseTask() {
     }
 
     @TaskAction
-    fun generateStubFiles() {
+    fun generateFiles() {
         val extension: CollarExtension =
             project.extensions.findByName("collar") as CollarExtension
         if (extension.filePath.isBlank()) {
@@ -31,7 +31,7 @@ open class GenerateTask : BaseTask() {
         taskUtils.logger.logWarning("Files will be generated on path:")
         taskUtils.logger.logWarning(extension.outputPath)
         try {
-            if(stubGenLib.generate(extension.filePath, extension.outputPath)) {
+            if(generatorLib.generate(extension.filePath, extension.outputPath)) {
                 taskUtils.logger.logSuccess("Done! Files are generated")
             } else {
                 taskUtils.logger.logError("Task collarGenerate failed;")
