@@ -3,7 +3,7 @@
     {
       "name": "login user",
       "description": "User clicked on login button",
-      "properties": [
+      "parameters": [
         {
           "name": "loginType",
           "description": "Type of login clicked",
@@ -28,7 +28,7 @@
     }, {
       "name": "check types",
       "description": "We need to check types here",
-      "properties": [
+      "parameters": [
         {
           "name": "checkBool",
           "description": "checki if bool is ok",

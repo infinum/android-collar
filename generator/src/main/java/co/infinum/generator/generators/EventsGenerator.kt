@@ -35,7 +35,7 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
             val eventClass = TypeSpec.classBuilder(name)
             val constructorBuilder = FunSpec.constructorBuilder()
 
-            event.properties.forEach {
+            event.parameters.forEach {
                 val constructorParamAnnotation = AnnotationSpec.builder(EventParameterName::class)
                     .addMember(EVENT_PARAMETER_NAME_ANNOTATION_FORMAT, it.name).build()
 
