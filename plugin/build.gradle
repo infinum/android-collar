@@ -23,7 +23,6 @@ compileTestKotlin { kotlinOptions { jvmTarget = "1.8" } }
 
 dependencies {
     implementation packages.kotlin.core
-    implementation "org.fusesource.jansi:jansi:$jansiVersion"
     api project(':generator')
     compileOnly gradleApi()
     compileOnly packages.gradle
