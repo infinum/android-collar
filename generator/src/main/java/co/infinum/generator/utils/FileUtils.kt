@@ -1,11 +1,10 @@
 package co.infinum.generator.utils
 
-import java.nio.file.Files
-import java.nio.file.Paths
+import java.io.File
 
 object FileUtils {
 
-    fun readFromFile(filename: String): String {
-        return String(Files.readAllBytes(Paths.get(filename)), Charsets.UTF_8)
+    fun readFromFile(fileName: String): String {
+        return File(fileName).readText(Charsets.UTF_8)
     }
 }
