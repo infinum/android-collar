@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.trackScreen
 import co.infinum.collar.ui.CollarActivity
 import kotlinx.android.synthetic.main.fragment_child_kotlin.*
 import java.util.UUID
@@ -25,6 +26,6 @@ class KotlinChildFragment : Fragment(R.layout.fragment_child_kotlin) {
     override fun onResume() {
         super.onResume()
 
-//        trackScreen()
+        trackScreen()
     }
 }

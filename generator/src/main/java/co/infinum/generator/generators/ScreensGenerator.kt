@@ -9,13 +9,13 @@ import com.squareup.kotlinpoet.TypeSpec
 import java.nio.file.Paths
 import java.util.Locale
 
-class ScreensGenerator(private val list: List<Screen>, private val outputPath: String) {
+class ScreensGenerator(private val list: List<Screen>, private val outputPath: String): Generator {
 
     companion object {
         const val SCREENS_CLASS_NAME = "AnalyticsScreens"
     }
 
-    fun generate() {
+    override fun generate() {
         val screensObject = TypeSpec.objectBuilder(SCREENS_CLASS_NAME)
 
         list.forEach { screen ->

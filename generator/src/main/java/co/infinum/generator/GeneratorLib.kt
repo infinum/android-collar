@@ -21,10 +21,12 @@ class GeneratorLib(
         val executor = SynchronousExecutor()
         var isSuccess = false
         executor.start(Runnable {
-            adapter.fromJson(FileUtils.readFromFile(filePath))?.let {
-                ScreensGenerator(it.screens, output).generate()
-                UserPropertiesGenerator(it.userProperties, output).generate()
-                EventsGenerator(it.events, output).generate()
+            adapter.fromJson(FileUtils.readFromFile(filePath))?.let { analyticsModel ->
+                listOf(
+                    ScreensGenerator(analyticsModel.screens, output),
+                    UserPropertiesGenerator(analyticsModel.userProperties, output),
+                    EventsGenerator(analyticsModel.events, output)
+                ).forEach { it.generate() }
             }
             isSuccess = true
         })

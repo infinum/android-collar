@@ -16,7 +16,7 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import java.nio.file.Paths
 
-class EventsGenerator(private val events: List<Event>, private val outputPath: String) {
+class EventsGenerator(private val events: List<Event>, private val outputPath: String) : Generator {
 
     companion object {
         const val EVENTS_CLASS_NAME = "AnalyticsEvent"
@@ -24,7 +24,7 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
         const val EVENT_NAME_ANNOTATION_FORMAT = "value = %S"
     }
 
-    fun generate() {
+    override fun generate() {
         val eventsClass = TypeSpec.classBuilder(EVENTS_CLASS_NAME).apply {
             addAnnotation(AnalyticsEvents::class)
             addModifiers(KModifier.SEALED)

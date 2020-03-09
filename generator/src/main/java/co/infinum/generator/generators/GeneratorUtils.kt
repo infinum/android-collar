@@ -1,6 +1,6 @@
 package co.infinum.generator.generators
 
-import co.infinum.generator.extensions.hasDigits
+import co.infinum.generator.extensions.hasDigit
 import co.infinum.generator.extensions.toCamelCase
 import co.infinum.generator.models.DataType
 import co.infinum.generator.models.ListType
@@ -60,7 +60,7 @@ class GeneratorUtils private constructor() {
 
         fun getParameterValueEnumName(value: String): String {
             var parameterValueEnumName = value.toUpperCase(Locale.ENGLISH).replace(" ", "_").replace(".", "_")
-            if (value.hasDigits()) {
+            if (value.hasDigit()) {
                 parameterValueEnumName = "NUMBER_$parameterValueEnumName"
             }
             return parameterValueEnumName
