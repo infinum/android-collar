@@ -6,7 +6,7 @@ import co.infinum.generator.generators.ScreensGenerator
 import co.infinum.generator.generators.UserPropertiesGenerator
 import co.infinum.generator.logging.Log4jLogger
 import co.infinum.generator.logging.Logger
-import co.infinum.generator.models.CollarModel
+import co.infinum.generator.models.AnalyticsModel
 import co.infinum.generator.utils.FileUtils
 import co.infinum.generator.utils.SynchronousExecutor
 import com.squareup.moshi.JsonAdapter
@@ -16,7 +16,7 @@ class GeneratorLib(
 ) {
     fun generate(filePath: String, output: String): Boolean {
         val moshi = MoshiModule.getMoshi()
-        val adapter: JsonAdapter<CollarModel> = moshi.adapter(CollarModel::class.java)
+        val adapter: JsonAdapter<AnalyticsModel> = moshi.adapter(AnalyticsModel::class.java)
 
         val executor = SynchronousExecutor()
         var isSuccess = false
