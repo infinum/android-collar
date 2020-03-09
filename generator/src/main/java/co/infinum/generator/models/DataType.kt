@@ -1,23 +1,13 @@
 package co.infinum.generator.models
 
-enum class DataType(val type: String) {
-    TEXT("text"),
-    NUMBER("number"),
-    DECIMAL("decimal"),
-    BOOLEAN("boolean"),
-    LIST("list"),
-    UNKNOWN("unknown");
+enum class DataType {
+    TEXT,
+    NUMBER,
+    DECIMAL,
+    BOOLEAN,
+    LIST;
 
-    companion object {
-        fun getFromKey(key: String?): DataType {
-            return when (key) {
-                TEXT.type -> TEXT
-                NUMBER.type -> NUMBER
-                DECIMAL.type -> DECIMAL
-                BOOLEAN.type -> BOOLEAN
-                LIST.type -> LIST
-                else -> UNKNOWN
-            }
-        }
+    override fun toString(): String {
+        return super.toString().toLowerCase()
     }
 }

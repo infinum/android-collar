@@ -15,11 +15,11 @@ class GeneratorUtils private constructor() {
     companion object {
 
         fun getClassName(property: Property): TypeName {
-            val dataTypeEnum = DataType.getFromKey(property.type)
-            val listTypeEnum = ListType.getFromKey(property.listType)
+            val dataTypeEnum = property.type
+            val listTypeEnum = property.listType
 
             if (property.values?.isNotEmpty() == true) {
-                return if (dataTypeEnum == DataType.LIST) {
+                return if (dataTypeEnum == DataType.LIST.toString()) {
                     ClassName("kotlin.collections", "List")
                         .parameterizedBy(ClassName("", getParameterEnumName(property.name)))
                 } else {
@@ -28,29 +28,29 @@ class GeneratorUtils private constructor() {
             }
 
             return when (dataTypeEnum) {
-                DataType.TEXT -> ClassName("kotlin", "String")
-                DataType.NUMBER -> ClassName("kotlin", "Int")
-                DataType.DECIMAL -> ClassName("kotlin", "Double")
-                DataType.BOOLEAN -> ClassName("kotlin", "Boolean")
-                DataType.LIST -> {
+                DataType.TEXT.toString() -> ClassName("kotlin", "String")
+                DataType.NUMBER.toString() -> ClassName("kotlin", "Int")
+                DataType.DECIMAL.toString() -> ClassName("kotlin", "Double")
+                DataType.BOOLEAN.toString() -> ClassName("kotlin", "Boolean")
+                DataType.LIST.toString() -> {
                     val listClassName = ClassName("kotlin.collections", "List")
                     when (listTypeEnum) {
-                        ListType.TEXT -> {
+                        ListType.TEXT.toString() -> {
                             listClassName.parameterizedBy(ClassName("kotlin", "String"))
                         }
-                        ListType.NUMBER -> {
+                        ListType.NUMBER.toString() -> {
                             return listClassName.parameterizedBy(ClassName("kotlin", "Int"))
                         }
-                        ListType.DECIMAL -> {
+                        ListType.DECIMAL.toString() -> {
                             listClassName.parameterizedBy(ClassName("kotlin", "Double"))
                         }
-                        ListType.BOOLEAN -> {
+                        ListType.BOOLEAN.toString() -> {
                             listClassName.parameterizedBy(ClassName("kotlin", "Boolean"))
                         }
-                        ListType.UNKNOWN -> throw Exception("$listTypeEnum is not supported")
+                        else -> throw Exception("$listTypeEnum is not supported")
                     }
                 }
-                DataType.UNKNOWN -> throw Exception("$dataTypeEnum is not supported")
+                else -> throw Exception("$dataTypeEnum is not supported")
             }
         }
 

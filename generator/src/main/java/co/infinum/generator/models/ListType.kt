@@ -1,21 +1,13 @@
 package co.infinum.generator.models
 
-enum class ListType(val type: String) {
-    TEXT("text"),
-    NUMBER("number"),
-    DECIMAL("decimal"),
-    BOOLEAN("boolean"),
-    UNKNOWN("unknown");
+enum class ListType {
+    TEXT,
+    NUMBER,
+    DECIMAL,
+    BOOLEAN,
+    UNKNOWN;
 
-    companion object {
-        fun getFromKey(key: String?): ListType {
-            return when (key) {
-                TEXT.type -> TEXT
-                NUMBER.type -> NUMBER
-                DECIMAL.type -> DECIMAL
-                BOOLEAN.type -> BOOLEAN
-                else -> UNKNOWN
-            }
-        }
+    override fun toString(): String {
+        return super.toString().toLowerCase()
     }
 }
