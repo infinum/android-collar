@@ -1,19 +1,16 @@
 package co.infinum.collar.plugin.tasks
 
+import co.infinum.collar.plugin.CollarConstants.COLLAR_EXTENSION
 import co.infinum.collar.plugin.CollarExtension
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskExecutionException
 
 open class GenerateTask : BaseTask() {
 
-    override fun getDescription(): String {
-        return "Generates kotlin files for events, screen names and user properties"
-    }
-
     @TaskAction
     fun generateFiles() {
         val extension: CollarExtension =
-            project.extensions.findByName("collar") as CollarExtension
+            project.extensions.findByName(COLLAR_EXTENSION) as CollarExtension
         if (extension.filePath.isBlank()) {
             throw TaskExecutionException(
                 this,
