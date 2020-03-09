@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager
 
 class Log4jLogger : Logger {
 
-    val logger: org.apache.logging.log4j.Logger = LogManager.getLogger("Polyglot")
+    val logger: org.apache.logging.log4j.Logger = LogManager.getLogger("Generator")
 
     override fun logError(message: String) {
         logger.error(message)

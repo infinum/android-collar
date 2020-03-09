@@ -20,7 +20,9 @@ ext.versions = [
     "recyclerview"   : "1.1.0",
     "room"           : "2.2.3",
     "design"         : "1.1.0",
-    "maven"          : "2.0"
+    "maven"          : "2.0",
+    "kotlinpoet"     : "1.5.0",
+    "log4j"          : "2.7"
 ]
 
 ext.packages = [
@@ -64,5 +66,10 @@ ext.packages = [
     ],
     "maven"      : [
         "plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.maven}"
-    ]
+    ],
+    "kotlinpoet" : "com.squareup:kotlinpoet:${versions.kotlinpoet}",
+    "log4j"      : [
+        "api" : "org.apache.logging.log4j:log4j-api:${versions.log4j}",
+        "core": "org.apache.logging.log4j:log4j-core:${versions.log4j}"
+    ],
 ]

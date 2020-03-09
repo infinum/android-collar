@@ -268,14 +268,14 @@ collar {
 ```
 Important: `outputPath` needs to have `/kotlin` or `/java` so we can know how to prepare package values for new generated classes.
 
-`.json` file has to be formatted in the same way as it is in `Sample` project. 
+`JSON` file has to be formatted in the same way as it is in `Sample` project. Using `JSON` file is just a temporary as we will implement fetch of the file from remote data source in next release.
 
 To run the task you can:
 
-- Open `gradle` panel on right side, find `collarplugin` task group and run `collarGenerate` task 
-- Type `./gradlew collarGenerate` in terminal
+- Open `gradle` panel on right side, find `collar` task group and run `generate` task 
+- Type `./gradlew generate` in terminal
 
-Gradle task will generate classes prepared for the Collar lib.
+Gradle task will generate classes prepared for the Collar annotation processor.
 
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
