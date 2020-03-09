@@ -4,7 +4,7 @@ enum class DataType(val type: String) {
     TEXT("text"),
     NUMBER("number"),
     DECIMAL("decimal"),
-    BOOL("bool"),
+    BOOLEAN("boolean"),
     LIST("list"),
     UNKNOWN("unknown");
 
@@ -14,7 +14,7 @@ enum class DataType(val type: String) {
                 TEXT.type -> TEXT
                 NUMBER.type -> NUMBER
                 DECIMAL.type -> DECIMAL
-                BOOL.type -> BOOL
+                BOOLEAN.type -> BOOLEAN
                 LIST.type -> LIST
                 else -> UNKNOWN
             }

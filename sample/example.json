@@ -32,7 +32,7 @@
         {
           "name": "checkBool",
           "description": "checki if bool is ok",
-          "type": "bool"
+          "type": "boolean"
         },
         {
           "name": "checkText",
@@ -59,7 +59,7 @@
           "name": "checkListBool",
           "description": "check if list with bool type is ok",
           "type": "list",
-          "listType": "bool"
+          "listType": "boolean"
         },
         {
           "name": "checkListNumber",
@@ -92,7 +92,7 @@
       "description": "..."
     }, {
       "name": "Educated",
-      "type": "bool",
+      "type": "boolean",
       "description": "Whether the user finished highschool"
     },
     {

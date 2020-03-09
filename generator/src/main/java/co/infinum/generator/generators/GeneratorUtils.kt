@@ -31,7 +31,7 @@ class GeneratorUtils private constructor() {
                 DataType.TEXT -> ClassName("kotlin", "String")
                 DataType.NUMBER -> ClassName("kotlin", "Int")
                 DataType.DECIMAL -> ClassName("kotlin", "Double")
-                DataType.BOOL -> ClassName("kotlin", "Boolean")
+                DataType.BOOLEAN -> ClassName("kotlin", "Boolean")
                 DataType.LIST -> {
                     val listClassName = ClassName("kotlin.collections", "List")
                     when (listTypeEnum) {
@@ -44,7 +44,7 @@ class GeneratorUtils private constructor() {
                         ListType.DECIMAL -> {
                             listClassName.parameterizedBy(ClassName("kotlin", "Double"))
                         }
-                        ListType.BOOL -> {
+                        ListType.BOOLEAN -> {
                             listClassName.parameterizedBy(ClassName("kotlin", "Boolean"))
                         }
                         ListType.UNKNOWN -> throw Exception("$listTypeEnum is not supported")
