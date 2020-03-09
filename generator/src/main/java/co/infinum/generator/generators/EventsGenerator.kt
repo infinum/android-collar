@@ -16,11 +16,13 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import java.nio.file.Paths
 
-const val EVENTS_CLASS_NAME = "AnalyticsEvent"
-const val EVENT_PARAMETER_NAME_ANNOTATION_FORMAT = "value = %S"
-const val EVENT_NAME_ANNOTATION_FORMAT = "value = %S"
-
 class EventsGenerator(private val events: List<Event>, private val outputPath: String) {
+
+    companion object {
+        const val EVENTS_CLASS_NAME = "AnalyticsEvent"
+        const val EVENT_PARAMETER_NAME_ANNOTATION_FORMAT = "value = %S"
+        const val EVENT_NAME_ANNOTATION_FORMAT = "value = %S"
+    }
 
     fun generate() {
         val eventsClass = TypeSpec.classBuilder(EVENTS_CLASS_NAME).apply {

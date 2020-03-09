@@ -14,11 +14,13 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import java.nio.file.Paths
 
-const val USER_PROPERTY_CLASS_NAME = "UserProperty"
-const val PROPERTY_PARAMETER_NAME = "value"
-const val PROPERTY_NAME_ANNOTATION_FORMAT = "value = %S"
-
 class UserPropertiesGenerator(private val userProperties: List<Property>, private val outputPath: String) {
+
+    companion object {
+        const val USER_PROPERTY_CLASS_NAME = "UserProperty"
+        const val PROPERTY_PARAMETER_NAME = "value"
+        const val PROPERTY_NAME_ANNOTATION_FORMAT = "value = %S"
+    }
 
     fun generate() {
         val userPropertiesClass = TypeSpec.classBuilder(USER_PROPERTY_CLASS_NAME).apply {
