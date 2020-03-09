@@ -75,6 +75,6 @@ dependencies {
 collar {
     version "1.1.0"
     extended true
-    filePath = "${project.projectDir}/src/main/assets/example.json"
+    filePath = "${project.projectDir}/example.json"
     outputPath = "${project.projectDir}/src/main/kotlin/co/infinum/collar/sample/analytics"
 }

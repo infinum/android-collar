@@ -17,13 +17,13 @@ open class GenerateTask : BaseTask() {
         if (extension.filePath.isBlank()) {
             throw TaskExecutionException(
                 this,
-                Exception("Task collarGenerate failed; filePath should be specified")
+                Exception("Task generate failed; filePath should be specified")
             )
         }
         if (extension.outputPath.isBlank()) {
             throw TaskExecutionException(
                 this,
-                Exception("Task collarGenerate failed; outputPath should be specified")
+                Exception("Task generate failed; outputPath should be specified")
             )
         }
         taskUtils.logger.logWarning("Extension file path:")
@@ -34,17 +34,17 @@ open class GenerateTask : BaseTask() {
             if(generatorLib.generate(extension.filePath, extension.outputPath)) {
                 taskUtils.logger.logSuccess("Done! Files are generated")
             } else {
-                taskUtils.logger.logError("Task collarGenerate failed;")
+                taskUtils.logger.logError("Task generate failed;")
                 throw  TaskExecutionException(
                     this,
-                    Exception("Task collarGenerate failed;")
+                    Exception("Task generate failed;")
                 )
             }
         } catch (e: Exception) {
             taskUtils.logger.logDebug(e.stackTrace.toString())
             throw  TaskExecutionException(
                 this,
-                Exception("Task collarGenerate failed;")
+                Exception("Task generate failed;")
             )
         }
     }

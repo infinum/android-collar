@@ -254,9 +254,9 @@ A notification will show once analytics are gathered and clicking on it will ope
 
 ![Notification](notification.jpg)![UI](ui.jpg)
 
-## CollarGenerate Gradle Task
+## Generate Gradle Task
 
-This library supports code generation from the `.json` file. To do that you will need to specify `filePath` and `outputPath` in  `collar` plugin extension. For example:
+This library supports code generation from the a JSON formatted file. To do that you will need to specify `filePath` and `outputPath` in  `collar` plugin extension. For example:
 
 ```
 collar {

@@ -15,11 +15,11 @@ class CollarPlugin : Plugin<Project> {
         addProcessorDependecy(project, extension)
 
         project.tasks.create<GenerateTask>(
-            "collarGenerate",
+            "generate",
             GenerateTask::class.java
         ).run {
             description = "Generate Collar files"
-            group = "CollarPlugin"
+            group = "collar"
         }
     }
 
