@@ -35,7 +35,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'co.infinum.collar'
             artifactId = 'generator'
-            version = '0.0.1'
+            version = collar.version
 
             from components.java
         }
