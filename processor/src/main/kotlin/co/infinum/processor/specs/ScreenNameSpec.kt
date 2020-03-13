@@ -69,7 +69,7 @@ class ScreenNameSpec private constructor(
                 .mapNotNull { mapEntry ->
                     typeElementValidator.resolve(mapEntry.key)?.let {
                         val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
-
+                            
                             .receiver(it)
                             .beginControlFlow("when (this) {")
 
