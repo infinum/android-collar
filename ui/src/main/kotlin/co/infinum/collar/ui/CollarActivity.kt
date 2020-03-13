@@ -26,7 +26,6 @@ import java.util.Locale
 class CollarActivity : AppCompatActivity(R.layout.collar_activity_collar) {
 
     companion object {
-        fun start(context: Context) = context.startActivity(Intent(context, CollarActivity::class.java))
         private const val FORMAT_DATETIME = "dd.MM.yyyy. HH:mm:ss"
     }
 

@@ -56,4 +56,3 @@ dependencies {
 }
 
 apply from: "bintray.gradle"
-apply from: "../tasks.gradle"
