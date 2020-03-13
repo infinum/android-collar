@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.trackScreen
+import co.infinum.collar.ui.CollarUi
 import kotlinx.android.synthetic.main.fragment_child_kotlin.*
 import java.util.UUID
 
