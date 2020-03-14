@@ -69,7 +69,12 @@ class ScreenNameSpec private constructor(
                 .mapNotNull { mapEntry ->
                     typeElementValidator.resolve(mapEntry.key)?.let {
                         val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
-                            
+                        if (it == TypeElementValidator.CLASS_SUPPORT_FRAGMENT || it == TypeElementValidator.CLASS_FRAGMENT) {
+                            extensionFunSpecBuilder.addAnnotation(
+                                AnnotationSpec.builder(Suppress::class.java).addMember(CodeBlock.of("%S", "DEPRECATION")).build()
+                            )
+                        }
+                        extensionFunSpecBuilder
                             .receiver(it)
                             .beginControlFlow("when (this) {")
 
