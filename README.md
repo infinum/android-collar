@@ -27,7 +27,7 @@ buildscript {
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.0.0"
+        classpath "co.infinum.collar:collar-plugin:1.1.1"
     }
 }
 ```
