@@ -14,7 +14,7 @@ sealed class AnalyticsEvent {
         @EventParameterName("user_id")
         val uuid: String,
 
-        val dayTime: JavaDayTime
+        val dayTime: Int
 
     ) : AnalyticsEvent()
 
@@ -27,7 +27,7 @@ sealed class AnalyticsEvent {
         @EventParameterName("user_uuid")
         val UUID: String,
 
-        val userType: KotlinUserType
+        val userType: String
 
     ) : AnalyticsEvent()
 }

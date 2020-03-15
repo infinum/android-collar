@@ -31,7 +31,7 @@ public class ChildFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2(UUID.randomUUID().toString(), JavaDayTime.DAY));
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2(UUID.randomUUID().toString(), JavaDayTime.DAY.ordinal()));
             }
         });
 
