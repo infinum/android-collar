@@ -3,7 +3,7 @@ package co.infinum.collar.sample
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.trackScreen
 import kotlinx.android.synthetic.main.activity_main_kotlin.*
@@ -17,7 +17,22 @@ class KotlinMainActivity : Activity() {
         setContentView(R.layout.activity_main_kotlin)
 
         buttonProduceEvent3.setOnClickListener {
-            trackEvent(AnalyticsEvent.EventThree())
+            trackEvent(AnalyticsEvent.EventThree(
+                myString = "cool",
+                myBoolean = false,
+                myByte = 101,
+                myChar = Character.MIN_VALUE,
+                myDouble = 24.7,
+                myFloat = 11.5f,
+                myInt = 1,
+                myLong = 198L,
+                myShort = 4096,
+                myBundle = bundleOf(
+                    "1" to 1,
+                    "2" to 2,
+                    "3" to 3
+                )
+            ))
         }
 
         buttonShowKotlinChild.setOnClickListener {

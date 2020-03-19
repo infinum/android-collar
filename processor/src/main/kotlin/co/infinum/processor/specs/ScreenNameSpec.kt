@@ -1,7 +1,7 @@
 package co.infinum.processor.specs
 
 import co.infinum.processor.models.ScreenHolder
-import co.infinum.processor.validators.TypeElementValidator
+import co.infinum.processor.validators.ScreenNamesValidator
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -13,8 +13,7 @@ class ScreenNameSpec private constructor(
     outputDir: File,
     private val packageName: String,
     private val simpleName: String,
-    private val holders: List<ScreenHolder>,
-    private val typeElementValidator: TypeElementValidator
+    private val holders: List<ScreenHolder>
 ) : Spec {
 
     companion object {
@@ -30,15 +29,13 @@ class ScreenNameSpec private constructor(
         private var outputDir: File? = null,
         private var packageName: String = DEFAULT_PACKAGE_NAME,
         private var simpleName: String = DEFAULT_SIMPLE_NAME,
-        private var holders: List<ScreenHolder> = listOf(),
-        private var typeElementValidator: TypeElementValidator? = null
+        private var holders: List<ScreenHolder> = listOf()
     ) {
         fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
         fun packageName(packageName: String) = apply { this.packageName = packageName }
         fun simpleName(simpleName: String) = apply { this.simpleName = simpleName }
         fun holders(holders: List<ScreenHolder>) = apply { this.holders = holders }
-        fun typeElementValidator(typeElementValidator: TypeElementValidator) = apply { this.typeElementValidator = typeElementValidator }
-        fun build() = ScreenNameSpec(outputDir!!, packageName, simpleName, holders, typeElementValidator!!)
+        fun build() = ScreenNameSpec(outputDir!!, packageName, simpleName, holders)
     }
 
     init {
@@ -65,15 +62,13 @@ class ScreenNameSpec private constructor(
 
     override fun build(): FileSpec =
         file().toBuilder().apply {
-            holders.groupBy { it.typeElement }
-                .mapNotNull { mapEntry ->
-                    typeElementValidator.resolve(mapEntry.key)?.let {
+            val groupedHolders = holders.groupBy { it.subClassName }
+
+            checkForDeprecation(this, groupedHolders)
+
+            groupedHolders.mapNotNull { mapEntry ->
+                    mapEntry.key?.let {
                         val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
-                        if (it == TypeElementValidator.CLASS_SUPPORT_FRAGMENT || it == TypeElementValidator.CLASS_FRAGMENT) {
-                            extensionFunSpecBuilder.addAnnotation(
-                                AnnotationSpec.builder(Suppress::class.java).addMember(CodeBlock.of("%S", "DEPRECATION")).build()
-                            )
-                        }
                         extensionFunSpecBuilder
                             .receiver(it)
                             .beginControlFlow("when (this) {")
@@ -91,21 +86,21 @@ class ScreenNameSpec private constructor(
                         extensionFunSpecBuilder.addCode(codeBlockBuilder.build())
 
                         when (it) {
-                            TypeElementValidator.CLASS_COMPONENT_ACTIVITY -> {
+                            ScreenNamesValidator.CLASS_COMPONENT_ACTIVITY -> {
                                 extensionFunSpecBuilder.addStatement(
                                     ".let { %T.%L(this, it) }",
                                     CLASS_COLLAR,
                                     FUNCTION_NAME_TRACK_SCREEN
                                 )
                             }
-                            TypeElementValidator.CLASS_ANDROIDX_FRAGMENT -> {
+                            ScreenNamesValidator.CLASS_ANDROIDX_FRAGMENT -> {
                                 extensionFunSpecBuilder.addStatement(
                                     ".let { activity?.let { activity -> %T.%L(activity, it) } }",
                                     CLASS_COLLAR,
                                     FUNCTION_NAME_TRACK_SCREEN
                                 )
                             }
-                            TypeElementValidator.CLASS_ACTIVITY -> {
+                            ScreenNamesValidator.CLASS_ACTIVITY -> {
                                 extensionFunSpecBuilder.addStatement(
                                     ".let { %T.%L(this, it) }",
                                     CLASS_COLLAR,
@@ -125,6 +120,17 @@ class ScreenNameSpec private constructor(
                 }
                 .forEach { addFunction(it) }
         }.build()
+
+    private fun checkForDeprecation(fileSpec: FileSpec.Builder, holdersMap: Map<ClassName?, List<ScreenHolder>>) =
+        if (holdersMap
+                .mapNotNull { it.key }
+                .any { it == ScreenNamesValidator.CLASS_SUPPORT_FRAGMENT || it == ScreenNamesValidator.CLASS_FRAGMENT }
+        ) {
+            fileSpec.addAnnotation(AnnotationSpec.builder(Suppress::class.java).addMember(CodeBlock.of("%S", "DEPRECATION")).build())
+        } else {
+            fileSpec
+        }
+
 }
 
 @DslMarker

@@ -23,7 +23,18 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1());
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
+                    "awesome",
+                    true,
+                    Byte.MAX_VALUE,
+                    Character.MAX_VALUE,
+                    7.11,
+                    31.5f,
+                    18,
+                    2L,
+                    Short.MAX_VALUE,
+                    buildBundle()
+                ));
             }
         });
 
@@ -47,5 +58,13 @@ public class MainActivity extends Activity {
 
     private void showChildScreen() {
         startActivity(new Intent(this, ChildActivity.class));
+    }
+
+    private Bundle buildBundle() {
+        final Bundle bundle = new Bundle();
+        bundle.putInt("4", 4);
+        bundle.putInt("5", 5);
+        bundle.putInt("6", 6);
+        return bundle;
     }
 }
