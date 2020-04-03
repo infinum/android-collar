@@ -5,11 +5,14 @@ import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTAT
 import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PROPERTY_NAME
 import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_USER_PROPERTIES
 import co.infinum.collar.generator.models.Property
-import co.infinum.collar.generator.utils.PathUtils
 import com.squareup.kotlinpoet.*
 import java.nio.file.Paths
 
-class UserPropertiesGenerator(private val userProperties: List<Property>, private val outputPath: String) : Generator {
+class UserPropertiesGenerator(
+    private val userProperties: List<Property>,
+    private val outputPath: String,
+    private val packageName: String
+) : Generator {
 
     companion object {
         const val USER_PROPERTY_CLASS_NAME = "UserProperty"
@@ -84,10 +87,10 @@ class UserPropertiesGenerator(private val userProperties: List<Property>, privat
             userPropertiesClass.addType(userPropertyClass.build())
         }
 
-        val file = FileSpec.builder(PathUtils.getPackageFromPath(outputPath), USER_PROPERTY_CLASS_NAME)
+        val file = FileSpec.builder(packageName, USER_PROPERTY_CLASS_NAME)
             .addType(userPropertiesClass.build())
             .build()
 
-        file.writeTo(Paths.get(PathUtils.getOutputFromPath(outputPath)))
+        file.writeTo(Paths.get(outputPath))
     }
 }

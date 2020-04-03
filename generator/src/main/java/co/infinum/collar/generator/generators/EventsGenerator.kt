@@ -2,11 +2,14 @@ package co.infinum.collar.generator.generators
 
 import co.infinum.collar.generator.extensions.toCamelCase
 import co.infinum.collar.generator.models.Event
-import co.infinum.collar.generator.utils.PathUtils
 import com.squareup.kotlinpoet.*
 import java.nio.file.Paths
 
-class EventsGenerator(private val events: List<Event>, private val outputPath: String) : Generator {
+class EventsGenerator(
+    private val events: List<Event>,
+    private val outputPath: String,
+    private val packageName: String
+) : Generator {
 
     companion object {
         const val EVENTS_CLASS_NAME = "AnalyticsEvent"
@@ -95,10 +98,10 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
             eventsClass.addType(eventClass.build())
         }
 
-        val file = FileSpec.builder(PathUtils.getPackageFromPath(outputPath), EVENTS_CLASS_NAME)
+        val file = FileSpec.builder(packageName, EVENTS_CLASS_NAME)
             .addType(eventsClass.build())
             .build()
 
-        file.writeTo(Paths.get(PathUtils.getOutputFromPath(outputPath)))
+        file.writeTo(Paths.get(outputPath))
     }
 }
