@@ -32,7 +32,14 @@ compileTestKotlin {
 }
 
 dependencies {
-    implementation packages.kotlin.core
+    compileOnly packages.kotlin.core
+    compileOnly "com.android.tools.lint:lint-api:26.6.1"
+}
+
+jar {
+    manifest {
+        attributes("Lint-Registry-v2": "co.infinum.collar.lint.registries.ScreenNameRegistry")
+    }
 }
 
 apply from: "bintray.gradle"

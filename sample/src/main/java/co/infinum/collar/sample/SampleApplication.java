@@ -26,21 +26,21 @@ public class SampleApplication extends Application {
             @Override
             public void onScreen(@NotNull Screen screen) {
                 super.onScreen(screen);
-                // Send your screen views to Firebase, Amplitude, Fabric, Mixpanel, ...
+                // Send your screen views to Firebase, Amplitude, Mixpanel, ...
                 Log.d("onScreen", screen.toString());
             }
 
             @Override
             public void onEvent(@NotNull Event event) {
                 super.onEvent(event);
-                // Send your events to Firebase, Amplitude, Fabric, Mixpanel, ...
+                // Send your events to Firebase, Amplitude, Mixpanel, ...
                 Log.d("onEvent", event.toString());
             }
 
             @Override
             public void onProperty(@NotNull Property property) {
                 super.onProperty(property);
-                // Send your user properties to Firebase, Amplitude, Fabric, Mixpanel, ...
+                // Send your user properties to Firebase, Amplitude, Mixpanel, ...
                 Log.d("onProperty", property.toString());
             }
         });

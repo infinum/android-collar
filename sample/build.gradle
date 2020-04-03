@@ -69,10 +69,11 @@ dependencies {
     implementation "androidx.fragment:fragment:1.2.2"
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation packages.collar.ui
+    lintChecks project(":lint")
 }
 
 collar {
-    version "1.1.0"
+    version "1.1.1"
     extended true
     fileName = "example.json"
     packageName = "co.infinum.collar.sample.analytics"
