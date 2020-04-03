@@ -1,4 +1,4 @@
-package co.infinum.generator.generators
+package co.infinum.collar.generator.generators
 
 interface Generator {
 

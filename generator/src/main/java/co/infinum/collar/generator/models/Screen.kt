@@ -1,4 +1,4 @@
-package co.infinum.generator.models
+package co.infinum.collar.generator.models
 
 data class Screen(
     val name: String,

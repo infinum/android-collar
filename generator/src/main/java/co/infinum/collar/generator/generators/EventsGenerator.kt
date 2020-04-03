@@ -1,8 +1,8 @@
-package co.infinum.generator.generators
+package co.infinum.collar.generator.generators
 
-import co.infinum.generator.extensions.toCamelCase
-import co.infinum.generator.models.Event
-import co.infinum.generator.utils.PathUtils
+import co.infinum.collar.generator.extensions.toCamelCase
+import co.infinum.collar.generator.models.Event
+import co.infinum.collar.generator.utils.PathUtils
 import com.squareup.kotlinpoet.*
 import java.nio.file.Paths
 

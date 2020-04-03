@@ -1,10 +1,10 @@
-package co.infinum.generator.generators
+package co.infinum.collar.generator.generators
 
-import co.infinum.generator.extensions.hasDigit
-import co.infinum.generator.extensions.toCamelCase
-import co.infinum.generator.models.DataType
-import co.infinum.generator.models.ListType
-import co.infinum.generator.models.Property
+import co.infinum.collar.generator.extensions.hasDigit
+import co.infinum.collar.generator.extensions.toCamelCase
+import co.infinum.collar.generator.models.DataType
+import co.infinum.collar.generator.models.ListType
+import co.infinum.collar.generator.models.Property
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName

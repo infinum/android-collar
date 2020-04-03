@@ -1,4 +1,4 @@
-package co.infinum.generator.utils
+package co.infinum.collar.generator.utils
 
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

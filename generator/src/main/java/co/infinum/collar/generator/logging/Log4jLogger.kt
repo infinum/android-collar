@@ -1,4 +1,4 @@
-package co.infinum.generator.logging
+package co.infinum.collar.generator.logging
 
 import org.apache.logging.log4j.LogManager
 

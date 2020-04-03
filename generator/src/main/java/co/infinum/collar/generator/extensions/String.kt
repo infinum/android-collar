@@ -1,4 +1,4 @@
-package co.infinum.generator.extensions
+package co.infinum.collar.generator.extensions
 
 fun String.toCamelCase(): String = split(" ").map { it.capitalize() }.joinToString("")
 

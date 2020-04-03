@@ -1,11 +1,11 @@
-package co.infinum.generator.generators
+package co.infinum.collar.generator.generators
 
-import co.infinum.generator.extensions.toCamelCase
-import co.infinum.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PACKAGE
-import co.infinum.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PROPERTY_NAME
-import co.infinum.generator.generators.Generator.Companion.COLLAR_ANNOTATION_USER_PROPERTIES
-import co.infinum.generator.models.Property
-import co.infinum.generator.utils.PathUtils
+import co.infinum.collar.generator.extensions.toCamelCase
+import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PACKAGE
+import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PROPERTY_NAME
+import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_USER_PROPERTIES
+import co.infinum.collar.generator.models.Property
+import co.infinum.collar.generator.utils.PathUtils
 import com.squareup.kotlinpoet.*
 import java.nio.file.Paths
 

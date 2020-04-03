@@ -1,7 +1,7 @@
-package co.infinum.generator.generators
+package co.infinum.collar.generator.generators
 
-import co.infinum.generator.models.Screen
-import co.infinum.generator.utils.PathUtils
+import co.infinum.collar.generator.models.Screen
+import co.infinum.collar.generator.utils.PathUtils
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec

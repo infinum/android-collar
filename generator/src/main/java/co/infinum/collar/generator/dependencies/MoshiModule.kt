@@ -1,4 +1,4 @@
-package co.infinum.generator.dependencies
+package co.infinum.collar.generator.dependencies
 
 import com.squareup.moshi.Moshi
 

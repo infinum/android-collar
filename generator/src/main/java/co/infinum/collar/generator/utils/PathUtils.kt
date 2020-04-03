@@ -1,4 +1,4 @@
-package co.infinum.generator.utils
+package co.infinum.collar.generator.utils
 
 object PathUtils {
 

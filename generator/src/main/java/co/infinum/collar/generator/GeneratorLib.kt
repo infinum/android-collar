@@ -1,14 +1,14 @@
-package co.infinum.generator
+package co.infinum.collar.generator
 
-import co.infinum.generator.dependencies.MoshiModule
-import co.infinum.generator.generators.EventsGenerator
-import co.infinum.generator.generators.ScreensGenerator
-import co.infinum.generator.generators.UserPropertiesGenerator
-import co.infinum.generator.logging.Log4jLogger
-import co.infinum.generator.logging.Logger
-import co.infinum.generator.models.AnalyticsModel
-import co.infinum.generator.utils.FileUtils
-import co.infinum.generator.utils.SynchronousExecutor
+import co.infinum.collar.generator.dependencies.MoshiModule
+import co.infinum.collar.generator.generators.EventsGenerator
+import co.infinum.collar.generator.generators.ScreensGenerator
+import co.infinum.collar.generator.generators.UserPropertiesGenerator
+import co.infinum.collar.generator.logging.Log4jLogger
+import co.infinum.collar.generator.logging.Logger
+import co.infinum.collar.generator.models.AnalyticsModel
+import co.infinum.collar.generator.utils.FileUtils
+import co.infinum.collar.generator.utils.SynchronousExecutor
 import com.squareup.moshi.JsonAdapter
 
 class GeneratorLib(
