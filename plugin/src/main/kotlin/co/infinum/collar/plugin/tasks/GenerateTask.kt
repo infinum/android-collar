@@ -23,22 +23,22 @@ open class GenerateTask : BaseTask() {
                 Exception("Task generate failed; outputPath should be specified")
             )
         }
-        taskUtils.logger.logWarning("Extension file path:")
-        taskUtils.logger.logWarning(extension.filePath)
-        taskUtils.logger.logWarning("Files will be generated on path:")
-        taskUtils.logger.logWarning(extension.outputPath)
+        println("Extension file path:")
+        println(extension.filePath)
+        println("Files will be generated on path:")
+        println(extension.outputPath)
         try {
-            if(generatorLib.generate(extension.filePath, extension.outputPath)) {
-                taskUtils.logger.logSuccess("Done! Files are generated")
+            if (generatorLib.generate(extension.filePath, extension.outputPath)) {
+                println("Done! Files are generated")
             } else {
-                taskUtils.logger.logError("Task generate failed;")
+                println("Task generate failed;")
                 throw  TaskExecutionException(
                     this,
                     Exception("Task generate failed;")
                 )
             }
         } catch (e: Exception) {
-            taskUtils.logger.logDebug(e.stackTrace.toString())
+            println(e.stackTrace.toString())
             throw  TaskExecutionException(
                 this,
                 Exception("Task generate failed;")

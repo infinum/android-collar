@@ -24,8 +24,6 @@ apply plugin: 'maven-publish'
 dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.poet
-    implementation packages.log4j.api
-    implementation packages.log4j.core
     implementation 'com.squareup.moshi:moshi:1.8.0'
 }
 
