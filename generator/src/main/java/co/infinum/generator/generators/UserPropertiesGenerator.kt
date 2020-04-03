@@ -1,20 +1,15 @@
 package co.infinum.generator.generators
 
-import co.infinum.collar.annotations.PropertyName
-import co.infinum.collar.annotations.UserProperties
 import co.infinum.generator.extensions.toCamelCase
+import co.infinum.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PACKAGE
+import co.infinum.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PROPERTY_NAME
+import co.infinum.generator.generators.Generator.Companion.COLLAR_ANNOTATION_USER_PROPERTIES
 import co.infinum.generator.models.Property
 import co.infinum.generator.utils.PathUtils
-import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.*
 import java.nio.file.Paths
 
-class UserPropertiesGenerator(private val userProperties: List<Property>, private val outputPath: String): Generator {
+class UserPropertiesGenerator(private val userProperties: List<Property>, private val outputPath: String) : Generator {
 
     companion object {
         const val USER_PROPERTY_CLASS_NAME = "UserProperty"
@@ -24,13 +19,14 @@ class UserPropertiesGenerator(private val userProperties: List<Property>, privat
 
     override fun generate() {
         val userPropertiesClass = TypeSpec.classBuilder(USER_PROPERTY_CLASS_NAME).apply {
-            addAnnotation(UserProperties::class)
+            addAnnotation(ClassName(COLLAR_ANNOTATION_PACKAGE, COLLAR_ANNOTATION_USER_PROPERTIES))
             addModifiers(KModifier.SEALED)
         }
 
         userProperties.forEach { userProperty ->
             val name = userProperty.name.toCamelCase()
-            val propertyNameAnnotation = AnnotationSpec.builder(PropertyName::class)
+            val propertyNameClassName = ClassName(COLLAR_ANNOTATION_PACKAGE, COLLAR_ANNOTATION_PROPERTY_NAME)
+            val propertyNameAnnotation = AnnotationSpec.builder(propertyNameClassName)
                 .addMember(PROPERTY_NAME_ANNOTATION_FORMAT, userProperty.name).build()
 
             val userPropertyClass = TypeSpec.classBuilder(name).apply {

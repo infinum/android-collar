@@ -1,19 +1,9 @@
 package co.infinum.generator.generators
 
-import co.infinum.collar.annotations.AnalyticsEvents
-import co.infinum.collar.annotations.EventName
-import co.infinum.collar.annotations.EventParameterName
 import co.infinum.generator.extensions.toCamelCase
 import co.infinum.generator.models.Event
 import co.infinum.generator.utils.PathUtils
-import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.ParameterSpec
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.*
 import java.nio.file.Paths
 
 class EventsGenerator(private val events: List<Event>, private val outputPath: String) : Generator {
@@ -26,7 +16,7 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
 
     override fun generate() {
         val eventsClass = TypeSpec.classBuilder(EVENTS_CLASS_NAME).apply {
-            addAnnotation(AnalyticsEvents::class)
+            addAnnotation(ClassName(Generator.COLLAR_ANNOTATION_PACKAGE, Generator.COLLAR_ANNOTATION_ANALYTICS_EVENTS))
             addModifiers(KModifier.SEALED)
         }
 
@@ -36,7 +26,8 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
             val constructorBuilder = FunSpec.constructorBuilder()
 
             event.parameters.forEach {
-                val constructorParamAnnotation = AnnotationSpec.builder(EventParameterName::class)
+                val eventParameterName = ClassName(Generator.COLLAR_ANNOTATION_PACKAGE, Generator.COLLAR_ANNOTATION_EVENT_PARAMETER_NAME)
+                val constructorParamAnnotation = AnnotationSpec.builder(eventParameterName)
                     .addMember(EVENT_PARAMETER_NAME_ANNOTATION_FORMAT, it.name).build()
 
                 val type = GeneratorUtils.getClassName(it)
@@ -96,7 +87,7 @@ class EventsGenerator(private val events: List<Event>, private val outputPath: S
                 addKdoc(event.description)
                 superclass(ClassName("", EVENTS_CLASS_NAME))
                 addAnnotation(
-                    AnnotationSpec.builder(EventName::class)
+                    AnnotationSpec.builder(ClassName(Generator.COLLAR_ANNOTATION_PACKAGE, Generator.COLLAR_ANNOTATION_EVENT_NAME))
                         .addMember(EVENT_NAME_ANNOTATION_FORMAT, event.name).build()
                 )
             }

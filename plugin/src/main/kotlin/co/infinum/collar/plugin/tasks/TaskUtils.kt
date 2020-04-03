@@ -1,8 +1,7 @@
 package co.infinum.collar.plugin.tasks
 
 import co.infinum.generator.logging.Logger
-import java.util.NoSuchElementException
-import java.util.Scanner
+import java.util.*
 
 class TaskUtils(val logger: Logger) {
 
@@ -11,7 +10,7 @@ class TaskUtils(val logger: Logger) {
     fun parameterOrDefault(parameter: String?, defaultValue: String): String {
         return if (parameter.isNullOrEmpty()) defaultValue else parameter
     }
-
+    
     fun logWarning(message: String, prefix: String = "", suffix: String = "") {
         logger.logWarning(getFormattedString(message, prefix, suffix))
     }
