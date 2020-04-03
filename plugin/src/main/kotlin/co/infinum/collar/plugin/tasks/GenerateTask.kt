@@ -22,15 +22,16 @@ open class GenerateTask : BaseTask() {
             )
         }
 
+        println("Files will be generated on path:")
+        val outputPath = "${project.projectDir}/src/${extension.module}/kotlin/"
+        println(outputPath)
+
         println("Extension file path:")
-        println(extension.filePath)
+        val filePath = "${project.projectDir}/${extension.fileName}"
+        println(filePath)
 
         try {
-            println("Files will be generated on path:")
-            val outputPath = "${project.projectDir}/src/${extension.module}/kotlin/"
-            println(outputPath)
-
-            if (generatorLib.generate(extension.filePath, outputPath, extension.packageName)) {
+            if (generatorLib.generate(filePath, outputPath, extension.packageName)) {
                 println("Done! Files are generated")
             } else {
                 println("Task generate failed;")

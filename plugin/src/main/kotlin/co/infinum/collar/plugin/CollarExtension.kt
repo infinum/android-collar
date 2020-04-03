@@ -4,7 +4,7 @@ open class CollarExtension {
 
     open var version = "1.1.0"
     open var extended = true
-    open var filePath = ""
+    open var fileName = ""
     open var module = "main"
     open var packageName = ""
 }
@@ -12,7 +12,7 @@ open class CollarExtension {
 fun CollarExtension.checkIfValid(): List<String> {
     val errors = mutableListOf<String>()
 
-    if (filePath.isBlank()) {
+    if (fileName.isBlank()) {
         errors.add("filePath should be specified")
     }
 

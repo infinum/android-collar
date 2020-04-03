@@ -74,6 +74,6 @@ dependencies {
 collar {
     version "1.1.0"
     extended true
-    filePath = "${project.projectDir}/example.json"
+    fileName = "example.json"
     packageName = "co.infinum.collar.sample.analytics"
 }
