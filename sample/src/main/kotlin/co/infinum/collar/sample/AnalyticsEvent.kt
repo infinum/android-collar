@@ -12,7 +12,9 @@ sealed class AnalyticsEvent {
     data class Event2(
 
         @EventParameterName("user_id")
-        val uuid: String
+        val uuid: String,
+
+        val dayTime: Int
 
     ) : AnalyticsEvent()
 
@@ -23,7 +25,10 @@ sealed class AnalyticsEvent {
     data class Event4(
 
         @EventParameterName("user_uuid")
-        val UUID: String
+        val UUID: String,
+
+        val userType: String
 
     ) : AnalyticsEvent()
 }
+

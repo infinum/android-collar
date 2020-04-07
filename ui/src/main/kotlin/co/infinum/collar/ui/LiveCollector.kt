@@ -2,6 +2,7 @@ package co.infinum.collar.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.CallSuper
 import co.infinum.collar.Collector
 import co.infinum.collar.Event
@@ -70,8 +71,29 @@ open class LiveCollector(
         val iterator = ks.iterator()
         while (iterator.hasNext()) {
             val key = iterator.next()
-            if (bundle.getString(key).isNullOrBlank().not()) {
-                map[key] = bundle.getString(key).orEmpty()
+            val value = bundle.get(key)
+            val valueAsString = value?.let {
+                when (value) {
+                    is String -> bundle.getString(key)
+                    is Boolean -> bundle.getBoolean(key).toString()
+                    is Byte -> bundle.getByte(key).toString()
+                    is Char -> bundle.getChar(key).toString()
+                    is Double -> bundle.getDouble(key).toString()
+                    is Float -> bundle.getFloat(key).toString()
+                    is Int -> bundle.getInt(key).toString()
+                    is Long -> bundle.getLong(key).toString()
+                    is Short -> bundle.getShort(key).toString()
+                    else -> {
+                        Log.w(CollarUi.javaClass.simpleName, "Illegal value type ${value.javaClass.canonicalName} for key \"$key\"")
+                        ""
+                    }
+                }
+            }.orEmpty()
+
+            if (valueAsString.isBlank().not()) {
+                map[key] = valueAsString
+            } else {
+                Log.w(CollarUi.javaClass.simpleName, "Value for key \"$key\" is empty")
             }
         }
         return map.toList().joinToString("\n") { "${it.first} = ${it.second}" }

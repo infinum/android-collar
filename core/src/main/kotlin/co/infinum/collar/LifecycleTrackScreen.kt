@@ -1,5 +1,3 @@
-@file:Suppress("ClassName")
-
 package co.infinum.collar
 
 import androidx.annotation.RestrictTo
@@ -9,13 +7,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import java.io.Serializable
 
-private object UninitializedValue
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 class LifecycleTrackScreen<out T>(
     private val owner: LifecycleOwner,
     initializer: () -> T
 ) : Lazy<T>, Serializable {
+
+    companion object {
+        private object UninitializedValue
+    }
 
     private var initializer: (() -> T)? = initializer
 
