@@ -5,7 +5,7 @@ open class CollarExtension {
     open var version = "1.1.0"
     open var extended = true
     open var fileName = ""
-    open var module = "main"
+    open var variant = "main"
     open var packageName = ""
 }
 
@@ -16,7 +16,7 @@ fun CollarExtension.checkIfValid(): List<String> {
         errors.add("filePath should be specified")
     }
 
-    if (module.isBlank()) {
+    if (variant.isBlank()) {
         errors.add("module should be specified")
     }
 

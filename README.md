@@ -262,8 +262,9 @@ This library supports code generation from the a JSON formatted file. To do that
 collar {
     version "1.1.0"
     extended true
-    filePath = "${project.projectDir}/src/main/assets/example.json"
-    outputPath = "${project.projectDir}/src/main/kotlin/co/infinum/collar/sample/analytics"
+    fileName = "example.json"
+    packageName = "co.infinum.collar.sample.analytics"
+    variant = "main" //main by default
 }
 ```
 Important: `outputPath` needs to have `/kotlin` or `/java` so we can know how to prepare package values for new generated classes.

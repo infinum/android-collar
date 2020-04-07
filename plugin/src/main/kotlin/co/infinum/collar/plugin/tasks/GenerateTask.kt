@@ -23,7 +23,7 @@ open class GenerateTask : BaseTask() {
         }
 
         println("Files will be generated on path:")
-        val outputPath = "${project.projectDir}/src/${extension.module}/kotlin/"
+        val outputPath = "${project.projectDir}/src/${extension.variant}/kotlin/"
         println(outputPath)
 
         println("Extension file path:")
