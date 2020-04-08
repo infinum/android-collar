@@ -25,7 +25,7 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 
 
-@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.ISOLATING)
+@IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.AGGREGATING)
 class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 
     private val screenNamesSubprocessor: ScreenNamesSubprocessor = ScreenNamesSubprocessor(
@@ -63,12 +63,6 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
     ): Boolean =
         consume {
             screenNamesSubprocessor.process(roundEnv)
-//            annotationProvider.collectScreenNames(roundEnv)
-
-//                .filter(predicate = validateElements())
-//                .map(transform = transformToScreenHolder())
-//                .also(block = processScreenNames())
-//
             analyticsEventsSubprocessor.process(roundEnv)
 //            annotationProvider.collectAnalyticsEvents(roundEnv)
 
@@ -81,29 +75,6 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 //                .mapNotNull(transform = transformToPropertyHolderPair())
 //                .forEach { processUserProperties(it) }
 //        }
-
-//    private fun validateElements(): (Element) -> Boolean = { element ->
-//        if (typeElementValidator.isAllowed(element) != null) {
-//            val screenName = annotationProvider.screenName(element)
-//            if (screenName.length > processorOptions.maxScreenNameSize) {
-//                showWarning("Screen names can be up to ${processorOptions.maxScreenNameSize} characters long. $screenName is ${screenName.length} long.")
-//                false
-//            } else {
-//                true
-//            }
-//        } else {
-//            showWarning("$element is not eligible as a screen.")
-//            false
-//        }
-//    }
-
-//    private fun transformToScreenHolder(): (Element?) -> ScreenHolder = { element ->
-//        ScreenHolder(
-//            typeElement = typeElementValidator.isAllowed(element) as TypeElement,
-//            className = (element as TypeElement).asClassName(),
-//            screenName = annotationProvider.screenName(element)
-//        )
-//    }
 
 //    // TODO: Try to remove Pair from this
 //    private fun transformToEventHolderPair(): (Element) -> Pair<TypeElement, Map<EventHolder, List<EventParameterHolder>>>? = { annotatedElement ->
@@ -124,12 +95,6 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 //        }
 //    }
 
-//    private fun processScreenNames(): (List<ScreenHolder>) -> Unit = { holders ->
-//        if (holders.isNotEmpty()) {
-//            screenNamesExtension(holders)
-//        }
-//    }
-
 //    // TODO: Try to remove Pair from this
 //    private fun processAnalyticsEvents(elementHolderPair: Pair<TypeElement, Map<EventHolder, List<EventParameterHolder>>>) =
 //        when (elementHolderPair.second.values.isEmpty()) {
@@ -143,19 +108,6 @@ class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
 //            true -> showWarning("${elementHolderPair.first} has no valid inner class.")
 //            false -> userPropertiesExtension(className = elementHolderPair.first.asClassName(), holders = elementHolderPair.second)
 //        }
-
-//    private fun screenNamesExtension(screenHolders: List<ScreenHolder>) {
-//        generatedDir?.let { outputDir ->
-//            screenNameSpec {
-//                outputDir(outputDir)
-//                holders(screenHolders)
-//                packageName("co.infinum.collar")
-//                typeElementValidator(typeElementValidator)
-//            }
-//        } ?: run {
-//            showError("Cannot find generated output dir.")
-//        }
-//    }
 
 //    private fun analyticsEventsExtension(className: ClassName, holders: Map<EventHolder, List<EventParameterHolder>>) {
 //        generatedDir?.let { outputDir ->

@@ -16,6 +16,7 @@ class CollarPlugin : Plugin<Project> {
 
     private fun addRepositories(project: Project) {
         with(project.repositories) {
+//            mavenLocal()
             google()
             jcenter()
             mavenCentral()
@@ -26,10 +27,10 @@ class CollarPlugin : Plugin<Project> {
     private fun addDependencies(project: Project, settings: CollarExtension) {
         with(project.dependencies) {
             if (settings.extended) {
-                add("implementation", "androidx.core:core-ktx:1.2.0")
+//                add("implementation", "androidx.core:core-ktx:1.2.0")
             }
-            add("implementation", "co.infinum.collar:collar-core:${settings.version}")
-            add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
+//            add("implementation", "co.infinum.collar:collar-core:${settings.version}")
+//            add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
         }
     }
 

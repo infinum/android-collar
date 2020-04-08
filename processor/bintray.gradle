@@ -15,6 +15,7 @@ task sourcesJar(type: Jar, dependsOn: assemble) {
 
 task javadocs(type: Javadoc) {
     source = sourceSets.main.allSource
+    excludes = ['**/META-INF/services/**']
 }
 
 task javadocsJar(type: Jar, dependsOn: javadocs) {

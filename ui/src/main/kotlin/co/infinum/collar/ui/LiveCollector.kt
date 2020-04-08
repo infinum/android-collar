@@ -1,8 +1,6 @@
 package co.infinum.collar.ui
 
 import android.content.Context
-import android.os.Bundle
-import android.util.Log
 import androidx.annotation.CallSuper
 import co.infinum.collar.Collector
 import co.infinum.collar.Event
@@ -13,7 +11,7 @@ import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.data.room.repository.EntityRepository
 
 open class LiveCollector(
-    context: Context,
+    private val context: Context,
     private val showNotification: Boolean = true
 ) : Collector {
 
@@ -63,6 +61,4 @@ open class LiveCollector(
             notificationProvider.showProperty(entity)
         }
     }
-
-
 }
