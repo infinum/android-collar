@@ -10,19 +10,21 @@ class ScreenNamesValidator(
 ) : Validator<ScreenHolder> {
 
     override fun validate(elements: Set<ScreenHolder>): Set<ScreenHolder> =
-        elements
-            .filter { it.enabled }
-            .filter { holder ->
-                holder.superClassName?.let {
-                    val screenName = holder.screenName
-                    if (screenName.length > processorOptions.maxNameSize()) {
-                        onWarning("Screen names can be up to ${processorOptions.maxNameSize()} characters long. $screenName is ${screenName.length} long.")
+        elements.filter { holder ->
+                if (holder.enabled) {
+                    holder.superClassName?.let {
+                        val screenName = holder.screenName
+                        if (screenName.length > processorOptions.maxNameSize()) {
+                            onWarning("Screen names can be up to ${processorOptions.maxNameSize()} characters long. $screenName is ${screenName.length} long.")
+                            false
+                        } else {
+                            true
+                        }
+                    } ?: run {
+                        onError("${holder.className.simpleName} is not eligible as a screen.")
                         false
-                    } else {
-                        true
                     }
-                } ?: run {
-                    onError("${holder.className.simpleName} is not eligible as a screen.")
+                } else {
                     false
                 }
             }
