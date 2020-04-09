@@ -3,6 +3,7 @@ package co.infinum.processor.collectors
 import co.infinum.collar.annotations.AnalyticsEvents
 import co.infinum.collar.annotations.EventName
 import co.infinum.collar.annotations.EventParameterName
+import co.infinum.processor.extensions.constructorParameters
 import co.infinum.processor.extensions.toLowerSnakeCase
 import co.infinum.processor.models.AnalyticsEventsHolder
 import co.infinum.processor.models.EventHolder
@@ -11,7 +12,6 @@ import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.metadata.ImmutableKmValueParameter
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import com.squareup.kotlinpoet.metadata.hasAnnotations
-import com.squareup.kotlinpoet.metadata.toImmutableKmClass
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
@@ -47,13 +47,7 @@ class AnalyticsEventsCollector(
                                 type = enclosedClass.asType(),
                                 className = enclosedClass.asClassName(),
                                 eventName = name(enclosedClass),
-                                eventParameters = enclosedClass
-                                    .getAnnotation(Metadata::class.java)
-                                    .toImmutableKmClass()
-                                    .constructors
-                                    .firstOrNull()
-                                    ?.valueParameters
-                                    .orEmpty()
+                                eventParameters = enclosedClass.constructorParameters()
                                     .map { valueParameter ->
                                         EventParameterHolder(
                                             enabled = parameterEnabled(valueParameter),

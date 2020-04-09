@@ -8,6 +8,7 @@ import co.infinum.collar.annotations.EventParameterName
 @AnalyticsEvents
 sealed class AnalyticsEvent {
 
+    @EventName(enabled = true)
     data class Event1(
         val myString: String,
         val myBoolean: Boolean,

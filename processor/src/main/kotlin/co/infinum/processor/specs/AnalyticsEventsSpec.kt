@@ -66,6 +66,7 @@ class AnalyticsEventsSpec private constructor(
 
     override fun build(): FileSpec =
         file().toBuilder().apply {
+            val hasDisabledEvents = holders.any { it.enabled }
             val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_EVENT)
                 .addParameter(PARAMETER_NAME_EVENT, ClassName(packageName, simpleName))
                 .addStatement("val %L: %T", PARAMETER_NAME_EVENT_NAME, String::class)
@@ -110,15 +111,39 @@ class AnalyticsEventsSpec private constructor(
 
                 extensionFunSpecBuilder.addCode(codeBlock)
             }
-            extensionFunSpecBuilder.endControlFlow()
-                .addStatement(
-                    "%T.%L(%L, %L)",
-                    CLASS_COLLAR,
-                    FUNCTION_NAME_TRACK_EVENT,
-                    PARAMETER_NAME_EVENT_NAME,
-                    PARAMETER_NAME_PARAMS
+            if (hasDisabledEvents) {
+                extensionFunSpecBuilder.addCode(
+                    CodeBlock.builder()
+                        .addStatement("else -> {")
+                        .indent()
+                        .addStatement("%L = %S", PARAMETER_NAME_EVENT_NAME, "")
+                        .addStatement("%L = %T()", PARAMETER_NAME_PARAMS, FUNCTION_BUNDLE_OF)
+                        .unindent()
+                        .addStatement("}")
+                        .build()
                 )
-
+            }
+            extensionFunSpecBuilder.endControlFlow()
+            extensionFunSpecBuilder.addCode(
+                CodeBlock.builder().apply {
+                    if (hasDisabledEvents) {
+                        addStatement("if (%L.isNotBlank()) {", PARAMETER_NAME_EVENT_NAME)
+                        indent()
+                    }
+                    addStatement(
+                        "%T.%L(%L, %L)",
+                        CLASS_COLLAR,
+                        FUNCTION_NAME_TRACK_EVENT,
+                        PARAMETER_NAME_EVENT_NAME,
+                        PARAMETER_NAME_PARAMS
+                    )
+                    if (hasDisabledEvents) {
+                        unindent()
+                        addStatement("}")
+                    }
+                }
+                    .build()
+            )
             addFunction(extensionFunSpecBuilder.build())
         }.build()
 }

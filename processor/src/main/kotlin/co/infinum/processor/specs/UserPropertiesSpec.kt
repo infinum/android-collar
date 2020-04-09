@@ -63,6 +63,7 @@ class UserPropertiesSpec private constructor(
 
     override fun build(): FileSpec =
         file().toBuilder().apply {
+            val hasDisabledProperties = holders.any { it.enabled }
             val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_PROPERTY)
                 .addParameter(PARAMETER_NAME_PROPERTY, ClassName(packageName, simpleName))
                 .addStatement("val %L: %T", PARAMETER_NAME_PROPERTY_NAME, String::class)
@@ -89,15 +90,39 @@ class UserPropertiesSpec private constructor(
 
                 extensionFunSpecBuilder.addCode(codeBlock)
             }
-            extensionFunSpecBuilder.endControlFlow()
-                .addStatement(
-                    "%T.%L(%L, %L)",
-                    CLASS_COLLAR,
-                    FUNCTION_NAME_TRACK_PROPERTY,
-                    PARAMETER_NAME_PROPERTY_NAME,
-                    PARAMETER_NAME_PROPERTY_VALUE
+            if (hasDisabledProperties) {
+                extensionFunSpecBuilder.addCode(
+                    CodeBlock.builder()
+                        .addStatement("else -> {")
+                        .indent()
+                        .addStatement("%L = %S", PARAMETER_NAME_PROPERTY_NAME, "")
+                        .addStatement("%L = %S", PARAMETER_NAME_PROPERTY_VALUE, "")
+                        .unindent()
+                        .addStatement("}")
+                        .build()
                 )
-
+            }
+            extensionFunSpecBuilder.endControlFlow()
+            extensionFunSpecBuilder.addCode(
+                CodeBlock.builder().apply {
+                    if (hasDisabledProperties) {
+                        addStatement("if (%L.isNotBlank()) {", PARAMETER_NAME_PROPERTY_NAME)
+                        indent()
+                    }
+                    addStatement(
+                        "%T.%L(%L, %L)",
+                        CLASS_COLLAR,
+                        FUNCTION_NAME_TRACK_PROPERTY,
+                        PARAMETER_NAME_PROPERTY_NAME,
+                        PARAMETER_NAME_PROPERTY_VALUE
+                    )
+                    if (hasDisabledProperties) {
+                        unindent()
+                        addStatement("}")
+                    }
+                }
+                    .build()
+            )
             addFunction(extensionFunSpecBuilder.build())
         }.build()
 }

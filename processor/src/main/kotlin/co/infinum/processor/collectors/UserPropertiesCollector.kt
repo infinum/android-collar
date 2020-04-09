@@ -2,6 +2,7 @@ package co.infinum.processor.collectors
 
 import co.infinum.collar.annotations.PropertyName
 import co.infinum.collar.annotations.UserProperties
+import co.infinum.processor.extensions.constructorParameterNames
 import co.infinum.processor.extensions.toLowerSnakeCase
 import co.infinum.processor.models.PropertyHolder
 import co.infinum.processor.models.UserPropertiesHolder
@@ -29,23 +30,18 @@ class UserPropertiesCollector(
             .map {
                 UserPropertiesHolder(
                     rootClass = it,
-                    propertyHolders = it.enclosedElements.orEmpty().filterIsInstance<TypeElement>().map { enclosedClass ->
-                        PropertyHolder(
-                            enabled = enabled(enclosedClass),
-                            type = enclosedClass.asType(),
-                            className = enclosedClass.asClassName(),
-                            propertyName = name(enclosedClass),
-                            propertyParameterNames = enclosedClass
-                                .getAnnotation(Metadata::class.java)
-                                .toImmutableKmClass()
-                                .constructors
-                                .firstOrNull()
-                                ?.valueParameters
-                                .orEmpty()
-                                .map { valueParameter -> valueParameter.name }
-                                .toSet()
-                        )
-                    }.toSet()
+                    propertyHolders = it.enclosedElements
+                        .orEmpty()
+                        .filterIsInstance<TypeElement>()
+                        .map { enclosedClass ->
+                            PropertyHolder(
+                                enabled = enabled(enclosedClass),
+                                type = enclosedClass.asType(),
+                                className = enclosedClass.asClassName(),
+                                propertyName = name(enclosedClass),
+                                propertyParameterNames = enclosedClass.constructorParameterNames().toSet()
+                            )
+                        }.toSet()
                 )
             }
             .toSet()

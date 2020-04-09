@@ -9,7 +9,7 @@ import co.infinum.collar.ui.CollarUi
 import kotlinx.android.synthetic.main.fragment_child_kotlin.*
 import java.util.UUID
 
-@ScreenName(value = KotlinScreenNames.CHILD_SCREEN)
+@ScreenName(value = KotlinScreenNames.CHILD_SCREEN, enabled = false)
 class KotlinChildFragment : Fragment(R.layout.fragment_child_kotlin) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
