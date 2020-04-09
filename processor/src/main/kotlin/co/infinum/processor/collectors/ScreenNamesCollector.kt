@@ -30,7 +30,7 @@ class ScreenNamesCollector(
                 ScreenHolder(
                     enabled = enabled(it),
                     superClassName = superClassName(it),
-                    className = (it as TypeElement).asClassName(),
+                    className = (it as TypeElement).asClassName(), // TODO: Possible issue here if element is not a class
                     screenName = name(it)
                 )
             }

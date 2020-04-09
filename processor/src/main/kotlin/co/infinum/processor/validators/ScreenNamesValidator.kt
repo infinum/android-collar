@@ -13,7 +13,6 @@ class ScreenNamesValidator(
         elements
             .filter { it.enabled }
             .filter { holder ->
-                onWarning(holder.toString())
                 holder.superClassName?.let {
                     val screenName = holder.screenName
                     if (screenName.length > processorOptions.maxNameSize()) {

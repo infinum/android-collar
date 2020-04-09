@@ -15,8 +15,6 @@ import java.io.File
 
 class ScreenNameSpec private constructor(
     outputDir: File,
-    private val packageName: String,
-    private val simpleName: String,
     private val holders: Set<ScreenHolder>
 ) : Spec {
 
@@ -31,15 +29,11 @@ class ScreenNameSpec private constructor(
 
     open class Builder(
         private var outputDir: File? = null,
-        private var packageName: String = DEFAULT_PACKAGE_NAME,
-        private var simpleName: String = DEFAULT_SIMPLE_NAME,
         private var holders: Set<ScreenHolder> = setOf()
     ) {
         fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
-        fun packageName(packageName: String) = apply { this.packageName = packageName }
-        fun simpleName(simpleName: String) = apply { this.simpleName = simpleName }
         fun holders(holders: Set<ScreenHolder>) = apply { this.holders = holders }
-        fun build() = ScreenNameSpec(outputDir!!, packageName, simpleName, holders)
+        fun build() = ScreenNameSpec(outputDir!!, holders)
     }
 
     init {
@@ -47,14 +41,14 @@ class ScreenNameSpec private constructor(
     }
 
     override fun file(): FileSpec =
-        FileSpec.builder(packageName, simpleName)
+        FileSpec.builder(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME)
             .addAnnotation(jvmName())
             .addComment(comment().toString())
             .build()
 
     override fun jvmName(): AnnotationSpec =
         AnnotationSpec.builder(JvmName::class.java)
-            .addMember("%S", "${CLASS_COLLAR.simpleName}$simpleName")
+            .addMember("%S", "${CLASS_COLLAR.simpleName}$DEFAULT_SIMPLE_NAME")
             .build()
 
     override fun comment(): CodeBlock =
@@ -78,18 +72,16 @@ class ScreenNameSpec private constructor(
                 extensionFunSpecBuilder
                     .receiver(mapEntry.key)
                     .beginControlFlow("when (this) {")
-
-                val codeBlockBuilder = CodeBlock.builder()
-                    .indent()
-                for (screenHolder in mapEntry.value) {
-                    codeBlockBuilder.addStatement("is %T -> %S", screenHolder.className, screenHolder.screenName)
-                }
-                codeBlockBuilder.addStatement("else -> null")
-                codeBlockBuilder.unindent()
-                codeBlockBuilder.unindent()
-                codeBlockBuilder.add("}?")
-
-                extensionFunSpecBuilder.addCode(codeBlockBuilder.build())
+                extensionFunSpecBuilder.addCode(
+                    CodeBlock.builder().apply {
+                        indent()
+                        mapEntry.value.forEach { addStatement("is %T -> %S", it.className, it.screenName) }
+                        addStatement("else -> null")
+                        unindent()
+                        unindent()
+                        add("}?")
+                    }.build()
+                )
 
                 when (mapEntry.key) {
                     CLASS_COMPONENT_ACTIVITY -> {
@@ -122,8 +114,7 @@ class ScreenNameSpec private constructor(
                     }
                 }
                 extensionFunSpecBuilder.build()
-            }
-                .forEach { addFunction(it) }
+            }.forEach { addFunction(it) }
         }.build()
 
     private fun checkForDeprecation(fileSpec: FileSpec.Builder, holdersMap: Map<ClassName, List<ScreenHolder>>) =

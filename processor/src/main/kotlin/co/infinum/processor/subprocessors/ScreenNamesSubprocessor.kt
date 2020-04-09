@@ -39,7 +39,6 @@ class ScreenNamesSubprocessor(
                         screenNameSpec {
                             outputDir(outputDir)
                             holders(it)
-                            packageName("co.infinum.collar")
                         }
                     } ?: run {
                         onError("Cannot find generated output dir.")

@@ -1,7 +1,6 @@
 package co.infinum.processor.specs
 
 import co.infinum.processor.models.PropertyHolder
-import co.infinum.processor.models.PropertyParameterHolder
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -13,7 +12,7 @@ class UserPropertiesSpec private constructor(
     outputDir: File,
     private val packageName: String,
     private val simpleName: String,
-    private val holders: Map<PropertyHolder, List<PropertyParameterHolder>>
+    private val holders: Set<PropertyHolder>
 ) : Spec {
 
     companion object {
@@ -25,18 +24,18 @@ class UserPropertiesSpec private constructor(
         private const val PARAMETER_NAME_PROPERTY_NAME = "name"
         private const val PARAMETER_NAME_PROPERTY_VALUE = "value"
 
-        private const val DEFAULT_PACKAGE_NAME = ""
+        private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
         private const val DEFAULT_SIMPLE_NAME = "UserProperties"
     }
 
     open class Builder(
         private var outputDir: File? = null,
         private var className: ClassName = ClassName(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME),
-        private var holders: Map<PropertyHolder, List<PropertyParameterHolder>> = mapOf()
+        private var holders: Set<PropertyHolder> = setOf()
     ) {
         fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
         fun className(className: ClassName) = apply { this.className = className }
-        fun holders(holders: Map<PropertyHolder, List<PropertyParameterHolder>>) = apply { this.holders = holders }
+        fun holders(holders: Set<PropertyHolder>) = apply { this.holders = holders }
         fun build() = UserPropertiesSpec(outputDir!!, className.packageName, className.simpleName, holders)
     }
 
@@ -69,20 +68,20 @@ class UserPropertiesSpec private constructor(
                 .addStatement("val %L: %T", PARAMETER_NAME_PROPERTY_NAME, String::class)
                 .addStatement("val %L: %T", PARAMETER_NAME_PROPERTY_VALUE, String::class)
                 .beginControlFlow("when (%L)", PARAMETER_NAME_PROPERTY)
-            for ((declaredUserProperty, propertyParamList) in holders) {
+            holders.forEach {
                 val codeBlock = CodeBlock.builder()
-                    .addStatement("is %T -> {", declaredUserProperty.className)
+                    .addStatement("is %T -> {", it.className)
                     .indent()
                     .addStatement(
                         "%L = %S",
                         PARAMETER_NAME_PROPERTY_NAME,
-                        declaredUserProperty.resolvedName
+                        it.propertyName
                     )
                     .addStatement(
                         "%L = %L.%L",
                         PARAMETER_NAME_PROPERTY_VALUE,
                         PARAMETER_NAME_PROPERTY,
-                        propertyParamList.first().variableName
+                        it.propertyParameterNames.first()
                     )
                     .unindent()
                     .addStatement("}")

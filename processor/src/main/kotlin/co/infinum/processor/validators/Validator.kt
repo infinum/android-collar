@@ -5,7 +5,7 @@ import javax.lang.model.element.TypeElement
 
 interface Validator<Holder> {
 
-    fun verify(element: Element): TypeElement? = throw UnsupportedOperationException()
+    fun verify(element: Element): Boolean = throw UnsupportedOperationException()
 
     fun supported(): List<TypeElement> = throw UnsupportedOperationException()
 
