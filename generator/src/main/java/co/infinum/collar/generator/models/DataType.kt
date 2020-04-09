@@ -4,8 +4,7 @@ enum class DataType {
     TEXT,
     NUMBER,
     DECIMAL,
-    BOOLEAN,
-    LIST;
+    BOOLEAN;
 
     override fun toString(): String {
         return super.toString().toLowerCase()

@@ -1,7 +1,8 @@
 package co.infinum.collar.generator.models
 
-data class Event(
+data class Parameter(
     val name: String,
     val description: String,
-    val parameters: List<Parameter>
+    val type: String,
+    val values: List<String>?
 )

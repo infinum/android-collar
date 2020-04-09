@@ -9,8 +9,15 @@ import java.util.UUID;
 
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
+import co.infinum.collar.sample.analytics.AnalyticsEvent;
+import co.infinum.collar.sample.analytics.AnalyticsScreens;
+import co.infinum.collar.sample.analytics.CollarAnalyticsEvent;
+import co.infinum.collar.sample.analytics.CollarUserProperty;
+import co.infinum.collar.sample.analytics.UserProperty;
 
-@ScreenName(value = JavaScreenNames.MAIN_SCREEN)
+import static co.infinum.collar.sample.analytics.UserProperty.GenderGo;
+
+@ScreenName(value = AnalyticsScreens.MAIN_SCREEN)
 public class MainActivity extends Activity {
 
     @Override
@@ -23,7 +30,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1());
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.LoginUser(AnalyticsEvent.LoginUser.LanguageTypeEnum.JAVA.toString()));
             }
         });
 
@@ -35,8 +42,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        CollarUserProperty.trackProperty(new UserProperty.UserUUID(UUID.randomUUID().toString()));
-        CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));
+        CollarUserProperty.trackProperty(new UserProperty.UserId(UUID.randomUUID().toString()));
     }
 
     @Override

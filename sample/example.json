@@ -1,32 +1,22 @@
 {
   "events": [
     {
-      "name": "login user",
+      "name": "loginUser",
       "description": "User clicked on login button",
       "parameters": [
         {
-          "name": "loginType",
+          "name": "languageType",
           "description": "Type of login clicked",
           "type": "text",
-          "values": ["facebook", "google", "in app"]
-        },
-        {
-          "name": "otherType",
-          "description": "Type of login clicked",
-          "type": "list",
-          "listType": "text",
-          "values": ["facebook", "google", "in app"]
-        },
-        {
-          "name": "numberType",
-          "description": "Type of login clicked",
-          "type": "list",
-          "listType": "decimal",
-          "values": [1.0, 2.0, 3.0]
+          "values": [
+            "kotlin",
+            "java"
+          ]
         }
       ]
-    }, {
-      "name": "check types",
+    },
+    {
+      "name": "checkTypes",
       "description": "We need to check types here",
       "parameters": [
         {
@@ -48,30 +38,6 @@
           "name": "checkDecimal",
           "description": "check if decimal is ok",
           "type": "decimal"
-        },
-        {
-          "name": "checkListText",
-          "description": "check if list with text type is ok",
-          "type": "list",
-          "listType": "text"
-        },
-        {
-          "name": "checkListBool",
-          "description": "check if list with bool type is ok",
-          "type": "list",
-          "listType": "boolean"
-        },
-        {
-          "name": "checkListNumber",
-          "description": "check if list with number type is ok",
-          "type": "list",
-          "listType": "number"
-        },
-        {
-          "name": "checkListDecimal",
-          "description": "check if list with decimal type is ok",
-          "type": "list",
-          "listType": "decimal"
         }
       ]
     }
@@ -79,41 +45,39 @@
   "userProperties": [
     {
       "name": "price",
-      "type": "decimal",
       "description": "user's price"
-    }, {
-      "name": "age born",
-      "type": "number",
-      "description": "..."
-    }, {
-      "name": "genderGo",
-      "type": "text",
-      "values": ["male", "female", "unknown"],
-      "description": "..."
-    }, {
-      "name": "Educated",
-      "type": "boolean",
-      "description": "Whether the user finished highschool"
     },
     {
-      "name": "Grades",
-      "type": "list",
-      "listType": "text",
-      "description": "Whether the user finished highschool"
+      "name": "genderGo",
+      "values": [
+        "male",
+        "female",
+        "unknown"
+      ],
+      "description": "..."
+    },
+    {
+      "name": "userType",
+      "values": [
+        "corporate",
+        "retail",
+        "unknown"
+      ],
+      "description": "..."
+    },
+    {
+      "name": "userId",
+      "description": "..."
     }
   ],
   "screens": [
     {
-      "name": "User settings",
-      "description": "Settings screen opened if user is logged in"
+      "name": "Main Screen",
+      "description": "Main screen example"
     },
     {
-      "name": "Home screen",
-      "description": "Settings screen opened if user is logged in"
-    },
-    {
-      "name": "Login Screen",
-      "description": "Settings screen opened if user is logged in"
+      "name": "Child Screen",
+      "description": "child screen example"
     }
   ]
 }

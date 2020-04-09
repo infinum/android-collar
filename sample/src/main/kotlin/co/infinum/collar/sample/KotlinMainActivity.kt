@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.sample.analytics.*
 import co.infinum.collar.trackScreen
 import kotlinx.android.synthetic.main.activity_main_kotlin.*
+import java.util.*
 
-@ScreenName(value = KotlinScreenNames.MAIN_SCREEN)
+@ScreenName(value = AnalyticsScreens.MAIN_SCREEN)
 class KotlinMainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,14 +18,14 @@ class KotlinMainActivity : Activity() {
         setContentView(R.layout.activity_main_kotlin)
 
         buttonProduceEvent3.setOnClickListener {
-            trackEvent(AnalyticsEvent.EventThree())
+            trackEvent(AnalyticsEvent.LoginUser(AnalyticsEvent.LoginUser.LanguageTypeEnum.KOTLIN.toString()))
         }
 
         buttonShowKotlinChild.setOnClickListener {
             showKotlinChild()
         }
 
-        trackProperty(UserProperty.LanguageType(value = "Kotlin"))
+        trackProperty( UserProperty.UserId(UUID.randomUUID().toString()));
     }
 
     override fun onResume() {

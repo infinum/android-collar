@@ -3,55 +3,34 @@ package co.infinum.collar.generator.generators
 import co.infinum.collar.generator.extensions.hasDigit
 import co.infinum.collar.generator.extensions.toCamelCase
 import co.infinum.collar.generator.models.DataType
-import co.infinum.collar.generator.models.ListType
+import co.infinum.collar.generator.models.Parameter
 import co.infinum.collar.generator.models.Property
 import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
-import java.util.Locale
+import java.util.*
 
 class GeneratorUtils private constructor() {
 
     companion object {
 
-        fun getClassName(property: Property): TypeName {
-            val dataTypeEnum = property.type
-            val listTypeEnum = property.listType
+        fun getClassName(parameter: Parameter): TypeName {
+            val dataTypeEnum = parameter.type
 
-            if (property.values?.isNotEmpty() == true) {
-                return if (dataTypeEnum == DataType.LIST.toString()) {
-                    ClassName("kotlin.collections", "List")
-                        .parameterizedBy(ClassName("", getParameterEnumName(property.name)))
-                } else {
-                    ClassName("", getParameterEnumName(property.name))
-                }
+            if (parameter.values?.isNotEmpty() == true) {
+                return ClassName("kotlin", "String")
             }
 
             return when (dataTypeEnum) {
                 DataType.TEXT.toString() -> ClassName("kotlin", "String")
-                DataType.NUMBER.toString() -> ClassName("kotlin", "Int")
+                DataType.NUMBER.toString() -> ClassName("kotlin", "Long")
                 DataType.DECIMAL.toString() -> ClassName("kotlin", "Double")
                 DataType.BOOLEAN.toString() -> ClassName("kotlin", "Boolean")
-                DataType.LIST.toString() -> {
-                    val listClassName = ClassName("kotlin.collections", "List")
-                    when (listTypeEnum) {
-                        ListType.TEXT.toString() -> {
-                            listClassName.parameterizedBy(ClassName("kotlin", "String"))
-                        }
-                        ListType.NUMBER.toString() -> {
-                            return listClassName.parameterizedBy(ClassName("kotlin", "Int"))
-                        }
-                        ListType.DECIMAL.toString() -> {
-                            listClassName.parameterizedBy(ClassName("kotlin", "Double"))
-                        }
-                        ListType.BOOLEAN.toString() -> {
-                            listClassName.parameterizedBy(ClassName("kotlin", "Boolean"))
-                        }
-                        else -> throw Exception("$listTypeEnum is not supported")
-                    }
-                }
                 else -> throw Exception("$dataTypeEnum is not supported")
             }
+        }
+
+        fun getClassName(property: Property): TypeName {
+            return ClassName("kotlin", "String")
         }
 
         fun getParameterName(parameter: String) = parameter.toCamelCase().decapitalize()
