@@ -12,7 +12,6 @@ import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
-@KotlinPoetMetadataPreview
 class UserPropertiesCollector(
     private val roundEnvironment: RoundEnvironment
 ) : Collector<UserPropertiesHolder> {
@@ -23,6 +22,7 @@ class UserPropertiesCollector(
         val SUPPORTED = setOf(ANNOTATION_USER_PROPERTIES.name, ANNOTATION_PROPERTY_NAME.name)
     }
 
+    @KotlinPoetMetadataPreview
     override fun collect(): Set<UserPropertiesHolder> =
         roundEnvironment.getElementsAnnotatedWith(ANNOTATION_USER_PROPERTIES).orEmpty()
             .filterIsInstance<TypeElement>()
@@ -53,10 +53,10 @@ class UserPropertiesCollector(
     override fun enabled(element: Element): Boolean =
         element.getAnnotation(ANNOTATION_PROPERTY_NAME)?.enabled ?: true
 
-    override fun name(element: Element): String {
+    override fun name(element: TypeElement): String {
         val value = element.getAnnotation(ANNOTATION_PROPERTY_NAME)?.value.orEmpty()
         return when {
-            value.isBlank() -> element.simpleName.toString().toLowerSnakeCase()
+            value.isBlank() -> element.asClassName().simpleName.toLowerSnakeCase()
             else -> value
         }
     }

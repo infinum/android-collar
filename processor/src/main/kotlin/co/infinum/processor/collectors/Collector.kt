@@ -1,6 +1,5 @@
 package co.infinum.processor.collectors
 
-import co.infinum.processor.models.Holder
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
@@ -10,7 +9,5 @@ interface Collector<Holder> {
 
     fun enabled(element: Element): Boolean = throw UnsupportedOperationException()
 
-    fun name(element: Element): String = throw UnsupportedOperationException()
-
-    fun parameterName(element: TypeElement, parameterName: String): String = throw UnsupportedOperationException()
+    fun name(element: TypeElement): String = throw UnsupportedOperationException()
 }

@@ -8,5 +8,7 @@ interface Options {
 
     fun maxParametersCount(): Int = throw UnsupportedOperationException()
 
+    fun reservedPrefixes(): List<String> = throw UnsupportedOperationException()
+
     fun reserved(): List<String> = throw UnsupportedOperationException()
 }

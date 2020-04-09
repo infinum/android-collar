@@ -10,8 +10,8 @@ sealed class UserProperty {
         val value: String
     ) : UserProperty()
 
-    @PropertyName(value = "user_id")
-    data class UserUUID(
+    @PropertyName(value = "my_id")
+    data class MyUUID(
         val uuid: String
     ) : UserProperty()
 }

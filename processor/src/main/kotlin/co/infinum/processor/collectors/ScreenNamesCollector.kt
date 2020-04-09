@@ -40,10 +40,10 @@ class ScreenNamesCollector(
     override fun enabled(element: Element): Boolean =
         element.getAnnotation(ANNOTATION_SCREEN_NAME)?.enabled ?: true
 
-    override fun name(element: Element): String {
+    override fun name(element: TypeElement): String {
         val value = element.getAnnotation(ANNOTATION_SCREEN_NAME).value
         return when {
-            value.isBlank() -> element.simpleName.toString()
+            value.isBlank() -> element.asClassName().simpleName
             else -> value
         }
     }

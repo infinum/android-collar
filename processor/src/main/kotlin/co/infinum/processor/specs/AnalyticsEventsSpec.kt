@@ -1,7 +1,6 @@
 package co.infinum.processor.specs
 
 import co.infinum.processor.models.EventHolder
-import co.infinum.processor.models.EventParameterHolder
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -13,7 +12,7 @@ class AnalyticsEventsSpec private constructor(
     outputDir: File,
     private val packageName: String,
     private val simpleName: String,
-    private val holders: Map<EventHolder, List<EventParameterHolder>>
+    private val holders: Set<EventHolder>
 ) : Spec {
 
     companion object {
@@ -35,11 +34,11 @@ class AnalyticsEventsSpec private constructor(
     open class Builder(
         private var outputDir: File? = null,
         private var className: ClassName = ClassName(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME),
-        private var holders: Map<EventHolder, List<EventParameterHolder>> = mapOf()
+        private var holders: Set<EventHolder> = setOf()
     ) {
         fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
         fun className(className: ClassName) = apply { this.className = className }
-        fun holders(holders: Map<EventHolder, List<EventParameterHolder>>) = apply { this.holders = holders }
+        fun holders(holders: Set<EventHolder>) = apply { this.holders = holders }
         fun build() = AnalyticsEventsSpec(outputDir!!, className.packageName, className.simpleName, holders)
     }
 
@@ -72,30 +71,30 @@ class AnalyticsEventsSpec private constructor(
                 .addStatement("val %L: %T", PARAMETER_NAME_EVENT_NAME, String::class)
                 .addStatement("val %L: %T", PARAMETER_NAME_PARAMS, CLASS_BUNDLE)
                 .beginControlFlow("when (%L)", PARAMETER_NAME_EVENT)
-            for ((declaredAnalyticsEvent, eventParamList) in holders) {
+            holders.forEach { eventHolder: EventHolder ->
                 val codeBlock = CodeBlock.builder()
-                    .addStatement("is %T -> {", declaredAnalyticsEvent.className)
+                    .addStatement("is %T -> {", eventHolder.className)
                     .indent()
                     .addStatement(
                         "%L = %S",
                         PARAMETER_NAME_EVENT_NAME,
-                        declaredAnalyticsEvent.eventName
+                        eventHolder.eventName
                     )
                     .apply {
-                        if (eventParamList.isNotEmpty()) {
+                        if (eventHolder.eventParameters.isNotEmpty()) {
                             addStatement("%L = %T(", PARAMETER_NAME_PARAMS, FUNCTION_BUNDLE_OF)
                             indent()
-                            for ((index, parameter) in eventParamList.withIndex()) {
-                                val size = eventParamList.size
-                                val separator = when (index) {
+                            eventHolder.eventParameters.filter { it.enabled }.withIndex().forEach {
+                                val size = eventHolder.eventParameters.size
+                                val separator = when (it.index) {
                                     size - 1 -> ""
                                     else -> ","
                                 }
                                 addStatement(
                                     "%S to %L.%L%L",
-                                    parameter.resolvedName,
+                                    it.value.resolvedName,
                                     PARAMETER_NAME_EVENT,
-                                    parameter.variableName,
+                                    it.value.variableName,
                                     separator
                                 )
                             }
