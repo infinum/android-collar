@@ -4,14 +4,14 @@ import co.infinum.collar.annotations.AnalyticsEvents
 import co.infinum.collar.annotations.EventName
 import co.infinum.collar.annotations.EventParameterName
 import co.infinum.processor.extensions.constructorParameters
+import co.infinum.processor.extensions.resolveEnabled
+import co.infinum.processor.extensions.resolveName
 import co.infinum.processor.extensions.toLowerSnakeCase
 import co.infinum.processor.models.AnalyticsEventsHolder
 import co.infinum.processor.models.EventHolder
 import co.infinum.processor.models.EventParameterHolder
 import com.squareup.kotlinpoet.asClassName
-import com.squareup.kotlinpoet.metadata.ImmutableKmValueParameter
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
-import com.squareup.kotlinpoet.metadata.hasAnnotations
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
@@ -50,9 +50,9 @@ class AnalyticsEventsCollector(
                                 eventParameters = enclosedClass.constructorParameters()
                                     .map { valueParameter ->
                                         EventParameterHolder(
-                                            enabled = parameterEnabled(valueParameter),
+                                            enabled = valueParameter.resolveEnabled(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name, "enabled"),
                                             variableName = valueParameter.name,
-                                            resolvedName = parameterName(valueParameter)
+                                            resolvedName = valueParameter.resolveName(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name, "value")
                                         )
                                     }
                                     .toSet()
@@ -72,38 +72,4 @@ class AnalyticsEventsCollector(
             else -> value
         }
     }
-
-    @KotlinPoetMetadataPreview
-    private fun parameterEnabled(parameter: ImmutableKmValueParameter): Boolean =
-        when (parameter.hasAnnotations) {
-            true -> {
-                val annotations = parameter.type?.annotations.orEmpty()
-                if (annotations.isEmpty()) {
-                    true
-                } else {
-                    annotations.find { it.className == ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name }
-                        ?.arguments
-                        ?.keys
-                        ?.single { it == "enabled" }?.toBoolean() ?: true
-                }
-            }
-            false -> true
-        }
-
-    @KotlinPoetMetadataPreview
-    private fun parameterName(parameter: ImmutableKmValueParameter): String =
-        when (parameter.hasAnnotations) {
-            true -> {
-                val annotations = parameter.type?.annotations.orEmpty()
-                if (annotations.isEmpty()) {
-                    parameter.name.toLowerSnakeCase()
-                } else {
-                    annotations.find { it.className == ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name }
-                        ?.arguments
-                        ?.keys
-                        ?.single { it == "value" } ?: parameter.name.toLowerSnakeCase()
-                }
-            }
-            false -> parameter.name.toLowerSnakeCase()
-        }
 }

@@ -6,7 +6,7 @@ import co.infinum.collar.annotations.UserProperties
 @UserProperties
 sealed class UserProperty {
 
-    @PropertyName(enabled = false)
+    @PropertyName(enabled = true)
     data class LanguageType(
         val value: String
     ) : UserProperty()

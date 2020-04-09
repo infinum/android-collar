@@ -66,11 +66,10 @@ class AnalyticsEventsSpec private constructor(
 
     override fun build(): FileSpec =
         file().toBuilder().apply {
-            val hasDisabledEvents = holders.any { it.enabled }
             val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_EVENT)
                 .addParameter(PARAMETER_NAME_EVENT, ClassName(packageName, simpleName))
-                .addStatement("val %L: %T", PARAMETER_NAME_EVENT_NAME, String::class)
-                .addStatement("val %L: %T", PARAMETER_NAME_PARAMS, CLASS_BUNDLE)
+                .addStatement("var %L: %T = %S", PARAMETER_NAME_EVENT_NAME, String::class, "")
+                .addStatement("var %L: %T = %T()", PARAMETER_NAME_PARAMS, CLASS_BUNDLE, FUNCTION_BUNDLE_OF)
                 .beginControlFlow("when (%L)", PARAMETER_NAME_EVENT)
             holders.forEach { eventHolder: EventHolder ->
                 val codeBlock = CodeBlock.builder()
@@ -111,37 +110,20 @@ class AnalyticsEventsSpec private constructor(
 
                 extensionFunSpecBuilder.addCode(codeBlock)
             }
-            if (hasDisabledEvents) {
-                extensionFunSpecBuilder.addCode(
-                    CodeBlock.builder()
-                        .addStatement("else -> {")
-                        .indent()
-                        .addStatement("%L = %S", PARAMETER_NAME_EVENT_NAME, "")
-                        .addStatement("%L = %T()", PARAMETER_NAME_PARAMS, FUNCTION_BUNDLE_OF)
-                        .unindent()
-                        .addStatement("}")
-                        .build()
-                )
-            }
             extensionFunSpecBuilder.endControlFlow()
             extensionFunSpecBuilder.addCode(
-                CodeBlock.builder().apply {
-                    if (hasDisabledEvents) {
-                        addStatement("if (%L.isNotBlank()) {", PARAMETER_NAME_EVENT_NAME)
-                        indent()
-                    }
-                    addStatement(
+                CodeBlock.builder()
+                    .addStatement("if (%L.isNotBlank()) {", PARAMETER_NAME_EVENT_NAME)
+                    .indent()
+                    .addStatement(
                         "%T.%L(%L, %L)",
                         CLASS_COLLAR,
                         FUNCTION_NAME_TRACK_EVENT,
                         PARAMETER_NAME_EVENT_NAME,
                         PARAMETER_NAME_PARAMS
                     )
-                    if (hasDisabledEvents) {
-                        unindent()
-                        addStatement("}")
-                    }
-                }
+                    .unindent()
+                    .addStatement("}")
                     .build()
             )
             addFunction(extensionFunSpecBuilder.build())

@@ -72,8 +72,7 @@ class UserPropertiesValidator(
                         false
                     }
                 }.toSet())
-            }
-                .toSet()
+            }.toSet()
         }
     }
 }
