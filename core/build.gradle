@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenLocal()
         google()
         jcenter()
         mavenCentral()
@@ -11,6 +12,7 @@ buildscript {
 }
 
 repositories {
+    mavenLocal()
     google()
     jcenter()
     mavenCentral()
@@ -28,7 +30,7 @@ android {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
-        versionName "1.0.0"
+        versionName collar.version
     }
 
     buildTypes {
@@ -49,10 +51,14 @@ android {
 }
 
 dependencies {
-    implementation packages.collar.annotations
-    implementation packages.kotlin.core
+//    implementation packages.collar.annotations
+    api project(":annotations")
+//    implementation packages.kotlin.core
+    compileOnly packages.kotlin.core
+//    compileOnly packages.annotations
     compileOnly packages.annotations
     implementation packages.androidx.lifecycle.runtime
+    api "androidx.core:core-ktx:1.2.0"
 }
 
 apply from: "bintray.gradle"

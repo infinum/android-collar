@@ -7,60 +7,58 @@ import co.infinum.processor.configurations.AnalyticsEventsConfiguration
 import co.infinum.processor.configurations.ScreenNamesConfiguration
 import co.infinum.processor.configurations.UserPropertiesConfiguration
 import co.infinum.processor.extensions.consume
-import co.infinum.processor.extensions.showError
-import co.infinum.processor.extensions.showWarning
 import co.infinum.processor.options.AnalyticsEventsOptions
 import co.infinum.processor.options.ScreenNamesOptions
 import co.infinum.processor.options.UserPropertiesOptions
 import co.infinum.processor.subprocessors.AnalyticsEventsSubprocessor
 import co.infinum.processor.subprocessors.ScreenNamesSubprocessor
 import co.infinum.processor.subprocessors.UserPropertiesSubprocessor
-import me.eugeniomarletti.kotlin.metadata.KotlinMetadataUtils
-import me.eugeniomarletti.kotlin.processing.KotlinAbstractProcessor
+import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
 import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
+import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 
-
+@KotlinPoetMetadataPreview
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.AGGREGATING)
-class CollarProcessor : KotlinAbstractProcessor(), KotlinMetadataUtils {
+class CollarProcessor : AbstractProcessor() {
 
-    private val screenNamesSubprocessor: ScreenNamesSubprocessor = ScreenNamesSubprocessor(
-        onWarning = this::showWarning,
-        onError = this::showError
-    )
-    private val analyticsEventsSubprocessor: AnalyticsEventsSubprocessor = AnalyticsEventsSubprocessor(
-        onWarning = this::showWarning,
-        onError = this::showError
-    )
-    private val userPropertiesSubprocessor: UserPropertiesSubprocessor = UserPropertiesSubprocessor(
-        onWarning = this::showWarning,
-        onError = this::showError
-    )
+    private val screenNamesSubprocessor: ScreenNamesSubprocessor = ScreenNamesSubprocessor()
+    private val analyticsEventsSubprocessor: AnalyticsEventsSubprocessor = AnalyticsEventsSubprocessor()
+    private val userPropertiesSubprocessor: UserPropertiesSubprocessor = UserPropertiesSubprocessor()
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> =
-        (ScreenNamesCollector.SUPPORTED + AnalyticsEventsCollector.SUPPORTED + UserPropertiesCollector.SUPPORTED).toMutableSet()
+        setOf(
+            ScreenNamesCollector.SUPPORTED,
+            AnalyticsEventsCollector.SUPPORTED,
+            UserPropertiesCollector.SUPPORTED
+        )
+            .flatten()
+            .toMutableSet()
 
     override fun getSupportedSourceVersion(): SourceVersion =
         SourceVersion.latestSupported()
 
     override fun getSupportedOptions(): Set<String> =
-        ScreenNamesOptions.SUPPORTED + AnalyticsEventsOptions.SUPPORTED + UserPropertiesOptions.SUPPORTED
+        setOf(
+            ScreenNamesOptions.SUPPORTED,
+            AnalyticsEventsOptions.SUPPORTED,
+            UserPropertiesOptions.SUPPORTED
+        )
+            .flatten()
+            .toSet()
 
-    override fun init(processingEnv: ProcessingEnvironment) =
+    override fun init(processingEnv: ProcessingEnvironment): Unit =
         super.init(processingEnv).run {
-            screenNamesSubprocessor.init(ScreenNamesConfiguration(generatedDir, processingEnv))
-            analyticsEventsSubprocessor.init(AnalyticsEventsConfiguration(generatedDir, processingEnv))
-            userPropertiesSubprocessor.init(UserPropertiesConfiguration(generatedDir, processingEnv))
+            screenNamesSubprocessor.init(ScreenNamesConfiguration(processingEnv))
+            analyticsEventsSubprocessor.init(AnalyticsEventsConfiguration(processingEnv))
+            userPropertiesSubprocessor.init(UserPropertiesConfiguration(processingEnv))
         }
 
-    override fun process(
-        annotations: Set<TypeElement>,
-        roundEnv: RoundEnvironment
-    ): Boolean =
+    override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean =
         consume {
             screenNamesSubprocessor.process(roundEnv)
             analyticsEventsSubprocessor.process(roundEnv)

@@ -17,7 +17,7 @@ buildscript {
     }
 
     dependencies {
-        classpath packages.gradle
+        classpath "com.android.tools.build:gradle:${versions.gradle}"
         classpath packages.maven.plugin
         classpath packages.bintray
         classpath packages.kotlin.plugin
@@ -30,4 +30,13 @@ task clean(type: Delete) {
 
 tasks.withType(JavaCompile) {
     options.compilerArgs += [ "--release", "8" ]
+}
+
+allprojects {
+    tasks.withType(Javadoc).all {
+        enabled = false
+    }
+    repositories {
+        mavenLocal()
+    }
 }

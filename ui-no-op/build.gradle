@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenLocal()
         google()
         jcenter()
         mavenCentral()
@@ -11,6 +12,7 @@ buildscript {
 }
 
 repositories {
+    mavenLocal()
     google()
     jcenter()
     mavenCentral()
@@ -51,7 +53,8 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
-    implementation packages.collar.core
+//    implementation packages.collar.core
+    compileOnly project(":core")
     implementation packages.androidx.appcompat
 }
 

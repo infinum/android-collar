@@ -79,7 +79,7 @@ class AnalyticsEventsSpec private constructor(
                     .addStatement(
                         "%L = %S",
                         PARAMETER_NAME_EVENT_NAME,
-                        declaredAnalyticsEvent.resolvedName
+                        declaredAnalyticsEvent.eventName
                     )
                     .apply {
                         if (eventParamList.isNotEmpty()) {

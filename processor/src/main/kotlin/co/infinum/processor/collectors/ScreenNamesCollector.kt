@@ -26,11 +26,12 @@ class ScreenNamesCollector(
 
     override fun collect(): Set<ScreenHolder> =
         roundEnvironment.getElementsAnnotatedWith(ANNOTATION_SCREEN_NAME).orEmpty()
+            .filterIsInstance<TypeElement>()
             .map {
                 ScreenHolder(
                     enabled = enabled(it),
                     superClassName = superClassName(it),
-                    className = (it as TypeElement).asClassName(), // TODO: Possible issue here if element is not a class
+                    className = it.asClassName(),
                     screenName = name(it)
                 )
             }

@@ -1,12 +1,9 @@
 package co.infinum.processor.validators
 
 import co.infinum.processor.collectors.AnalyticsEventsCollector
+import co.infinum.processor.models.EventHolder
+import co.infinum.processor.models.PropertyHolder
 import co.infinum.processor.options.Options
-import me.eugeniomarletti.kotlin.metadata.KotlinClassMetadata
-import me.eugeniomarletti.kotlin.metadata.KotlinMetadata
-import me.eugeniomarletti.kotlin.metadata.kotlinMetadata
-import me.eugeniomarletti.kotlin.metadata.modality
-import me.eugeniomarletti.kotlin.metadata.shadow.metadata.ProtoBuf
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
@@ -19,18 +16,9 @@ class AnalyticsEventsValidator(
     private val collector: AnalyticsEventsCollector,
     private val onWarning: (String) -> Unit,
     private val onError: (String) -> Unit
-) : Validator {
+) : Validator<EventHolder> {
 
-    override fun verify(element: Element): TypeElement? =
-        when (isKotlinSealedClass(element.kotlinMetadata, element)) {
-            true -> element as TypeElement
-            false -> null
-        }
-
-    override fun validate(elements: MutableSet<out Element>): List<Element> {
-
+    override fun validate(elements: Set<EventHolder>): Set<EventHolder> {
+        return setOf()
     }
-
-    private fun isKotlinSealedClass(kotlinMetadata: KotlinMetadata?, element: Element): Boolean =
-        kotlinMetadata is KotlinClassMetadata && kotlinMetadata.data.classProto.modality == ProtoBuf.Modality.SEALED && element is TypeElement
 }

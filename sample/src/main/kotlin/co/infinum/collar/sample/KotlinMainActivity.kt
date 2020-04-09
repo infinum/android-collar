@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import co.infinum.collar.annotations.ScreenName
-import co.infinum.collar.trackScreen
+//import co.infinum.collar.trackScreen
 import kotlinx.android.synthetic.main.activity_main_kotlin.*
 
-@ScreenName(value = KotlinScreenNames.MAIN_SCREEN)
+@ScreenName(value = KotlinScreenNames.MAIN_SCREEN, enabled = true)
 class KotlinMainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,35 +17,35 @@ class KotlinMainActivity : Activity() {
         setContentView(R.layout.activity_main_kotlin)
 
         buttonProduceEvent3.setOnClickListener {
-            trackEvent(AnalyticsEvent.EventThree(
-                myString = "cool",
-                myBoolean = false,
-                myByte = 101,
-                myChar = Character.MIN_VALUE,
-                myDouble = 24.7,
-                myFloat = 11.5f,
-                myInt = 1,
-                myLong = 198L,
-                myShort = 4096,
-                myBundle = bundleOf(
-                    "1" to 1,
-                    "2" to 2,
-                    "3" to 3
-                )
-            ))
+//            trackEvent(AnalyticsEvent.EventThree(
+//                myString = "cool",
+//                myBoolean = false,
+//                myByte = 101,
+//                myChar = Character.MIN_VALUE,
+//                myDouble = 24.7,
+//                myFloat = 11.5f,
+//                myInt = 1,
+//                myLong = 198L,
+//                myShort = 4096,
+//                myBundle = bundleOf(
+//                    "1" to 1,
+//                    "2" to 2,
+//                    "3" to 3
+//                )
+//            ))
         }
 
         buttonShowKotlinChild.setOnClickListener {
             showKotlinChild()
         }
 
-        trackProperty(UserProperty.LanguageType(value = "Kotlin"))
+//        trackProperty(UserProperty.LanguageType(value = "Kotlin"))
     }
 
     override fun onResume() {
         super.onResume()
 
-        trackScreen()
+//        trackScreen()
     }
 
     private fun showKotlinChild() = startActivity(Intent(this, KotlinChildActivity::class.java))

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
-import co.infinum.collar.CollarScreenNames;
+//import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
 
 @SuppressWarnings("deprecation")
@@ -31,7 +31,7 @@ public class ChildFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2(UUID.randomUUID().toString(), JavaDayTime.DAY.ordinal()));
+                //CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2(UUID.randomUUID().toString(), JavaDayTime.DAY.ordinal()));
             }
         });
 
@@ -46,7 +46,7 @@ public class ChildFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        CollarScreenNames.trackScreen(this);
+        //CollarScreenNames.trackScreen(this);
     }
 
     private void showKotlinMainScreen() {

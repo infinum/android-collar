@@ -1,10 +1,8 @@
 package co.infinum.processor.models
 
-import com.squareup.kotlinpoet.ClassName
-import javax.lang.model.element.Element
+import javax.lang.model.element.TypeElement
 
 data class UserPropertiesHolder(
-    val rootClass: Element,
-    val rootClassName: ClassName,
+    val rootClass: TypeElement,
     val propertyHolders: Set<PropertyHolder>
 ) : Holder

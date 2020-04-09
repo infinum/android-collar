@@ -1,5 +1,7 @@
 buildscript {
     repositories {
+        mavenLocal()
+        maven { url System.getenv('HOME') + "/.m2/repository/" }
         google()
         jcenter()
         mavenCentral()
@@ -11,6 +13,8 @@ buildscript {
 }
 
 repositories {
+    mavenLocal()
+    maven { url System.getenv('HOME') + "/.m2/repository/" }
     google()
     jcenter()
     mavenCentral()
@@ -59,7 +63,8 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
-    implementation packages.collar.core
+//    implementation packages.collar.core
+    api project(":core")
     implementation packages.androidx.appcompat
     implementation packages.androidx.core
     implementation packages.androidx.recyclerview

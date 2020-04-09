@@ -6,9 +6,8 @@ import java.io.File
 import javax.annotation.processing.ProcessingEnvironment
 
 class ScreenNamesConfiguration(
-    generatedDir: File?,
     private val processingEnv: ProcessingEnvironment
-) : CommonConfiguration(generatedDir, processingEnv) {
+) : CommonConfiguration(processingEnv) {
 
     override fun options(): Options = ScreenNamesOptions(processingEnv.options)
 }

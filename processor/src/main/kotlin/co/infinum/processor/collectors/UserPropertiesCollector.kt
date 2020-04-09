@@ -6,12 +6,13 @@ import co.infinum.processor.extensions.toLowerSnakeCase
 import co.infinum.processor.models.PropertyHolder
 import co.infinum.processor.models.UserPropertiesHolder
 import com.squareup.kotlinpoet.asClassName
-import me.eugeniomarletti.kotlin.metadata.KotlinClassMetadata
-import me.eugeniomarletti.kotlin.metadata.kotlinMetadata
+import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
+import com.squareup.kotlinpoet.metadata.toImmutableKmClass
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
+@KotlinPoetMetadataPreview
 class UserPropertiesCollector(
     private val roundEnvironment: RoundEnvironment
 ) : Collector<UserPropertiesHolder> {
@@ -24,29 +25,24 @@ class UserPropertiesCollector(
 
     override fun collect(): Set<UserPropertiesHolder> =
         roundEnvironment.getElementsAnnotatedWith(ANNOTATION_USER_PROPERTIES).orEmpty()
+            .filterIsInstance<TypeElement>()
             .map {
                 UserPropertiesHolder(
                     rootClass = it,
-                    rootClassName = (it as TypeElement).asClassName(),
                     propertyHolders = it.enclosedElements.orEmpty().filterIsInstance<TypeElement>().map { enclosedClass ->
                         PropertyHolder(
                             enabled = enabled(enclosedClass),
                             type = enclosedClass.asType(),
                             className = enclosedClass.asClassName(),
                             propertyName = name(enclosedClass),
-                            propertyParameterNames = (enclosedClass.kotlinMetadata as KotlinClassMetadata)
-                                .data
-                                .classProto
-                                .constructorList
+                            propertyParameterNames = enclosedClass
+                                .getAnnotation(Metadata::class.java)
+                                .toImmutableKmClass()
+                                .constructors
                                 .firstOrNull()
-                                ?.valueParameterList
+                                ?.valueParameters
                                 .orEmpty()
-                                .map { valueParameter ->
-                                    (enclosedClass.kotlinMetadata as KotlinClassMetadata)
-                                        .data
-                                        .nameResolver
-                                        .getString(valueParameter.name)
-                                }
+                                .map { valueParameter -> valueParameter.name }
                                 .toSet()
                         )
                     }.toSet()
