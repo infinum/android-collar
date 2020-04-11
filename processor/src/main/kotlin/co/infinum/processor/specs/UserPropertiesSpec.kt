@@ -15,14 +15,14 @@ class UserPropertiesSpec private constructor(
 ) : CommonSpec(outputDir, packageName, simpleName) {
 
     companion object {
-        private const val DEFAULT_SIMPLE_NAME = "UserProperties"
-        private const val FUNCTION_NAME_TRACK_PROPERTY = "trackProperty"
-        private const val PARAMETER_NAME_PROPERTY = "property"
+        private const val SIMPLE_NAME = "UserProperties"
+        private const val FUNCTION_NAME = "trackProperty"
+        private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L)"
     }
 
     open class Builder(
         private var outputDir: File? = null,
-        private var className: ClassName = ClassName(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME),
+        private var className: ClassName = ClassName(PACKAGE_NAME, SIMPLE_NAME),
         private var holders: Set<PropertyHolder> = setOf()
     ) {
         fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
@@ -35,25 +35,36 @@ class UserPropertiesSpec private constructor(
         build()
     }
 
+    override fun functionName(): String = FUNCTION_NAME
+
     override fun extensions(): List<FunSpec> =
         listOf(
-            FunSpec.builder(FUNCTION_NAME_TRACK_PROPERTY)
-                .addParameter(PARAMETER_NAME_PROPERTY, ClassName(packageName, simpleName))
+            FunSpec.builder(functionName())
+                .addParameter(parameterName(), ClassName(packageName, simpleName))
                 .applyIf(holders.isNotEmpty()) {
-                    beginControlFlow("when (%L)", PARAMETER_NAME_PROPERTY)
-                    addCode(
-                        CodeBlock.builder()
-                            .apply {
-                                holders.forEach {
-                                    addStatement("is %T -> %T.%L(%S, %L.%L)", it.className, CLASS_COLLAR, FUNCTION_NAME_TRACK_PROPERTY, it.propertyName, PARAMETER_NAME_PROPERTY, it.propertyParameterNames.single())
-                                }
-                            }
-                            .build()
-                    )
+                    beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
+                    addCode(properties())
                     endControlFlow()
                 }
                 .build()
         )
+
+    private fun properties(): CodeBlock =
+        CodeBlock.builder()
+            .apply {
+                holders.forEach {
+                    addStatement(
+                        STATEMENT,
+                        it.className,
+                        CLASS_COLLAR,
+                        functionName(),
+                        it.propertyName,
+                        parameterName(),
+                        it.propertyParameterNames.single()
+                    )
+                }
+            }
+            .build()
 }
 
 @DslMarker

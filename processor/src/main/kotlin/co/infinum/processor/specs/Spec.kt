@@ -14,6 +14,10 @@ interface Spec {
 
     fun jvmName(): AnnotationSpec
 
+    fun functionName(): String
+
+    fun parameterName(): String
+
     fun extensions(): List<FunSpec>
 
     fun build()

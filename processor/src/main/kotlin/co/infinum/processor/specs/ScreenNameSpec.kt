@@ -17,11 +17,14 @@ import java.io.File
 class ScreenNameSpec private constructor(
     outputDir: File,
     private val holders: Set<ScreenHolder>
-) : CommonSpec(outputDir, DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME) {
+) : CommonSpec(outputDir, PACKAGE_NAME, SIMPLE_NAME) {
 
     companion object {
-        private const val DEFAULT_SIMPLE_NAME = "ScreenNames"
-        private const val FUNCTION_NAME_TRACK_SCREEN = "trackScreen"
+        private const val SIMPLE_NAME = "ScreenNames"
+        private const val FUNCTION_NAME = "trackScreen"
+        private const val PARAMETER_NAME = "this"
+        private const val STATEMENT_ACTIVITY = "is %T -> %T.%L(%L, %S)"
+        private const val STATEMENT_FRAGMENT = "is %T -> activity?.let { %T.%L(it, %S) }"
     }
 
     open class Builder(
@@ -38,10 +41,15 @@ class ScreenNameSpec private constructor(
     }
 
     override fun file(): FileSpec =
-        super.file().toBuilder(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME)
+        super.file().toBuilder(PACKAGE_NAME, SIMPLE_NAME)
             .applyIf(hasDeprecatedClasses()) { addAnnotation(suppressDeprecation()) }
             .build()
 
+    override fun functionName(): String = FUNCTION_NAME
+
+    override fun parameterName(): String = PARAMETER_NAME
+
+    // TODO: Fix the nullability mess of superClassName
     override fun extensions(): List<FunSpec> =
         holders
             .groupBy { it.superClassName }
@@ -49,29 +57,30 @@ class ScreenNameSpec private constructor(
             .filterNotNull()
             .map { it to holders.groupBy { holder -> holder.superClassName }[it].orEmpty() }
             .toMap()
-            .map { mapEntry ->
-                FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
-                    .receiver(mapEntry.key)
-                    .applyIf(mapEntry.value.isNotEmpty()) {
-                        beginControlFlow("when (this)")
-                        addCode(
-                            CodeBlock.builder()
-                                .apply {
-                                    mapEntry.value.forEach {
-                                        when (mapEntry.key) {
-                                            CLASS_COMPONENT_ACTIVITY -> addActivityStatement(this, it)
-                                            CLASS_ACTIVITY -> addActivityStatement(this, it)
-                                            CLASS_ANDROIDX_FRAGMENT -> addFragmentStatement(this, it)
-                                            else -> addFragmentStatement(this, it)
-                                        }
-                                    }
-                                }
-                                .build()
-                        )
+            .map { (keyClass, holders) ->
+                FunSpec.builder(functionName())
+                    .receiver(keyClass)
+                    .applyIf(holders.isNotEmpty()) {
+                        beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
+                        addCode(screens(keyClass, holders))
                         endControlFlow()
                     }
                     .build()
             }
+
+    private fun screens(keyClass: ClassName, holders: List<ScreenHolder>): CodeBlock =
+        CodeBlock.builder()
+            .apply {
+                holders.forEach {
+                    when (keyClass) {
+                        CLASS_COMPONENT_ACTIVITY -> addActivityStatement(this, it)
+                        CLASS_ACTIVITY -> addActivityStatement(this, it)
+                        CLASS_ANDROIDX_FRAGMENT -> addFragmentStatement(this, it)
+                        else -> addFragmentStatement(this, it)
+                    }
+                }
+            }
+            .build()
 
     private fun hasDeprecatedClasses(): Boolean =
         holders
@@ -86,22 +95,10 @@ class ScreenNameSpec private constructor(
             .build()
 
     private fun addActivityStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
-        builder.addStatement(
-            "is %T -> %T.%L(this, %S)",
-            holder.className,
-            CLASS_COLLAR,
-            FUNCTION_NAME_TRACK_SCREEN,
-            holder.screenName
-        )
+        builder.addStatement(STATEMENT_ACTIVITY, holder.className, CLASS_COLLAR, functionName(), parameterName(), holder.screenName)
 
     private fun addFragmentStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
-        builder.addStatement(
-            "is %T -> activity?.let { %T.%L(it, %S) }",
-            holder.className,
-            CLASS_COLLAR,
-            FUNCTION_NAME_TRACK_SCREEN,
-            holder.screenName
-        )
+        builder.addStatement(STATEMENT_FRAGMENT, holder.className, CLASS_COLLAR, functionName(), holder.screenName)
 }
 
 @DslMarker

@@ -13,9 +13,15 @@ abstract class CommonSpec(
 ) : Spec {
 
     companion object {
-        internal val CLASS_COLLAR = ClassName("co.infinum.collar", "Collar")
+        internal const val PACKAGE_NAME = "co.infinum.collar"
 
-        internal const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
+        internal const val PARAMETER_NAME = "value"
+
+        internal val CLASS_COLLAR = ClassName(PACKAGE_NAME, "Collar")
+
+        internal const val CONTROL_FLOW_WHEN = "when (%L)"
+
+        private const val COMMENT = "This is a Collar generated extension file. Do not edit manually."
     }
 
     override fun file(): FileSpec =
@@ -32,9 +38,10 @@ abstract class CommonSpec(
 
     override fun comment(): CodeBlock =
         CodeBlock.builder()
-            .addStatement("This is a Collar generated extension file. Do not edit manually.")
+            .addStatement(COMMENT)
             .build()
 
-    override fun build() =
-        file().writeTo(outputDir)
+    override fun parameterName(): String = PARAMETER_NAME
+
+    override fun build() = file().writeTo(outputDir)
 }
