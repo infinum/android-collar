@@ -30,7 +30,6 @@ dependencies {
     implementation packages.kotlin.poet_metadata
     compileOnly packages.incap.core
     kapt packages.incap.processor
-    api "androidx.core:core-ktx:1.2.0"
 }
 
 apply from: "bintray.gradle"

@@ -5,6 +5,7 @@ import co.infinum.collar.annotations.EventName
 import co.infinum.collar.annotations.EventParameterName
 import co.infinum.processor.extensions.constructorParameters
 import co.infinum.processor.extensions.resolveEnabled
+import co.infinum.processor.extensions.resolveMethod
 import co.infinum.processor.extensions.resolveName
 import co.infinum.processor.extensions.toLowerSnakeCase
 import co.infinum.processor.models.AnalyticsEventsHolder
@@ -51,8 +52,9 @@ class AnalyticsEventsCollector(
                                     .map { valueParameter ->
                                         EventParameterHolder(
                                             enabled = valueParameter.resolveEnabled(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name, "enabled"),
-                                            variableName = valueParameter.name,
-                                            resolvedName = valueParameter.resolveName(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name, "value")
+                                            method = valueParameter.resolveMethod(),
+                                            resolvedName = valueParameter.resolveName(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name, "value"),
+                                            variableName = valueParameter.name
                                         )
                                     }
                                     .toSet()

@@ -222,15 +222,9 @@ javaCompileOptions {
 ```gradle
 collar {
     version "1.1.1"
-    extended true
 }
 ```        
 You can set a specific _Collar_ version to be used.
-If you set _extended_ to false then _Collar_ will not provide all necessary external dependencies out of the box, like _AndroidX Core-KTX_, but it is your responsibility to provide them in your own project setup.  
-These are, at the moment:
-```gradle
-implementation "androidx.core:core-ktx:1.2.0"
-```
 ## Debug UI
 A separate package and no-op package is provided if you want to visually track what has been sent through Collar.  
 You can search, filter and clear all sent analytics.  

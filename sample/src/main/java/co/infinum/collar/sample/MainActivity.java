@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
-//import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
 
-@ScreenName(value = JavaScreenNames.MAIN_SCREEN)
+@ScreenName(value = KotlinScreenNames.MAIN_SCREEN_JAVA)
 public class MainActivity extends Activity {
 
     @Override

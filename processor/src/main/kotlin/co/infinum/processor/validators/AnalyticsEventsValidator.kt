@@ -82,9 +82,19 @@ class AnalyticsEventsValidator(
 
     private fun validateParameterCount(holder: EventHolder): Boolean =
         if (holder.eventParameters.size > processorOptions.maxParametersCount()) {
-            messager.showWarning("You can associate up to ${processorOptions.maxParametersCount()} unique parameter with each user property. Current size is ${holder.eventParameters.size}.")
+            messager.showWarning("You can associate up to ${processorOptions.maxParametersCount()} unique parameter with each event. Current size is ${holder.eventParameters.size}.")
+            false
+        } else {
+            validateParametersType(holder)
+        }
+
+    private fun validateParametersType(holder: EventHolder): Boolean {
+        val invalidParameterTypes = holder.eventParameters.filter { it.method.isBlank() }
+        return if (invalidParameterTypes.isNotEmpty()) {
+            messager.showWarning("Event parameters ${invalidParameterTypes.joinToString(", ") { it.variableName }} from event ${holder.className.simpleName} are not supported.")
             false
         } else {
             true
         }
+    }
 }

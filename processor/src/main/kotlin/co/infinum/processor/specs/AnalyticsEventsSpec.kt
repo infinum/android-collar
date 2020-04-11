@@ -22,12 +22,10 @@ class AnalyticsEventsSpec private constructor(
         private const val STATEMENT_EVENT_CLASS_END = ")"
         private const val STATEMENT_EVENT_NAME = "%S,"
         private const val STATEMENT_BUNDLE_EMPTY = "%T()"
-        private const val STATEMENT_BUNDLE_START = "%T("
-        private const val STATEMENT_BUNDLE_END = ")"
-        private const val STATEMENT_EVENT_PARAMETER = "%S to %L.%L%L"
+        private const val STATEMENT_BUNDLE_START = "%T().apply {"
+        private const val STATEMENT_BUNDLE_END = "}"
+        private const val STATEMENT_EVENT_PARAMETER = "%L(%S, %L.%L)"
 
-        // TODO: Move away from this function to more manual work of just bundle for 1 less dependency
-        private val FUNCTION_BUNDLE_OF = ClassName("androidx.core.os", "bundleOf")
         private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
     }
 
@@ -84,7 +82,7 @@ class AnalyticsEventsSpec private constructor(
 
     private fun eventParameters(builder: CodeBlock.Builder, holder: EventHolder): CodeBlock.Builder =
         with(builder) {
-            addStatement(STATEMENT_BUNDLE_START, FUNCTION_BUNDLE_OF)
+            addStatement(STATEMENT_BUNDLE_START, CLASS_BUNDLE)
             indent()
             holder.eventParameters
                 .filter { parameterHolder -> parameterHolder.enabled }
@@ -92,13 +90,10 @@ class AnalyticsEventsSpec private constructor(
                 .forEach {
                     addStatement(
                         STATEMENT_EVENT_PARAMETER,
+                        it.value.method,
                         it.value.resolvedName,
                         parameterName(),
-                        it.value.variableName,
-                        when (it.index) {
-                            holder.eventParameters.size - 1 -> ""
-                            else -> ","
-                        }
+                        it.value.variableName
                     )
                 }
             unindent()
