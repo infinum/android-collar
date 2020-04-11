@@ -37,5 +37,3 @@ dependencies {
 //    implementation packages.kotlin.core
     compileOnly packages.kotlin.core
 }
-
-apply from: "bintray.gradle"

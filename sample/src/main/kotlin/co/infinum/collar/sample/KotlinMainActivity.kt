@@ -3,7 +3,6 @@ package co.infinum.collar.sample
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import co.infinum.collar.annotations.ScreenName
 import co.infinum.collar.trackScreen
 import kotlinx.android.synthetic.main.activity_main_kotlin.*
@@ -27,11 +26,11 @@ class KotlinMainActivity : Activity() {
                 myInt = 1,
                 myLong = 198L,
                 myShort = 4096,
-                myBundle = bundleOf(
-                    "1" to 1,
-                    "2" to 2,
+                myBundle = Bundle().apply {
+                    "1" to 1
+                    "2" to 2
                     "3" to 3
-                )
+                }
             ))
         }
 

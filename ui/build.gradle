@@ -63,7 +63,6 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
-//    implementation packages.collar.core
     api project(":core")
     implementation packages.androidx.appcompat
     implementation packages.androidx.core

@@ -51,14 +51,11 @@ android {
 }
 
 dependencies {
-//    implementation packages.collar.annotations
     api project(":annotations")
 //    implementation packages.kotlin.core
     compileOnly packages.kotlin.core
-//    compileOnly packages.annotations
     compileOnly packages.annotations
     implementation packages.androidx.lifecycle.runtime
-    api "androidx.core:core-ktx:1.2.0"
 }
 
 apply from: "bintray.gradle"

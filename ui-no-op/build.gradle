@@ -53,7 +53,6 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
-//    implementation packages.collar.core
     compileOnly project(":core")
     implementation packages.androidx.appcompat
 }
