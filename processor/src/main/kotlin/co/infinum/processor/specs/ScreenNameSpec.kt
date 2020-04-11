@@ -1,5 +1,6 @@
 package co.infinum.processor.specs
 
+import co.infinum.processor.extensions.applyIf
 import co.infinum.processor.models.ScreenHolder
 import co.infinum.processor.shared.Constants.CLASS_ACTIVITY
 import co.infinum.processor.shared.Constants.CLASS_ANDROIDX_FRAGMENT
@@ -14,7 +15,7 @@ import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
 class ScreenNameSpec private constructor(
-    outputDir: File,
+    private val outputDir: File,
     private val holders: Set<ScreenHolder>
 ) : Spec {
 
@@ -37,18 +38,15 @@ class ScreenNameSpec private constructor(
     }
 
     init {
-        build().writeTo(outputDir)
+        build()
     }
 
     override fun file(): FileSpec =
         FileSpec.builder(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME)
-            .addAnnotation(jvmName())
             .addComment(comment().toString())
-            .build()
-
-    override fun jvmName(): AnnotationSpec =
-        AnnotationSpec.builder(JvmName::class.java)
-            .addMember("%S", "${CLASS_COLLAR.simpleName}$DEFAULT_SIMPLE_NAME")
+            .addAnnotation(jvmName())
+            .applyIf(hasDeprecatedClasses()) { addAnnotation(suppressDeprecation()) }
+            .apply { extensions().map { addFunction(it) } }
             .build()
 
     override fun comment(): CodeBlock =
@@ -58,75 +56,74 @@ class ScreenNameSpec private constructor(
             .addStatement("This is a generated extension file. Do not edit.")
             .build()
 
-    override fun build(): FileSpec =
-        file().toBuilder().apply {
-            val groupedHolders = holders.groupBy { it.superClassName }
-            val cleanHolders = groupedHolders.keys.filterNotNull().map {
-                it to groupedHolders[it].orEmpty()
-            }.toMap()
+    override fun jvmName(): AnnotationSpec =
+        AnnotationSpec.builder(JvmName::class.java)
+            .addMember(CodeBlock.of("%S", "${CLASS_COLLAR.simpleName}$DEFAULT_SIMPLE_NAME"))
+            .build()
 
-            checkForDeprecation(this, cleanHolders)
-
-            cleanHolders.mapNotNull { mapEntry ->
-                val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
-                extensionFunSpecBuilder
+    override fun extensions(): List<FunSpec> =
+        holders
+            .groupBy { it.superClassName }
+            .keys
+            .filterNotNull()
+            .map { it to holders.groupBy { holder -> holder.superClassName }[it].orEmpty() }
+            .toMap()
+            .map { mapEntry ->
+                FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
                     .receiver(mapEntry.key)
-                    .beginControlFlow("when (this) {")
-                extensionFunSpecBuilder.addCode(
-                    CodeBlock.builder().apply {
-                        indent()
-                        mapEntry.value.forEach { addStatement("is %T -> %S", it.className, it.screenName) }
-                        addStatement("else -> null")
-                        unindent()
-                        unindent()
-                        add("}?")
-                    }.build()
-                )
+                    .applyIf(mapEntry.value.isNotEmpty()) {
+                        beginControlFlow("when (this)")
+                        addCode(
+                            CodeBlock.builder()
+                                .apply {
+                                    mapEntry.value.forEach {
+                                        when (mapEntry.key) {
+                                            CLASS_COMPONENT_ACTIVITY -> addActivityStatement(this, it)
+                                            CLASS_ACTIVITY -> addActivityStatement(this, it)
+                                            CLASS_ANDROIDX_FRAGMENT -> addFragmentStatement(this, it)
+                                            else -> addFragmentStatement(this, it)
+                                        }
+                                    }
+                                }
+                                .build()
+                        )
+                        endControlFlow()
+                    }
+                    .build()
+            }
 
-                when (mapEntry.key) {
-                    CLASS_COMPONENT_ACTIVITY -> {
-                        extensionFunSpecBuilder.addStatement(
-                            ".let { %T.%L(this, it) }",
-                            CLASS_COLLAR,
-                            FUNCTION_NAME_TRACK_SCREEN
-                        )
-                    }
-                    CLASS_ANDROIDX_FRAGMENT -> {
-                        extensionFunSpecBuilder.addStatement(
-                            ".let { activity?.let { activity -> %T.%L(activity, it) } }",
-                            CLASS_COLLAR,
-                            FUNCTION_NAME_TRACK_SCREEN
-                        )
-                    }
-                    CLASS_ACTIVITY -> {
-                        extensionFunSpecBuilder.addStatement(
-                            ".let { %T.%L(this, it) }",
-                            CLASS_COLLAR,
-                            FUNCTION_NAME_TRACK_SCREEN
-                        )
-                    }
-                    else -> {
-                        extensionFunSpecBuilder.addStatement(
-                            ".let { activity?.let { activity -> %T.%L(activity, it) } }",
-                            CLASS_COLLAR,
-                            FUNCTION_NAME_TRACK_SCREEN
-                        )
-                    }
-                }
-                extensionFunSpecBuilder.build()
-            }.forEach { addFunction(it) }
-        }.build()
+    override fun build() =
+        file().writeTo(outputDir)
 
-    private fun checkForDeprecation(fileSpec: FileSpec.Builder, holdersMap: Map<ClassName, List<ScreenHolder>>) =
-        if (holdersMap
-                .mapNotNull { it.key }
-                .any { it == CLASS_SUPPORT_FRAGMENT || it == CLASS_FRAGMENT }
-        ) {
-            fileSpec.addAnnotation(AnnotationSpec.builder(Suppress::class.java).addMember(CodeBlock.of("%S", "DEPRECATION")).build())
-        } else {
-            fileSpec
-        }
+    private fun hasDeprecatedClasses(): Boolean =
+        holders
+            .groupBy { it.superClassName }
+            .map { it.key }
+            .filterNotNull()
+            .any { it == CLASS_SUPPORT_FRAGMENT || it == CLASS_FRAGMENT }
 
+    private fun suppressDeprecation(): AnnotationSpec =
+        AnnotationSpec.builder(Suppress::class.java)
+            .addMember(CodeBlock.of("%S", "DEPRECATION"))
+            .build()
+
+    private fun addActivityStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
+        builder.addStatement(
+            "is %T -> %T.%L(this, %S)",
+            holder.className,
+            CLASS_COLLAR,
+            FUNCTION_NAME_TRACK_SCREEN,
+            holder.screenName
+        )
+
+    private fun addFragmentStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
+        builder.addStatement(
+            "is %T -> activity?.let { %T.%L(it, %S) }",
+            holder.className,
+            CLASS_COLLAR,
+            FUNCTION_NAME_TRACK_SCREEN,
+            holder.screenName
+        )
 }
 
 @DslMarker

@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import co.infinum.collar.annotations.ScreenName;
 
 @SuppressWarnings("deprecation")
-@ScreenName(value = JavaScreenNames.CHILD_SCREEN)
+@ScreenName(value = JavaScreenNames.CHILD_SCREEN, enabled = true)
 public class ChildFragment extends Fragment {
 
     @Nullable

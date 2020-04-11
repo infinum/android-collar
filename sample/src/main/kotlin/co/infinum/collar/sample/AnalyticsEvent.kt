@@ -54,5 +54,7 @@ sealed class AnalyticsEvent {
         val userType: String
 
     ) : AnalyticsEvent()
+
+    class Event5 : AnalyticsEvent()
 }
 

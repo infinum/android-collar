@@ -1,5 +1,6 @@
 package co.infinum.processor.specs
 
+import co.infinum.processor.extensions.applyIf
 import co.infinum.processor.models.PropertyHolder
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -9,7 +10,7 @@ import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
 class UserPropertiesSpec private constructor(
-    outputDir: File,
+    private val outputDir: File,
     private val packageName: String,
     private val simpleName: String,
     private val holders: Set<PropertyHolder>
@@ -21,8 +22,6 @@ class UserPropertiesSpec private constructor(
         private const val FUNCTION_NAME_TRACK_PROPERTY = "trackProperty"
 
         private const val PARAMETER_NAME_PROPERTY = "property"
-        private const val PARAMETER_NAME_PROPERTY_NAME = "name"
-        private const val PARAMETER_NAME_PROPERTY_VALUE = "value"
 
         private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
         private const val DEFAULT_SIMPLE_NAME = "UserProperties"
@@ -40,13 +39,14 @@ class UserPropertiesSpec private constructor(
     }
 
     init {
-        build().writeTo(outputDir)
+        build()
     }
 
     override fun file(): FileSpec =
         FileSpec.builder(packageName, simpleName)
             .addAnnotation(jvmName())
             .addComment(comment().toString())
+            .apply { extensions().map { addFunction(it) } }
             .build()
 
     override fun jvmName(): AnnotationSpec =
@@ -61,52 +61,28 @@ class UserPropertiesSpec private constructor(
             .addStatement("This is a generated extension file. Do not edit.")
             .build()
 
-    override fun build(): FileSpec =
-        file().toBuilder().apply {
-            val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_PROPERTY)
+    override fun extensions(): List<FunSpec> =
+        listOf(
+            FunSpec.builder(FUNCTION_NAME_TRACK_PROPERTY)
                 .addParameter(PARAMETER_NAME_PROPERTY, ClassName(packageName, simpleName))
-                .addStatement("var %L: %T = %S", PARAMETER_NAME_PROPERTY_NAME, String::class, "")
-                .addStatement("var %L: %T = %S", PARAMETER_NAME_PROPERTY_VALUE, String::class, "")
-                .beginControlFlow("when (%L)", PARAMETER_NAME_PROPERTY)
-            holders.forEach {
-                val codeBlock = CodeBlock.builder()
-                    .addStatement("is %T -> {", it.className)
-                    .indent()
-                    .addStatement(
-                        "%L = %S",
-                        PARAMETER_NAME_PROPERTY_NAME,
-                        it.propertyName
+                .applyIf(holders.isNotEmpty()) {
+                    beginControlFlow("when (%L)", PARAMETER_NAME_PROPERTY)
+                    addCode(
+                        CodeBlock.builder()
+                            .apply {
+                                holders.forEach {
+                                    addStatement("is %T -> %T.%L(%S, %L.%L)", it.className, CLASS_COLLAR, FUNCTION_NAME_TRACK_PROPERTY, it.propertyName, PARAMETER_NAME_PROPERTY, it.propertyParameterNames.single())
+                                }
+                            }
+                            .build()
                     )
-                    .addStatement(
-                        "%L = %L.%L",
-                        PARAMETER_NAME_PROPERTY_VALUE,
-                        PARAMETER_NAME_PROPERTY,
-                        it.propertyParameterNames.first()
-                    )
-                    .unindent()
-                    .addStatement("}")
-                    .build()
+                    endControlFlow()
+                }
+                .build()
+        )
 
-                extensionFunSpecBuilder.addCode(codeBlock)
-            }
-            extensionFunSpecBuilder.endControlFlow()
-            extensionFunSpecBuilder.addCode(
-                CodeBlock.builder()
-                    .addStatement("if (%L.isNotBlank()) {", PARAMETER_NAME_PROPERTY_NAME)
-                    .indent()
-                    .addStatement(
-                        "%T.%L(%L, %L)",
-                        CLASS_COLLAR,
-                        FUNCTION_NAME_TRACK_PROPERTY,
-                        PARAMETER_NAME_PROPERTY_NAME,
-                        PARAMETER_NAME_PROPERTY_VALUE
-                    )
-                    .unindent()
-                    .addStatement("}")
-                    .build()
-            )
-            addFunction(extensionFunSpecBuilder.build())
-        }.build()
+    override fun build() =
+        file().writeTo(outputDir)
 }
 
 @DslMarker

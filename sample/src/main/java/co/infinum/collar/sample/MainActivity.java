@@ -8,6 +8,7 @@ import android.view.View;
 import java.util.UUID;
 
 //import co.infinum.collar.CollarScreenNames;
+import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
 
 @ScreenName(value = JavaScreenNames.MAIN_SCREEN)
@@ -23,18 +24,18 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-//                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
-//                    "awesome",
-//                    true,
-//                    Byte.MAX_VALUE,
-//                    Character.MAX_VALUE,
-//                    7.11,
-//                    31.5f,
-//                    18,
-//                    2L,
-//                    Short.MAX_VALUE,
-//                    buildBundle()
-//                ));
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
+                    "awesome",
+                    true,
+                    Byte.MAX_VALUE,
+                    Character.MAX_VALUE,
+                    7.11,
+                    31.5f,
+                    18,
+                    2L,
+                    Short.MAX_VALUE,
+                    buildBundle()
+                ));
             }
         });
 
@@ -46,14 +47,14 @@ public class MainActivity extends Activity {
             }
         });
 
-//        CollarUserProperty.trackProperty(new UserProperty.UserUUID(UUID.randomUUID().toString()));
-//        CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));
+        CollarUserProperty.trackProperty(new UserProperty.MyUUID(UUID.randomUUID().toString()));
+        CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        CollarScreenNames.trackScreen(this);
+        CollarScreenNames.trackScreen(this);
     }
 
     private void showChildScreen() {

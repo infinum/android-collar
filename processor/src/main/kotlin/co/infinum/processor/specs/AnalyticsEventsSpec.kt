@@ -1,5 +1,6 @@
 package co.infinum.processor.specs
 
+import co.infinum.processor.extensions.applyIf
 import co.infinum.processor.models.EventHolder
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -9,7 +10,7 @@ import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
 class AnalyticsEventsSpec private constructor(
-    outputDir: File,
+    private val outputDir: File,
     private val packageName: String,
     private val simpleName: String,
     private val holders: Set<EventHolder>
@@ -19,15 +20,14 @@ class AnalyticsEventsSpec private constructor(
         private val CLASS_COLLAR = ClassName("co.infinum.collar", "Collar")
         private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
 
+        // TODO: Move away from this function to more manual work of just bundle for 1 less dependency
         private val FUNCTION_BUNDLE_OF = ClassName("androidx.core.os", "bundleOf")
 
         private const val FUNCTION_NAME_TRACK_EVENT = "trackEvent"
 
         private const val PARAMETER_NAME_EVENT = "event"
-        private const val PARAMETER_NAME_EVENT_NAME = "name"
-        private const val PARAMETER_NAME_PARAMS = "params"
 
-        private const val DEFAULT_PACKAGE_NAME = ""
+        private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
         private const val DEFAULT_SIMPLE_NAME = "AnalyticsEvents"
     }
 
@@ -43,13 +43,14 @@ class AnalyticsEventsSpec private constructor(
     }
 
     init {
-        build().writeTo(outputDir)
+        build()
     }
 
     override fun file(): FileSpec =
         FileSpec.builder(packageName, simpleName)
             .addAnnotation(jvmName())
             .addComment(comment().toString())
+            .apply { extensions().map { addFunction(it) } }
             .build()
 
     override fun jvmName(): AnnotationSpec =
@@ -64,70 +65,57 @@ class AnalyticsEventsSpec private constructor(
             .addStatement("This is a generated extension file. Do not edit.")
             .build()
 
-    override fun build(): FileSpec =
-        file().toBuilder().apply {
-            val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_EVENT)
+    override fun extensions(): List<FunSpec> =
+        listOf(
+            FunSpec.builder(FUNCTION_NAME_TRACK_EVENT)
                 .addParameter(PARAMETER_NAME_EVENT, ClassName(packageName, simpleName))
-                .addStatement("var %L: %T = %S", PARAMETER_NAME_EVENT_NAME, String::class, "")
-                .addStatement("var %L: %T = %T()", PARAMETER_NAME_PARAMS, CLASS_BUNDLE, FUNCTION_BUNDLE_OF)
-                .beginControlFlow("when (%L)", PARAMETER_NAME_EVENT)
-            holders.forEach { eventHolder: EventHolder ->
-                val codeBlock = CodeBlock.builder()
-                    .addStatement("is %T -> {", eventHolder.className)
-                    .indent()
-                    .addStatement(
-                        "%L = %S",
-                        PARAMETER_NAME_EVENT_NAME,
-                        eventHolder.eventName
-                    )
-                    .apply {
-                        if (eventHolder.eventParameters.isNotEmpty()) {
-                            addStatement("%L = %T(", PARAMETER_NAME_PARAMS, FUNCTION_BUNDLE_OF)
-                            indent()
-                            eventHolder.eventParameters.filter { it.enabled }.withIndex().forEach {
-                                val size = eventHolder.eventParameters.size
-                                val separator = when (it.index) {
-                                    size - 1 -> ""
-                                    else -> ","
+                .applyIf(holders.isNotEmpty()) {
+                    beginControlFlow("when (%L)", PARAMETER_NAME_EVENT)
+                    addCode(
+                        CodeBlock.builder()
+                            .apply {
+                                holders.forEach { holder ->
+                                    addStatement("is %T -> %T.%L(", holder.className, CLASS_COLLAR, FUNCTION_NAME_TRACK_EVENT)
+                                    indent()
+                                    addStatement("%S,", holder.eventName)
+                                        .apply {
+                                            if (holder.eventParameters.isEmpty()) {
+                                                addStatement("%T()", FUNCTION_BUNDLE_OF)
+                                            } else {
+                                                addStatement("%T(", FUNCTION_BUNDLE_OF)
+                                                indent()
+                                                holder.eventParameters
+                                                    .filter { parameterHolder -> parameterHolder.enabled }
+                                                    .withIndex()
+                                                    .forEach {
+                                                        addStatement(
+                                                            "%S to %L.%L%L",
+                                                            it.value.resolvedName,
+                                                            PARAMETER_NAME_EVENT,
+                                                            it.value.variableName,
+                                                            when (it.index) {
+                                                                holder.eventParameters.size - 1 -> ""
+                                                                else -> ","
+                                                            }
+                                                        )
+                                                    }
+                                                unindent()
+                                                addStatement(")")
+                                            }
+                                        }
+                                    unindent()
+                                    addStatement(")")
                                 }
-                                addStatement(
-                                    "%S to %L.%L%L",
-                                    it.value.resolvedName,
-                                    PARAMETER_NAME_EVENT,
-                                    it.value.variableName,
-                                    separator
-                                )
                             }
-                            unindent()
-                            addStatement(")")
-                        } else {
-                            addStatement("%L = %T()", PARAMETER_NAME_PARAMS, CLASS_BUNDLE)
-                        }
-                    }
-                    .unindent()
-                    .addStatement("}")
-                    .build()
-
-                extensionFunSpecBuilder.addCode(codeBlock)
-            }
-            extensionFunSpecBuilder.endControlFlow()
-            extensionFunSpecBuilder.addCode(
-                CodeBlock.builder()
-                    .addStatement("if (%L.isNotBlank()) {", PARAMETER_NAME_EVENT_NAME)
-                    .indent()
-                    .addStatement(
-                        "%T.%L(%L, %L)",
-                        CLASS_COLLAR,
-                        FUNCTION_NAME_TRACK_EVENT,
-                        PARAMETER_NAME_EVENT_NAME,
-                        PARAMETER_NAME_PARAMS
+                            .build()
                     )
-                    .unindent()
-                    .addStatement("}")
-                    .build()
-            )
-            addFunction(extensionFunSpecBuilder.build())
-        }.build()
+                    endControlFlow()
+                }
+                .build()
+        )
+
+    override fun build() =
+        file().writeTo(outputDir)
 }
 
 @DslMarker
