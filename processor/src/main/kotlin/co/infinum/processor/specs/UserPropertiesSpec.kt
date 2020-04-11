@@ -2,29 +2,22 @@ package co.infinum.processor.specs
 
 import co.infinum.processor.extensions.applyIf
 import co.infinum.processor.models.PropertyHolder
-import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
 class UserPropertiesSpec private constructor(
-    private val outputDir: File,
+    outputDir: File,
     private val packageName: String,
     private val simpleName: String,
     private val holders: Set<PropertyHolder>
-) : Spec {
+) : CommonSpec(outputDir, packageName, simpleName) {
 
     companion object {
-        private val CLASS_COLLAR = ClassName("co.infinum.collar", "Collar")
-
-        private const val FUNCTION_NAME_TRACK_PROPERTY = "trackProperty"
-
-        private const val PARAMETER_NAME_PROPERTY = "property"
-
-        private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
         private const val DEFAULT_SIMPLE_NAME = "UserProperties"
+        private const val FUNCTION_NAME_TRACK_PROPERTY = "trackProperty"
+        private const val PARAMETER_NAME_PROPERTY = "property"
     }
 
     open class Builder(
@@ -41,25 +34,6 @@ class UserPropertiesSpec private constructor(
     init {
         build()
     }
-
-    override fun file(): FileSpec =
-        FileSpec.builder(packageName, simpleName)
-            .addAnnotation(jvmName())
-            .addComment(comment().toString())
-            .apply { extensions().map { addFunction(it) } }
-            .build()
-
-    override fun jvmName(): AnnotationSpec =
-        AnnotationSpec.builder(JvmName::class.java)
-            .addMember("%S", "${CLASS_COLLAR.simpleName}$simpleName")
-            .build()
-
-    override fun comment(): CodeBlock =
-        CodeBlock.builder()
-            .addStatement("Converts [%T] to property name and value and logs it using [%T.%L].", ClassName(packageName, simpleName), CLASS_COLLAR, FUNCTION_NAME_TRACK_PROPERTY)
-            .addStatement("")
-            .addStatement("This is a generated extension file. Do not edit.")
-            .build()
 
     override fun extensions(): List<FunSpec> =
         listOf(
@@ -80,9 +54,6 @@ class UserPropertiesSpec private constructor(
                 }
                 .build()
         )
-
-    override fun build() =
-        file().writeTo(outputDir)
 }
 
 @DslMarker

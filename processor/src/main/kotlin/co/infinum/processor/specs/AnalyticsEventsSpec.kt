@@ -2,33 +2,26 @@ package co.infinum.processor.specs
 
 import co.infinum.processor.extensions.applyIf
 import co.infinum.processor.models.EventHolder
-import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
 class AnalyticsEventsSpec private constructor(
-    private val outputDir: File,
+    outputDir: File,
     private val packageName: String,
     private val simpleName: String,
     private val holders: Set<EventHolder>
-) : Spec {
+) : CommonSpec(outputDir, packageName, simpleName) {
 
     companion object {
-        private val CLASS_COLLAR = ClassName("co.infinum.collar", "Collar")
-        private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
+        private const val DEFAULT_SIMPLE_NAME = "AnalyticsEvents"
+        private const val FUNCTION_NAME_TRACK_EVENT = "trackEvent"
+        private const val PARAMETER_NAME_EVENT = "event"
 
         // TODO: Move away from this function to more manual work of just bundle for 1 less dependency
         private val FUNCTION_BUNDLE_OF = ClassName("androidx.core.os", "bundleOf")
-
-        private const val FUNCTION_NAME_TRACK_EVENT = "trackEvent"
-
-        private const val PARAMETER_NAME_EVENT = "event"
-
-        private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
-        private const val DEFAULT_SIMPLE_NAME = "AnalyticsEvents"
+//        private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
     }
 
     open class Builder(
@@ -45,25 +38,6 @@ class AnalyticsEventsSpec private constructor(
     init {
         build()
     }
-
-    override fun file(): FileSpec =
-        FileSpec.builder(packageName, simpleName)
-            .addAnnotation(jvmName())
-            .addComment(comment().toString())
-            .apply { extensions().map { addFunction(it) } }
-            .build()
-
-    override fun jvmName(): AnnotationSpec =
-        AnnotationSpec.builder(JvmName::class.java)
-            .addMember("%S", "${CLASS_COLLAR.simpleName}$simpleName")
-            .build()
-
-    override fun comment(): CodeBlock =
-        CodeBlock.builder()
-            .addStatement("Converts [%T] to event name and params and logs it using [%T.%L].", ClassName(packageName, simpleName), CLASS_COLLAR, FUNCTION_NAME_TRACK_EVENT)
-            .addStatement("")
-            .addStatement("This is a generated extension file. Do not edit.")
-            .build()
 
     override fun extensions(): List<FunSpec> =
         listOf(
@@ -113,9 +87,6 @@ class AnalyticsEventsSpec private constructor(
                 }
                 .build()
         )
-
-    override fun build() =
-        file().writeTo(outputDir)
 }
 
 @DslMarker

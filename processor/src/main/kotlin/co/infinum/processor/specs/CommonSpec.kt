@@ -1,0 +1,40 @@
+package co.infinum.processor.specs
+
+import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FileSpec
+import java.io.File
+
+abstract class CommonSpec(
+    private val outputDir: File,
+    private val packageName: String,
+    private val simpleName: String
+) : Spec {
+
+    companion object {
+        internal val CLASS_COLLAR = ClassName("co.infinum.collar", "Collar")
+
+        internal const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
+    }
+
+    override fun file(): FileSpec =
+        FileSpec.builder(packageName, simpleName)
+            .addAnnotation(jvmName())
+            .addComment(comment().toString())
+            .apply { extensions().map { addFunction(it) } }
+            .build()
+
+    override fun jvmName(): AnnotationSpec =
+        AnnotationSpec.builder(JvmName::class.java)
+            .addMember(CodeBlock.of("%S", "${CLASS_COLLAR.simpleName}$simpleName"))
+            .build()
+
+    override fun comment(): CodeBlock =
+        CodeBlock.builder()
+            .addStatement("This is a Collar generated extension file. Do not edit manually.")
+            .build()
+
+    override fun build() =
+        file().writeTo(outputDir)
+}

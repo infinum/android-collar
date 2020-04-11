@@ -15,17 +15,13 @@ import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
 class ScreenNameSpec private constructor(
-    private val outputDir: File,
+    outputDir: File,
     private val holders: Set<ScreenHolder>
-) : Spec {
+) : CommonSpec(outputDir, DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME) {
 
     companion object {
-        private val CLASS_COLLAR = ClassName("co.infinum.collar", "Collar")
-
-        private const val FUNCTION_NAME_TRACK_SCREEN = "trackScreen"
-
-        private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
         private const val DEFAULT_SIMPLE_NAME = "ScreenNames"
+        private const val FUNCTION_NAME_TRACK_SCREEN = "trackScreen"
     }
 
     open class Builder(
@@ -42,23 +38,8 @@ class ScreenNameSpec private constructor(
     }
 
     override fun file(): FileSpec =
-        FileSpec.builder(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME)
-            .addComment(comment().toString())
-            .addAnnotation(jvmName())
+        super.file().toBuilder(DEFAULT_PACKAGE_NAME, DEFAULT_SIMPLE_NAME)
             .applyIf(hasDeprecatedClasses()) { addAnnotation(suppressDeprecation()) }
-            .apply { extensions().map { addFunction(it) } }
-            .build()
-
-    override fun comment(): CodeBlock =
-        CodeBlock.builder()
-            .addStatement("Matches classes to screen names and logs it using [%T.%L].", CLASS_COLLAR, FUNCTION_NAME_TRACK_SCREEN)
-            .addStatement("")
-            .addStatement("This is a generated extension file. Do not edit.")
-            .build()
-
-    override fun jvmName(): AnnotationSpec =
-        AnnotationSpec.builder(JvmName::class.java)
-            .addMember(CodeBlock.of("%S", "${CLASS_COLLAR.simpleName}$DEFAULT_SIMPLE_NAME"))
             .build()
 
     override fun extensions(): List<FunSpec> =
@@ -91,9 +72,6 @@ class ScreenNameSpec private constructor(
                     }
                     .build()
             }
-
-    override fun build() =
-        file().writeTo(outputDir)
 
     private fun hasDeprecatedClasses(): Boolean =
         holders
