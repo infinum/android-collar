@@ -25,8 +25,10 @@ task javadocsJar(type: Jar, dependsOn: javadocs) {
 
 publishing {
     publications {
-        Publication(MavenPublication) {
+        infinum(MavenPublication) {
+            groupId = group
             artifactId = 'collar-core'
+
             artifact sourcesJar
             artifact javadocsJar
             pom {
@@ -46,7 +48,11 @@ publishing {
                 configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
+                    if (it.group == group) {
+                        dependencyNode.appendNode('artifactId', "collar-" + it.name)
+                    } else {
+                        dependencyNode.appendNode('artifactId', it.name)
+                    }
                     dependencyNode.appendNode('version', it.version)
                 }
             }
@@ -88,7 +94,7 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging 'aar'
+                packaging 'jar'
                 groupId 'co.infinum.collar'
                 artifactId 'collar-core'
 
@@ -113,7 +119,6 @@ install {
                     connection 'https://github.com/infinum/android-collar.git'
                     developerConnection 'https://github.com/infinum/android-collar.git'
                     url 'https://github.com/infinum/android-collar'
-
                 }
             }
         }

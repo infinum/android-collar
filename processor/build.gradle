@@ -11,25 +11,16 @@ buildscript {
     }
 }
 
-repositories {
-    mavenLocal()
-    google()
-    jcenter()
-    mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
-}
-
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation project(":annotations")
     implementation packages.kotlin.core
     implementation packages.kotlin.poet
     implementation packages.kotlin.poet_metadata
-    compileOnly packages.incap.core
-    kapt packages.incap.processor
+    api packages.incap.core
+    compileOnly packages.incap.processor
 }
 
 apply from: "bintray.gradle"

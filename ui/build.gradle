@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         mavenLocal()
-        maven { url System.getenv('HOME') + "/.m2/repository/" }
         google()
         jcenter()
         mavenCentral()
@@ -10,15 +9,6 @@ buildscript {
     dependencies {
         classpath packages.gradle
     }
-}
-
-repositories {
-    mavenLocal()
-    maven { url System.getenv('HOME') + "/.m2/repository/" }
-    google()
-    jcenter()
-    mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: 'com.android.library'
@@ -62,8 +52,9 @@ android {
 }
 
 dependencies {
+    implementation project(":core")
+    implementation project(":annotations")
     implementation packages.kotlin.core
-    api project(":core")
     implementation packages.androidx.appcompat
     implementation packages.androidx.core
     implementation packages.androidx.recyclerview

@@ -11,15 +11,6 @@ buildscript {
     }
 }
 
-repositories {
-    mavenLocal()
-    google()
-    jcenter()
-    mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
-}
-
-apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 compileKotlin {
@@ -34,6 +25,7 @@ compileTestKotlin {
 }
 
 dependencies {
-//    implementation packages.kotlin.core
     compileOnly packages.kotlin.core
 }
+
+apply from: "bintray.gradle"

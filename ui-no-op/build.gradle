@@ -11,14 +11,6 @@ buildscript {
     }
 }
 
-repositories {
-    mavenLocal()
-    google()
-    jcenter()
-    mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
-}
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -52,8 +44,9 @@ android {
 }
 
 dependencies {
+    implementation project(":core")
+    implementation project(":annotations")
     implementation packages.kotlin.core
-    compileOnly project(":core")
     implementation packages.androidx.appcompat
 }
 

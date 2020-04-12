@@ -10,11 +10,11 @@ version = collar.version
 
 task sourcesJar(type: Jar, dependsOn: assemble) {
     archiveClassifier.set('sources')
-    from android.sourceSets.main.kotlin.srcDirs
+    from sourceSets.main.allSource
 }
 
 task javadocs(type: Javadoc) {
-    source = android.sourceSets.main.kotlin.srcDirs
+    source = sourceSets.main.allSource
 }
 
 task javadocsJar(type: Jar, dependsOn: javadocs) {
@@ -26,13 +26,13 @@ publishing {
     publications {
         infinum(MavenPublication) {
             groupId = group
-            artifactId = 'collar-ui-no-op'
+            artifactId = 'collar-annotations'
 
             artifact sourcesJar
             artifact javadocsJar
             pom {
-                name = 'Collar UI no op'
-                description = 'No op UI which provides single point for analytics collection preview.'
+                name = 'Collar Annotations'
+                description = 'Gradle plugin which provides single point for analytics collection.'
                 url = 'https://github.com/infinum/android-collar'
                 licenses {
                     license {
@@ -47,11 +47,7 @@ publishing {
                 configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
-                    if (it.group == group) {
-                        dependencyNode.appendNode('artifactId', "collar-" + it.name)
-                    } else {
-                        dependencyNode.appendNode('artifactId', it.name)
-                    }
+                    dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version)
                 }
             }
@@ -65,9 +61,9 @@ bintray {
 
     pkg {
         repo = 'android'
-        name = 'collar-ui-no-op'
+        name = 'collar-annotations'
         userOrg = 'infinum'
-        desc = 'Collar no op UI packages'
+        desc = 'Collar Annotations package'
         websiteUrl = 'https://github.com/infinum/android-collar'
         issueTrackerUrl = 'https://github.com/infinum/android-collar/issues'
         vcsUrl = 'https://github.com/infinum/android-collar.git'
@@ -95,10 +91,10 @@ install {
             project {
                 packaging 'jar'
                 groupId 'co.infinum.collar'
-                artifactId 'collar-ui-no-op'
+                artifactId 'collar-annotations'
 
-                name 'collar-ui-no-op'
-                description 'Collar UI no op'
+                name 'collar-annotations'
+                description 'Collar Annotations'
                 url 'https://github.com/infinum/android-collar'
 
                 licenses {

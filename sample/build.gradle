@@ -4,7 +4,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url "http://dl.bintray.com/infinum/android" }
+//        maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
@@ -17,7 +17,7 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
+//    maven { url "http://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: 'com.android.application'
@@ -70,13 +70,14 @@ dependencies {
     implementation packages.kotlin.core
     implementation "androidx.fragment:fragment:1.2.4"
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation project(":ui")
     lintChecks project(":lint")
+
+    implementation project(":annotations")
+    implementation project(":core")
+    implementation project(":ui")
     kapt project(":processor")
-//    kapt "co.infinum.collar:collar-processor:1.1.1"
 }
 
 //collar {
-//    version "1.1.1"
-//    extended true
+//    version "1.1.2"
 //}

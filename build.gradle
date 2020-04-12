@@ -11,9 +11,11 @@ buildscript {
     apply from: "dependencies.gradle"
 
     repositories {
+        mavenLocal()
         google()
         jcenter()
         mavenCentral()
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
 
     dependencies {
@@ -36,7 +38,14 @@ allprojects {
     tasks.withType(Javadoc).all {
         enabled = false
     }
+}
+
+subprojects {
     repositories {
         mavenLocal()
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
 }

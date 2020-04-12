@@ -15,7 +15,6 @@ class CollarPlugin : Plugin<Project> {
 
     private fun addRepositories(project: Project) {
         with(project.repositories) {
-            mavenLocal()
             google()
             jcenter()
             mavenCentral()
@@ -24,6 +23,7 @@ class CollarPlugin : Plugin<Project> {
     }
 
     private fun addDependencies(project: Project, settings: CollarExtension) {
+        project.dependencies.add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
         project.dependencies.add("implementation", "co.infinum.collar:collar-core:${settings.version}")
 
         if (project.pluginManager.hasPlugin("kotlin-android")) {

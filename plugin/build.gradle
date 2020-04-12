@@ -4,17 +4,11 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
     }
-}
-
-repositories {
-    mavenLocal()
-    google()
-    jcenter()
-    mavenCentral()
 }
 
 apply plugin: 'kotlin'
