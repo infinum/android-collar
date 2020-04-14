@@ -18,8 +18,9 @@ The project is organized in the following modules:
 
 ## Usage
 
-To include plugin to your project, you have to add buildscript dependencies in your project level `build.gradle`:
+To include plugin to your project, you have to add buildscript dependencies in your project level `build.gradle` or `build.gradle.kts`:
 
+**Groovy**
 ```gradle
 buildscript {
     repositories {
@@ -32,11 +33,33 @@ buildscript {
     }
 }
 ```
+**KotlinDSL**
+```kotlin
+buildscript {
+    repositories {
+        jcenter()
+        // for plugin
+        maven(url = "http://dl.bintray.com/infinum/android")
+    }
+    dependencies {
+        classpath("co.infinum.collar:collar-plugin:1.1.2")
+    }
+}
+```
 
-Then apply the plugin in your app `build.gradle`:
+Then apply the plugin in your app `build.gradle` or `build.gradle.kts` :
 
+**Groovy**
 ```gradle
 apply plugin: "co.infinum.collar.plugin"
+```
+**KotlinDSL**
+```kotlin
+plugins {
+    ...
+    
+    id("co.infinum.collar.plugin")
+}
 ```
 
 Now you can sync your project.
@@ -230,11 +253,18 @@ You can set a specific _Collar_ version to be used.
 ## Debug UI
 A separate package and no-op package is provided if you want to visually track what has been sent through Collar.  
 You can search, filter and clear all sent analytics.  
-In your app `build.gradle` add:
+In your app `build.gradle` or `build.gradle.kts` add:
+**Groovy**
 ```gradle
 debugImplementation "co.infinum.collar:collar-ui:1.1.2"
 releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.2"
 ```
+**KotlinDSL**
+```kotlin
+debugImplementation("co.infinum.collar:collar-ui:1.1.2")
+releaseImplementation( )"co.infinum.collar:collar-ui-no-op:1.1.2")
+```
+
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
  Collar.attach(object : LiveCollector(context, true) {
