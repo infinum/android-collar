@@ -4,6 +4,7 @@
 /bintray.properties
 /.idea/caches
 /.idea/libraries
+/.idea/misc.xml
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
@@ -17,3 +18,5 @@
 /sample/build/
 /ui/build/
 /ui-no-op/build/
+/lint/build/
+/sample/src/main/kotlin/co/infinum/collar/sample/analytics/generated/
