@@ -17,7 +17,7 @@ class KotlinChildFragment : Fragment(R.layout.fragment_child_kotlin) {
         super.onViewCreated(view, savedInstanceState)
 
         buttonProduceEvent4.setOnClickListener {
-            trackEvent(AnalyticsEvent.Event4(UUID = UUID.randomUUID().toString(), userType = KotlinUserType.CORPORATE.name))
+            trackEvent(AnalyticsEvent.Event4(UUID = UUID.randomUUID().toString(), userType = "CORPORATE"))
         }
         buttonStartUi.setOnClickListener {
             startActivity(

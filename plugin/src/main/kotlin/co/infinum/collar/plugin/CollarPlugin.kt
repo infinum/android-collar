@@ -16,7 +16,6 @@ class CollarPlugin : Plugin<Project> {
 
         addRepositories(project)
         addDependencies(project, extension)
-        addProcessorDependecy(project, extension)
 
         project.tasks.create<GenerateTask>(COLLAR_GENERATE_TASK, GenerateTask::class.java).run {
             description = COLLAR_GENERATE_TASK_DESC
@@ -36,6 +35,7 @@ class CollarPlugin : Plugin<Project> {
     private fun addDependencies(project: Project, settings: CollarExtension) {
         project.dependencies.add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
         project.dependencies.add("implementation", "co.infinum.collar:collar-core:${settings.version}")
+        project.dependencies.add("implementation", "co.infinum.collar:collar-generator:${settings.version}")
 
         if (project.pluginManager.hasPlugin("kotlin-android")) {
             if (project.pluginManager.hasPlugin("kotlin-kapt").not()) {

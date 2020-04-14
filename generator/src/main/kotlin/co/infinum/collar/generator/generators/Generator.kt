@@ -1,5 +1,8 @@
 package co.infinum.collar.generator.generators
 
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.TypeSpec
+
 interface Generator {
 
     companion object {
@@ -11,5 +14,11 @@ interface Generator {
         const val COLLAR_ANNOTATION_EVENT_NAME = "EventName"
     }
 
-    fun generate()
+    fun generate(): Boolean
+
+    fun file(): FileSpec.Builder
+
+    fun type(): TypeSpec
+
+    fun write(fileSpec: FileSpec)
 }

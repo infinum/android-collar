@@ -1,17 +1,20 @@
 package co.infinum.collar.plugin.tasks
 
+import co.infinum.collar.generator.CollarGenerator
 import co.infinum.collar.plugin.CollarConstants.COLLAR_EXTENSION
 import co.infinum.collar.plugin.CollarExtension
 import co.infinum.collar.plugin.checkIfValid
+import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskExecutionException
 
-open class GenerateTask : BaseTask() {
+open class GenerateTask : DefaultTask() {
+
+    private val collarGenerator = CollarGenerator()
 
     @TaskAction
     fun generateFiles() {
-        val extension: CollarExtension =
-            project.extensions.findByName(COLLAR_EXTENSION) as CollarExtension
+        val extension: CollarExtension = project.extensions.findByName(COLLAR_EXTENSION) as CollarExtension
 
         val errors = extension.checkIfValid()
 
@@ -31,7 +34,7 @@ open class GenerateTask : BaseTask() {
         println(filePath)
 
         try {
-            if (generatorLib.generate(filePath, outputPath, extension.packageName)) {
+            if (collarGenerator.generate(filePath, outputPath, extension.packageName)) {
                 println("Done! Files are generated")
             } else {
                 println("Task generate failed;")

@@ -11,28 +11,23 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
 
-compileKotlin { kotlinOptions { jvmTarget = "1.8" } }
-compileTestKotlin { kotlinOptions { jvmTarget = "1.8" } }
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
 
 dependencies {
     implementation packages.kotlin.core
-    api project(':generator')
+    implementation packages.collar.generator
     compileOnly gradleApi()
     compileOnly packages.gradle
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'co.infinum.collar'
-            artifactId = 'collar-plugin'
-            version = collar.version
-
-            from components.java
-        }
-    }
 }
 
 apply from: "bintray.gradle"

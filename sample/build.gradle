@@ -68,5 +68,5 @@ dependencies {
 collar {
     version "1.1.2"
     fileName = "example.json"
-    packageName = "co.infinum.collar.sample.analytics"
+    packageName = "co.infinum.collar.sample.analytics.generated"
 }
