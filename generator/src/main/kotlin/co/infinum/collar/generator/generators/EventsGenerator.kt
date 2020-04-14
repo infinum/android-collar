@@ -17,7 +17,7 @@ class EventsGenerator(
 ) : CommonGenerator(outputPath, packageName, CLASS_NAME) {
 
     companion object {
-        const val CLASS_NAME = "AnalyticsEvent"
+        const val CLASS_NAME = "AnalyticsEvents"
     }
 
     override fun type() =

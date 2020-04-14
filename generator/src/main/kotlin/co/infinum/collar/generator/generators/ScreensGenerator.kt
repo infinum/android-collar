@@ -20,9 +20,12 @@ class ScreensGenerator(
         TypeSpec.objectBuilder(CLASS_NAME)
             .apply {
                 items.forEach {
-                    val name = it.name.toUpperCase(Locale.ENGLISH).replace(" ", "_")
                     addProperty(
-                        PropertySpec.builder(name, String::class, KModifier.CONST)
+                        PropertySpec.builder(
+                            it.name.toUpperCase(Locale.ENGLISH).replace(" ", "_"),
+                            String::class,
+                            KModifier.CONST
+                        )
                             .initializer("%S", it.name)
                             .addKdoc(it.description)
                             .build()

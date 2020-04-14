@@ -10,16 +10,22 @@ import java.io.File
 
 class CollarGenerator {
 
-    fun generate(fileName: String, output: String, packageName: String): Boolean =
-        MoshiProvider.get()
+    fun generate(filePath: String, output: String, packageName: String): Boolean =
+        MoshiProvider.provide()
             .value
             .adapter(AnalyticsModel::class.java)
-            .fromJson(File(fileName).readText(Charsets.UTF_8))
-            ?.let { analyticsModel ->
-                listOf(
-                    ScreensGenerator(analyticsModel.screens, output, packageName),
-                    UserPropertiesGenerator(analyticsModel.userProperties, output, packageName),
-                    EventsGenerator(analyticsModel.events, output, packageName)
-                ).fold(true, { accumulator: Boolean, generator: Generator -> accumulator && generator.generate() })
+            .fromJson(File(filePath).readText(Charsets.UTF_8))
+            ?.let {
+                generators(it, output, packageName)
+                    .fold(true, { accumulator: Boolean, generator: Generator -> accumulator && generator.generate() })
             } ?: false
+
+    private fun generators(analyticsModel: AnalyticsModel, output: String, packageName: String) =
+        with(analyticsModel) {
+            listOf(
+                ScreensGenerator(screens, output, packageName),
+                UserPropertiesGenerator(userProperties, output, packageName),
+                EventsGenerator(events, output, packageName)
+            )
+        }
 }

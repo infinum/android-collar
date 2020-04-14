@@ -14,12 +14,12 @@ import com.squareup.kotlinpoet.TypeSpec
 
 class UserPropertiesGenerator(
     private val userProperties: List<Property>,
-    private val outputPath: String,
-    private val packageName: String
+    outputPath: String,
+    packageName: String
 ) : CommonGenerator(outputPath, packageName, CLASS_NAME) {
 
     companion object {
-        const val CLASS_NAME = "UserProperty"
+        const val CLASS_NAME = "AnalyticsUserProperties"
         const val PROPERTY_PARAMETER_NAME = "value"
     }
 

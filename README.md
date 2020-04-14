@@ -281,7 +281,7 @@ collar {
     variant = "main" // main by default
 }
 ```
-JSON file has to be formatted in the same way as it is in `Sample` project.  
+JSON file has to be formatted in the same way as it is in `sample` project module.  
 If you don't want to use this task simply don't specify mandatory data.  
 Using this file is just a temporary and fetching the tracking plan will be implemented soon in future releases.
 
@@ -300,7 +300,9 @@ To run the task you can:
 
 ## Contributing
 
-Feedback and code contributions are very much welcome. Just make a pull request with a short description of your changes. By making contributions to this project you give permission for your code to be used under the same [license](LICENSE).
+Feedback and code contributions are very much welcome. Just make a pull request with a short description of your changes. By making contributions to this project you give permission for your code to be used under the same [license](LICENSE).  
+For easier developing a `sample` application with proper implementations is provided.  
+It is also recommended to uncomment the block of dependency substitution in project level `build.gradle`.
 
 ## License
 
