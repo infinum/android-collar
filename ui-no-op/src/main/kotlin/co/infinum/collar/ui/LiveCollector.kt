@@ -10,7 +10,8 @@ import co.infinum.collar.Screen
 @Suppress("UNUSED_PARAMETER")
 open class LiveCollector(
     context: Context,
-    private val showNotification: Boolean = false
+    private val showSystemNotification: Boolean = false,
+    private val showInAppNotification: Boolean = false
 ) : Collector {
 
     @CallSuper
