@@ -267,7 +267,7 @@ releaseImplementation( )"co.infinum.collar:collar-ui-no-op:1.1.2")
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
- Collar.attach(object : LiveCollector(context, true) {
+ Collar.attach(object : LiveCollector(context, true, false) {
 
     override fun onScreen(screen: Screen) =
         super.onScreen(screen).run {
@@ -285,7 +285,8 @@ In order to start tracking with UI you must use _LiveCollector_ as in this examp
         }
 })
 ```
-If you put second parameter *showNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
+If you put second parameter *showSystemNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
+Third parameter *showInAppNotification* with value *true* in *LiveCollector* will show a Snackbar-ish popup once analytics are gathered inside the current running Activity.  
 Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent:
 ```kotlin
     startActivity(
