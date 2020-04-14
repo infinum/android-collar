@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/collar_padding_default"
+    android:background="@drawable/collar_shape_background_snackbar"
+    android:orientation="horizontal"
+    android:padding="@dimen/collar_padding_default">
+
+    <ImageView
+        android:id="@+id/iconView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/collar_shape_background_screen"
+        android:scaleType="centerInside"
+        android:src="@drawable/collar_ic_screen" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nameView"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/collar_color_on_primary"
+            tools:text="test_property_name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/valueView"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            tools:text="test_property_value\ntest_property_value\ntest_property_value\ntest_property_value" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/timeView"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="start"
+            android:maxLength="8"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            tools:text="20:00:00" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/actionButton"
+        style="?attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:minWidth="48dp"
+        android:text="@string/collar_share"
+        android:textColor="@color/collar_color_primary"
+        android:visibility="visible" />
+
+</LinearLayout>

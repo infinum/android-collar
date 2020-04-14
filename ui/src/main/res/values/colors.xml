@@ -16,4 +16,5 @@
     <color name="collar_color_event">#005fff</color>
     <color name="collar_color_property">#ffa000</color>
     <color name="collar_color_unknown">#F44336</color>
+    <color name="collar_color_snackbar_background">#323232</color>
 </resources>

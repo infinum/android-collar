@@ -9,13 +9,17 @@ import co.infinum.collar.Screen
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.data.room.repository.EntityRepository
+import co.infinum.collar.ui.notifications.inapp.InAppNotificationProvider
+import co.infinum.collar.ui.notifications.system.SystemNotificationProvider
 
 open class LiveCollector(
     private val context: Context,
-    private val showNotification: Boolean = true
+    private val showSystemNotification: Boolean = true,
+    private val showInAppNotification: Boolean = true
 ) : Collector {
 
-    private val notificationProvider: NotificationProvider = NotificationProvider(context)
+    private val systemNotificationProvider: SystemNotificationProvider = SystemNotificationProvider(context)
+    private val inAppNotificationProvider: InAppNotificationProvider = InAppNotificationProvider(context)
 
     init {
         EntityRepository.initialize(context)
@@ -29,8 +33,11 @@ open class LiveCollector(
             name = screen.name
         )
         EntityRepository.saveScreen(entity)
-        if (showNotification) {
-            notificationProvider.showScreen(entity)
+        if (showSystemNotification) {
+            systemNotificationProvider.showScreen(entity)
+        }
+        if (showInAppNotification) {
+            inAppNotificationProvider.showScreen(entity)
         }
     }
 
@@ -43,8 +50,11 @@ open class LiveCollector(
             parameters = event.params?.let { BundleMapper.toMap(it) }
         )
         EntityRepository.saveEvent(entity)
-        if (showNotification) {
-            notificationProvider.showEvent(entity)
+        if (showSystemNotification) {
+            systemNotificationProvider.showEvent(entity)
+        }
+        if (showInAppNotification) {
+            inAppNotificationProvider.showEvent(entity)
         }
     }
 
@@ -57,8 +67,11 @@ open class LiveCollector(
             value = property.value
         )
         EntityRepository.saveProperty(entity)
-        if (showNotification) {
-            notificationProvider.showProperty(entity)
+        if (showSystemNotification) {
+            systemNotificationProvider.showProperty(entity)
+        }
+        if (showInAppNotification) {
+            inAppNotificationProvider.showProperty(entity)
         }
     }
 }
