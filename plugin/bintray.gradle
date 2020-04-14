@@ -43,11 +43,7 @@ publishing {
                 configurations.implementation.allDependencies.each {
                     def dependencyNode = dependenciesNode.appendNode('dependency')
                     dependencyNode.appendNode('groupId', it.group)
-                    if (it.group == group) {
-                        dependencyNode.appendNode('artifactId', "collar-" + it.name)
-                    } else {
-                        dependencyNode.appendNode('artifactId', it.name)
-                    }
+                    dependencyNode.appendNode('artifactId', it.name)
                     dependencyNode.appendNode('version', it.version)
                 }
             }

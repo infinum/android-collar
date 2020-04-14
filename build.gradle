@@ -42,7 +42,7 @@ allprojects {
 
 subprojects {
     repositories {
-        mavenLocal()
+//        mavenLocal()
         google()
         jcenter()
         mavenCentral()

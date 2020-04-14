@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        mavenLocal()
+//        mavenLocal()
         google()
         jcenter()
         mavenCentral()
@@ -11,6 +11,7 @@ buildscript {
     }
 }
 
+apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 compileKotlin {

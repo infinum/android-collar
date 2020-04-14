@@ -1,5 +1,3 @@
 rootProject.name = "Collar"
 
 include ":core", ":plugin", ":annotations", ":processor", ":ui", ":ui-no-op", ":lint", ":sample"
-
-enableFeaturePreview("GRADLE_METADATA")

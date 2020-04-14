@@ -1,30 +1,22 @@
 buildscript {
     repositories {
-        mavenLocal()
+        //mavenLocal()
         google()
         jcenter()
         mavenCentral()
-//        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
-//        classpath packages.collar.plugin
+        classpath packages.collar.plugin
     }
-}
-
-repositories {
-    mavenLocal()
-    google()
-    jcenter()
-    mavenCentral()
-//    maven { url "http://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-//apply plugin: 'co.infinum.collar.plugin'
+apply plugin: 'co.infinum.collar.plugin'
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -39,9 +31,10 @@ android {
 
         buildTypes {
             debug {
-                debug {
-                    debuggable true
-                }
+                debuggable true
+            }
+            release {
+                debuggable true
             }
         }
 
@@ -72,10 +65,20 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
     lintChecks project(":lint")
 
-    implementation project(":annotations")
-    implementation project(":core")
-    implementation project(":ui")
-    kapt project(":processor")
+//    debugImplementation project(":annotations")
+//    debugImplementation project(":core")
+//    debugImplementation project(":ui")
+//    kaptDebug project(":processor")
+
+//    releaseImplementation packages.collar.annotations
+//    releaseImplementation packages.collar.core
+//    releaseImplementation packages.collar.ui
+//    kaptRelease packages.collar.processor
+
+    implementation packages.collar.ui
+//    implementation packages.collar.annotations
+//    implementation packages.collar.core
+//    kapt packages.collar.processor
 }
 
 //collar {
