@@ -1,54 +1,42 @@
 package co.infinum.collar.plugin.tasks
 
 import co.infinum.collar.generator.CollarGenerator
-import co.infinum.collar.plugin.CollarConstants.COLLAR_EXTENSION
 import co.infinum.collar.plugin.CollarExtension
-import co.infinum.collar.plugin.checkIfValid
-import org.gradle.api.DefaultTask
+import co.infinum.collar.plugin.tasks.shared.BaseTask
+import co.infinum.collar.plugin.validate
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.TaskExecutionException
 
-open class GenerateTask : DefaultTask() {
+open class GenerateTask : BaseTask() {
+
+    companion object {
+        const val GROUP = "collar"
+        const val NAME = "generate"
+        const val DESCRIPTION = "Generates Kotlin files for screen names, events and user properties."
+    }
 
     private val collarGenerator = CollarGenerator()
 
     @TaskAction
-    fun generateFiles() {
-        val extension: CollarExtension = project.extensions.findByName(COLLAR_EXTENSION) as CollarExtension
+    fun generateTrackingPlanClasses() {
+        (project.extensions.findByName(CollarExtension.NAME) as CollarExtension).run {
+            val errors = validate()
 
-        val errors = extension.checkIfValid()
-
-        if (errors.isNotEmpty()) {
-            throw TaskExecutionException(
-                this,
-                Exception(errors.joinToString("\n"))
-            )
-        }
-
-        println("Files will be generated on path:")
-        val outputPath = "${project.projectDir}/src/${extension.variant}/kotlin/"
-        println(outputPath)
-
-        println("Extension file path:")
-        val filePath = "${project.projectDir}/${extension.fileName}"
-        println(filePath)
-
-        try {
-            if (collarGenerator.generate(filePath, outputPath, extension.packageName)) {
-                println("Done! Files are generated")
+            if (errors.isNotEmpty()) {
+                showError(errors.joinToString(System.lineSeparator()))
             } else {
-                println("Task generate failed;")
-                throw  TaskExecutionException(
-                    this,
-                    Exception("Task generate failed;")
-                )
+                val outputPath = "${project.projectDir}/src/${variant}/kotlin/"
+                val filePath = "${project.projectDir}/${filePath}"
+                try {
+                    println("Tracking plan file path: $filePath")
+                    if (collarGenerator.generate(filePath, outputPath, packageName)) {
+                        println("Tracking plan classes generated on path: $outputPath")
+                    } else {
+                        showError("Task generate failed")
+                    }
+                } catch (e: Exception) {
+                    showError(e.stackTrace.toString())
+                }
             }
-        } catch (e: Exception) {
-            println(e.stackTrace.toString())
-            throw  TaskExecutionException(
-                this,
-                Exception("Task generate failed;")
-            )
         }
     }
 }

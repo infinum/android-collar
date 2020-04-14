@@ -2,17 +2,26 @@ package co.infinum.collar.plugin
 
 open class CollarExtension {
 
-    open var version = "1.1.2"
-    open var fileName = ""
-    open var variant = "main"
-    open var packageName = ""
+    companion object {
+        const val NAME = "collar"
+
+        private const val DEFAULT_VERSION = "1.1.2"
+        private const val DEFAULT_FILEPATH = ""
+        private const val DEFAULT_VARIANT = "main"
+        private const val DEFAULT_PACKAGENAME = ""
+    }
+
+    open var version = DEFAULT_VERSION
+    open var filePath = DEFAULT_FILEPATH
+    open var variant = DEFAULT_VARIANT
+    open var packageName = DEFAULT_PACKAGENAME
 }
 
-fun CollarExtension.checkIfValid(): List<String> {
+fun CollarExtension.validate(): List<String> {
     val errors = mutableListOf<String>()
 
-    if (fileName.isBlank()) {
-        errors.add("fileName must be specified")
+    if (filePath.isBlank()) {
+        errors.add("filePath must be specified")
     }
 
     if (variant.isBlank()) {

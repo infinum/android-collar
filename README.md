@@ -13,6 +13,7 @@ The project is organized in the following modules:
 - `plugin` - the Gradle plugin that adds all necessary dependencies to the project
 - `ui` - contains a single screen UI that provides visual tracking of sent events
 - `ui-no-op` - contains a stub for easy release implementation of UI package
+- `generator` - contains a generator code for provided tracking plan
 - `sample` - a sample app for testing the Gradle plugin
 
 ## Usage
@@ -27,7 +28,7 @@ buildscript {
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.1.1"
+        classpath "co.infinum.collar:collar-plugin:1.1.2"
     }
 }
 ```
@@ -65,6 +66,7 @@ _analyticsProvider_ is your own implementation of an analytics delegate class.
 #### Screen names
 
 Screen names can be annotated on top of **Activities** or **Fragments**. No other views are eligible as screen name destination holders.
+
 
 ```kotlin
 @ScreenName(AnalyticsKeys.ScreenName.BRAND_DETAILS)
@@ -221,7 +223,7 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.1.1"
+    version "1.1.2"
 }
 ```        
 You can set a specific _Collar_ version to be used.
@@ -230,8 +232,8 @@ A separate package and no-op package is provided if you want to visually track w
 You can search, filter and clear all sent analytics.  
 In your app `build.gradle` add:
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.1.1"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.1"
+debugImplementation "co.infinum.collar:collar-ui:1.1.2"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.2"
 ```
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
@@ -254,7 +256,7 @@ In order to start tracking with UI you must use _LiveCollector_ as in this examp
 })
 ```
 If you put second parameter *showNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
-Otherwise if set to *false* no notification will be shown but you can always run the UI with following command of getting the launch Intent:
+Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent:
 ```kotlin
     startActivity(
         CollarUi.launchIntent(this).apply {
@@ -265,29 +267,30 @@ Otherwise if set to *false* no notification will be shown but you can always run
 
 ![Notification](notification.jpg)![UI](ui.jpg)
 
-## Generate Gradle Task
+## Generate Task
 
-This library supports code generation from the a JSON formatted file. To do that you will need to specify `filePath` and `outputPath` in  `collar` plugin extension. For example:
+Gradle plugin supports code generation from a JSON formatted file.  
+You will need to specify `filePath` and `packageName` in  `collar` plugin extension.  
+For example:
 
 ```
 collar {
-    version "1.1.0"
-    extended true
-    fileName = "example.json"
-    packageName = "co.infinum.collar.sample.analytics"
-    variant = "main" //main by default
+    version "1.1.2"
+    filePath = "example.json"
+    packageName = "co.infinum.collar.sample.analytics.generated"
+    variant = "main" // main by default
 }
 ```
-Important: `outputPath` needs to have `/kotlin` or `/java` so we can know how to prepare package values for new generated classes.
-
-`JSON` file has to be formatted in the same way as it is in `Sample` project. Using `JSON` file is just a temporary as we will implement fetch of the file from remote data source in next release.
+JSON file has to be formatted in the same way as it is in `Sample` project.  
+If you don't want to use this task simply don't specify mandatory data.  
+Using this file is just a temporary and fetching the tracking plan will be implemented soon in future releases.
 
 To run the task you can:
 
 - Open `gradle` panel on right side, find `collar` task group and run `generate` task 
 - Type `./gradlew generate` in terminal
 
-Gradle task will generate classes prepared for the Collar annotation processor.
+`generate` Gradle task will create classes prepared for the _Collar_ annotation processor to be .
 
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views

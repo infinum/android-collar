@@ -7,4 +7,6 @@ object KotlinScreenNames {
     const val CHILD_SCREEN = "KotlinChildScreen"
 
     const val MAIN_SCREEN_JAVA = "JavaMainScreen"
+
+    const val CHILD_SCREEN_JAVA = "JavaChildScreen"
 }
