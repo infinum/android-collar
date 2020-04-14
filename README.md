@@ -291,7 +291,7 @@ To run the task you can:
 - Open `gradle` panel on right side, find `collar` task group and run `generate` task 
 - Type `./gradlew generate` in terminal
 
-`generate` Gradle task will create classes prepared for the _Collar_ annotation processor to be .
+`generate` Gradle task will create classes prepared for the _Collar_ annotation processor.
 
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
