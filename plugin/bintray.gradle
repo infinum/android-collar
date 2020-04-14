@@ -20,8 +20,10 @@ task javadocJar(type: Jar, dependsOn: JavaPlugin.JAVADOC_TASK_NAME) {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        infinum(MavenPublication) {
+            groupId = group
             artifactId = 'collar-plugin'
+
             artifact sourcesJar
             artifact javadocJar
             pom {
@@ -108,7 +110,6 @@ install {
                     connection 'https://github.com/infinum/android-collar.git'
                     developerConnection 'https://github.com/infinum/android-collar.git'
                     url 'https://github.com/infinum/android-collar'
-
                 }
             }
         }

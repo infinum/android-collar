@@ -11,13 +11,6 @@ buildscript {
     }
 }
 
-repositories {
-    google()
-    jcenter()
-    mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
-}
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -36,16 +29,17 @@ android {
 
         buildTypes {
             debug {
-                debug {
-                    debuggable true
-                }
+                debuggable true
+            }
+            release {
+                debuggable true
             }
         }
 
         javaCompileOptions {
             annotationProcessorOptions {
                 argument "events_count", "100"
-                argument "event_parameters_count", "10"
+                argument "event_parameters_count", "17"
                 argument "event_name_length", "20"
                 argument "reserved_prefixes", "ga_,fb_"
             }
@@ -65,13 +59,14 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
-    implementation "androidx.fragment:fragment:1.2.2"
+    implementation "androidx.fragment:fragment:1.2.4"
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation packages.collar.ui
     lintChecks project(":lint")
+    implementation packages.collar.ui
 }
 
 collar {
-    version "1.1.1"
-    extended true
+    version "1.1.2"
+    filePath = "example.json"
+    packageName = "co.infinum.collar.sample.analytics.generated"
 }

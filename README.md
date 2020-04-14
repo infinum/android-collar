@@ -13,6 +13,7 @@ The project is organized in the following modules:
 - `plugin` - the Gradle plugin that adds all necessary dependencies to the project
 - `ui` - contains a single screen UI that provides visual tracking of sent events
 - `ui-no-op` - contains a stub for easy release implementation of UI package
+- `generator` - contains a generator code for provided tracking plan
 - `sample` - a sample app for testing the Gradle plugin
 
 ## Usage
@@ -27,7 +28,7 @@ buildscript {
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.1.1"
+        classpath "co.infinum.collar:collar-plugin:1.1.2"
     }
 }
 ```
@@ -65,6 +66,7 @@ _analyticsProvider_ is your own implementation of an analytics delegate class.
 #### Screen names
 
 Screen names can be annotated on top of **Activities** or **Fragments**. No other views are eligible as screen name destination holders.
+
 
 ```kotlin
 @ScreenName(AnalyticsKeys.ScreenName.BRAND_DETAILS)
@@ -221,23 +223,17 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.1.1"
-    extended true
+    version "1.1.2"
 }
 ```        
 You can set a specific _Collar_ version to be used.
-If you set _extended_ to false then _Collar_ will not provide all necessary external dependencies out of the box, like _AndroidX Core-KTX_, but it is your responsibility to provide them in your own project setup.  
-These are, at the moment:
-```gradle
-implementation "androidx.core:core-ktx:1.2.0"
-```
 ## Debug UI
 A separate package and no-op package is provided if you want to visually track what has been sent through Collar.  
 You can search, filter and clear all sent analytics.  
 In your app `build.gradle` add:
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.1.1"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.1"
+debugImplementation "co.infinum.collar:collar-ui:1.1.2"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.2"
 ```
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
@@ -260,7 +256,7 @@ In order to start tracking with UI you must use _LiveCollector_ as in this examp
 })
 ```
 If you put second parameter *showNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
-Otherwise if set to *false* no notification will be shown but you can always run the UI with following command of getting the launch Intent:
+Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent:
 ```kotlin
     startActivity(
         CollarUi.launchIntent(this).apply {
@@ -271,6 +267,31 @@ Otherwise if set to *false* no notification will be shown but you can always run
 
 ![Notification](notification.jpg)![UI](ui.jpg)
 
+## Generate Task
+
+Gradle plugin supports code generation from a JSON formatted file.  
+You will need to specify `filePath` and `packageName` in  `collar` plugin extension.  
+For example:
+
+```
+collar {
+    version "1.1.2"
+    filePath = "example.json"
+    packageName = "co.infinum.collar.sample.analytics.generated"
+    variant = "main" // main by default
+}
+```
+JSON file has to be formatted in the same way as it is in `sample` project module.  
+If you don't want to use this task simply don't specify mandatory data.  
+Using this file is just a temporary and fetching the tracking plan will be implemented soon in future releases.
+
+To run the task you can:
+
+- Open `gradle` panel on right side, find `collar` task group and run `generate` task 
+- Type `./gradlew generate` in terminal
+
+`generate` Gradle task will create classes prepared for the _Collar_ annotation processor to be .
+
 ## TODO
 - Add lifecycle aware screen tracking for AndroidX views
 - Provide a separate test artifact
@@ -279,7 +300,9 @@ Otherwise if set to *false* no notification will be shown but you can always run
 
 ## Contributing
 
-Feedback and code contributions are very much welcome. Just make a pull request with a short description of your changes. By making contributions to this project you give permission for your code to be used under the same [license](LICENSE).
+Feedback and code contributions are very much welcome. Just make a pull request with a short description of your changes. By making contributions to this project you give permission for your code to be used under the same [license](LICENSE).  
+For easier developing a `sample` application with proper implementations is provided.  
+It is also recommended to uncomment the block of dependency substitution in project level `build.gradle`.
 
 ## License
 

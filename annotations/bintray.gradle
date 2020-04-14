@@ -24,8 +24,10 @@ task javadocsJar(type: Jar, dependsOn: javadocs) {
 
 publishing {
     publications {
-        Publication(MavenPublication) {
+        infinum(MavenPublication) {
+            groupId = group
             artifactId = 'collar-annotations'
+
             artifact sourcesJar
             artifact javadocsJar
             pom {
@@ -87,7 +89,7 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging 'aar'
+                packaging 'jar'
                 groupId 'co.infinum.collar'
                 artifactId 'collar-annotations'
 
@@ -112,7 +114,6 @@ install {
                     connection 'https://github.com/infinum/android-collar.git'
                     developerConnection 'https://github.com/infinum/android-collar.git'
                     url 'https://github.com/infinum/android-collar'
-
                 }
             }
         }

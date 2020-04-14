@@ -10,13 +10,6 @@ buildscript {
     }
 }
 
-repositories {
-    google()
-    jcenter()
-    mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
-}
-
 apply plugin: "com.android.library"
 apply plugin: 'kotlin-android'
 
@@ -28,7 +21,7 @@ android {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
         versionCode 1
-        versionName "1.0.0"
+        versionName collar.version
     }
 
     buildTypes {

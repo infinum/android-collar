@@ -18,13 +18,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
         android:maxWidth="56dp"
         android:maxLength="8"
         android:maxLines="1"
         android:minHeight="56dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         tools:text="20:00:00" />
 
     <FrameLayout
@@ -44,7 +44,9 @@
             android:id="@+id/iconView"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="top"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/collar_shape_background_event"
             android:scaleType="centerInside"
             android:src="@drawable/collar_ic_event" />
@@ -73,7 +75,7 @@
             style="@style/TextAppearance.MaterialComponents.Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="test_event_key1 = test_event_value1\ntest_event_key2 = test_event_value2" />
+            tools:text="test_event_key1 = test_event_value1\ntest_event_key2 = test_event_value2\ntest_event_key1 = test_event_value1\ntest_event_key2 = test_event_value2\ntest_event_key1 = test_event_value1\ntest_event_key2 = test_event_value2" />
 
     </LinearLayout>
 

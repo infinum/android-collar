@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.UUID;
-
 import androidx.annotation.Nullable;
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
 
 @SuppressWarnings("deprecation")
-@ScreenName(value = JavaScreenNames.CHILD_SCREEN)
+@ScreenName(value = KotlinScreenNames.CHILD_SCREEN_JAVA)
 public class ChildFragment extends Fragment {
 
     @Nullable
@@ -31,7 +29,7 @@ public class ChildFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2(UUID.randomUUID().toString(), JavaDayTime.DAY.ordinal()));
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2("bla", 0));
             }
         });
 

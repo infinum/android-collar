@@ -1,0 +1,83 @@
+{
+  "events": [
+    {
+      "name": "loginUser",
+      "description": "User clicked on login button",
+      "parameters": [
+        {
+          "name": "languageType",
+          "description": "Type of login clicked",
+          "type": "text",
+          "values": [
+            "kotlin",
+            "java"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "checkTypes",
+      "description": "We need to check types here",
+      "parameters": [
+        {
+          "name": "checkBool",
+          "description": "checki if bool is ok",
+          "type": "boolean"
+        },
+        {
+          "name": "checkText",
+          "description": "check if text is ok",
+          "type": "text"
+        },
+        {
+          "name": "checkNumber",
+          "description": "check if number is ok",
+          "type": "number"
+        },
+        {
+          "name": "checkDecimal",
+          "description": "check if decimal is ok",
+          "type": "decimal"
+        }
+      ]
+    }
+  ],
+  "userProperties": [
+    {
+      "name": "price",
+      "description": "user's price"
+    },
+    {
+      "name": "genderGo",
+      "values": [
+        "male",
+        "female",
+        "unknown"
+      ],
+      "description": "..."
+    },
+    {
+      "name": "userType",
+      "values": [
+        "corporate",
+        "retail",
+        "unknown"
+      ],
+      "description": "..."
+    },
+    {
+      "name": "userId",
+      "description": "..."
+    }
+  ],
+  "screens": [
+    {
+      "name": "Main Screen",
+      "description": "Main screen example"
+    },
+    {
+      "name": "Child Screen",
+      "description": "child screen example"
+    }
+  ]
+}

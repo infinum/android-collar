@@ -1,7 +1,12 @@
 package co.infinum.processor.specs
 
+import co.infinum.processor.extensions.applyIf
 import co.infinum.processor.models.ScreenHolder
-import co.infinum.processor.validators.TypeElementValidator
+import co.infinum.processor.shared.Constants.CLASS_ACTIVITY
+import co.infinum.processor.shared.Constants.CLASS_ANDROIDX_FRAGMENT
+import co.infinum.processor.shared.Constants.CLASS_COMPONENT_ACTIVITY
+import co.infinum.processor.shared.Constants.CLASS_FRAGMENT
+import co.infinum.processor.shared.Constants.CLASS_SUPPORT_FRAGMENT
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -11,120 +16,89 @@ import java.io.File
 
 class ScreenNameSpec private constructor(
     outputDir: File,
-    private val packageName: String,
-    private val simpleName: String,
-    private val holders: List<ScreenHolder>,
-    private val typeElementValidator: TypeElementValidator
-) : Spec {
+    private val holders: Set<ScreenHolder>
+) : CommonSpec(outputDir, PACKAGE_NAME, SIMPLE_NAME) {
 
     companion object {
-        private val CLASS_COLLAR = ClassName("co.infinum.collar", "Collar")
-
-        private const val FUNCTION_NAME_TRACK_SCREEN = "trackScreen"
-
-        private const val DEFAULT_PACKAGE_NAME = "co.infinum.collar"
-        private const val DEFAULT_SIMPLE_NAME = "ScreenNames"
+        private const val SIMPLE_NAME = "ScreenNames"
+        private const val FUNCTION_NAME = "trackScreen"
+        private const val PARAMETER_NAME = "this"
+        private const val STATEMENT_ACTIVITY = "is %T -> %T.%L(%L, %S)"
+        private const val STATEMENT_FRAGMENT = "is %T -> activity?.let { %T.%L(it, %S) }"
     }
 
     open class Builder(
         private var outputDir: File? = null,
-        private var packageName: String = DEFAULT_PACKAGE_NAME,
-        private var simpleName: String = DEFAULT_SIMPLE_NAME,
-        private var holders: List<ScreenHolder> = listOf(),
-        private var typeElementValidator: TypeElementValidator? = null
+        private var holders: Set<ScreenHolder> = setOf()
     ) {
         fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
-        fun packageName(packageName: String) = apply { this.packageName = packageName }
-        fun simpleName(simpleName: String) = apply { this.simpleName = simpleName }
-        fun holders(holders: List<ScreenHolder>) = apply { this.holders = holders }
-        fun typeElementValidator(typeElementValidator: TypeElementValidator) = apply { this.typeElementValidator = typeElementValidator }
-        fun build() = ScreenNameSpec(outputDir!!, packageName, simpleName, holders, typeElementValidator!!)
+        fun holders(holders: Set<ScreenHolder>) = apply { this.holders = holders }
+        fun build() = ScreenNameSpec(outputDir!!, holders)
     }
 
     init {
-        build().writeTo(outputDir)
+        build()
     }
 
     override fun file(): FileSpec =
-        FileSpec.builder(packageName, simpleName)
-            .addAnnotation(jvmName())
-            .addComment(comment().toString())
+        super.file().toBuilder(PACKAGE_NAME, SIMPLE_NAME)
+            .applyIf(hasDeprecatedClasses()) { addAnnotation(suppressDeprecation()) }
             .build()
 
-    override fun jvmName(): AnnotationSpec =
-        AnnotationSpec.builder(JvmName::class.java)
-            .addMember("%S", "${CLASS_COLLAR.simpleName}$simpleName")
-            .build()
+    override fun functionName(): String = FUNCTION_NAME
 
-    override fun comment(): CodeBlock =
+    override fun parameterName(): String = PARAMETER_NAME
+
+    // TODO: Fix the nullability mess of superClassName
+    override fun extensions(): List<FunSpec> =
+        holders
+            .groupBy { it.superClassName }
+            .keys
+            .filterNotNull()
+            .map { it to holders.groupBy { holder -> holder.superClassName }[it].orEmpty() }
+            .toMap()
+            .map { (keyClass, holders) ->
+                FunSpec.builder(functionName())
+                    .receiver(keyClass)
+                    .applyIf(holders.isNotEmpty()) {
+                        beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
+                        addCode(screens(keyClass, holders))
+                        endControlFlow()
+                    }
+                    .build()
+            }
+
+    private fun screens(keyClass: ClassName, holders: List<ScreenHolder>): CodeBlock =
         CodeBlock.builder()
-            .addStatement("Matches classes to screen names and logs it using [%T.%L].", CLASS_COLLAR, FUNCTION_NAME_TRACK_SCREEN)
-            .addStatement("")
-            .addStatement("This is a generated extension file. Do not edit.")
-            .build()
-
-    override fun build(): FileSpec =
-        file().toBuilder().apply {
-            holders.groupBy { it.typeElement }
-                .mapNotNull { mapEntry ->
-                    typeElementValidator.resolve(mapEntry.key)?.let {
-                        val extensionFunSpecBuilder = FunSpec.builder(FUNCTION_NAME_TRACK_SCREEN)
-                        if (it == TypeElementValidator.CLASS_SUPPORT_FRAGMENT || it == TypeElementValidator.CLASS_FRAGMENT) {
-                            extensionFunSpecBuilder.addAnnotation(
-                                AnnotationSpec.builder(Suppress::class.java).addMember(CodeBlock.of("%S", "DEPRECATION")).build()
-                            )
-                        }
-                        extensionFunSpecBuilder
-                            .receiver(it)
-                            .beginControlFlow("when (this) {")
-
-                        val codeBlockBuilder = CodeBlock.builder()
-                            .indent()
-                        for (screenHolder in mapEntry.value) {
-                            codeBlockBuilder.addStatement("is %T -> %S", screenHolder.className, screenHolder.screenName)
-                        }
-                        codeBlockBuilder.addStatement("else -> null")
-                        codeBlockBuilder.unindent()
-                        codeBlockBuilder.unindent()
-                        codeBlockBuilder.add("}?")
-
-                        extensionFunSpecBuilder.addCode(codeBlockBuilder.build())
-
-                        when (it) {
-                            TypeElementValidator.CLASS_COMPONENT_ACTIVITY -> {
-                                extensionFunSpecBuilder.addStatement(
-                                    ".let { %T.%L(this, it) }",
-                                    CLASS_COLLAR,
-                                    FUNCTION_NAME_TRACK_SCREEN
-                                )
-                            }
-                            TypeElementValidator.CLASS_ANDROIDX_FRAGMENT -> {
-                                extensionFunSpecBuilder.addStatement(
-                                    ".let { activity?.let { activity -> %T.%L(activity, it) } }",
-                                    CLASS_COLLAR,
-                                    FUNCTION_NAME_TRACK_SCREEN
-                                )
-                            }
-                            TypeElementValidator.CLASS_ACTIVITY -> {
-                                extensionFunSpecBuilder.addStatement(
-                                    ".let { %T.%L(this, it) }",
-                                    CLASS_COLLAR,
-                                    FUNCTION_NAME_TRACK_SCREEN
-                                )
-                            }
-                            else -> {
-                                extensionFunSpecBuilder.addStatement(
-                                    ".let { activity?.let { activity -> %T.%L(activity, it) } }",
-                                    CLASS_COLLAR,
-                                    FUNCTION_NAME_TRACK_SCREEN
-                                )
-                            }
-                        }
-                        extensionFunSpecBuilder.build()
+            .apply {
+                holders.forEach {
+                    when (keyClass) {
+                        CLASS_COMPONENT_ACTIVITY -> addActivityStatement(this, it)
+                        CLASS_ACTIVITY -> addActivityStatement(this, it)
+                        CLASS_ANDROIDX_FRAGMENT -> addFragmentStatement(this, it)
+                        else -> addFragmentStatement(this, it)
                     }
                 }
-                .forEach { addFunction(it) }
-        }.build()
+            }
+            .build()
+
+    private fun hasDeprecatedClasses(): Boolean =
+        holders
+            .groupBy { it.superClassName }
+            .map { it.key }
+            .filterNotNull()
+            .any { it == CLASS_SUPPORT_FRAGMENT || it == CLASS_FRAGMENT }
+
+    private fun suppressDeprecation(): AnnotationSpec =
+        AnnotationSpec.builder(Suppress::class.java)
+            .addMember(CodeBlock.of("%S", "DEPRECATION"))
+            .build()
+
+    private fun addActivityStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
+        builder.addStatement(STATEMENT_ACTIVITY, holder.className, CLASS_COLLAR, functionName(), parameterName(), holder.screenName)
+
+    private fun addFragmentStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
+        builder.addStatement(STATEMENT_FRAGMENT, holder.className, CLASS_COLLAR, functionName(), holder.screenName)
 }
 
 @DslMarker
