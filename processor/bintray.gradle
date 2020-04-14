@@ -15,6 +15,7 @@ task sourcesJar(type: Jar, dependsOn: assemble) {
 
 task javadocs(type: Javadoc) {
     source = sourceSets.main.allSource
+    excludes = ['**/META-INF/services/**']
 }
 
 task javadocsJar(type: Jar, dependsOn: javadocs) {
@@ -24,8 +25,10 @@ task javadocsJar(type: Jar, dependsOn: javadocs) {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        infinum(MavenPublication) {
+            groupId = group
             artifactId = 'collar-processor'
+
             artifact sourcesJar
             artifact javadocsJar
             pom {
@@ -112,7 +115,6 @@ install {
                     connection 'https://github.com/infinum/android-collar.git'
                     developerConnection 'https://github.com/infinum/android-collar.git'
                     url 'https://github.com/infinum/android-collar'
-
                 }
             }
         }

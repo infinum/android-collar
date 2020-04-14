@@ -14,7 +14,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/collar_searchable" />
         </activity>
     </application>
 

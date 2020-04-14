@@ -34,16 +34,9 @@ class CollarPlugin : Plugin<Project> {
     }
 
     private fun addDependencies(project: Project, settings: CollarExtension) {
-        with(project.dependencies) {
-            if (settings.extended) {
-                add("implementation", "androidx.core:core-ktx:1.2.0")
-            }
-            add("implementation", "co.infinum.collar:collar-core:${settings.version}")
-            add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
-        }
-    }
+        project.dependencies.add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
+        project.dependencies.add("implementation", "co.infinum.collar:collar-core:${settings.version}")
 
-    private fun addProcessorDependecy(project: Project, settings: CollarExtension) {
         if (project.pluginManager.hasPlugin("kotlin-android")) {
             if (project.pluginManager.hasPlugin("kotlin-kapt").not()) {
                 project.pluginManager.apply("kotlin-kapt")

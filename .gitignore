@@ -13,3 +13,7 @@
 /captures
 .externalNativeBuild
 .cxx
+/.idea/
+/sample/build/
+/ui/build/
+/ui-no-op/build/

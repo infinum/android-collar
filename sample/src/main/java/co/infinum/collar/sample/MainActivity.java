@@ -5,19 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
-import co.infinum.collar.sample.analytics.AnalyticsEvent;
-import co.infinum.collar.sample.analytics.AnalyticsScreens;
-import co.infinum.collar.sample.analytics.CollarAnalyticsEvent;
-import co.infinum.collar.sample.analytics.CollarUserProperty;
-import co.infinum.collar.sample.analytics.UserProperty;
 
-import static co.infinum.collar.sample.analytics.UserProperty.GenderGo;
-
-@ScreenName(value = AnalyticsScreens.MAIN_SCREEN)
+@ScreenName(value = KotlinScreenNames.MAIN_SCREEN_JAVA)
 public class MainActivity extends Activity {
 
     @Override
@@ -30,7 +25,18 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.LoginUser(AnalyticsEvent.LoginUser.LanguageTypeEnum.JAVA.toString()));
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
+                    "awesome",
+                    true,
+                    Byte.MAX_VALUE,
+                    Character.MAX_VALUE,
+                    7.11,
+                    31.5f,
+                    18,
+                    2L,
+                    Short.MAX_VALUE,
+                    buildBundle()
+                ));
             }
         });
 
@@ -42,7 +48,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        CollarUserProperty.trackProperty(new UserProperty.UserId(UUID.randomUUID().toString()));
+        CollarUserProperty.trackProperty(new UserProperty.MyUUID(UUID.randomUUID().toString()));
+        CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));
     }
 
     @Override
@@ -53,5 +60,13 @@ public class MainActivity extends Activity {
 
     private void showChildScreen() {
         startActivity(new Intent(this, ChildActivity.class));
+    }
+
+    private Bundle buildBundle() {
+        final Bundle bundle = new Bundle();
+        bundle.putInt("4", 4);
+        bundle.putInt("5", 5);
+        bundle.putInt("6", 6);
+        return bundle;
     }
 }

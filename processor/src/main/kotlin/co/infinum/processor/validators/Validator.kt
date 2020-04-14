@@ -1,14 +1,10 @@
 package co.infinum.processor.validators
 
-import com.squareup.kotlinpoet.ClassName
-import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
-interface Validator {
+interface Validator<Holder> {
 
-    fun verify(element: Element): TypeElement?
+    fun supported(): List<TypeElement> = throw UnsupportedOperationException()
 
-    fun isAllowed(element: Element?): TypeElement?
-
-    fun resolve(element: TypeElement): ClassName?
+    fun validate(elements: Set<Holder>): Set<Holder> = throw UnsupportedOperationException()
 }
