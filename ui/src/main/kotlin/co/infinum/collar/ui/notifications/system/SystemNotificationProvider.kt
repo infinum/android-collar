@@ -1,4 +1,4 @@
-package co.infinum.collar.ui
+package co.infinum.collar.ui.notifications.system
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,14 +9,17 @@ import android.os.Build
 import android.util.LongSparseArray
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import co.infinum.collar.ui.CollarActivity
+import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.room.entity.CollarEntity
+import co.infinum.collar.ui.notifications.NotificationProvider
 
-class NotificationProvider(private val context: Context) {
+class SystemNotificationProvider(private val context: Context) : NotificationProvider {
 
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"
         private const val NOTIFICATION_ID = 4578
-        private const val BUFFER_SIZE = 10
+        private const val INTERNAL_BUFFER_SIZE = 10
     }
 
     private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -35,17 +38,17 @@ class NotificationProvider(private val context: Context) {
         }
     }
 
-    fun showScreen(entity: CollarEntity) {
+    override fun showScreen(entity: CollarEntity) {
         addToBuffer(entity)
         buildNotification()
     }
 
-    fun showEvent(entity: CollarEntity) {
+    override fun showEvent(entity: CollarEntity) {
         addToBuffer(entity)
         buildNotification()
     }
 
-    fun showProperty(entity: CollarEntity) {
+    override fun showProperty(entity: CollarEntity) {
         addToBuffer(entity)
         buildNotification()
     }
@@ -55,7 +58,7 @@ class NotificationProvider(private val context: Context) {
             synchronized(buffer) {
                 idsSet.add(entity.hashCode().toLong())
                 buffer.put(it, entity)
-                if (buffer.size() > BUFFER_SIZE) {
+                if (buffer.size() > INTERNAL_BUFFER_SIZE) {
                     buffer.removeAt(0)
                 }
             }
@@ -83,7 +86,7 @@ class NotificationProvider(private val context: Context) {
             var count = 0
             (buffer.size() - 1 downTo 0).forEach { i ->
                 val bufferedEntity = buffer.valueAt(i)
-                if ((bufferedEntity != null) && count < BUFFER_SIZE) {
+                if ((bufferedEntity != null) && count < INTERNAL_BUFFER_SIZE) {
                     if (count == 0) {
                         builder.setContentText(bufferedEntity.name)
                     }

@@ -21,7 +21,7 @@ public class SampleApplication extends Application {
     }
 
     private void attachCollar() {
-        Collar.attach(new LiveCollector(this, true) {
+        Collar.attach(new LiveCollector(this, true, true) {
 
             @Override
             public void onScreen(@NotNull Screen screen) {

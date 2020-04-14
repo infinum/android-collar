@@ -6,6 +6,7 @@ Change Log
 _2020-04-14_
 
  * New: Add generate Gradle task support
+ * New: Enhance LiveCollector with in app popups
  * Fix: Refactor processor
  * Fix: Remove deprecated Kotlin Metadata dependency
  * Fix: Remove extended AndroidX Core KTX support
