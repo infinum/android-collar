@@ -267,7 +267,8 @@ Otherwise if set to *false* notification will **not** be shown but you can alway
 
 ![Notification](notification.jpg)![UI](ui.jpg)
 
-## Generate Task
+## Tasks
+### Generate
 
 Gradle plugin supports code generation from a JSON formatted file.  
 You will need to specify `filePath` and `packageName` in  `collar` plugin extension.  
