@@ -89,7 +89,7 @@ install {
     repositories.mavenInstaller {
         pom {
             project {
-                packaging 'aar'
+                packaging 'jar'
                 groupId 'co.infinum.collar'
                 artifactId 'collar-annotations'
 

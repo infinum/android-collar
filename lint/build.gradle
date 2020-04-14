@@ -3,8 +3,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        mavenLocal()
-//        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
@@ -15,8 +14,7 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-    mavenLocal()
-//    maven { url "http://dl.bintray.com/infinum/android" }
+    maven { url "http://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: 'java-library'

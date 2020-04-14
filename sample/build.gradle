@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        //mavenLocal()
         google()
         jcenter()
         mavenCentral()
@@ -64,23 +63,9 @@ dependencies {
     implementation "androidx.fragment:fragment:1.2.4"
     implementation "androidx.appcompat:appcompat:1.1.0"
     lintChecks project(":lint")
-
-//    debugImplementation project(":annotations")
-//    debugImplementation project(":core")
-//    debugImplementation project(":ui")
-//    kaptDebug project(":processor")
-
-//    releaseImplementation packages.collar.annotations
-//    releaseImplementation packages.collar.core
-//    releaseImplementation packages.collar.ui
-//    kaptRelease packages.collar.processor
-
     implementation packages.collar.ui
-//    implementation packages.collar.annotations
-//    implementation packages.collar.core
-//    kapt packages.collar.processor
 }
 
-//collar {
-//    version "1.1.2"
-//}
+collar {
+    version "1.1.2"
+}

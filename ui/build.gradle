@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-//        mavenLocal()
         google()
         jcenter()
         mavenCentral()
@@ -52,20 +51,6 @@ android {
 }
 
 dependencies {
-////    debugImplementation project(":core")
-////    releaseImplementation packages.collar.core
-////    debugImplementation project(":annotations")
-//    implementation packages.collar.core
-////    implementation packages.collar.annotations
-//    implementation packages.kotlin.core
-//    implementation packages.androidx.appcompat
-//    implementation packages.androidx.core
-//    implementation packages.androidx.recyclerview
-//    implementation packages.androidx.lifecycle.viewmodel
-//    implementation packages.androidx.lifecycle.livedata
-//    implementation packages.google.design
-//    implementation packages.androidx.room.runtime
-//    kapt packages.androidx.room.compiler
     implementation packages.kotlin.core
     implementation packages.collar.core
     implementation packages.androidx.appcompat

@@ -11,7 +11,6 @@ buildscript {
     apply from: "dependencies.gradle"
 
     repositories {
-        mavenLocal()
         google()
         jcenter()
         mavenCentral()
@@ -38,11 +37,19 @@ allprojects {
     tasks.withType(Javadoc).all {
         enabled = false
     }
+//    configurations.all {
+//        resolutionStrategy {
+//            dependencySubstitution {
+//                substitute module(packages.collar.annotations) with project(':annotations')
+//                substitute module(packages.collar.core) with project(':core')
+//                substitute module(packages.collar.ui) with project(':ui')
+//            }
+//        }
+//    }
 }
 
 subprojects {
     repositories {
-//        mavenLocal()
         google()
         jcenter()
         mavenCentral()
