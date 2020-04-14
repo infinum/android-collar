@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## Version 1.1.2
+
+_2020-04-14_
+
+ * New: Add generate Gradle task support
+ * Fix: Refactor processor
+ * Fix: Remove deprecated Kotlin Metadata dependency
+ * Fix: Remove extended AndroidX Core KTX support
+ * Fix: Simplify build scripts
+
 ## Version 1.1.1
 
 _2020-03-16_
