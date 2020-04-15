@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.sample.databinding.ActivityMainKotlinBinding
 import co.infinum.collar.trackScreen
-import kotlinx.android.synthetic.main.activity_main_kotlin.*
 
 @ScreenName(value = KotlinScreenNames.MAIN_SCREEN, enabled = true)
 class KotlinMainActivity : Activity() {
@@ -13,9 +13,11 @@ class KotlinMainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main_kotlin)
+        val viewBinding = ActivityMainKotlinBinding.inflate(layoutInflater)
 
-        buttonProduceEvent3.setOnClickListener {
+        setContentView(viewBinding.root)
+
+        viewBinding.buttonProduceEvent3.setOnClickListener {
             trackEvent(AnalyticsEvent.EventThree(
                 myString = "cool",
                 myBoolean = false,
@@ -34,7 +36,7 @@ class KotlinMainActivity : Activity() {
             ))
         }
 
-        buttonShowKotlinChild.setOnClickListener {
+        viewBinding.buttonShowKotlinChild.setOnClickListener {
             showKotlinChild()
         }
 

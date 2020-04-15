@@ -3,14 +3,12 @@ package co.infinum.collar.sample;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.UUID;
 
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
+import co.infinum.collar.sample.databinding.ActivityMainBinding;
 
 @ScreenName(value = KotlinScreenNames.MAIN_SCREEN_JAVA)
 public class MainActivity extends Activity {
@@ -19,34 +17,26 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        final ActivityMainBinding viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
-        findViewById(R.id.buttonProduceEvent1).setOnClickListener(new View.OnClickListener() {
+        setContentView(viewBinding.getRoot());
 
-            @Override
-            public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
-                    "awesome",
-                    true,
-                    Byte.MAX_VALUE,
-                    Character.MAX_VALUE,
-                    7.11,
-                    31.5f,
-                    18,
-                    2L,
-                    Short.MAX_VALUE,
-                    buildBundle()
-                ));
-            }
-        });
+        viewBinding.buttonProduceEvent1.setOnClickListener(v ->
+            CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
+                "awesome",
+                true,
+                Byte.MAX_VALUE,
+                Character.MAX_VALUE,
+                7.11,
+                31.5f,
+                18,
+                2L,
+                Short.MAX_VALUE,
+                buildBundle()
+            ))
+        );
 
-        findViewById(R.id.buttonShowChild).setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                showChildScreen();
-            }
-        });
+        viewBinding.buttonShowChild.setOnClickListener(v -> showChildScreen());
 
         CollarUserProperty.trackProperty(new UserProperty.MyUUID(UUID.randomUUID().toString()));
         CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));

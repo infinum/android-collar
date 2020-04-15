@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import co.infinum.collar.sample.databinding.ActivityChildBinding;
 
 public class ChildActivity extends Activity {
 
@@ -11,10 +12,12 @@ public class ChildActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_child);
+        final ActivityChildBinding viewBinding = ActivityChildBinding.inflate(getLayoutInflater());
+
+        setContentView(viewBinding.getRoot());
 
         getFragmentManager().beginTransaction()
-            .replace(R.id.fragmentContainer, new ChildFragment())
+            .replace(viewBinding.fragmentContainer.getId(), new ChildFragment())
             .commit();
     }
 }

@@ -10,41 +10,43 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
+import co.infinum.collar.sample.databinding.FragmentChildBinding;
 
 @SuppressWarnings("deprecation")
 @ScreenName(value = KotlinScreenNames.CHILD_SCREEN_JAVA)
 public class ChildFragment extends Fragment {
 
+    private FragmentChildBinding viewBinding = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_child, container, false);
+        viewBinding = FragmentChildBinding.inflate(inflater, container, false);
+        return viewBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.buttonProduceEvent2).setOnClickListener(new View.OnClickListener() {
+        viewBinding.buttonProduceEvent2.setOnClickListener(v ->
+            CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2("bla", 0))
+        );
 
-            @Override
-            public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2("bla", 0));
-            }
-        });
-
-        view.findViewById(R.id.buttonShowKotlinMain).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showKotlinMainScreen();
-            }
-        });
+        viewBinding.buttonShowKotlinMain.setOnClickListener(v -> showKotlinMainScreen());
     }
 
     @Override
     public void onResume() {
         super.onResume();
         CollarScreenNames.trackScreen(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        viewBinding = null;
     }
 
     private void showKotlinMainScreen() {

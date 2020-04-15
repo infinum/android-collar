@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 import co.infinum.collar.ui.data.room.entity.EntityType
+import co.infinum.collar.ui.databinding.CollarItemEventBinding
+import co.infinum.collar.ui.databinding.CollarItemPropertyBinding
+import co.infinum.collar.ui.databinding.CollarItemScreenBinding
 import co.infinum.collar.ui.viewholders.EventViewHolder
 import co.infinum.collar.ui.viewholders.PropertyViewHolder
 import co.infinum.collar.ui.viewholders.ScreenViewHolder
@@ -31,9 +34,9 @@ class CollarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         LayoutInflater.from(parent.context).run {
             when (viewType) {
-                VIEW_TYPE_SCREEN -> ScreenViewHolder(this.inflate(R.layout.collar_item_screen, parent, false))
-                VIEW_TYPE_EVENT -> EventViewHolder(this.inflate(R.layout.collar_item_event, parent, false))
-                VIEW_TYPE_PROPERTY -> PropertyViewHolder(this.inflate(R.layout.collar_item_property, parent, false))
+                VIEW_TYPE_SCREEN -> ScreenViewHolder(CollarItemScreenBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                VIEW_TYPE_EVENT -> EventViewHolder(CollarItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                VIEW_TYPE_PROPERTY -> PropertyViewHolder(CollarItemPropertyBinding.inflate(LayoutInflater.from(parent.context), parent, false))
                 else -> throw NotImplementedError()
             }
         }

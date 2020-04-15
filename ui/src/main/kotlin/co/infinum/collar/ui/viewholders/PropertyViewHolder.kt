@@ -1,34 +1,36 @@
 package co.infinum.collar.ui.viewholders
 
 import android.view.View
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import co.infinum.collar.ui.data.room.entity.CollarEntity
-import kotlinx.android.synthetic.main.collar_item_property.view.*
+import co.infinum.collar.ui.databinding.CollarItemPropertyBinding
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 class PropertyViewHolder(
-    private val view: View
-) : CollarViewHolder(view) {
+    private val viewBinding: CollarItemPropertyBinding
+) : CollarViewHolder(viewBinding.root) {
 
     override fun bind(entity: CollarEntity, showTimestamp: Boolean, onClick: (CollarEntity) -> Unit) {
-        with(view) {
+        with(viewBinding) {
             if (showTimestamp) {
-                timeView.visibility = View.VISIBLE
+                timeView.isVisible = true
             } else {
-                timeView.visibility = View.INVISIBLE
+                timeView.isInvisible = true
             }
             timeView.text = entity.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
             nameView.text = entity.name
             valueView.text = entity.value
-            rootLayout.setOnClickListener { onClick(entity) }
+            root.setOnClickListener { onClick(entity) }
         }
     }
 
     override fun unbind() {
-        with(view) {
-            rootLayout.setOnClickListener(null)
-            timeView.visibility = View.INVISIBLE
+        with(viewBinding) {
+            root.setOnClickListener(null)
+            timeView.isInvisible = true
         }
     }
 }

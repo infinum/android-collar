@@ -1,25 +1,33 @@
 package co.infinum.collar.sample
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.sample.databinding.FragmentChildKotlinBinding
 import co.infinum.collar.trackScreen
 import co.infinum.collar.ui.CollarUi
-//import co.infinum.collar.ui.CollarUi
-import kotlinx.android.synthetic.main.fragment_child_kotlin.*
 import java.util.UUID
 
 @ScreenName(value = KotlinScreenNames.CHILD_SCREEN, enabled = true)
-class KotlinChildFragment : Fragment(R.layout.fragment_child_kotlin) {
+class KotlinChildFragment : Fragment() {
+
+    private var viewBinding: FragmentChildKotlinBinding? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        viewBinding = FragmentChildKotlinBinding.inflate(inflater, container, false)
+        return viewBinding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonProduceEvent4.setOnClickListener {
+        viewBinding?.buttonProduceEvent4?.setOnClickListener {
             trackEvent(AnalyticsEvent.Event4(UUID = UUID.randomUUID().toString(), userType = "CORPORATE"))
         }
-        buttonStartUi.setOnClickListener {
+        viewBinding?.buttonStartUi?.setOnClickListener {
             startActivity(
                 CollarUi.launchIntent(it.context)
             )
@@ -30,5 +38,11 @@ class KotlinChildFragment : Fragment(R.layout.fragment_child_kotlin) {
         super.onResume()
 
         trackScreen()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewBinding = null
     }
 }
