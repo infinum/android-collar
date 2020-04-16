@@ -5,7 +5,7 @@ open class CollarExtension {
     companion object {
         const val NAME = "collar"
 
-        private const val DEFAULT_VERSION = "1.1.2"
+        private const val DEFAULT_VERSION = "1.1.3"
         private const val DEFAULT_FILEPATH = ""
         private const val DEFAULT_VARIANT = "main"
         private const val DEFAULT_PACKAGENAME = ""
