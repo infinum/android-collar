@@ -4,15 +4,10 @@ import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ScaleDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -64,6 +59,7 @@ class CollarActivity : AppCompatActivity() {
         with(viewBinding.toolbar) {
             navigationIcon = composeIcon(applicationInfo.loadIcon(packageManager))
             subtitle = applicationInfo.loadLabel(packageManager)
+            setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.clear -> clear()
@@ -115,22 +111,6 @@ class CollarActivity : AppCompatActivity() {
         }
     }
 
-    private fun composeIcon(applicationIcon: Drawable?): Drawable? {
-        val collarLogo = ContextCompat.getDrawable(this, R.drawable.collar_ic_logo)
-        return applicationIcon?.let {
-            val iconSize = resources.getDimensionPixelSize(R.dimen.collar_application_icon_size)
-            val badgeSize = (iconSize / 2.0f).roundToInt()
-            val root = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
-            val app = Bitmap.createScaledBitmap(it.toBitmap(), badgeSize, badgeSize, false)
-            Canvas(root).apply {
-                collarLogo?.toBitmap()?.let { bitmap -> drawBitmap(bitmap, (iconSize - collarLogo.intrinsicWidth) / 2.0f, (iconSize - collarLogo.intrinsicHeight) / 2.0f, Paint().apply { isDither = true }) }
-                drawBitmap(app, (iconSize - badgeSize).toFloat(), (iconSize - badgeSize).toFloat(), Paint().apply { isDither = true })
-            }.run {
-                BitmapDrawable(resources, root)
-            }
-        } ?: collarLogo
-    }
-
     private fun setupRecyclerView() {
         with(viewBinding.recyclerView) {
             addItemDecoration(LastDotDecoration(context))
@@ -178,9 +158,9 @@ class CollarActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setIcon(
                 when (entity.type) {
-                    EntityType.SCREEN -> R.drawable.collar_ic_screen_black
-                    EntityType.EVENT -> R.drawable.collar_ic_event_black
-                    EntityType.PROPERTY -> R.drawable.collar_ic_property_black
+                    EntityType.SCREEN -> R.drawable.collar_ic_screen_detail
+                    EntityType.EVENT -> R.drawable.collar_ic_event_detail
+                    EntityType.PROPERTY -> R.drawable.collar_ic_property_detail
                     else -> 0
                 }
             )
@@ -209,7 +189,7 @@ class CollarActivity : AppCompatActivity() {
                     }
                 }.root
             )
-            .setNeutralButton(R.string.collar_share) { _, _ -> share(entity) }
+            .setPositiveButton(R.string.collar_share) { _, _ -> share(entity) }
             .create()
             .show()
     }
@@ -228,5 +208,21 @@ class CollarActivity : AppCompatActivity() {
                 ).joinToString("\n")
             )
             .startChooser()
+    }
+
+    private fun composeIcon(applicationIcon: Drawable?): Drawable? {
+        val collarLogo = ContextCompat.getDrawable(this, R.drawable.collar_ic_logo)
+        return applicationIcon?.let {
+            val iconSize = resources.getDimensionPixelSize(R.dimen.collar_application_icon_size)
+            val badgeSize = (iconSize / 2.0f).roundToInt()
+            val root = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
+            val app = Bitmap.createScaledBitmap(it.toBitmap(), badgeSize, badgeSize, false)
+            Canvas(root).apply {
+                collarLogo?.toBitmap()?.let { bitmap -> drawBitmap(bitmap, (iconSize - collarLogo.intrinsicWidth) / 2.0f, (iconSize - collarLogo.intrinsicHeight) / 2.0f, Paint().apply { isDither = true }) }
+                drawBitmap(app, (iconSize - badgeSize).toFloat(), (iconSize - badgeSize).toFloat(), Paint().apply { isDither = true })
+            }.run {
+                BitmapDrawable(resources, root)
+            }
+        } ?: collarLogo
     }
 }

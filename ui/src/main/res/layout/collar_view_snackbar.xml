@@ -34,7 +34,7 @@
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/collar_color_on_primary"
+            android:textColor="@android:color/white"
             tools:text="test_property_name" />
 
         <com.google.android.material.textview.MaterialTextView

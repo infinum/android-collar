@@ -13,7 +13,7 @@
         <item name="colorOnBackground">@color/collar_color_on_background</item>
         <item name="colorOnSurface">@color/collar_color_on_surface</item>
         <item name="colorOnError">@color/collar_color_on_error</item>
-        <item name="colorControlNormal">@color/collar_color_on_secondary</item>
+        <item name="colorControlNormal">@color/collar_color_primary</item>
     </style>
 
     <style name="Collar.Theme" parent="Collar.BaseTheme" />

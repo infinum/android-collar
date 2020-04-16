@@ -21,17 +21,17 @@
                 <item
                     android:id="@+id/screens"
                     android:checked="true"
-                    android:icon="@drawable/collar_ic_screen_black"
+                    android:icon="@drawable/collar_ic_screen_menu"
                     android:title="@string/collar_screens" />
                 <item
                     android:id="@+id/events"
                     android:checked="true"
-                    android:icon="@drawable/collar_ic_event_black"
+                    android:icon="@drawable/collar_ic_event_menu"
                     android:title="@string/collar_events" />
                 <item
                     android:id="@+id/properties"
                     android:checked="true"
-                    android:icon="@drawable/collar_ic_property_black"
+                    android:icon="@drawable/collar_ic_property_menu"
                     android:title="@string/collar_properties" />
             </group>
         </menu>
