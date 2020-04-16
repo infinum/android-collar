@@ -1,6 +1,5 @@
 package co.infinum.collar.ui.viewholders
 
-import android.view.View
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import co.infinum.collar.ui.data.room.entity.CollarEntity
@@ -20,7 +19,7 @@ class PropertyViewHolder(
             } else {
                 timeView.isInvisible = true
             }
-            timeView.text = entity.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
+            timeView.text = SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp))
             nameView.text = entity.name
             valueView.text = entity.value
             root.setOnClickListener { onClick(entity) }

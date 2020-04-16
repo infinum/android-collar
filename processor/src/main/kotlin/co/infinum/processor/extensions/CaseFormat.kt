@@ -1,4 +1,4 @@
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "TooManyFunctions", "ComplexMethod")
 
 package co.infinum.processor.extensions
 

@@ -23,6 +23,7 @@ class UserPropertiesGenerator(
         const val PROPERTY_PARAMETER_NAME = "value"
     }
 
+    @Suppress("LongMethod", "NestedBlockDepth")
     override fun type(): TypeSpec =
         TypeSpec.classBuilder(CLASS_NAME)
             .addAnnotation(ClassName(COLLAR_ANNOTATION_PACKAGE, COLLAR_ANNOTATION_USER_PROPERTIES))

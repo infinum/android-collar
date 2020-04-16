@@ -14,14 +14,15 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class InAppNotificationProvider(private val context: Context) : NotificationProvider {
+class InAppNotificationProvider(
+    context: Context
+) : NotificationProvider {
 
     companion object {
         const val FORMAT_DATETIME = "HH:mm:ss"
         const val SHARE_TYPE = "text/plain"
         const val LINE_SEPARATOR = "\n"
     }
-
 
     private val callbacks = CollarActivityLifecycleCallbacks()
 
@@ -56,7 +57,12 @@ class InAppNotificationProvider(private val context: Context) : NotificationProv
         )
     }
 
-    private fun buildNotification(activity: Activity?, @DrawableRes background: Int, @DrawableRes icon: Int, entity: CollarEntity) {
+    private fun buildNotification(
+        activity: Activity?,
+        @DrawableRes background: Int,
+        @DrawableRes icon: Int,
+        entity: CollarEntity
+    ) {
         CollarSnackbar.make(
             activity?.findViewById(android.R.id.content),
             background,
@@ -77,7 +83,6 @@ class InAppNotificationProvider(private val context: Context) : NotificationProv
                     )
                 }
             }
-        )
-            .show()
+        ).show()
     }
 }

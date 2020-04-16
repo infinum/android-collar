@@ -20,6 +20,8 @@ class CollarSnackbar(
     }
 
     companion object {
+
+        @Suppress("LongParameterList")
         fun make(
             parentLayout: FrameLayout?,
             @DrawableRes background: Int,

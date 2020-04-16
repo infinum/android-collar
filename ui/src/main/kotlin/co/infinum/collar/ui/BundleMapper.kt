@@ -3,6 +3,7 @@ package co.infinum.collar.ui
 import android.os.Bundle
 import android.util.Log
 
+@Suppress("ComplexMethod")
 object BundleMapper {
 
     fun toMap(bundle: Bundle): String {
@@ -28,7 +29,10 @@ object BundleMapper {
                     is CharSequence -> bundle.getCharSequence(key).toString()
                     is Bundle -> toMap(bundle.getBundle(key) ?: Bundle.EMPTY)
                     else -> {
-                        Log.w(CollarUi.javaClass.simpleName, "Illegal value type ${value.javaClass.canonicalName} for key \"$key\"")
+                        Log.w(
+                            CollarUi.javaClass.simpleName,
+                            "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""
+                        )
                         ""
                     }
                 }
@@ -52,7 +56,10 @@ object BundleMapper {
                 is Short -> putShort(key, value)
                 is CharSequence -> putCharSequence(key, value)
                 is Bundle -> putBundle(key, value)
-                else -> Log.w(CollarUi.javaClass.simpleName, "Illegal value type ${value.javaClass.canonicalName} for key \"$key\"")
+                else -> Log.w(
+                    CollarUi.javaClass.simpleName,
+                    "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""
+                )
             }
         }
     }

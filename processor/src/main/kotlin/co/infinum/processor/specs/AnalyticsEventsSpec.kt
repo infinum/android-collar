@@ -58,6 +58,7 @@ class AnalyticsEventsSpec private constructor(
                 .build()
         )
 
+    @Suppress("NestedBlockDepth")
     private fun events(): CodeBlock =
         CodeBlock.builder()
             .apply {

@@ -7,7 +7,7 @@ import co.infinum.collar.generator.models.Parameter
 import co.infinum.collar.generator.models.Property
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
-import java.util.*
+import java.util.Locale
 
 class GeneratorUtils private constructor() {
 
@@ -25,7 +25,7 @@ class GeneratorUtils private constructor() {
                 DataType.NUMBER.toString() -> ClassName("kotlin", "Long")
                 DataType.DECIMAL.toString() -> ClassName("kotlin", "Double")
                 DataType.BOOLEAN.toString() -> ClassName("kotlin", "Boolean")
-                else -> throw Exception("$dataTypeEnum is not supported")
+                else -> throw NotImplementedError("$dataTypeEnum is not supported")
             }
         }
 

@@ -3,7 +3,6 @@ package co.infinum.collar.ui.data.room.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
 
 @Entity(tableName = "entities")
 data class CollarEntity(

@@ -22,7 +22,9 @@ class ScreenNamesCollector(
         val SUPPORTED = setOf(ANNOTATION_SCREEN_NAME.name)
     }
 
-    private val supportedSuperClasses = Constants.SUPPORTED_SCREEN_NAME_CLASSES.map { elementUtils.getTypeElement(it.canonicalName) }
+    private val supportedSuperClasses = Constants.SUPPORTED_SCREEN_NAME_CLASSES.map {
+        elementUtils.getTypeElement(it.canonicalName)
+    }
 
     override fun collect(): Set<ScreenHolder> =
         roundEnvironment.getElementsAnnotatedWith(ANNOTATION_SCREEN_NAME).orEmpty()

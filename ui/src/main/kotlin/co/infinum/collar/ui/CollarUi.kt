@@ -5,5 +5,6 @@ import android.content.Intent
 
 object CollarUi {
 
-    fun launchIntent(context: Context) = Intent(context, CollarActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    fun launchIntent(context: Context) =
+        Intent(context, CollarActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 }

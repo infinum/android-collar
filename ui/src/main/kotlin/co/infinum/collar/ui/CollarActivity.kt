@@ -30,7 +30,6 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 
-
 class CollarActivity : AppCompatActivity() {
 
     companion object {
@@ -154,6 +153,7 @@ class CollarActivity : AppCompatActivity() {
     private fun search(query: String?) = viewModel.search(query)
 
     @SuppressLint("DefaultLocale")
+    @Suppress("ComplexMethod")
     private fun showDetail(entity: CollarEntity) {
         MaterialAlertDialogBuilder(this)
             .setIcon(
@@ -166,28 +166,32 @@ class CollarActivity : AppCompatActivity() {
             )
             .setTitle(entity.type?.name?.toLowerCase()?.capitalize())
             .setView(
-                CollarViewDetailBinding.inflate(layoutInflater).apply {
-                    timeView.text = SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp))
-                    nameView.text = entity.name
-                    valueCaptionView.text = when (entity.type) {
-                        EntityType.EVENT -> entity.parameters?.let { getString(R.string.collar_parameters) }
-                        EntityType.PROPERTY -> getString(R.string.collar_value)
-                        else -> null
-                    }.also {
-                        if (it.isNullOrBlank()) {
-                            valueView.isGone = true
-                            valueCaptionView.isGone = true
-                        } else {
-                            valueView.isVisible = true
-                            valueCaptionView.isVisible = true
-                            valueView.text = when (entity.type) {
-                                EntityType.EVENT -> entity.parameters
-                                EntityType.PROPERTY -> entity.value
-                                else -> null
+                CollarViewDetailBinding.inflate(layoutInflater)
+                    .apply {
+                        timeView.text = SimpleDateFormat(
+                            FORMAT_DATETIME,
+                            Locale.getDefault()
+                        ).format(Date(entity.timestamp))
+                        nameView.text = entity.name
+                        valueCaptionView.text = when (entity.type) {
+                            EntityType.EVENT -> entity.parameters?.let { getString(R.string.collar_parameters) }
+                            EntityType.PROPERTY -> getString(R.string.collar_value)
+                            else -> null
+                        }.also {
+                            if (it.isNullOrBlank()) {
+                                valueView.isGone = true
+                                valueCaptionView.isGone = true
+                            } else {
+                                valueView.isVisible = true
+                                valueCaptionView.isVisible = true
+                                valueView.text = when (entity.type) {
+                                    EntityType.EVENT -> entity.parameters
+                                    EntityType.PROPERTY -> entity.value
+                                    else -> null
+                                }
                             }
                         }
-                    }
-                }.root
+                    }.root
             )
             .setPositiveButton(R.string.collar_share) { _, _ -> share(entity) }
             .create()
@@ -210,6 +214,7 @@ class CollarActivity : AppCompatActivity() {
             .startChooser()
     }
 
+    @Suppress("MaxLineLength", "MaximumLineLength")
     private fun composeIcon(applicationIcon: Drawable?): Drawable? {
         val collarLogo = ContextCompat.getDrawable(this, R.drawable.collar_ic_logo)
         return applicationIcon?.let {
@@ -218,8 +223,20 @@ class CollarActivity : AppCompatActivity() {
             val root = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
             val app = Bitmap.createScaledBitmap(it.toBitmap(), badgeSize, badgeSize, false)
             Canvas(root).apply {
-                collarLogo?.toBitmap()?.let { bitmap -> drawBitmap(bitmap, (iconSize - collarLogo.intrinsicWidth) / 2.0f, (iconSize - collarLogo.intrinsicHeight) / 2.0f, Paint().apply { isDither = true }) }
-                drawBitmap(app, (iconSize - badgeSize).toFloat(), (iconSize - badgeSize).toFloat(), Paint().apply { isDither = true })
+                collarLogo?.toBitmap()?.let { bitmap ->
+                    drawBitmap(
+                        bitmap,
+                        (iconSize - collarLogo.intrinsicWidth) / 2.0f,
+                        (iconSize - collarLogo.intrinsicHeight) / 2.0f,
+                        Paint().apply { isDither = true }
+                    )
+                }
+                drawBitmap(
+                    app,
+                    (iconSize - badgeSize).toFloat(),
+                    (iconSize - badgeSize).toFloat(),
+                    Paint().apply { isDither = true }
+                )
             }.run {
                 BitmapDrawable(resources, root)
             }

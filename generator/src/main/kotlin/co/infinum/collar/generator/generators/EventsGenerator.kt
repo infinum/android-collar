@@ -20,6 +20,7 @@ class EventsGenerator(
         const val CLASS_NAME = "AnalyticsEvents"
     }
 
+    @Suppress("LongMethod", "NestedBlockDepth")
     override fun type() =
         TypeSpec.classBuilder(CLASS_NAME)
             .addAnnotation(ClassName(Generator.COLLAR_ANNOTATION_PACKAGE, Generator.COLLAR_ANNOTATION_ANALYTICS_EVENTS))
@@ -31,7 +32,10 @@ class EventsGenerator(
                     val constructorBuilder = FunSpec.constructorBuilder()
 
                     event.parameters.forEach {
-                        val eventParameterName = ClassName(Generator.COLLAR_ANNOTATION_PACKAGE, Generator.COLLAR_ANNOTATION_EVENT_PARAMETER_NAME)
+                        val eventParameterName = ClassName(
+                            Generator.COLLAR_ANNOTATION_PACKAGE,
+                            Generator.COLLAR_ANNOTATION_EVENT_PARAMETER_NAME
+                        )
                         val constructorParamAnnotation = AnnotationSpec.builder(eventParameterName)
                             .addMember(ANNOTATION_FORMAT, it.name).build()
 
@@ -44,7 +48,6 @@ class EventsGenerator(
                             addAnnotation(constructorParamAnnotation)
                         }
                         constructorBuilder.addParameter(constructorParamBuilder.build())
-
 
                         if (it.values?.isNotEmpty() == true) {
                             val enumBuilder = TypeSpec.enumBuilder(GeneratorUtils.getParameterEnumName(it.name))
@@ -91,7 +94,12 @@ class EventsGenerator(
                     eventClass.addKdoc(event.description)
                     eventClass.superclass(ClassName("", CLASS_NAME))
                     eventClass.addAnnotation(
-                        AnnotationSpec.builder(ClassName(Generator.COLLAR_ANNOTATION_PACKAGE, Generator.COLLAR_ANNOTATION_EVENT_NAME))
+                        AnnotationSpec.builder(
+                            ClassName(
+                                Generator.COLLAR_ANNOTATION_PACKAGE,
+                                Generator.COLLAR_ANNOTATION_EVENT_NAME
+                            )
+                        )
                             .addMember(ANNOTATION_FORMAT, event.name).build()
                     )
 

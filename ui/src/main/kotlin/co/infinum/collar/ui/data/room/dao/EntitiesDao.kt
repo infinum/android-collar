@@ -1,3 +1,5 @@
+@file:Suppress("MaxLineLength", "MaximumLineLength")
+
 package co.infinum.collar.ui.data.room.dao
 
 import androidx.lifecycle.LiveData

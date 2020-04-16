@@ -74,3 +74,16 @@ subprojects {
         detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     }
 }
+
+task detektAll(dependsOn: [
+    ':annotations:detekt',
+    ':core:detekt',
+    ':ui:detekt',
+    ':ui-no-op:detekt',
+    ':processor:detekt',
+    ':plugin:detekt',
+    ':generator:detekt'
+]) {
+    group = "Verification"
+    description = "Run detekt on all modules"
+}

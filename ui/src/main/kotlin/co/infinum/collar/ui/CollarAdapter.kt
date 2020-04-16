@@ -34,18 +34,42 @@ class CollarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         LayoutInflater.from(parent.context).run {
             when (viewType) {
-                VIEW_TYPE_SCREEN -> ScreenViewHolder(CollarItemScreenBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-                VIEW_TYPE_EVENT -> EventViewHolder(CollarItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-                VIEW_TYPE_PROPERTY -> PropertyViewHolder(CollarItemPropertyBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+                VIEW_TYPE_SCREEN -> ScreenViewHolder(CollarItemScreenBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ))
+                VIEW_TYPE_EVENT -> EventViewHolder(CollarItemEventBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ))
+                VIEW_TYPE_PROPERTY -> PropertyViewHolder(CollarItemPropertyBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ))
                 else -> throw NotImplementedError()
             }
         }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (items[position].type) {
-            EntityType.SCREEN -> (holder as ScreenViewHolder).bind(items[position], shouldShowTimestamp(position), onClick)
-            EntityType.EVENT -> (holder as EventViewHolder).bind(items[position], shouldShowTimestamp(position), onClick)
-            EntityType.PROPERTY -> (holder as PropertyViewHolder).bind(items[position], shouldShowTimestamp(position), onClick)
+            EntityType.SCREEN -> (holder as ScreenViewHolder).bind(
+                items[position],
+                shouldShowTimestamp(position),
+                onClick
+            )
+            EntityType.EVENT -> (holder as EventViewHolder).bind(
+                items[position],
+                shouldShowTimestamp(position),
+                onClick
+            )
+            EntityType.PROPERTY -> (holder as PropertyViewHolder).bind(
+                items[position],
+                shouldShowTimestamp(position),
+                onClick
+            )
             else -> Unit
         }
 
@@ -88,7 +112,8 @@ class CollarAdapter(
             else -> {
                 val currentItem = items[position]
                 val previousItem = items[position - 1]
-                abs((currentItem.timestamp ?: 0) - (previousItem.timestamp ?: 0)) >= TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS)
+                abs(currentItem.timestamp - previousItem.timestamp) >=
+                    TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS)
             }
         }
 }

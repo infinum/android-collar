@@ -51,9 +51,15 @@ class AnalyticsEventsCollector(
                                 eventParameters = enclosedClass.constructorParameters()
                                     .map { valueParameter ->
                                         EventParameterHolder(
-                                            enabled = valueParameter.resolveEnabled(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name, "enabled"),
+                                            enabled = valueParameter.resolveEnabled(
+                                                ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name,
+                                                "enabled"
+                                            ),
                                             method = valueParameter.resolveMethod(),
-                                            resolvedName = valueParameter.resolveName(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name, "value"),
+                                            resolvedName = valueParameter.resolveName(
+                                                ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name,
+                                                "value"
+                                            ),
                                             variableName = valueParameter.name
                                         )
                                     }

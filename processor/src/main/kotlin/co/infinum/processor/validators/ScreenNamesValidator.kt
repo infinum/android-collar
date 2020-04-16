@@ -23,7 +23,10 @@ class ScreenNamesValidator(
 
     private fun validateNameLength(holder: ScreenHolder): Boolean =
         if (holder.screenName.length > processorOptions.maxNameSize()) {
-            messager.showWarning("Screen names can be up to ${processorOptions.maxNameSize()} characters long. ${holder.screenName} is ${holder.screenName.length} long.")
+            messager.showWarning(
+                "Screen names can be up to ${processorOptions.maxNameSize()} characters long. " +
+                    "${holder.screenName} is ${holder.screenName.length} long."
+            )
             false
         } else {
             true

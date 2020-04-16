@@ -49,7 +49,6 @@ class ScreenNameSpec private constructor(
 
     override fun parameterName(): String = PARAMETER_NAME
 
-    // TODO: Fix the nullability mess of superClassName
     override fun extensions(): List<FunSpec> =
         holders
             .groupBy { it.superClassName }
@@ -95,10 +94,23 @@ class ScreenNameSpec private constructor(
             .build()
 
     private fun addActivityStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
-        builder.addStatement(STATEMENT_ACTIVITY, holder.className, CLASS_COLLAR, functionName(), parameterName(), holder.screenName)
+        builder.addStatement(
+            STATEMENT_ACTIVITY,
+            holder.className,
+            CLASS_COLLAR,
+            functionName(),
+            parameterName(),
+            holder.screenName
+        )
 
     private fun addFragmentStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
-        builder.addStatement(STATEMENT_FRAGMENT, holder.className, CLASS_COLLAR, functionName(), holder.screenName)
+        builder.addStatement(
+            STATEMENT_FRAGMENT,
+            holder.className,
+            CLASS_COLLAR,
+            functionName(),
+            holder.screenName
+        )
 }
 
 @DslMarker

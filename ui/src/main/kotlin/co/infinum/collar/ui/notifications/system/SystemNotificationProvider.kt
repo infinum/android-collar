@@ -22,7 +22,8 @@ class SystemNotificationProvider(private val context: Context) : NotificationPro
         private const val INTERNAL_BUFFER_SIZE = 10
     }
 
-    private val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager: NotificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     private val buffer = LongSparseArray<CollarEntity>()
     private val idsSet = HashSet<Long>()
