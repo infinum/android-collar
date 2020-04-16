@@ -6,6 +6,7 @@ Change Log
 _2020-04-16_
 
  * New: Add session settings
+ * New: Add deployment tasks
  * Fix: Fix initial code debt
  * Fix: Fix dark mode
  * Fix: Enable ViewBinding

@@ -34,7 +34,7 @@ task clean(type: Delete) {
 }
 
 tasks.withType(JavaCompile) {
-    options.compilerArgs += [ "--release", "8" ]
+    options.compilerArgs += ["--release", "8"]
 }
 
 allprojects {
@@ -86,4 +86,81 @@ task detektAll(dependsOn: [
 ]) {
     group = "Verification"
     description = "Run detekt on all modules"
+}
+
+task deployAll(dependsOn: [
+    'deployAnnotations',
+    'deployCore',
+    'deployUi',
+
+    'deployUiNoOp',
+    'deployProcessor',
+    'deployGenerator',
+    'deployPlugin'
+]) {
+    group = "Deploy"
+    description = "Deploy all modules to Bintray"
+}
+
+task deployAnnotations(dependsOn: [
+    ':annotations:build',
+    ':annotations:install',
+    ':annotations:bintrayUpload'
+]) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployCore(dependsOn: [
+    ':core:build',
+    ':core:install',
+    ':core:bintrayUpload'
+]) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployUi(dependsOn: [
+    ':ui:build',
+    ':ui:install',
+    ':ui:bintrayUpload'
+]) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployUiNoOp(dependsOn: [
+    ':ui-no-op:build',
+    ':ui-no-op:install',
+    ':ui-no-op:bintrayUpload'
+]) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployProcessor(dependsOn: [
+    ':processor:build',
+    ':processor:install',
+    ':processor:bintrayUpload'
+]) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployGenerator(dependsOn: [
+    ':generator:build',
+    ':generator:install',
+    ':generator:bintrayUpload'
+]) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployPlugin(dependsOn: [
+    ':plugin:build',
+    ':plugin:install',
+    ':plugin:bintrayUpload'
+]) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
 }
