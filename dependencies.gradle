@@ -21,7 +21,8 @@ ext.versions = [
     "room"         : "2.2.5",
     "design"       : "1.1.0",
     "moshi"        : "1.9.2",
-    "maven"        : "2.0"
+    "maven"        : "2.0",
+    "detekt"                     : "1.7.4"
 ]
 
 ext.packages = [
@@ -69,5 +70,8 @@ ext.packages = [
     ],
     "maven"      : [
         "plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.maven}"
+    ],
+    "detekt"           : [
+        "plugin": "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}"
     ]
 ]

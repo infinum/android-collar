@@ -25,6 +25,7 @@ buildscript {
         classpath packages.maven.plugin
         classpath packages.bintray
         classpath packages.kotlin.plugin
+        classpath packages.detekt.plugin
     }
 }
 
@@ -40,19 +41,19 @@ allprojects {
     tasks.withType(Javadoc).all {
         enabled = false
     }
-//    configurations.all {
-//        resolutionStrategy {
-//            dependencySubstitution {
-//                substitute module(packages.collar.annotations) with project(':annotations')
-//                substitute module(packages.collar.core) with project(':core')
-//                substitute module(packages.collar.ui) with project(':ui')
-//                substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
-//                substitute module(packages.collar.processor) with project(':processor')
-//                substitute module(packages.collar.generator) with project(':generator')
-//                substitute module(packages.collar.plugin) with project(':plugin')
-//            }
-//        }
-//    }
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                substitute module(packages.collar.annotations) with project(':annotations')
+                substitute module(packages.collar.core) with project(':core')
+                substitute module(packages.collar.ui) with project(':ui')
+                substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
+                substitute module(packages.collar.processor) with project(':processor')
+                substitute module(packages.collar.generator) with project(':generator')
+                substitute module(packages.collar.plugin) with project(':plugin')
+            }
+        }
+    }
 }
 
 subprojects {
@@ -61,5 +62,15 @@ subprojects {
         jcenter()
         mavenCentral()
         maven { url "http://dl.bintray.com/infinum/android" }
+    }
+
+    apply plugin: "io.gitlab.arturbosch.detekt"
+
+    detekt {
+        toolVersion = versions.detekt
+    }
+
+    dependencies {
+        detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     }
 }
