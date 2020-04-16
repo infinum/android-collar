@@ -21,11 +21,12 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:${versions.gradle}"
+        classpath packages.gradle
         classpath packages.maven.plugin
         classpath packages.bintray
         classpath packages.kotlin.plugin
         classpath packages.detekt.plugin
+        classpath packages.dokka.plugin
     }
 }
 
@@ -163,4 +164,39 @@ task deployPlugin(dependsOn: [
 ]) {
     group = "Deploy"
     description = "Deploy module to Bintray"
+}
+
+apply plugin: "org.jetbrains.dokka"
+
+dokka {
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/docs"
+    subProjects = ["annotations", "core", "ui", "ui-no-op", "processor", "plugin", "generator"]
+    disableAutoconfiguration = false
+    cacheRoot = 'default'
+    configuration {
+        moduleName = 'data'
+        includeNonPublic = false
+        skipDeprecated = true
+        reportUndocumented = true
+        skipEmptyPackages = true
+        // Specifies the location of the project source code on the Web.
+        // If provided, Dokka generates "source" links for each declaration.
+        // Repeat for multiple mappings
+        sourceLink {
+            // Unix based directory relative path to the root of the project (where you execute gradle respectively).
+            path = "src/main/kotlin" // or simply "./"
+
+            // URL showing where the source code can be accessed through the web browser
+            url = "https://github.com/infinum/android-collar/" //remove src/main/kotlin if you use "./" above
+
+            // Suffix which is used to append the line number to the URL. Use #L for GitHub
+            lineSuffix = "#L"
+        }
+        jdkVersion = 8
+        noStdlibLink = false
+        noJdkLink = false
+        noAndroidSdkLink = false
+        androidVariants = ["debug"]
+    }
 }
