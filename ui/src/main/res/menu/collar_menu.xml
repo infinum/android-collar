@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
 
     <item
         android:id="@+id/search"
@@ -36,8 +38,28 @@
     </item>
 
     <item
-        android:id="@+id/clear"
-        android:icon="@drawable/collar_ic_clear"
-        android:title="@string/collar_clear"
-        app:showAsAction="always" />
+        android:id="@+id/settings"
+        android:icon="@drawable/collar_ic_settings"
+        android:title="@string/collar_settings"
+        app:showAsAction="always">
+        <menu>
+            <group android:checkableBehavior="all">
+                <item
+                    android:id="@+id/systemNotifications"
+                    android:icon="@drawable/collar_ic_notifications_system"
+                    android:title="@string/collar_notifications_system" />
+                <item
+                    android:id="@+id/inAppNotifications"
+                    android:icon="@drawable/collar_ic_notifications_inapp"
+                    android:title="@string/collar_notifications_inapp" />
+            </group>
+            <group>
+                <item
+                    android:id="@+id/clear"
+                    android:icon="@drawable/collar_ic_clear"
+                    android:title="@string/collar_clear"
+                    app:showAsAction="always" />
+            </group>
+        </menu>
+    </item>
 </menu>

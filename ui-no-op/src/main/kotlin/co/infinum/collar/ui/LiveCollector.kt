@@ -10,22 +10,16 @@ import co.infinum.collar.Screen
 @Suppress("UNUSED_PARAMETER")
 open class LiveCollector(
     context: Context,
-    private val showSystemNotification: Boolean = false,
-    private val showInAppNotification: Boolean = false
+    howSystemNotification: Boolean = false,
+    showInAppNotification: Boolean = false
 ) : Collector {
 
     @CallSuper
-    override fun onScreen(screen: Screen) {
-        // no - op
-    }
+    override fun onScreen(screen: Screen) = Unit
 
     @CallSuper
-    override fun onEvent(event: Event) {
-        // no - op
-    }
+    override fun onEvent(event: Event) = Unit
 
     @CallSuper
-    override fun onProperty(property: Property) {
-        // no - op
-    }
+    override fun onProperty(property: Property) = Unit
 }

@@ -3,10 +3,21 @@ package co.infinum.collar.ui
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.ScaleDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -17,10 +28,13 @@ import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.databinding.CollarActivityCollarBinding
 import co.infinum.collar.ui.databinding.CollarViewDetailBinding
 import co.infinum.collar.ui.decorations.LastDotDecoration
+import co.infinum.collar.ui.extensions.toBitmap
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.roundToInt
+
 
 class CollarActivity : AppCompatActivity() {
 
@@ -48,6 +62,7 @@ class CollarActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         with(viewBinding.toolbar) {
+            navigationIcon = composeIcon(applicationInfo.loadIcon(packageManager))
             subtitle = applicationInfo.loadLabel(packageManager)
             setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -64,6 +79,12 @@ class CollarActivity : AppCompatActivity() {
                         it.isChecked = !it.isChecked
                         viewModel.filter(EntityType.PROPERTY, it.isChecked)
                     }
+                    R.id.systemNotifications -> {
+                        viewModel.notifications(it.isChecked.not(), menu.findItem(R.id.inAppNotifications).isChecked)
+                    }
+                    R.id.inAppNotifications -> {
+                        viewModel.notifications(menu.findItem(R.id.systemNotifications).isChecked, it.isChecked.not())
+                    }
                 }
                 true
             }
@@ -76,7 +97,7 @@ class CollarActivity : AppCompatActivity() {
                 maxWidth = Integer.MAX_VALUE
                 setOnQueryTextFocusChangeListener { _, hasFocus ->
                     menu.findItem(R.id.filter).isVisible = hasFocus.not()
-                    menu.findItem(R.id.clear).isVisible = hasFocus.not()
+                    menu.findItem(R.id.settings).isVisible = hasFocus.not()
                 }
                 setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
@@ -94,6 +115,22 @@ class CollarActivity : AppCompatActivity() {
         }
     }
 
+    private fun composeIcon(applicationIcon: Drawable?): Drawable? {
+        val collarLogo = ContextCompat.getDrawable(this, R.drawable.collar_ic_logo)
+        return applicationIcon?.let {
+            val iconSize = resources.getDimensionPixelSize(R.dimen.collar_application_icon_size)
+            val badgeSize = (iconSize / 2.0f).roundToInt()
+            val root = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
+            val app = Bitmap.createScaledBitmap(it.toBitmap(), badgeSize, badgeSize, false)
+            Canvas(root).apply {
+                collarLogo?.toBitmap()?.let { bitmap -> drawBitmap(bitmap, (iconSize - collarLogo.intrinsicWidth) / 2.0f, (iconSize - collarLogo.intrinsicHeight) / 2.0f, Paint().apply { isDither = true }) }
+                drawBitmap(app, (iconSize - badgeSize).toFloat(), (iconSize - badgeSize).toFloat(), Paint().apply { isDither = true })
+            }.run {
+                BitmapDrawable(resources, root)
+            }
+        } ?: collarLogo
+    }
+
     private fun setupRecyclerView() {
         with(viewBinding.recyclerView) {
             addItemDecoration(LastDotDecoration(context))
@@ -109,11 +146,22 @@ class CollarActivity : AppCompatActivity() {
                 entryAdapter.addItems(it)
             }
         }
+        if (viewModel.settings().hasObservers().not()) {
+            viewModel.settings().observe(this) {
+                with(viewBinding.toolbar) {
+                    menu.findItem(R.id.systemNotifications).isChecked = it.showSystemNotifications
+                    menu.findItem(R.id.inAppNotifications).isChecked = it.showInAppNotifications
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
         if (viewModel.entities().hasObservers()) {
             viewModel.entities().removeObservers(this)
+        }
+        if (viewModel.settings().hasObservers()) {
+            viewModel.settings().removeObservers(this)
         }
         super.onDestroy()
     }
@@ -139,7 +187,7 @@ class CollarActivity : AppCompatActivity() {
             .setTitle(entity.type?.name?.toLowerCase()?.capitalize())
             .setView(
                 CollarViewDetailBinding.inflate(layoutInflater).apply {
-                    timeView.text = entity.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) }
+                    timeView.text = SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp))
                     nameView.text = entity.name
                     valueCaptionView.text = when (entity.type) {
                         EntityType.EVENT -> entity.parameters?.let { getString(R.string.collar_parameters) }
@@ -172,7 +220,7 @@ class CollarActivity : AppCompatActivity() {
             .setType("text/plain")
             .setText(
                 listOfNotNull(
-                    entity.timestamp?.let { "time: ${SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it))}" },
+                    "time: ${SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp))}",
                     entity.name?.let { "name: $it" },
                     entity.type?.let { "type: ${it.name.toLowerCase(Locale.getDefault())}" },
                     entity.value?.let { "value: $it" },

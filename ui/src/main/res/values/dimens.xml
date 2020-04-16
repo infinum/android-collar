@@ -2,4 +2,6 @@
 <resources>
     <dimen name="collar_divider_start_margin">96dp</dimen>
     <dimen name="collar_padding_default">16dp</dimen>
+    <dimen name="collar_application_icon_size">32dp</dimen>
+    <dimen name="collar_badge_icon_size">16dp</dimen>
 </resources>

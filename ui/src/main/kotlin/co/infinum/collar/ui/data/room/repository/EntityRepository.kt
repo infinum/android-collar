@@ -1,6 +1,5 @@
 package co.infinum.collar.ui.data.room.repository
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import co.infinum.collar.ui.data.room.CollarDatabase
 import co.infinum.collar.ui.data.room.dao.EntitiesDao
@@ -15,8 +14,7 @@ internal object EntityRepository {
 
     private lateinit var entities: EntitiesDao
 
-    fun initialize(context: Context) {
-        val database = CollarDatabase.create(context)
+    fun initialize(database: CollarDatabase) {
         entities = database.entitiesDao()
     }
 

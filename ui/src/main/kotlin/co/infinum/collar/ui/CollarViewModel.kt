@@ -6,7 +6,9 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 import co.infinum.collar.ui.data.room.entity.EntityType
+import co.infinum.collar.ui.data.room.entity.SettingsEntity
 import co.infinum.collar.ui.data.room.repository.EntityRepository
+import co.infinum.collar.ui.data.room.repository.SettingsRepository
 
 class CollarViewModel : ViewModel() {
 
@@ -37,6 +39,17 @@ class CollarViewModel : ViewModel() {
         }
         setFilters(currentFilters.toList())
     }
+
+    fun settings() = SettingsRepository.load()
+
+    fun notifications(enabledSystemNotifications: Boolean, enabledInAppNotifications: Boolean) =
+        SettingsRepository.save(
+            SettingsEntity(
+                id = 1,
+                showSystemNotifications = enabledSystemNotifications,
+                showInAppNotifications = enabledInAppNotifications
+            )
+        )
 
     fun delete() = EntityRepository.clearAll()
 

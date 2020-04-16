@@ -15,8 +15,8 @@ data class CollarEntity(
     @ColumnInfo(name = "type")
     var type: EntityType?,
 
-    @ColumnInfo(name = "timestamp")
-    var timestamp: Long?,
+    @ColumnInfo(name = "timestamp", defaultValue = "CURRENT_TIMESTAMP")
+    var timestamp: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "name")
     var name: String?,
