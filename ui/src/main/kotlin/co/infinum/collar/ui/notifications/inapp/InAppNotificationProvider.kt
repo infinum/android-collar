@@ -69,7 +69,7 @@ class InAppNotificationProvider(
             icon,
             entity.name,
             entity.parameters,
-            entity.timestamp?.let { SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(it)) },
+            SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp)),
             View.OnClickListener {
                 activity?.let {
                     it.startActivity(

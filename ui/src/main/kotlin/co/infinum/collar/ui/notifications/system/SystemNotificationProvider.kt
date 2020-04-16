@@ -55,13 +55,11 @@ class SystemNotificationProvider(private val context: Context) : NotificationPro
     }
 
     private fun addToBuffer(entity: CollarEntity) {
-        entity.timestamp?.let {
-            synchronized(buffer) {
-                idsSet.add(entity.hashCode().toLong())
-                buffer.put(it, entity)
-                if (buffer.size() > INTERNAL_BUFFER_SIZE) {
-                    buffer.removeAt(0)
-                }
+        synchronized(buffer) {
+            idsSet.add(entity.hashCode().toLong())
+            buffer.put(entity.timestamp, entity)
+            if (buffer.size() > INTERNAL_BUFFER_SIZE) {
+                buffer.removeAt(0)
             }
         }
     }
