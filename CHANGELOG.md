@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## Version 1.1.3
+
+_2020-04-16_
+
+ * New: Add session settings
+ * Fix: Fix initial code debt
+ * Fix: Fix dark mode
+ * Fix: Enable ViewBinding
+
 ## Version 1.1.2
 
 _2020-04-14_

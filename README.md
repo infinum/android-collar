@@ -29,7 +29,7 @@ buildscript {
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.1.2"
+        classpath "co.infinum.collar:collar-plugin:1.1.3"
     }
 }
 ```
@@ -42,7 +42,7 @@ buildscript {
         maven(url = "http://dl.bintray.com/infinum/android")
     }
     dependencies {
-        classpath("co.infinum.collar:collar-plugin:1.1.2")
+        classpath("co.infinum.collar:collar-plugin:1.1.3")
     }
 }
 ```
@@ -246,7 +246,7 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.1.2"
+    version "1.1.3"
 }
 ```        
 You can set a specific _Collar_ version to be used.
@@ -256,13 +256,13 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:
 **Groovy**
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.1.2"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.2"
+debugImplementation "co.infinum.collar:collar-ui:1.1.3"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.3"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("co.infinum.collar:collar-ui:1.1.2")
-releaseImplementation( )"co.infinum.collar:collar-ui-no-op:1.1.2")
+debugImplementation("co.infinum.collar:collar-ui:1.1.3")
+releaseImplementation( )"co.infinum.collar:collar-ui-no-op:1.1.3")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
@@ -287,6 +287,7 @@ In order to start tracking with UI you must use _LiveCollector_ as in this examp
 ```
 If you put second parameter *showSystemNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
 Third parameter *showInAppNotification* with value *true* in *LiveCollector* will show a Snackbar-ish popup once analytics are gathered inside the current running Activity.  
+These parameters are default values per collector session but can be changed via _CollarActivity_ menu and will remain valid until the next session.  
 Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent:
 ```kotlin
     startActivity(
@@ -307,7 +308,7 @@ For example:
 
 ```
 collar {
-    version "1.1.2"
+    version "1.1.3"
     filePath = "example.json"
     packageName = "co.infinum.collar.sample.analytics.generated"
     variant = "main" // main by default
