@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ScreenName - data</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">data</a>&nbsp;/&nbsp;<a href="../index.html">co.infinum.collar.annotations</a>&nbsp;/&nbsp;<a href="./index.html">ScreenName</a><br/>
+<br/>
+<h1>ScreenName</h1>
+<code><span class="identifier">@Target</span><span class="symbol">(</span>[AnnotationTarget.CLASS]<span class="symbol">)</span> <span class="keyword">annotation</span> <span class="keyword">class </span><span class="identifier">ScreenName</span></code>
+<p>Used in the situations when the actual screen name is predefined, provided and static.</p>
+<p>Should be used only on an Activity, a Fragment or any other variant of the same.</p>
+<pre><code>@ScreenName(value = AnalyticsScreenNames.MAIN_SCREEN)
+class MainActivity : Activity() {
+    ...
+}
+</code></pre>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="-init-.html">&lt;init&gt;</a></h4>
+</td>
+<td>
+<p>Default values are provided with an empty value and enabled annotation ready for processing.</p>
+<code><span class="identifier">ScreenName</span><span class="symbol">(</span><span class="identifier" id="co.infinum.collar.annotations.ScreenName$<init>(kotlin.String, kotlin.Boolean)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;""<span class="symbol">, </span><span class="identifier" id="co.infinum.collar.annotations.ScreenName$<init>(kotlin.String, kotlin.Boolean)/enabled">enabled</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<h4><a href="enabled.html">enabled</a></h4>
+</td>
+<td>
+<p>Determines if this annotation will be processed or skipped.</p>
+<code><span class="keyword">val </span><span class="identifier">enabled</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<h4><a href="value.html">value</a></h4>
+</td>
+<td>
+<p>Holds the actual name of the screen. If empty, actual class name will be taken.</p>
+<code><span class="keyword">val </span><span class="identifier">value</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
