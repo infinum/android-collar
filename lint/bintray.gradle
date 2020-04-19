@@ -67,9 +67,9 @@ bintray {
         vcsUrl = 'https://github.com/infinum/android-collar.git'
         licenses = ['Apache-2.0']
         version {
-            name = "${versions.collar}"
+            name = "${collar.version}"
             released = new Date()
-            vcsTag = "${versions.collar}"
+            vcsTag = "${collar.version}"
             gpg {
                 sign = true
                 passphrase = properties.getProperty("bintray.gpg_passphrase")

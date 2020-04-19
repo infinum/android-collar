@@ -16,7 +16,6 @@ class CollarPlugin : Plugin<Project> {
 
     private fun addRepositories(project: Project) =
         with(project.repositories) {
-            google()
             jcenter()
             mavenCentral()
             maven {}.url = URI("http://dl.bintray.com/infinum/android")
@@ -26,9 +25,7 @@ class CollarPlugin : Plugin<Project> {
         with(project) {
             val settings = extensions.create(CollarExtension.NAME, CollarExtension::class.java)
 
-            dependencies.add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
             dependencies.add("implementation", "co.infinum.collar:collar-core:${settings.version}")
-            dependencies.add("implementation", "co.infinum.collar:collar-generator:${settings.version}")
 
             if (pluginManager.hasPlugin("kotlin-android")) {
                 if (pluginManager.hasPlugin("kotlin-kapt").not()) {

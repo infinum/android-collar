@@ -5,16 +5,16 @@ open class CollarExtension {
     companion object {
         const val NAME = "collar"
 
-        private const val DEFAULT_VERSION = "1.1.3"
+        private const val DEFAULT_VERSION = "1.1.4"
         private const val DEFAULT_FILEPATH = ""
         private const val DEFAULT_VARIANT = "main"
-        private const val DEFAULT_PACKAGENAME = ""
+        private const val DEFAULT_PACKAGE_NAME = ""
     }
 
     open var version = DEFAULT_VERSION
     open var filePath = DEFAULT_FILEPATH
     open var variant = DEFAULT_VARIANT
-    open var packageName = DEFAULT_PACKAGENAME
+    open var packageName = DEFAULT_PACKAGE_NAME
 }
 
 fun CollarExtension.validate(): List<String> {

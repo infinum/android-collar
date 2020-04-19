@@ -3,17 +3,11 @@ package co.infinum.collar.ui
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -24,12 +18,11 @@ import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.databinding.CollarActivityCollarBinding
 import co.infinum.collar.ui.databinding.CollarViewDetailBinding
 import co.infinum.collar.ui.decorations.LastDotDecoration
-import co.infinum.collar.ui.extensions.toBitmap
+import co.infinum.collar.ui.extensions.addBadge
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.math.roundToInt
 
 class CollarActivity : AppCompatActivity() {
 
@@ -58,7 +51,7 @@ class CollarActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         with(viewBinding.toolbar) {
-            navigationIcon = composeIcon(applicationInfo.loadIcon(packageManager))
+            navigationIcon = applicationInfo.loadIcon(packageManager)?.addBadge(this@CollarActivity)
             subtitle = applicationInfo.loadLabel(packageManager)
             setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener {
@@ -220,34 +213,5 @@ class CollarActivity : AppCompatActivity() {
                 ).joinToString("\n")
             )
             .startChooser()
-    }
-
-    @Suppress("MaxLineLength", "MaximumLineLength")
-    private fun composeIcon(applicationIcon: Drawable?): Drawable? {
-        val collarLogo = ContextCompat.getDrawable(this, R.drawable.collar_ic_logo)
-        return applicationIcon?.let {
-            val iconSize = resources.getDimensionPixelSize(R.dimen.collar_application_icon_size)
-            val badgeSize = (iconSize / 2.0f).roundToInt()
-            val root = Bitmap.createBitmap(iconSize, iconSize, Bitmap.Config.ARGB_8888)
-            val app = Bitmap.createScaledBitmap(it.toBitmap(), badgeSize, badgeSize, false)
-            Canvas(root).apply {
-                collarLogo?.toBitmap()?.let { bitmap ->
-                    drawBitmap(
-                        bitmap,
-                        (iconSize - collarLogo.intrinsicWidth) / 2.0f,
-                        (iconSize - collarLogo.intrinsicHeight) / 2.0f,
-                        Paint().apply { isDither = true }
-                    )
-                }
-                drawBitmap(
-                    app,
-                    (iconSize - badgeSize).toFloat(),
-                    (iconSize - badgeSize).toFloat(),
-                    Paint().apply { isDither = true }
-                )
-            }.run {
-                BitmapDrawable(resources, root)
-            }
-        } ?: collarLogo
     }
 }

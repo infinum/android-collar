@@ -13,6 +13,7 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'co.infinum.collar.plugin'
 
 android {
@@ -67,7 +68,7 @@ dependencies {
 }
 
 collar {
-    version "1.1.3"
+    version "1.1.4"
     filePath = "example.json"
     packageName = "co.infinum.collar.sample.analytics.generated"
 }
