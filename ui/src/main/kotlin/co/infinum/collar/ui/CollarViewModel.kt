@@ -1,9 +1,11 @@
 package co.infinum.collar.ui
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import co.infinum.collar.ui.data.room.CollarDatabase
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 import co.infinum.collar.ui.data.room.entity.EntityType
 import co.infinum.collar.ui.data.room.entity.SettingsEntity
@@ -23,6 +25,14 @@ class CollarViewModel : ViewModel() {
     init {
         search(null)
         setFilters(FILTERS_ALL)
+    }
+
+    fun initialize(context: Context) {
+        CollarDatabase.create(context).apply {
+            EntityRepository.initialize(this)
+            SettingsRepository.initialize(this)
+            SettingsRepository.save(SettingsEntity())
+        }
     }
 
     fun entities(): LiveData<List<CollarEntity>> = searchEntities()

@@ -16,11 +16,16 @@ import co.infinum.collar.ui.data.room.typeconverters.CollarTypeConverter
 internal abstract class CollarDatabase : RoomDatabase() {
 
     companion object {
+        private var INSTANCE: CollarDatabase? = null
 
-        fun create(context: Context): CollarDatabase =
-            Room.inMemoryDatabaseBuilder(context.applicationContext, CollarDatabase::class.java)
-                .fallbackToDestructiveMigration()
-                .build()
+        fun create(context: Context): CollarDatabase {
+            if (INSTANCE == null) {
+                INSTANCE = Room.inMemoryDatabaseBuilder(context.applicationContext, CollarDatabase::class.java)
+                    .fallbackToDestructiveMigration()
+                    .build()
+            }
+            return INSTANCE as CollarDatabase
+        }
     }
 
     abstract fun entitiesDao(): EntitiesDao

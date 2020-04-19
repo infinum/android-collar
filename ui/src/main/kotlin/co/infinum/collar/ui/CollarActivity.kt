@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
@@ -51,6 +52,7 @@ class CollarActivity : AppCompatActivity() {
 
             setupToolbar()
             setupRecyclerView()
+            setupEmptyView()
             setupViewModel()
         }
 
@@ -118,11 +120,17 @@ class CollarActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupEmptyView() {
+        viewBinding.emptyLayout.instructionsView.movementMethod = LinkMovementMethod.getInstance()
+    }
+
     private fun setupViewModel() {
         viewModel = ViewModelProvider(this).get(CollarViewModel::class.java)
+        viewModel.initialize(this)
         if (viewModel.entities().hasObservers().not()) {
             viewModel.entities().observe(this) {
                 entryAdapter.addItems(it)
+                viewBinding.emptyLayout.root.isVisible = entryAdapter.itemCount == 0
             }
         }
         if (viewModel.settings().hasObservers().not()) {

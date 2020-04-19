@@ -5,8 +5,8 @@ ext.collar = [
 
 ext.versions = [
     "collar"       : "1.1.3",
-    "gradle"       : '3.6.2',
-    "kotlin"       : "1.3.71",
+    "gradle"       : '3.6.3',
+    "kotlin"       : "1.3.72",
     "poet"         : "1.5.0",
     "poet_metadata": "1.5.0",
     "annotations"  : "19.0.0",

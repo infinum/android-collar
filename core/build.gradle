@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-    implementation packages.collar.annotations
+    api packages.collar.annotations
     implementation packages.kotlin.core
     compileOnly packages.annotations
     implementation packages.androidx.lifecycle.runtime
