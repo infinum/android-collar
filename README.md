@@ -29,7 +29,7 @@ buildscript {
         maven { url "http://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.1.3"
+        classpath "co.infinum.collar:collar-plugin:1.1.4"
     }
 }
 ```
@@ -42,7 +42,7 @@ buildscript {
         maven(url = "http://dl.bintray.com/infinum/android")
     }
     dependencies {
-        classpath("co.infinum.collar:collar-plugin:1.1.3")
+        classpath("co.infinum.collar:collar-plugin:1.1.4")
     }
 }
 ```
@@ -246,7 +246,7 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.1.3"
+    version "1.1.4"
 }
 ```        
 You can set a specific _Collar_ version to be used.
@@ -256,13 +256,13 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:
 **Groovy**
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.1.3"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.3"
+debugImplementation "co.infinum.collar:collar-ui:1.1.4"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.4"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("co.infinum.collar:collar-ui:1.1.3")
-releaseImplementation( )"co.infinum.collar:collar-ui-no-op:1.1.3")
+debugImplementation("co.infinum.collar:collar-ui:1.1.4")
+releaseImplementation( )"co.infinum.collar:collar-ui-no-op:1.1.4")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
@@ -308,7 +308,7 @@ For example:
 
 ```
 collar {
-    version "1.1.3"
+    version "1.1.4"
     filePath = "example.json"
     packageName = "co.infinum.collar.sample.analytics.generated"
     variant = "main" // main by default

@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.1.4
+
+_2020-04-20_
+
+ * New: Add empty state on UI
+ * Fix: Fix dependency configurations
+ * Fix: Fix crash on running Activity without implementing a Collector
+
 ## Version 1.1.3
 
 _2020-04-16_
