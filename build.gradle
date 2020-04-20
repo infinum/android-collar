@@ -27,14 +27,6 @@ buildscript {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
-tasks.withType(JavaCompile) {
-    options.compilerArgs += ["--release", "8"]
-}
-
 allprojects {
     tasks.withType(Javadoc).all {
         enabled = false
@@ -71,6 +63,14 @@ subprojects {
     dependencies {
         detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ["--release", "8"]
 }
 
 task detektAll(dependsOn: [
