@@ -262,7 +262,7 @@ releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.4"
 **KotlinDSL**
 ```kotlin
 debugImplementation("co.infinum.collar:collar-ui:1.1.4")
-releaseImplementation( )"co.infinum.collar:collar-ui-no-op:1.1.4")
+releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.4")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
