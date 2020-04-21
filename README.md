@@ -26,7 +26,7 @@ buildscript {
     repositories {
         jcenter()
         // for plugin
-        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath "co.infinum.collar:collar-plugin:1.1.4"
@@ -39,7 +39,7 @@ buildscript {
     repositories {
         jcenter()
         // for plugin
-        maven(url = "http://dl.bintray.com/infinum/android")
+        maven(url = "https://dl.bintray.com/infinum/android")
     }
     dependencies {
         classpath("co.infinum.collar:collar-plugin:1.1.4")

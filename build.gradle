@@ -14,7 +14,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
 
     dependencies {
@@ -51,26 +51,18 @@ subprojects {
         google()
         jcenter()
         mavenCentral()
-        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
 
-    apply plugin: "io.gitlab.arturbosch.detekt"
-
-    detekt {
-        toolVersion = versions.detekt
-    }
-
-    dependencies {
-        detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    apply from: "../detekt.gradle"
 }
 
 tasks.withType(JavaCompile) {
     options.compilerArgs += ["--release", "8"]
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 task detektAll(dependsOn: [
@@ -86,113 +78,6 @@ task detektAll(dependsOn: [
     description = "Run detekt on all modules"
 }
 
-task deployAll(dependsOn: [
-    'deployAnnotations',
-    'deployCore',
-    'deployUi',
-    'deployUiNoOp',
-    'deployProcessor',
-    'deployGenerator',
-    'deployPlugin'
-]) {
-    group = "Deploy"
-    description = "Deploy all modules to Bintray"
-}
+apply from: "deploy.gradle"
 
-task deployAnnotations(dependsOn: [
-    ':annotations:build',
-    ':annotations:install',
-    ':annotations:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployCore(dependsOn: [
-    ':core:build',
-    ':core:install',
-    ':core:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployUi(dependsOn: [
-    ':ui:build',
-    ':ui:install',
-    ':ui:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployUiNoOp(dependsOn: [
-    ':ui-no-op:build',
-    ':ui-no-op:install',
-    ':ui-no-op:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployProcessor(dependsOn: [
-    ':processor:build',
-    ':processor:install',
-    ':processor:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployGenerator(dependsOn: [
-    ':generator:build',
-    ':generator:install',
-    ':generator:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployPlugin(dependsOn: [
-    ':plugin:build',
-    ':plugin:install',
-    ':plugin:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-apply plugin: "org.jetbrains.dokka"
-
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/docs"
-    subProjects = ["annotations", "core", "ui", "ui-no-op", "processor", "plugin", "generator"]
-    disableAutoconfiguration = false
-    cacheRoot = 'default'
-    configuration {
-        moduleName = 'data'
-        includeNonPublic = false
-        skipDeprecated = true
-        reportUndocumented = true
-        skipEmptyPackages = true
-        // Specifies the location of the project source code on the Web.
-        // If provided, Dokka generates "source" links for each declaration.
-        // Repeat for multiple mappings
-        sourceLink {
-            // Unix based directory relative path to the root of the project (where you execute gradle respectively).
-            path = "src/main/kotlin" // or simply "./"
-
-            // URL showing where the source code can be accessed through the web browser
-            url = "https://github.com/infinum/android-collar/" //remove src/main/kotlin if you use "./" above
-
-            // Suffix which is used to append the line number to the URL. Use #L for GitHub
-            lineSuffix = "#L"
-        }
-        jdkVersion = 8
-        noStdlibLink = false
-        noJdkLink = false
-        noAndroidSdkLink = false
-        androidVariants = ["debug"]
-    }
-}
+apply from: "dokka.gradle"

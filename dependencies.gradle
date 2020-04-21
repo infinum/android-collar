@@ -1,6 +1,7 @@
 ext.collar = [
     "group"  : "co.infinum.collar",
-    "version": "1.1.4"
+    "version": "1.1.4",
+    "versionCode": 1*100*100 + 1*100 + 4
 ]
 
 ext.versions = [
@@ -14,6 +15,7 @@ ext.versions = [
     "bintray"      : "1.8.5",
     "core"         : "1.2.0",
     "appcompat"    : "1.1.0",
+    "fragment"     : "1.2.4",
     "lifecycle"    : "2.2.0",
     "viewmodel"    : "2.2.0",
     "livedata"     : "2.2.0",
@@ -52,6 +54,7 @@ ext.packages = [
     "androidx"   : [
         "core"        : "androidx.core:core-ktx:${versions.core}",
         "appcompat"   : "androidx.appcompat:appcompat:${versions.appcompat}",
+        "fragment"    : "androidx.fragment:fragment-ktx:${versions.fragment}",
         "lifecycle"   : [
             "runtime"  : "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}",
             "viewmodel": "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.viewmodel}",
@@ -73,7 +76,8 @@ ext.packages = [
         "plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.maven}"
     ],
     "detekt"     : [
-        "plugin": "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}"
+        "plugin"    : "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}",
+        "formatting": "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     ],
     "dokka"      : [
         "plugin": "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"

@@ -3,7 +3,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
@@ -14,7 +14,7 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-    maven { url "http://dl.bintray.com/infinum/android" }
+    maven { url "https://dl.bintray.com/infinum/android" }
 }
 
 apply plugin: 'java-library'
@@ -33,7 +33,7 @@ compileTestKotlin {
 
 dependencies {
     compileOnly packages.kotlin.core
-    compileOnly "com.android.tools.lint:lint-api:26.6.2"
+    compileOnly "com.android.tools.lint:lint-api:26.6.3"
 }
 
 jar {

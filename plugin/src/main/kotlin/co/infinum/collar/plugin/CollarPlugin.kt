@@ -18,7 +18,7 @@ class CollarPlugin : Plugin<Project> {
         with(project.repositories) {
             jcenter()
             mavenCentral()
-            maven {}.url = URI("http://dl.bintray.com/infinum/android")
+            maven {}.url = URI("https://dl.bintray.com/infinum/android")
         }
 
     private fun addDependencies(project: Project) {

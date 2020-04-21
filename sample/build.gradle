@@ -3,7 +3,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
@@ -24,8 +24,8 @@ android {
         applicationId "co.infinum.collar.sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 10104
+        versionName "1.1.4"
 
         buildTypes {
             debug {
@@ -61,8 +61,8 @@ android {
 
 dependencies {
     implementation packages.kotlin.core
-    implementation "androidx.fragment:fragment:1.2.4"
-    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation packages.androidx.appcompat
+    implementation packages.androidx.fragment
     lintChecks project(":lint")
     implementation packages.collar.ui
 }

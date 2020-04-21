@@ -3,7 +3,7 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url "http://dl.bintray.com/infinum/android" }
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
         classpath packages.gradle
