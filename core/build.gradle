@@ -1,17 +1,5 @@
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
-    }
-    dependencies {
-        classpath packages.gradle
-    }
-}
-
 apply plugin: "com.android.library"
-apply plugin: 'kotlin-android'
+apply plugin: "kotlin-android"
 
 android {
     compileSdkVersion buildConfig.compileSdk

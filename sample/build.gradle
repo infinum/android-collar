@@ -13,7 +13,6 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'co.infinum.collar.plugin'
 
 android {

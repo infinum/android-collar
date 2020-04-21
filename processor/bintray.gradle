@@ -13,14 +13,9 @@ task sourcesJar(type: Jar, dependsOn: assemble) {
     from sourceSets.main.allSource
 }
 
-task javadocs(type: Javadoc) {
-    source = sourceSets.main.allSource
-    excludes = ['**/META-INF/services/**']
-}
-
-task javadocsJar(type: Jar, dependsOn: javadocs) {
+task javadocsJar(type: Jar, dependsOn: rootProject.dokka) {
     archiveClassifier.set('javadoc')
-    from javadocs.destinationDir
+    from rootProject.dokka.outputDirectory
 }
 
 publishing {

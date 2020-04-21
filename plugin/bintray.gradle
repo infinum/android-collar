@@ -13,9 +13,9 @@ task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: JavaPlugin.JAVADOC_TASK_NAME) {
+task javadocsJar(type: Jar, dependsOn: rootProject.dokka) {
     archiveClassifier.set('javadoc')
-    from javadoc.destinationDir
+    from rootProject.dokka.outputDirectory
 }
 
 publishing {
@@ -25,7 +25,7 @@ publishing {
             artifactId = 'collar-plugin'
 
             artifact sourcesJar
-            artifact javadocJar
+            artifact javadocsJar
             pom {
                 name = 'Collar Plugin'
                 description = 'Gradle plugin which provides single point for analytics collection.'

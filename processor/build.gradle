@@ -1,15 +1,3 @@
-buildscript {
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
-    }
-    dependencies {
-        classpath packages.gradle
-    }
-}
-
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: 'kotlin-kapt'

@@ -28,9 +28,14 @@ buildscript {
 }
 
 allprojects {
-    tasks.withType(Javadoc).all {
-        enabled = false
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url "https://dl.bintray.com/infinum/android" }
     }
+
 //    configurations.all {
 //        resolutionStrategy {
 //            dependencySubstitution {
