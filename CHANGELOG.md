@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 1.1.5
+
+_2020-04-28_
+
+ * Fix: Annotated event parameter names collected properly
+
 ## Version 1.1.4
 
 _2020-04-20_

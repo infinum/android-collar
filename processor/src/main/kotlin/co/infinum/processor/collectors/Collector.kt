@@ -10,4 +10,8 @@ interface Collector<Holder> {
     fun enabled(element: Element): Boolean = throw UnsupportedOperationException()
 
     fun name(element: TypeElement): String = throw UnsupportedOperationException()
+
+    fun parameterEnabled(element: Element): Boolean = throw UnsupportedOperationException()
+
+    fun parameterName(element: Element): String = throw UnsupportedOperationException()
 }

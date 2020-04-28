@@ -3,10 +3,8 @@ package co.infinum.processor.collectors
 import co.infinum.collar.annotations.AnalyticsEvents
 import co.infinum.collar.annotations.EventName
 import co.infinum.collar.annotations.EventParameterName
-import co.infinum.processor.extensions.constructorParameters
-import co.infinum.processor.extensions.resolveEnabled
+import co.infinum.processor.extensions.fieldElements
 import co.infinum.processor.extensions.resolveMethod
-import co.infinum.processor.extensions.resolveName
 import co.infinum.processor.extensions.toLowerSnakeCase
 import co.infinum.processor.models.AnalyticsEventsHolder
 import co.infinum.processor.models.EventHolder
@@ -48,19 +46,13 @@ class AnalyticsEventsCollector(
                                 type = enclosedClass.asType(),
                                 className = enclosedClass.asClassName(),
                                 eventName = name(enclosedClass),
-                                eventParameters = enclosedClass.constructorParameters()
-                                    .map { valueParameter ->
+                                eventParameters = enclosedClass.fieldElements()
+                                    .map { fieldParameter ->
                                         EventParameterHolder(
-                                            enabled = valueParameter.resolveEnabled(
-                                                ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name,
-                                                "enabled"
-                                            ),
-                                            method = valueParameter.resolveMethod(),
-                                            resolvedName = valueParameter.resolveName(
-                                                ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name,
-                                                "value"
-                                            ),
-                                            variableName = valueParameter.name
+                                            enabled = parameterEnabled(fieldParameter),
+                                            method = fieldParameter.resolveMethod(),
+                                            resolvedName = parameterName(fieldParameter),
+                                            variableName = fieldParameter.simpleName.toString()
                                         )
                                     }
                                     .toSet()
@@ -80,4 +72,12 @@ class AnalyticsEventsCollector(
             else -> value
         }
     }
+
+    override fun parameterEnabled(element: Element) =
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.enabled ?: true
+
+    @Suppress("SimpleRedundantLet")
+    override fun parameterName(element: Element): String =
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.let { it.value }
+            ?: run { element.simpleName.toString().toLowerSnakeCase() }
 }
