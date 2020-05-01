@@ -6,5 +6,6 @@ import android.content.Intent
 object CollarUi {
 
     @Suppress("UNUSED_PARAMETER")
+    @JvmStatic
     fun launchIntent(context: Context) = Intent()
 }
