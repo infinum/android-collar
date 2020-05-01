@@ -3,47 +3,17 @@ package co.infinum.collar
 import android.app.Activity
 import android.os.Bundle
 
-class Collar private constructor(
-    private val collector: Collector
-) {
-    companion object {
+object Collar {
 
-        private var INSTANCE: Collar? = null
+    private var collector: Collector? = null
 
-        @JvmStatic
-        fun attach(collector: Collector): Collar {
-            val newInstance = Collar(collector)
-            INSTANCE = newInstance
-            return newInstance
-        }
-
-        fun trackScreen(activity: Activity, screenName: String) {
-            INSTANCE?.trackScreen(activity, screenName)
-        }
-
-        fun trackScreen(screen: Screen) {
-            INSTANCE?.trackScreen(screen)
-        }
-
-        fun trackEvent(eventName: String, params: Bundle) {
-            INSTANCE?.trackEvent(eventName, params)
-        }
-
-        fun trackEvent(event: Event) {
-            INSTANCE?.trackEvent(event)
-        }
-
-        fun trackProperty(name: String, value: String?) {
-            INSTANCE?.trackProperty(name, value)
-        }
-
-        fun trackProperty(property: Property) {
-            INSTANCE?.trackProperty(property)
-        }
+    @JvmStatic
+    fun attach(collector: Collector) {
+        this.collector = collector
     }
 
     fun trackScreen(activity: Activity, screenName: String) =
-        collector.onScreen(
+        collector?.onScreen(
             Screen(
                 activity = activity,
                 name = screenName
@@ -51,10 +21,10 @@ class Collar private constructor(
         )
 
     fun trackScreen(screen: Screen) =
-        collector.onScreen(screen)
+        collector?.onScreen(screen)
 
     fun trackEvent(eventName: String, params: Bundle) =
-        collector.onEvent(
+        collector?.onEvent(
             Event(
                 name = eventName,
                 params = if (params.isEmpty) null else params
@@ -62,10 +32,10 @@ class Collar private constructor(
         )
 
     fun trackEvent(event: Event) =
-        collector.onEvent(event)
+        collector?.onEvent(event)
 
     fun trackProperty(name: String, value: String?) =
-        collector.onProperty(
+        collector?.onProperty(
             Property(
                 name = name,
                 value = value
@@ -73,5 +43,5 @@ class Collar private constructor(
         )
 
     fun trackProperty(property: Property) =
-        collector.onProperty(property)
+        collector?.onProperty(property)
 }
