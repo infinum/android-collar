@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 
@@ -40,9 +41,11 @@ internal class CollarSnackbar(
                         setValue(message)
                         setTime(time)
                         setAction(listener)
-                    }
-                    .run {
-                        CollarSnackbar(parentLayout, this)
+                    }.let { collarSnackbarView ->
+                        CoordinatorLayout(it.context).let { coordinatorLayout ->
+                            it.addView(coordinatorLayout)
+                            CollarSnackbar(coordinatorLayout, collarSnackbarView)
+                        }
                     }
             } ?: throw IllegalArgumentException(
                 "No suitable parent found for CollarSnackbar. Please provide a valid Activity."
