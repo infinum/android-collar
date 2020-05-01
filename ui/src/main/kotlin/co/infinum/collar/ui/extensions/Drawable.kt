@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import co.infinum.collar.ui.R
 import kotlin.math.roundToInt
 
-fun Drawable.toBitmap(): Bitmap {
+internal fun Drawable.toBitmap(): Bitmap {
     if (this is BitmapDrawable) {
         return bitmap
     }
@@ -26,7 +26,7 @@ fun Drawable.toBitmap(): Bitmap {
 }
 
 @Suppress("MaxLineLength", "MaximumLineLength")
-fun Drawable?.addBadge(context: Context): Drawable? {
+internal fun Drawable?.addBadge(context: Context): Drawable? {
     val collarLogo = ContextCompat.getDrawable(context, R.drawable.collar_ic_logo)
     return this?.let {
         val iconSize = context.resources.getDimensionPixelSize(R.dimen.collar_application_icon_size)

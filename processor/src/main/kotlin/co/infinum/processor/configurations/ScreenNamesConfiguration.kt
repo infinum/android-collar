@@ -4,7 +4,7 @@ import co.infinum.processor.options.Options
 import co.infinum.processor.options.ScreenNamesOptions
 import javax.annotation.processing.ProcessingEnvironment
 
-class ScreenNamesConfiguration(
+internal class ScreenNamesConfiguration(
     private val processingEnv: ProcessingEnvironment
 ) : CommonConfiguration(processingEnv) {
 

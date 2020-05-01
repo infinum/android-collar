@@ -15,7 +15,7 @@ import co.infinum.collar.ui.viewholders.ScreenViewHolder
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
-class CollarAdapter(
+internal class CollarAdapter(
     private var items: List<CollarEntity> = listOf(),
     private val onClick: (CollarEntity) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

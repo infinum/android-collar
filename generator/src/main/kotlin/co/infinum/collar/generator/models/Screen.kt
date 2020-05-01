@@ -1,6 +1,6 @@
 package co.infinum.collar.generator.models
 
-data class Screen(
+internal data class Screen(
     val name: String,
     val description: String
 )

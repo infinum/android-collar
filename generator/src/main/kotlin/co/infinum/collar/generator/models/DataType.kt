@@ -1,6 +1,6 @@
 package co.infinum.collar.generator.models
 
-enum class DataType {
+internal enum class DataType {
     TEXT,
     NUMBER,
     DECIMAL,

@@ -10,7 +10,7 @@ import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.Messager
 import javax.lang.model.util.Types
 
-class UserPropertiesValidator(
+internal class UserPropertiesValidator(
     private val processorOptions: Options,
     private val typeUtils: Types,
     private val messager: Messager

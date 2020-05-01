@@ -1,6 +1,6 @@
 package co.infinum.processor.models
 
-data class EventParameterHolder(
+internal data class EventParameterHolder(
     val enabled: Boolean,
     val method: String,
     val resolvedName: String,

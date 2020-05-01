@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 
-abstract class CollarViewHolder(
+internal abstract class CollarViewHolder(
     view: View
 ) : RecyclerView.ViewHolder(view) {
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import java.io.Serializable
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-class LifecycleTrackScreen<out T>(
+internal class LifecycleTrackScreen<out T>(
     private val owner: LifecycleOwner,
     initializer: () -> T
 ) : Lazy<T>, Serializable {

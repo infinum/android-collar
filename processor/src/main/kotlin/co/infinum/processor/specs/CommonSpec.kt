@@ -6,7 +6,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import java.io.File
 
-abstract class CommonSpec(
+internal abstract class CommonSpec(
     private val outputDir: File,
     private val packageName: String,
     private val simpleName: String

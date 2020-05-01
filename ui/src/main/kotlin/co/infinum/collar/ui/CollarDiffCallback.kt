@@ -3,7 +3,7 @@ package co.infinum.collar.ui
 import androidx.recyclerview.widget.DiffUtil
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 
-class CollarDiffCallback(
+internal class CollarDiffCallback(
     private val oldList: List<CollarEntity>,
     private val newList: List<CollarEntity>
 ) : DiffUtil.Callback() {

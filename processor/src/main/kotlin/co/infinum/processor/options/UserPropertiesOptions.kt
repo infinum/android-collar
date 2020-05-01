@@ -1,6 +1,6 @@
 package co.infinum.processor.options
 
-class UserPropertiesOptions(
+internal class UserPropertiesOptions(
     options: MutableMap<String, String>
 ) : Options {
 

@@ -6,7 +6,7 @@ import co.infinum.collar.plugin.tasks.shared.BaseTask
 import co.infinum.collar.plugin.validate
 import org.gradle.api.tasks.TaskAction
 
-open class GenerateTask : BaseTask() {
+internal open class GenerateTask : BaseTask() {
 
     companion object {
         const val GROUP = "collar"

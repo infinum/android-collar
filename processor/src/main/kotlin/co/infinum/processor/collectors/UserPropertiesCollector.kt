@@ -12,7 +12,7 @@ import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
-class UserPropertiesCollector(
+internal class UserPropertiesCollector(
     private val roundEnvironment: RoundEnvironment
 ) : Collector<UserPropertiesHolder> {
 

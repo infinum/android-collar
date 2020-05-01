@@ -5,7 +5,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 
-interface Spec {
+internal interface Spec {
 
     fun file(): FileSpec
 

@@ -8,7 +8,7 @@ import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 
-class AnalyticsEventsSubprocessor : CommonSubprocessor() {
+internal class AnalyticsEventsSubprocessor : CommonSubprocessor() {
 
     @KotlinPoetMetadataPreview
     override fun process(roundEnvironment: RoundEnvironment) {

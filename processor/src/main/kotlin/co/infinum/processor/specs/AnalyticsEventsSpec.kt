@@ -7,7 +7,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
-class AnalyticsEventsSpec private constructor(
+internal class AnalyticsEventsSpec private constructor(
     outputDir: File,
     private val packageName: String,
     private val simpleName: String,
@@ -106,12 +106,12 @@ class AnalyticsEventsSpec private constructor(
 }
 
 @DslMarker
-annotation class AnalyticsEventsSpecDsl
+internal annotation class AnalyticsEventsSpecDsl
 
 @AnalyticsEventsSpecDsl
-class AnalyticsEventsSpecBuilder : AnalyticsEventsSpec.Builder()
+internal class AnalyticsEventsSpecBuilder : AnalyticsEventsSpec.Builder()
 
-inline fun analyticsEventsSpec(builder: AnalyticsEventsSpecBuilder.() -> Unit): AnalyticsEventsSpec {
+internal inline fun analyticsEventsSpec(builder: AnalyticsEventsSpecBuilder.() -> Unit): AnalyticsEventsSpec {
     val specBuilder = AnalyticsEventsSpecBuilder()
     specBuilder.builder()
     return specBuilder.build()

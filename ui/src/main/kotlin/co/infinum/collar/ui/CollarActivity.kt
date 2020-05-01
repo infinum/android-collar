@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class CollarActivity : AppCompatActivity() {
+internal class CollarActivity : AppCompatActivity() {
 
     companion object {
         private const val FORMAT_DATETIME = "dd.MM.yyyy. HH:mm:ss"

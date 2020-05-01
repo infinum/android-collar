@@ -15,7 +15,7 @@ import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
-class AnalyticsEventsCollector(
+internal class AnalyticsEventsCollector(
     private val roundEnvironment: RoundEnvironment
 ) : Collector<AnalyticsEventsHolder> {
 

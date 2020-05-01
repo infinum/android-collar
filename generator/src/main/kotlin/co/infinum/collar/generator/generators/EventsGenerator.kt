@@ -10,7 +10,7 @@ import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-class EventsGenerator(
+internal class EventsGenerator(
     private val events: List<Event>,
     outputPath: String,
     packageName: String

@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import co.infinum.collar.ui.R
 
-class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration() {
+internal class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     private val divider = ContextCompat.getDrawable(context, R.drawable.collar_decoration_dot)
 

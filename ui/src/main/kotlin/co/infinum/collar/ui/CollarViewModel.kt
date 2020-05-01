@@ -12,7 +12,7 @@ import co.infinum.collar.ui.data.room.entity.SettingsEntity
 import co.infinum.collar.ui.data.room.repository.EntityRepository
 import co.infinum.collar.ui.data.room.repository.SettingsRepository
 
-class CollarViewModel : ViewModel() {
+internal class CollarViewModel : ViewModel() {
 
     companion object {
         private val FILTERS_ALL = listOf(EntityType.SCREEN, EntityType.EVENT, EntityType.PROPERTY)

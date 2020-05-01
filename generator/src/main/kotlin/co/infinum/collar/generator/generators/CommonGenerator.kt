@@ -3,7 +3,7 @@ package co.infinum.collar.generator.generators
 import com.squareup.kotlinpoet.FileSpec
 import java.nio.file.Paths
 
-abstract class CommonGenerator(
+internal abstract class CommonGenerator(
     private val outputPath: String,
     private val packageName: String,
     private val className: String

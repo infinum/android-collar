@@ -6,7 +6,7 @@ import co.infinum.processor.specs.screenNameSpec
 import co.infinum.processor.validators.ScreenNamesValidator
 import javax.annotation.processing.RoundEnvironment
 
-class ScreenNamesSubprocessor : CommonSubprocessor() {
+internal class ScreenNamesSubprocessor : CommonSubprocessor() {
 
     override fun process(roundEnvironment: RoundEnvironment) {
         val collector = ScreenNamesCollector(roundEnvironment, elementUtils, typeUtils)

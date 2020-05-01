@@ -9,7 +9,7 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.TypeName
 import java.util.Locale
 
-class GeneratorUtils private constructor() {
+internal class GeneratorUtils private constructor() {
 
     companion object {
 

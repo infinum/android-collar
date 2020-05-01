@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 
 @Suppress("ComplexMethod")
-object BundleMapper {
+internal object BundleMapper {
 
     fun toMap(bundle: Bundle): String {
         val map = mutableMapOf<String, String>()

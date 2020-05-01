@@ -2,7 +2,7 @@ package co.infinum.processor.models
 
 import com.squareup.kotlinpoet.ClassName
 
-data class ScreenHolder(
+internal data class ScreenHolder(
     val enabled: Boolean,
     val superClassName: ClassName?,
     val className: ClassName,

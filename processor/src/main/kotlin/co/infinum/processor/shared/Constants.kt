@@ -2,7 +2,7 @@ package co.infinum.processor.shared
 
 import com.squareup.kotlinpoet.ClassName
 
-object Constants {
+internal object Constants {
 
     val CLASS_COMPONENT_ACTIVITY = ClassName("androidx.core.app", "ComponentActivity")
     val CLASS_ACTIVITY = ClassName("android.app", "Activity")

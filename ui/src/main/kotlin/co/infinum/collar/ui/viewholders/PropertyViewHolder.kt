@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PropertyViewHolder(
+internal class PropertyViewHolder(
     private val viewBinding: CollarItemPropertyBinding
 ) : CollarViewHolder(viewBinding.root) {
 

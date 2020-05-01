@@ -2,7 +2,7 @@ package co.infinum.collar.ui.notifications
 
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 
-interface NotificationProvider {
+internal interface NotificationProvider {
 
     fun showScreen(entity: CollarEntity)
 

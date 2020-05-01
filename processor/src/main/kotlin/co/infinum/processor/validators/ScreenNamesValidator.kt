@@ -5,7 +5,7 @@ import co.infinum.processor.models.ScreenHolder
 import co.infinum.processor.options.Options
 import javax.annotation.processing.Messager
 
-class ScreenNamesValidator(
+internal class ScreenNamesValidator(
     private val processorOptions: Options,
     private val messager: Messager
 ) : Validator<ScreenHolder> {

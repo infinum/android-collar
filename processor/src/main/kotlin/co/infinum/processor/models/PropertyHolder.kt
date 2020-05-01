@@ -3,7 +3,7 @@ package co.infinum.processor.models
 import com.squareup.kotlinpoet.ClassName
 import javax.lang.model.type.TypeMirror
 
-data class PropertyHolder(
+internal data class PropertyHolder(
     val enabled: Boolean,
     val type: TypeMirror,
     val className: ClassName,

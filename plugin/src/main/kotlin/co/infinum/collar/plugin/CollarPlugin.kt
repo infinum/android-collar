@@ -5,7 +5,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.net.URI
 
-class CollarPlugin : Plugin<Project> {
+internal class CollarPlugin : Plugin<Project> {
 
     override fun apply(project: Project) =
         with(project) {

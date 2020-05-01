@@ -7,7 +7,7 @@ import javax.annotation.processing.Messager
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 
-abstract class CommonSubprocessor : Subprocessor {
+internal abstract class CommonSubprocessor : Subprocessor {
 
     internal lateinit var messager: Messager
     internal var generatedDir: File? = null

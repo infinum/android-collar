@@ -1,6 +1,6 @@
 package co.infinum.processor.options
 
-class ScreenNamesOptions(
+internal class ScreenNamesOptions(
     options: MutableMap<String, String>
 ) : Options {
 

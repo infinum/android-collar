@@ -6,7 +6,7 @@ import javax.annotation.processing.Messager
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 
-interface Configuration {
+internal interface Configuration {
 
     fun messager(): Messager
 

@@ -1,6 +1,6 @@
 package co.infinum.processor.options
 
-class AnalyticsEventsOptions(
+internal class AnalyticsEventsOptions(
     options: MutableMap<String, String>
 ) : Options {
 

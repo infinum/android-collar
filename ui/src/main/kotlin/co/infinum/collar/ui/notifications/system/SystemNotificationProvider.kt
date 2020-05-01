@@ -14,7 +14,7 @@ import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.room.entity.CollarEntity
 import co.infinum.collar.ui.notifications.NotificationProvider
 
-class SystemNotificationProvider(private val context: Context) : NotificationProvider {
+internal class SystemNotificationProvider(private val context: Context) : NotificationProvider {
 
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"

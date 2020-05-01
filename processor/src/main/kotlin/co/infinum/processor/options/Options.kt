@@ -1,6 +1,6 @@
 package co.infinum.processor.options
 
-interface Options {
+internal interface Options {
 
     fun maxCount(): Int = throw UnsupportedOperationException()
 

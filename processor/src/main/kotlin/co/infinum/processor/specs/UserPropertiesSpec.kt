@@ -7,7 +7,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
-class UserPropertiesSpec private constructor(
+internal class UserPropertiesSpec private constructor(
     outputDir: File,
     private val packageName: String,
     private val simpleName: String,
@@ -20,7 +20,7 @@ class UserPropertiesSpec private constructor(
         private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L)"
     }
 
-    open class Builder(
+    internal open class Builder(
         private var outputDir: File? = null,
         private var className: ClassName = ClassName(PACKAGE_NAME, SIMPLE_NAME),
         private var holders: Set<PropertyHolder> = setOf()
@@ -68,12 +68,12 @@ class UserPropertiesSpec private constructor(
 }
 
 @DslMarker
-annotation class UserPropertiesSpecDsl
+internal annotation class UserPropertiesSpecDsl
 
 @UserPropertiesSpecDsl
-class UserPropertiesSpecBuilder : UserPropertiesSpec.Builder()
+internal class UserPropertiesSpecBuilder : UserPropertiesSpec.Builder()
 
-inline fun userPropertiesSpec(builder: UserPropertiesSpecBuilder.() -> Unit): UserPropertiesSpec {
+internal inline fun userPropertiesSpec(builder: UserPropertiesSpecBuilder.() -> Unit): UserPropertiesSpec {
     val specBuilder = UserPropertiesSpecBuilder()
     specBuilder.builder()
     return specBuilder.build()

@@ -1,6 +1,6 @@
 package co.infinum.collar.plugin
 
-open class CollarExtension {
+internal open class CollarExtension {
 
     companion object {
         const val NAME = "collar"
@@ -17,7 +17,7 @@ open class CollarExtension {
     open var packageName = DEFAULT_PACKAGE_NAME
 }
 
-fun CollarExtension.validate(): List<String> {
+internal fun CollarExtension.validate(): List<String> {
     val errors = mutableListOf<String>()
 
     if (filePath.isBlank()) {

@@ -8,7 +8,7 @@ import androidx.annotation.DrawableRes
 import co.infinum.collar.ui.databinding.CollarViewSnackbarBinding
 import com.google.android.material.snackbar.ContentViewCallback
 
-class CollarSnackbarView @JvmOverloads constructor(
+internal class CollarSnackbarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

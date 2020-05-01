@@ -23,7 +23,7 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.AGGREGATING)
-class CollarProcessor : AbstractProcessor() {
+internal class CollarProcessor : AbstractProcessor() {
 
     private val screenNamesSubprocessor: ScreenNamesSubprocessor = ScreenNamesSubprocessor()
     private val analyticsEventsSubprocessor: AnalyticsEventsSubprocessor = AnalyticsEventsSubprocessor()

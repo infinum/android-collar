@@ -2,7 +2,7 @@ package co.infinum.processor.validators
 
 import javax.lang.model.element.TypeElement
 
-interface Validator<Holder> {
+internal interface Validator<Holder> {
 
     fun supported(): List<TypeElement> = throw UnsupportedOperationException()
 

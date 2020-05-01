@@ -6,7 +6,7 @@ import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import java.util.Locale
 
-class ScreensGenerator(
+internal class ScreensGenerator(
     private val items: List<Screen>,
     outputPath: String,
     packageName: String

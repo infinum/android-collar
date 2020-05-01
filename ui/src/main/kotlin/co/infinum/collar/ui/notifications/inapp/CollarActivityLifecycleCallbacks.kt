@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 
-class CollarActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
+internal class CollarActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
 
     var currentActivity: Activity? = null
 

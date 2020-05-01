@@ -9,7 +9,7 @@ import javax.lang.model.element.VariableElement
 import javax.lang.model.util.ElementFilter
 
 @KotlinPoetMetadataPreview
-fun Element.isSealedClass(): Boolean =
+internal fun Element.isSealedClass(): Boolean =
     this.getAnnotation(Metadata::class.java)
         .toImmutableKmClass()
         .run {
@@ -17,7 +17,7 @@ fun Element.isSealedClass(): Boolean =
         }
 
 @KotlinPoetMetadataPreview
-fun Element.constructorParameterNames(): List<String> =
+internal fun Element.constructorParameterNames(): List<String> =
     this.getAnnotation(Metadata::class.java)
         .toImmutableKmClass()
         .constructors
@@ -26,10 +26,10 @@ fun Element.constructorParameterNames(): List<String> =
         .orEmpty()
         .map { valueParameter -> valueParameter.name }
 
-fun Element.fieldElements(): List<VariableElement> =
+internal fun Element.fieldElements(): List<VariableElement> =
     ElementFilter.fieldsIn(this.enclosedElements).orEmpty()
 
-fun VariableElement.resolveMethod(): String =
+internal fun VariableElement.resolveMethod(): String =
     this.asType().toString().let {
         when (it) {
             "java.lang.String" -> "putString"

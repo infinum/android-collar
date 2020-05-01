@@ -12,7 +12,7 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-class UserPropertiesGenerator(
+internal class UserPropertiesGenerator(
     private val userProperties: List<Property>,
     outputPath: String,
     packageName: String

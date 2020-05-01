@@ -11,7 +11,7 @@ import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 
-class ScreenNamesCollector(
+internal class ScreenNamesCollector(
     private val roundEnvironment: RoundEnvironment,
     private val elementUtils: Elements,
     private val typeUtils: Types

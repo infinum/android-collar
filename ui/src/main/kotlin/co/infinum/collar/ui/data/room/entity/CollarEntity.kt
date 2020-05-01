@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "entities")
-data class CollarEntity(
+internal data class CollarEntity(
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

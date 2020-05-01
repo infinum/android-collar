@@ -6,7 +6,7 @@ import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 
-abstract class CommonConfiguration(
+internal abstract class CommonConfiguration(
     private val processingEnv: ProcessingEnvironment
 ) : Configuration {
 

@@ -3,7 +3,7 @@ package co.infinum.processor.collectors
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 
-interface Collector<Holder> {
+internal interface Collector<Holder> {
 
     fun collect(): Set<Holder> = throw UnsupportedOperationException()
 

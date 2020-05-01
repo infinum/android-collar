@@ -14,7 +14,7 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
-class ScreenNameSpec private constructor(
+internal class ScreenNameSpec private constructor(
     outputDir: File,
     private val holders: Set<ScreenHolder>
 ) : CommonSpec(outputDir, PACKAGE_NAME, SIMPLE_NAME) {
@@ -27,7 +27,7 @@ class ScreenNameSpec private constructor(
         private const val STATEMENT_FRAGMENT = "is %T -> activity?.let { %T.%L(it, %S) }"
     }
 
-    open class Builder(
+    internal open class Builder(
         private var outputDir: File? = null,
         private var holders: Set<ScreenHolder> = setOf()
     ) {
@@ -114,12 +114,12 @@ class ScreenNameSpec private constructor(
 }
 
 @DslMarker
-annotation class ScreenNameSpecDsl
+internal annotation class ScreenNameSpecDsl
 
 @ScreenNameSpecDsl
-class ScreenNameSpecBuilder : ScreenNameSpec.Builder()
+internal class ScreenNameSpecBuilder : ScreenNameSpec.Builder()
 
-inline fun screenNameSpec(builder: ScreenNameSpecBuilder.() -> Unit): ScreenNameSpec {
+internal inline fun screenNameSpec(builder: ScreenNameSpecBuilder.() -> Unit): ScreenNameSpec {
     val specBuilder = ScreenNameSpecBuilder()
     specBuilder.builder()
     return specBuilder.build()

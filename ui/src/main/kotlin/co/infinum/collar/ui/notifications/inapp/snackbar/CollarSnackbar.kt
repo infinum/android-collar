@@ -7,7 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 
-class CollarSnackbar(
+internal class CollarSnackbar(
     parent: ViewGroup,
     content: CollarSnackbarView
 ) : BaseTransientBottomBar<CollarSnackbar>(parent, content, content) {

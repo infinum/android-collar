@@ -1,3 +1,3 @@
 package co.infinum.processor.models
 
-interface Holder
+internal interface Holder
