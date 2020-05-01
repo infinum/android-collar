@@ -12,8 +12,6 @@ internal class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration
 
     private val divider = ContextCompat.getDrawable(context, R.drawable.collar_decoration_dot)
 
-    private val startMargin = context.resources.getDimensionPixelSize(R.dimen.collar_divider_start_margin)
-
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
 
@@ -32,8 +30,10 @@ internal class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration
                 val lastChildLayoutParams = lastChild.layoutParams as RecyclerView.LayoutParams
                 val top = lastChild.bottom + lastChildLayoutParams.bottomMargin
                 val bottom: Int = top + it.intrinsicHeight
+                val left = 0
+                val right = left +  it.intrinsicWidth
 
-                it.setBounds(startMargin, top, startMargin + it.intrinsicWidth, bottom)
+                it.setBounds(left, top, right, bottom)
                 it.draw(c)
             }
         }
