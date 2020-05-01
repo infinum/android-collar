@@ -31,7 +31,7 @@ internal class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration
                 val top = lastChild.bottom + lastChildLayoutParams.bottomMargin
                 val bottom: Int = top + it.intrinsicHeight
                 val left = 0
-                val right = left +  it.intrinsicWidth
+                val right = left + it.intrinsicWidth
 
                 it.setBounds(left, top, right, bottom)
                 it.draw(c)
