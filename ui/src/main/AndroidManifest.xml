@@ -19,7 +19,9 @@
 
         <provider
             android:name=".CollarContentProvider"
-            android:authorities="co.infinum.collar.ui.CollarContentProvider" />
+            android:authorities="${applicationId}.CollarContentProvider"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
