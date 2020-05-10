@@ -267,7 +267,7 @@ releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.5")
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
- Collar.attach(object : LiveCollector(context, true, false) {
+ Collar.attach(object : LiveCollector(true, false) {
 
     override fun onScreen(screen: Screen) =
         super.onScreen(screen).run {
@@ -285,16 +285,20 @@ In order to start tracking with UI you must use _LiveCollector_ as in this examp
         }
 })
 ```
-If you put second parameter *showSystemNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
-Third parameter *showInAppNotification* with value *true* in *LiveCollector* will show a Snackbar-ish popup once analytics are gathered inside the current running Activity.  
+If you put the first parameter *showSystemNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
+Second parameter *showInAppNotification* with value *true* in *LiveCollector* will show a Snackbar-ish popup once analytics are gathered inside the current running Activity.  
 These parameters are default values per collector session but can be changed via _CollarActivity_ menu and will remain valid until the next session.  
 Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent:
 ```kotlin
     startActivity(
-        CollarUi.launchIntent(this).apply {
+        CollarUi.launchIntent().apply {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
     )
+```
+Also you can use a dedicated method with default Intent setup:
+```kotlin
+    CollarUi.show()
 ```
 
 ![Notification](notification.jpg)![UI](ui.jpg)
@@ -326,8 +330,6 @@ To run the task you can:
 `generate` Gradle task will create classes prepared for the _Collar_ annotation processor.
 
 ## TODO
-- Add lifecycle aware screen tracking for AndroidX views
-- Provide a separate test artifact
 - Provide arbitrary map of key/value event support
 - Write tests before public release milestone  
 

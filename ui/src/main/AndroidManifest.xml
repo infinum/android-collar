@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name="co.infinum.collar.ui.CollarActivity"
+            android:name="co.infinum.collar.ui.presentation.CollarActivity"
             android:label="@string/collar_name"
             android:launchMode="singleTask"
             android:taskAffinity="co.infinum.collar.task"
@@ -16,6 +16,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/collar_searchable" />
         </activity>
+
+        <provider
+            android:name=".CollarContentProvider"
+            android:authorities="co.infinum.collar.ui.CollarContentProvider" />
     </application>
 
 </manifest>

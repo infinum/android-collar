@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/collar_padding_default"
     android:background="@drawable/collar_shape_background_snackbar"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal"
     android:padding="@dimen/collar_padding_default">
 

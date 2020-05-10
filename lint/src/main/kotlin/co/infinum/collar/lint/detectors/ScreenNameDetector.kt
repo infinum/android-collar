@@ -34,7 +34,12 @@ class ScreenNameDetector : Detector(), SourceCodeScanner {
         SUPPORTED_CLASSES.forEach {
             if (context.evaluator.extendsClass(declaration, it, false)) {
                 if (!declaration.hasAnnotation(ANNOTATION_SCREEN_NAME)) {
-                    context.report(Issues.ISSUE_SCREEN_NAME, declaration, context.getNameLocation(declaration), "Missing ScreenName annotation.")
+                    context.report(
+                        Issues.ISSUE_SCREEN_NAME,
+                        declaration,
+                        context.getNameLocation(declaration),
+                        "Missing ScreenName annotation."
+                    )
                 }
             }
         }

@@ -12,12 +12,20 @@ android {
         versionCode collar.versionCode
         versionName collar.version
 
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [
                     "room.incremental": "true",
                 ]
             }
+        }
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
         }
     }
 
@@ -30,10 +38,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    testOptions {
+        animationsDisabled = true
+    }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
 
     viewBinding.enabled = true
@@ -50,6 +60,24 @@ dependencies {
     implementation packages.google.design
     implementation packages.androidx.room.runtime
     kapt packages.androidx.room.compiler
+
+    testImplementation "junit:junit:4.13"
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+
+    androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test:core-ktx:1.2.0'
+    androidTestImplementation 'org.mockito:mockito-android:3.3.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+//    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    testImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
 }
 
 apply from: "bintray.gradle"
+
+project.gradle.taskGraph.whenReady {
+    connectedDebugAndroidTest {
+        ignoreFailures = true
+    }
+}

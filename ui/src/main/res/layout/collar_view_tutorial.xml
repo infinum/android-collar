@@ -11,6 +11,7 @@
     tools:showIn="@layout/collar_activity_collar">
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/instructionsLabel"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

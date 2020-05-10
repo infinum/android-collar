@@ -25,11 +25,11 @@ class KotlinChildFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewBinding?.buttonProduceEvent4?.setOnClickListener {
-            trackEvent(AnalyticsEvent.Event4(UUID = UUID.randomUUID().toString(), userType = "CORPORATE"))
+            trackEvent(AnalyticsEvent.Event4(uuid = UUID.randomUUID().toString(), userType = "CORPORATE"))
         }
         viewBinding?.buttonStartUi?.setOnClickListener {
             startActivity(
-                CollarUi.launchIntent(it.context)
+                CollarUi.launchIntent()
             )
         }
     }

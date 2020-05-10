@@ -49,7 +49,7 @@ sealed class AnalyticsEvent {
     data class Event4(
 
         @EventParameterName("my_user_uuid")
-        val UUID: String,
+        val uuid: String,
 
         val userType: String
 
@@ -57,4 +57,3 @@ sealed class AnalyticsEvent {
 
     class Event5 : AnalyticsEvent()
 }
-

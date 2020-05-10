@@ -31,7 +31,7 @@ class KotlinMainActivity : Activity() {
                 myBundle = Bundle().apply {
                     "1" to 1
                     "2" to 2
-                    "3" to 3
+                    "3" to 1
                 }
             ))
         }

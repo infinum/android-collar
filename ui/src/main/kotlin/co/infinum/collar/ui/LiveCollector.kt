@@ -1,28 +1,27 @@
 package co.infinum.collar.ui
 
-import android.content.Context
 import androidx.annotation.CallSuper
 import co.infinum.collar.Collector
 import co.infinum.collar.Event
 import co.infinum.collar.Property
 import co.infinum.collar.Screen
-import co.infinum.collar.ui.data.room.CollarDatabase
-import co.infinum.collar.ui.data.room.entity.CollarEntity
-import co.infinum.collar.ui.data.room.entity.EntityType
-import co.infinum.collar.ui.data.room.entity.SettingsEntity
-import co.infinum.collar.ui.data.room.repository.EntityRepository
-import co.infinum.collar.ui.data.room.repository.SettingsRepository
-import co.infinum.collar.ui.notifications.inapp.InAppNotificationProvider
-import co.infinum.collar.ui.notifications.system.SystemNotificationProvider
+import co.infinum.collar.ui.data.models.local.CollarEntity
+import co.infinum.collar.ui.data.models.local.EntityType
+import co.infinum.collar.ui.data.models.local.SettingsEntity
+import co.infinum.collar.ui.domain.repositories.EntityRepository
+import co.infinum.collar.ui.domain.repositories.SettingsRepository
+import co.infinum.collar.ui.presentation.BundleMapper
+import co.infinum.collar.ui.presentation.Presentation
+import co.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationProvider
+import co.infinum.collar.ui.presentation.notifications.system.SystemNotificationProvider
 
 open class LiveCollector(
-    context: Context,
     showSystemNotifications: Boolean = true,
     showInAppNotifications: Boolean = true
 ) : Collector {
 
-    private val systemNotificationProvider: SystemNotificationProvider = SystemNotificationProvider(context)
-    private val inAppNotificationProvider: InAppNotificationProvider = InAppNotificationProvider(context)
+    private val systemNotificationProvider: SystemNotificationProvider = Presentation.systemNotification()
+    private val inAppNotificationProvider: InAppNotificationProvider = Presentation.inAppNotification()
 
     private var settings = SettingsEntity(
         showSystemNotifications = showSystemNotifications,
@@ -30,15 +29,12 @@ open class LiveCollector(
     )
 
     init {
-        CollarDatabase.create(context).also {
-            EntityRepository.initialize(it)
-            SettingsRepository.initialize(it)
-
-            SettingsRepository.save(settings)
-            SettingsRepository.load().observeForever { entity ->
+        SettingsRepository.save(settings)
+        SettingsRepository.load().observeForever { entity ->
+            entity?.let {
                 settings = settings.copy(
-                    showSystemNotifications = entity.showSystemNotifications,
-                    showInAppNotifications = entity.showInAppNotifications
+                    showSystemNotifications = it.showSystemNotifications,
+                    showInAppNotifications = it.showInAppNotifications
                 )
             }
         }

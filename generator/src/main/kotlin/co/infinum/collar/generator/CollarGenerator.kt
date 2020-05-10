@@ -8,7 +8,7 @@ import co.infinum.collar.generator.models.AnalyticsModel
 import co.infinum.collar.generator.providers.MoshiProvider
 import java.io.File
 
-internal class CollarGenerator {
+class CollarGenerator {
 
     fun generate(filePath: String, output: String, packageName: String): Boolean =
         MoshiProvider.provide()
