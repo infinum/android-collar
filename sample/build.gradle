@@ -23,8 +23,8 @@ android {
         applicationId "co.infinum.collar.sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 10104
-        versionName "1.1.4"
+        versionCode 10105
+        versionName "1.1.5"
 
         buildTypes {
             debug {
@@ -63,11 +63,11 @@ dependencies {
     implementation packages.androidx.appcompat
     implementation packages.androidx.fragment
     lintChecks project(":lint")
-    implementation packages.collar.ui
+    implementation packages.collar.ui_no_op
 }
 
 collar {
-    version "1.1.4"
+    version "1.1.5"
     filePath = "example.json"
     packageName = "co.infinum.collar.sample.analytics.generated"
 }

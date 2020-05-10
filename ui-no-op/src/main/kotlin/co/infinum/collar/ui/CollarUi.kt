@@ -6,4 +6,7 @@ object CollarUi {
 
     @JvmStatic
     fun launchIntent() = Intent()
+
+    @JvmStatic
+    fun show() = Unit
 }
