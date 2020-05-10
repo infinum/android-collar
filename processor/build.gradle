@@ -9,6 +9,15 @@ dependencies {
     implementation packages.kotlin.poet
     compileOnly packages.incap.core
     kapt packages.incap.processor
+
+    testImplementation "junit:junit:4.13"
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+}
+
+test {
+    useJUnit()
+
+    reports.html.enabled = true
 }
 
 apply from: "bintray.gradle"

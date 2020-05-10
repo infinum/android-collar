@@ -12,10 +12,19 @@ compileTestKotlin {
     }
 }
 
+test {
+    useJUnit()
+
+    reports.html.enabled = true
+}
+
 dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.poet
     implementation packages.moshi.kotlin
+
+    testImplementation "junit:junit:4.13"
+    testImplementation 'org.mockito:mockito-core:3.3.3'
 }
 
 apply from: "bintray.gradle"

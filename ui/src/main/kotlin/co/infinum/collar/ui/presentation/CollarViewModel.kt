@@ -1,6 +1,5 @@
 package co.infinum.collar.ui.presentation
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -8,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import co.infinum.collar.ui.data.models.local.CollarEntity
 import co.infinum.collar.ui.data.models.local.EntityType
 import co.infinum.collar.ui.data.models.local.SettingsEntity
-import co.infinum.collar.ui.domain.Domain
 import co.infinum.collar.ui.domain.repositories.EntityRepository
 import co.infinum.collar.ui.domain.repositories.SettingsRepository
 
