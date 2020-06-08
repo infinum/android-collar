@@ -15,7 +15,7 @@ class ScreensGenerator(
 ): Generator {
 
     companion object {
-        const val SCREENS_CLASS_NAME = "AnalyticsScreens"
+        const val SCREENS_CLASS_NAME = "TrackingPlanScreens"
     }
 
     override fun generate() {

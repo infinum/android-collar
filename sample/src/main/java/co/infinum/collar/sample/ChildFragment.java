@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
-import co.infinum.collar.sample.analytics.AnalyticsEvent;
-import co.infinum.collar.sample.analytics.AnalyticsScreens;
-import co.infinum.collar.sample.analytics.CollarAnalyticsEvent;
+import co.infinum.collar.sample.analytics.CollarTrackingPlanEvents;
+import co.infinum.collar.sample.analytics.TrackingPlanEvents;
+import co.infinum.collar.sample.analytics.TrackingPlanScreens;
 
 @SuppressWarnings("deprecation")
-@ScreenName(value = AnalyticsScreens.CHILD_SCREEN)
+@ScreenName(value = TrackingPlanScreens.HOME)
 public class ChildFragment extends Fragment {
 
     @Nullable
@@ -32,7 +32,7 @@ public class ChildFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.CheckTypes(true, "check", 0, 0.0));
+                CollarTrackingPlanEvents.trackEvent(new TrackingPlanEvents.MachineRemove());
             }
         });
 

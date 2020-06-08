@@ -12,7 +12,7 @@ class EventsGenerator(
 ) : Generator {
 
     companion object {
-        const val EVENTS_CLASS_NAME = "AnalyticsEvent"
+        const val EVENTS_CLASS_NAME = "TrackingPlanEvents"
         const val EVENT_PARAMETER_NAME_ANNOTATION_FORMAT = "value = %S"
         const val EVENT_NAME_ANNOTATION_FORMAT = "value = %S"
     }
@@ -28,7 +28,7 @@ class EventsGenerator(
             val eventClass = TypeSpec.classBuilder(name)
             val constructorBuilder = FunSpec.constructorBuilder()
 
-            event.parameters.forEach {
+            event.properties?.forEach {
                 val eventParameterName = ClassName(Generator.COLLAR_ANNOTATION_PACKAGE, Generator.COLLAR_ANNOTATION_EVENT_PARAMETER_NAME)
                 val constructorParamAnnotation = AnnotationSpec.builder(eventParameterName)
                     .addMember(EVENT_PARAMETER_NAME_ANNOTATION_FORMAT, it.name).build()
@@ -85,7 +85,9 @@ class EventsGenerator(
             }
 
             eventClass.apply {
-                addModifiers(KModifier.DATA)
+                if (!event.properties.isNullOrEmpty()) {
+                    addModifiers(KModifier.DATA)
+                }
                 primaryConstructor(constructorBuilder.build())
                 addKdoc(event.description)
                 superclass(ClassName("", EVENTS_CLASS_NAME))

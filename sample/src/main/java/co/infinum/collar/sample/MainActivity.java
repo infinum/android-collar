@@ -5,19 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import java.util.UUID;
-
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
-import co.infinum.collar.sample.analytics.AnalyticsEvent;
-import co.infinum.collar.sample.analytics.AnalyticsScreens;
-import co.infinum.collar.sample.analytics.CollarAnalyticsEvent;
-import co.infinum.collar.sample.analytics.CollarUserProperty;
-import co.infinum.collar.sample.analytics.UserProperty;
+import co.infinum.collar.sample.analytics.CollarTrackingPlanEvents;
+import co.infinum.collar.sample.analytics.CollarTrackingPlanUserProperties;
+import co.infinum.collar.sample.analytics.TrackingPlanEvents;
+import co.infinum.collar.sample.analytics.TrackingPlanScreens;
+import co.infinum.collar.sample.analytics.TrackingPlanUserProperties;
 
-import static co.infinum.collar.sample.analytics.UserProperty.GenderGo;
-
-@ScreenName(value = AnalyticsScreens.MAIN_SCREEN)
+@ScreenName(value = TrackingPlanScreens.HOME)
 public class MainActivity extends Activity {
 
     @Override
@@ -30,7 +26,8 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.LoginUser(AnalyticsEvent.LoginUser.LanguageTypeEnum.JAVA.toString()));
+                CollarTrackingPlanEvents.trackEvent(new TrackingPlanEvents.UserLogIn(TrackingPlanEvents.UserLogIn.TypeEnum.FACEBOOK.toString(),
+                    TrackingPlanEvents.UserLogIn.SourceEnum.ONBOARDING.toString()));
             }
         });
 
@@ -42,7 +39,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        CollarUserProperty.trackProperty(new UserProperty.UserId(UUID.randomUUID().toString()));
+        CollarTrackingPlanUserProperties.trackProperty(new TrackingPlanUserProperties.MachineModel(
+            TrackingPlanUserProperties.AnalyticsConsent.AnalyticsConsentEnum.OPT_IN.toString()));
     }
 
     @Override

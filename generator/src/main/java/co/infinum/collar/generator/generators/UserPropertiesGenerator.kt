@@ -15,7 +15,7 @@ class UserPropertiesGenerator(
 ) : Generator {
 
     companion object {
-        const val USER_PROPERTY_CLASS_NAME = "UserProperty"
+        const val USER_PROPERTY_CLASS_NAME = "TrackingPlanUserProperties"
         const val PROPERTY_PARAMETER_NAME = "value"
         const val PROPERTY_NAME_ANNOTATION_FORMAT = "value = %S"
     }
