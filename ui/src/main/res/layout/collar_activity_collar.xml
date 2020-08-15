@@ -28,6 +28,8 @@
         android:scrollbars="vertical"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    <include android:id="@+id/emptyLayout" layout="@layout/collar_view_tutorial" />
+    <include
+        android:id="@+id/emptyLayout"
+        layout="@layout/collar_view_tutorial" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,10 +1,13 @@
 package co.infinum.collar.ui.presentation.notifications.inapp.snackbar
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import co.infinum.collar.ui.CollarUi
 import co.infinum.collar.ui.databinding.CollarViewSnackbarBinding
 import com.google.android.material.snackbar.ContentViewCallback
@@ -45,8 +48,8 @@ internal class CollarSnackbarView @JvmOverloads constructor(
         }
     }
 
-    fun setIconBackgroundResource(@DrawableRes drawableResId: Int) {
-        viewBinding.iconView.setBackgroundResource(drawableResId)
+    fun setIconBackgroundTint(@ColorRes colorResId: Int) {
+        viewBinding.iconView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, colorResId))
     }
 
     fun setIconResource(@DrawableRes drawableResId: Int) {

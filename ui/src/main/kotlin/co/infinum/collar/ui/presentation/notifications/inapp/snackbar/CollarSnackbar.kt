@@ -3,6 +3,7 @@ package co.infinum.collar.ui.presentation.notifications.inapp.snackbar
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -25,7 +26,7 @@ internal class CollarSnackbar(
         @Suppress("LongParameterList")
         fun make(
             parentLayout: FrameLayout?,
-            @DrawableRes background: Int,
+            @ColorRes backgroundTint: Int,
             @DrawableRes icon: Int,
             title: String?,
             message: String?,
@@ -35,7 +36,7 @@ internal class CollarSnackbar(
             parentLayout?.let {
                 CollarSnackbarView(it.context)
                     .apply {
-                        setIconBackgroundResource(background)
+                        setIconBackgroundTint(backgroundTint)
                         setIconResource(icon)
                         setTitle(title)
                         setValue(message)

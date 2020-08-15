@@ -5,7 +5,7 @@ buildscript {
         "compileSdk": 29,
         "targetSdk" : 29,
 
-        "buildTools": "29.0.3"
+        "buildTools": "30.0.1"
     ]
 
     apply from: "dependencies.gradle"
@@ -36,19 +36,19 @@ allprojects {
         maven { url "https://dl.bintray.com/infinum/android" }
     }
 
-//    configurations.all {
-//        resolutionStrategy {
-//            dependencySubstitution {
-//                substitute module(packages.collar.annotations) with project(':annotations')
-//                substitute module(packages.collar.core) with project(':core')
-//                substitute module(packages.collar.ui) with project(':ui')
-//                substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
-//                substitute module(packages.collar.processor) with project(':processor')
-//                substitute module(packages.collar.generator) with project(':generator')
-//                substitute module(packages.collar.plugin) with project(':plugin')
-//            }
-//        }
-//    }
+    configurations.all {
+        resolutionStrategy {
+            dependencySubstitution {
+                substitute module(packages.collar.annotations) with project(':annotations')
+                substitute module(packages.collar.core) with project(':core')
+                substitute module(packages.collar.ui) with project(':ui')
+                substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
+                substitute module(packages.collar.processor) with project(':processor')
+                substitute module(packages.collar.generator) with project(':generator')
+                substitute module(packages.collar.plugin) with project(':plugin')
+            }
+        }
+    }
 }
 
 subprojects {

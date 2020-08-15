@@ -2,19 +2,17 @@
 <resources>
     <color name="collar_color_primary">#ffa000</color>
     <color name="collar_color_primary_variant">#c67100</color>
-    <color name="collar_color_background">#ffffff</color>
-    <color name="collar_color_surface">#ffffff</color>
-    <color name="collar_color_secondary">#005fff</color>
+    <color name="collar_color_secondary">#049ce5</color>
+
     <color name="collar_color_error">#F44336</color>
-    <color name="collar_color_on_primary">#ffffff</color>
-    <color name="collar_color_on_secondary">#000000</color>
-    <color name="collar_color_on_background">#000000</color>
-    <color name="collar_color_on_surface">#000000</color>
-    <color name="collar_color_on_error">#ffffff</color>
+    <color name="collar_color_item_line">#FFF7F8</color>
 
     <color name="collar_color_screen">#00ffa0</color>
     <color name="collar_color_event">#005fff</color>
     <color name="collar_color_property">#ffa000</color>
     <color name="collar_color_unknown">#F44336</color>
+
     <color name="collar_color_snackbar_background">#323232</color>
+
+    <color name="collar_color_icon">@android:color/black</color>
 </resources>

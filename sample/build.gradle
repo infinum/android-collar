@@ -55,7 +55,7 @@ android {
         test.java.srcDirs += 'src/test/kotlin'
     }
 
-    viewBinding.enabled = true
+    buildFeatures.viewBinding = true
 }
 
 dependencies {

@@ -12,7 +12,6 @@ import androidx.core.app.ShareCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.models.local.CollarEntity
@@ -167,9 +166,9 @@ internal class CollarActivity : AppCompatActivity() {
         detailDialog = MaterialAlertDialogBuilder(this)
             .setIcon(
                 when (entity.type) {
-                    EntityType.SCREEN -> R.drawable.collar_ic_screen_detail
-                    EntityType.EVENT -> R.drawable.collar_ic_event_detail
-                    EntityType.PROPERTY -> R.drawable.collar_ic_property_detail
+                    EntityType.SCREEN -> R.drawable.collar_ic_screen
+                    EntityType.EVENT -> R.drawable.collar_ic_event
+                    EntityType.PROPERTY -> R.drawable.collar_ic_property
                     else -> 0
                 }
             )

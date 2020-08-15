@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.view.View
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.app.ShareCompat
 import co.infinum.collar.ui.R
@@ -33,8 +34,8 @@ internal class InAppNotificationProvider(
     override fun showScreen(entity: CollarEntity) {
         buildNotification(
             callbacks.currentActivity,
-            R.drawable.collar_shape_background_screen,
-            R.drawable.collar_ic_screen,
+            R.color.collar_color_screen,
+            R.drawable.collar_ic_screen_white,
             entity
         )
     }
@@ -42,8 +43,8 @@ internal class InAppNotificationProvider(
     override fun showEvent(entity: CollarEntity) {
         buildNotification(
             callbacks.currentActivity,
-            R.drawable.collar_shape_background_event,
-            R.drawable.collar_ic_event,
+            R.color.collar_color_event,
+            R.drawable.collar_ic_event_white,
             entity
         )
     }
@@ -51,21 +52,21 @@ internal class InAppNotificationProvider(
     override fun showProperty(entity: CollarEntity) {
         buildNotification(
             callbacks.currentActivity,
-            R.drawable.collar_shape_background_property,
-            R.drawable.collar_ic_property,
+            R.color.collar_color_property,
+            R.drawable.collar_ic_property_white,
             entity
         )
     }
 
     private fun buildNotification(
         activity: Activity?,
-        @DrawableRes background: Int,
+        @ColorRes backgroundTint: Int,
         @DrawableRes icon: Int,
         entity: CollarEntity
     ) {
         CollarSnackbar.make(
             activity?.findViewById(android.R.id.content),
-            background,
+            backgroundTint,
             icon,
             entity.name,
             entity.parameters,
