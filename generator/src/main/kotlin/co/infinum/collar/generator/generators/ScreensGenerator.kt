@@ -13,7 +13,7 @@ internal class ScreensGenerator(
 ) : CommonGenerator(outputPath, packageName, CLASS_NAME) {
 
     companion object {
-        const val CLASS_NAME = "AnalyticsScreens"
+        const val CLASS_NAME = "TrackingPlanScreens"
     }
 
     override fun type(): TypeSpec =

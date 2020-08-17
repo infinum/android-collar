@@ -1,5 +1,7 @@
 package co.infinum.collar.generator.extensions
 
-internal fun String.toCamelCase(): String = split(" ").map { it.capitalize() }.joinToString("")
+import java.util.Locale
+
+internal fun String.toCamelCase(): String = split(" ", "_").joinToString("") { it.capitalize(Locale.getDefault()) }
 
 internal fun String.hasDigit(): Boolean = this.any { it.isDigit() }

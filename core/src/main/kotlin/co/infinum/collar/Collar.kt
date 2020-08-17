@@ -1,6 +1,5 @@
 package co.infinum.collar
 
-import android.app.Activity
 import android.os.Bundle
 
 object Collar {
@@ -12,10 +11,9 @@ object Collar {
         this.collector = collector
     }
 
-    fun trackScreen(activity: Activity, screenName: String) =
+    fun trackScreen(screenName: String) =
         collector?.onScreen(
             Screen(
-                activity = activity,
                 name = screenName
             )
         )

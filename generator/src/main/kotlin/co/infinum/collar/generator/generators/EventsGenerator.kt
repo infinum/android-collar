@@ -17,7 +17,7 @@ internal class EventsGenerator(
 ) : CommonGenerator(outputPath, packageName, CLASS_NAME) {
 
     companion object {
-        const val CLASS_NAME = "AnalyticsEvents"
+        const val CLASS_NAME = "TrackingPlanEvents"
     }
 
     @Suppress("LongMethod", "NestedBlockDepth")
@@ -31,7 +31,7 @@ internal class EventsGenerator(
                     val eventClass = TypeSpec.classBuilder(name)
                     val constructorBuilder = FunSpec.constructorBuilder()
 
-                    event.parameters.forEach {
+                    event.properties?.forEach {
                         val eventParameterName = ClassName(
                             Generator.COLLAR_ANNOTATION_PACKAGE,
                             Generator.COLLAR_ANNOTATION_EVENT_PARAMETER_NAME
@@ -89,7 +89,9 @@ internal class EventsGenerator(
                         )
                     }
 
-                    eventClass.addModifiers(KModifier.DATA)
+                    if (event.properties.isNullOrEmpty().not()) {
+                        addModifiers(KModifier.DATA)
+                    }
                     eventClass.primaryConstructor(constructorBuilder.build())
                     eventClass.addKdoc(event.description)
                     eventClass.superclass(ClassName("", CLASS_NAME))

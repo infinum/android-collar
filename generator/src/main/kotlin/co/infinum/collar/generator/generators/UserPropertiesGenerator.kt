@@ -19,7 +19,7 @@ internal class UserPropertiesGenerator(
 ) : CommonGenerator(outputPath, packageName, CLASS_NAME) {
 
     companion object {
-        const val CLASS_NAME = "AnalyticsUserProperties"
+        const val CLASS_NAME = "TrackingPlanUserProperties"
         const val PROPERTY_PARAMETER_NAME = "value"
     }
 

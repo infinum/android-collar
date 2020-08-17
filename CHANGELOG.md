@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## Version 1.1.6
+
+_2020-09-01_
+
+ * **BREAKING**: Removed activity field from Screen class due to Firebase deprecated _setCurrentScreen_ method.
+ * Update Kotlin to 1.4.0.
+ * Update various dependencies.
+ * Implement latest changes on GeneratorTask.
+ * Update Gradle wrapper to 6.6.
+
 ## Version 1.1.5
 
 _2020-04-28_
