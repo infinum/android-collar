@@ -1,7 +1,7 @@
 ext.collar = [
-    "group"  : "co.infinum.collar",
-    "version": "1.1.5",
-    "versionCode": 1*100*100 + 1*100 + 5
+    "group"      : "co.infinum.collar",
+    "version"    : "1.1.5",
+    "versionCode": 1 * 100 * 100 + 1 * 100 + 5
 ]
 
 ext.versions = [
@@ -33,6 +33,7 @@ ext.packages = [
     "kotlin"     : [
         "plugin"       : "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}",
         "core"         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
+        "reflect"      : "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}",
         "poet"         : "com.squareup:kotlinpoet:${versions.poet}",
         "poet_metadata": "com.squareup:kotlinpoet-metadata:${versions.poet_metadata}"
     ],

@@ -21,6 +21,7 @@ test {
 dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.poet
+    implementation packages.kotlin.reflect
     implementation packages.moshi.kotlin
 
     testImplementation "junit:junit:4.13"

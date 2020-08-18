@@ -10,6 +10,8 @@ _2020-09-01_
  * Update various dependencies.
  * Implement latest changes on GeneratorTask.
  * Update Gradle wrapper to 6.6.
+ * Set explicit dependency version for Kotlin Reflect to avoid adding multiple versions resolution.
+ * Add Javadoc to exposed classes and methods.
 
 ## Version 1.1.5
 
