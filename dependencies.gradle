@@ -8,8 +8,8 @@ ext.versions = [
     "collar"       : "1.1.5",
     "gradle"       : "4.0.1",
     "kotlin"       : "1.4.0",
-    "poet"         : "1.5.0",
-    "poet_metadata": "1.5.0",
+    "poet"         : "1.6.0",
+    "poet_metadata": "1.6.0",
     "annotations"  : "19.0.0",
     "incap"        : "0.2",
     "bintray"      : "1.8.5",
@@ -24,7 +24,7 @@ ext.versions = [
     "design"       : "1.2.0",
     "moshi"        : "1.9.3",
     "maven"        : "2.0",
-    "detekt"       : "1.7.4",
+    "detekt"       : "1.11.0",
     "dokka"        : "0.10.1"
 ]
 

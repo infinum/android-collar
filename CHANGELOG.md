@@ -12,6 +12,8 @@ _2020-09-01_
  * Update Gradle wrapper to 6.6.
  * Set explicit dependency version for Kotlin Reflect to avoid adding multiple versions resolution.
  * Add Javadoc to exposed classes and methods.
+ * Update KotlinPoet to 1.6.0.
+ * Update Detekt to 1.11.0.
 
 ## Version 1.1.5
 
