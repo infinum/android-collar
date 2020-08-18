@@ -10,6 +10,7 @@ import co.infinum.collar.ui.data.models.local.EntityType
 import co.infinum.collar.ui.data.models.local.SettingsEntity
 import co.infinum.collar.ui.domain.repositories.EntityRepository
 import co.infinum.collar.ui.domain.repositories.SettingsRepository
+import co.infinum.collar.ui.extensions.redact
 import co.infinum.collar.ui.presentation.BundleMapper
 import co.infinum.collar.ui.presentation.Presentation
 import co.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationProvider
@@ -22,17 +23,16 @@ import co.infinum.collar.ui.presentation.notifications.system.SystemNotification
  * @param showInAppNotifications is true by default.
  * @constructor Default values are provided.
  */
-open class LiveCollector(
-    showSystemNotifications: Boolean = true,
-    showInAppNotifications: Boolean = true
+open class LiveCollector constructor(
+    private val configuration: Configuration = Configuration()
 ) : Collector {
 
     private val systemNotificationProvider: SystemNotificationProvider = Presentation.systemNotification()
     private val inAppNotificationProvider: InAppNotificationProvider = Presentation.inAppNotification()
 
     private var settings = SettingsEntity(
-        showSystemNotifications = showSystemNotifications,
-        showInAppNotifications = showInAppNotifications
+        showSystemNotifications = configuration.showSystemNotifications,
+        showInAppNotifications = configuration.showInAppNotifications
     )
 
     init {
@@ -56,7 +56,7 @@ open class LiveCollector(
     override fun onScreen(screen: Screen) {
         val entity = CollarEntity(
             type = EntityType.SCREEN,
-            name = screen.name
+            name = screen.name.redact(configuration.redactedKeywords)
         )
         EntityRepository.saveScreen(entity)
         if (settings.showSystemNotifications) {
@@ -76,8 +76,8 @@ open class LiveCollector(
     override fun onEvent(event: Event) {
         val entity = CollarEntity(
             type = EntityType.EVENT,
-            name = event.name,
-            parameters = event.params?.let { BundleMapper.toMap(it) }
+            name = event.name.redact(configuration.redactedKeywords),
+            parameters = event.params?.let { BundleMapper.toMap(it, configuration.redactedKeywords) }
         )
         EntityRepository.saveEvent(entity)
         if (settings.showSystemNotifications) {
@@ -97,8 +97,8 @@ open class LiveCollector(
     override fun onProperty(property: Property) {
         val entity = CollarEntity(
             type = EntityType.PROPERTY,
-            name = property.name,
-            value = property.value
+            name = property.name.redact(configuration.redactedKeywords),
+            value = property.value?.redact(configuration.redactedKeywords)
         )
         EntityRepository.saveProperty(entity)
         if (settings.showSystemNotifications) {
