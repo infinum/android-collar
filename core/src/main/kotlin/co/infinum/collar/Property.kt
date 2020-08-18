@@ -4,6 +4,14 @@ package co.infinum.collar
  * This is the container model for the user property tracking.
  */
 data class Property(
+
+    /**
+     * Name of the tracked user property.
+     */
     val name: String,
+
+    /**
+     * Optional value of the tracked user property.
+     */
     val value: String?
 )

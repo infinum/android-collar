@@ -8,8 +8,19 @@ import co.infinum.collar.generator.models.AnalyticsModel
 import co.infinum.collar.generator.providers.MoshiProvider
 import java.io.File
 
+/**
+ * Generator class used to parse JSON into according Kotlin models for Collar processor consumption.
+ */
 class CollarGenerator {
 
+    /**
+     * Generate models from provided JSON.
+     * Parameters are passed from Collar plugin extension to a Gradle task.
+     *
+     * @param filePath absolute path for the provided JSON file.
+     * @param output absolute path for the generated classes.
+     * @param packageName package name for the generated classes.
+     */
     fun generate(filePath: String, output: String, packageName: String): Boolean =
         MoshiProvider.provide()
             .value
