@@ -6,6 +6,7 @@ Change Log
 _2020-09-01_
 
  * **BREAKING**: Removed activity field from Screen class due to Firebase deprecated _setCurrentScreen_ method.
+ * **BREAKING**: Implement LiveCollector configuration class.
  * Update Kotlin to 1.4.0.
  * Update various dependencies.
  * Implement latest changes on GeneratorTask.
@@ -14,6 +15,7 @@ _2020-09-01_
  * Add Javadoc to exposed classes and methods.
  * Update KotlinPoet to 1.6.0.
  * Update Detekt to 1.11.0.
+ * Implement redaction feature.
 
 ## Version 1.1.5
 
