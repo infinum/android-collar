@@ -36,16 +36,20 @@ allprojects {
         maven { url "https://dl.bintray.com/infinum/android" }
     }
 
-    configurations.all {
-        resolutionStrategy {
-            dependencySubstitution {
-                substitute module(packages.collar.annotations) with project(':annotations')
-                substitute module(packages.collar.core) with project(':core')
-                substitute module(packages.collar.ui) with project(':ui')
-                substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
-                substitute module(packages.collar.processor) with project(':processor')
-                substitute module(packages.collar.generator) with project(':generator')
-                substitute module(packages.collar.plugin) with project(':plugin')
+    def buildProperties = new Properties()
+    file(rootDir.absolutePath+"/build.properties").withInputStream { buildProperties.load(it) }
+    if (buildProperties.getProperty("build.debug").toBoolean()) {
+        configurations.all {
+            resolutionStrategy {
+                dependencySubstitution {
+                    substitute module(packages.collar.annotations) with project(':annotations')
+                    substitute module(packages.collar.core) with project(':core')
+                    substitute module(packages.collar.ui) with project(':ui')
+                    substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
+                    substitute module(packages.collar.processor) with project(':processor')
+                    substitute module(packages.collar.generator) with project(':generator')
+                    substitute module(packages.collar.plugin) with project(':plugin')
+                }
             }
         }
     }

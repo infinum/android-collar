@@ -44,7 +44,7 @@ internal open class GenerateTask : BaseTask() {
                 showError("Task generate failed")
             }
         } catch (e: Exception) {
-            showError(e.stackTrace.toString())
+            e.printStackTrace()
         }
     }
 }

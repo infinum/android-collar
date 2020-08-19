@@ -5,7 +5,9 @@ import co.infinum.collar.generator.generators.Generator
 import co.infinum.collar.generator.generators.ScreensGenerator
 import co.infinum.collar.generator.generators.UserPropertiesGenerator
 import co.infinum.collar.generator.models.AnalyticsModel
-import co.infinum.collar.generator.providers.MoshiProvider
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.io.File
 
 /**
@@ -22,21 +24,24 @@ class CollarGenerator {
      * @param packageName package name for the generated classes.
      */
     fun generate(filePath: String, output: String, packageName: String): Boolean =
-        MoshiProvider.provide()
-            .value
-            .adapter(AnalyticsModel::class.java)
-            .fromJson(File(filePath).readText(Charsets.UTF_8))
-            ?.let {
-                generators(it, output, packageName)
-                    .fold(true, { accumulator: Boolean, generator: Generator -> accumulator && generator.generate() })
-            } ?: false
-
-    private fun generators(analyticsModel: AnalyticsModel, output: String, packageName: String) =
-        with(analyticsModel) {
-            listOf(
-                ScreensGenerator(screens, output, packageName),
-                UserPropertiesGenerator(userProperties, output, packageName),
-                EventsGenerator(events, output, packageName)
-            )
+        try {
+            Json
+                .decodeFromString<AnalyticsModel>(File(filePath).readText(Charsets.UTF_8))
+                .run {
+                    listOf(
+                        ScreensGenerator(screens, output, packageName),
+                        UserPropertiesGenerator(properties, output, packageName),
+                        EventsGenerator(events, output, packageName)
+                    )
+                        .fold(
+                            initial = true,
+                            operation = { accumulator: Boolean, generator: Generator ->
+                                accumulator && generator.generate()
+                            }
+                        )
+                }
+        } catch (exception: SerializationException) {
+            exception.printStackTrace()
+            false
         }
 }

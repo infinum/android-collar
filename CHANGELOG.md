@@ -16,6 +16,9 @@ _2020-09-01_
  * Update KotlinPoet to 1.6.0.
  * Update Detekt to 1.11.0.
  * Implement redaction feature.
+ * Replace Moshi with KotlinX Serialization in generators
+ * Make description optional in generator models
+ * Make members optional in AnalyticsModel
 
 ## Version 1.1.5
 

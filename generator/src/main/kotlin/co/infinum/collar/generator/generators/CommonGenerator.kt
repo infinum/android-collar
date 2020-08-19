@@ -18,11 +18,13 @@ internal abstract class CommonGenerator(
     override fun write(fileSpec: FileSpec) = fileSpec.writeTo(Paths.get(outputPath))
 
     override fun generate(): Boolean {
-        write(
-            file()
-                .addType(type())
-                .build()
-        )
+        type()?.let {
+            write(
+                file()
+                    .addType(it)
+                    .build()
+            )
+        }
         return true
     }
 }

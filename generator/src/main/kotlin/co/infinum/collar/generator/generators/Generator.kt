@@ -18,7 +18,7 @@ internal interface Generator {
 
     fun file(): FileSpec.Builder
 
-    fun type(): TypeSpec
+    fun type(): TypeSpec?
 
     fun write(fileSpec: FileSpec)
 }

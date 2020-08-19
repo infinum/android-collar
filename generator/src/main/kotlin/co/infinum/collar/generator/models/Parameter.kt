@@ -1,8 +1,20 @@
 package co.infinum.collar.generator.models
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 internal data class Parameter(
+
+    @SerialName("description")
+    val description: String? = null,
+
+    @SerialName("name")
     val name: String,
-    val description: String,
+
+    @SerialName("type")
     val type: String,
-    val values: List<String>?
+
+    @SerialName("values")
+    val values: List<String>? = null
 )
