@@ -1,6 +1,8 @@
 package co.infinum.collar.generator.generators
 
 import co.infinum.collar.generator.extensions.toCamelCase
+import co.infinum.collar.generator.extensions.toEnumValue
+import co.infinum.collar.generator.models.DataType
 import co.infinum.collar.generator.models.Event
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
@@ -9,6 +11,7 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import java.util.Locale
 
 internal class EventsGenerator(
     private val items: List<Event>?,
@@ -45,10 +48,15 @@ internal class EventsGenerator(
                             val constructorParamAnnotation = AnnotationSpec.builder(eventParameterName)
                                 .addMember(ANNOTATION_FORMAT, parameter.name).build()
 
-                            val type = GeneratorUtils.getClassName(parameter)
+                            val type = when {
+                                parameter.values?.isNotEmpty() == true -> DataType.TEXT.className
+                                else ->
+                                    DataType(parameter.type)?.className ?: error("${parameter.type} is not supported")
+                            }
 
                             val constructorParamBuilder = ParameterSpec.builder(
-                                GeneratorUtils.getParameterName(parameter.name), type
+                                parameter.name.toCamelCase().decapitalize(Locale.ENGLISH),
+                                type
                             ).apply {
                                 parameter.description
                                     ?.takeIf { it.isNotBlank() }
@@ -59,11 +67,11 @@ internal class EventsGenerator(
 
                             if (parameter.values?.isNotEmpty() == true) {
                                 val enumBuilder = TypeSpec.enumBuilder(
-                                    GeneratorUtils.getParameterEnumName(parameter.name)
+                                    parameter.name.toCamelCase()
                                 )
                                     .primaryConstructor(
                                         FunSpec.constructorBuilder()
-                                            .addParameter("value", String::class)
+                                            .addParameter("value", String::class, KModifier.PRIVATE)
                                             .build()
                                     )
                                     .addProperty(
@@ -80,7 +88,7 @@ internal class EventsGenerator(
 
                                 parameter.values.forEach { value ->
                                     enumBuilder.addEnumConstant(
-                                        GeneratorUtils.getParameterValueEnumName(value),
+                                        value.toEnumValue(),
                                         TypeSpec.anonymousClassBuilder()
                                             .addSuperclassConstructorParameter("%S", value)
                                             .build()
@@ -92,10 +100,10 @@ internal class EventsGenerator(
 
                             eventClass.addProperty(
                                 PropertySpec.builder(
-                                    GeneratorUtils.getParameterName(parameter.name),
+                                    parameter.name.toCamelCase().decapitalize(Locale.ENGLISH),
                                     type
                                 )
-                                    .initializer(GeneratorUtils.getParameterName(parameter.name))
+                                    .initializer(parameter.name.toCamelCase().decapitalize(Locale.ENGLISH))
                                     .build()
                             )
                         }

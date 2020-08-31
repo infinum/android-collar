@@ -11,9 +11,10 @@ internal abstract class CommonGenerator(
 
     companion object {
         internal const val ANNOTATION_FORMAT = "value = %S"
+        internal const val DEFAULT_INDENT = "    "
     }
 
-    override fun file(): FileSpec.Builder = FileSpec.builder(packageName, className)
+    override fun file(): FileSpec.Builder = FileSpec.builder(packageName, className).indent(DEFAULT_INDENT)
 
     override fun write(fileSpec: FileSpec) = fileSpec.writeTo(Paths.get(outputPath))
 

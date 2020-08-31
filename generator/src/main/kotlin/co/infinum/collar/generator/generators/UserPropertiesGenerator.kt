@@ -1,6 +1,7 @@
 package co.infinum.collar.generator.generators
 
 import co.infinum.collar.generator.extensions.toCamelCase
+import co.infinum.collar.generator.extensions.toEnumValue
 import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PACKAGE
 import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PROPERTY_NAME
 import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_USER_PROPERTIES
@@ -44,14 +45,14 @@ internal class UserPropertiesGenerator(
                                 FunSpec.constructorBuilder()
                                     .addParameter(
                                         PROPERTY_PARAMETER_NAME,
-                                        GeneratorUtils.getClassName(userProperty)
+                                        ClassName("kotlin", "String")
                                     )
                                     .build()
                             )
                             addProperty(
                                 PropertySpec.builder(
                                     PROPERTY_PARAMETER_NAME,
-                                    GeneratorUtils.getClassName(userProperty)
+                                    ClassName("kotlin", "String")
                                 )
                                     .initializer(PROPERTY_PARAMETER_NAME)
                                     .build()
@@ -63,11 +64,11 @@ internal class UserPropertiesGenerator(
                         }
                         if (userProperty.values?.isNotEmpty() == true) {
                             val enumBuilder = TypeSpec.enumBuilder(
-                                GeneratorUtils.getParameterEnumName(userProperty.name)
+                                userProperty.name.toCamelCase()
                             )
                                 .primaryConstructor(
                                     FunSpec.constructorBuilder()
-                                        .addParameter("value", String::class)
+                                        .addParameter("value", String::class, KModifier.PRIVATE)
                                         .build()
                                 )
                                 .addProperty(
@@ -84,9 +85,10 @@ internal class UserPropertiesGenerator(
 
                             userProperty.values.forEach { value ->
                                 enumBuilder.addEnumConstant(
-                                    GeneratorUtils.getParameterValueEnumName(value), TypeSpec.anonymousClassBuilder()
-                                    .addSuperclassConstructorParameter("%S", value)
-                                    .build()
+                                    value.toEnumValue(),
+                                    TypeSpec.anonymousClassBuilder()
+                                        .addSuperclassConstructorParameter("%S", value)
+                                        .build()
                                 )
                             }
 
