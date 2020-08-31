@@ -33,7 +33,7 @@ buildscript {
         maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.1.5"
+        classpath "co.infinum.collar:collar-plugin:1.1.6"
     }
 }
 ```
@@ -46,7 +46,7 @@ buildscript {
         maven(url = "https://dl.bintray.com/infinum/android")
     }
     dependencies {
-        classpath("co.infinum.collar:collar-plugin:1.1.5")
+        classpath("co.infinum.collar:collar-plugin:1.1.6")
     }
 }
 ```
@@ -250,7 +250,7 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.1.5"
+    version "1.1.6"
 }
 ```        
 You can set a specific _Collar_ version to be used.
@@ -264,13 +264,13 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:
 **Groovy**
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.1.5"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.5"
+debugImplementation "co.infinum.collar:collar-ui:1.1.6"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.6"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("co.infinum.collar:collar-ui:1.1.5")
-releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.5")
+debugImplementation("co.infinum.collar:collar-ui:1.1.6")
+releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.6")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
@@ -323,15 +323,14 @@ This set of keywords is provided to _LiveCollector_ via _Configuration_.
 ### Generate
 
 Gradle plugin supports code generation from a JSON formatted file.  
-You will need to specify `filePath` and `packageName` in  `collar` plugin extension.  
+You will need to specify `fileName` and `packageName` in  `collar` plugin extension.  
 For example:
 
 ```
 collar {
-    version "1.1.5"
+    version "1.1.6"
     filePath = "example.json"
     packageName = "co.infinum.collar.sample.analytics.generated"
-    variant = "main" // main by default
 }
 ```
 JSON file has to be formatted in the same way as it is in `sample` project module.  

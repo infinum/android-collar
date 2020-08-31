@@ -7,6 +7,7 @@ _2020-09-01_
 
  * **BREAKING**: Removed activity field from Screen class due to Firebase deprecated _setCurrentScreen_ method.
  * **BREAKING**: Implement LiveCollector configuration class.
+ * **BREAKING**: Rename Collar plugin extension parameter _filePath_ to _fileName_.
  * Update Kotlin to 1.4.0.
  * Update various dependencies.
  * Implement latest changes on GeneratorTask.
@@ -19,6 +20,7 @@ _2020-09-01_
  * Replace Moshi with KotlinX Serialization in generators
  * Make description optional in generator models
  * Make members optional in AnalyticsModel
+ * Make GenerateTask inherit from SourceTask
 
 ## Version 1.1.5
 
