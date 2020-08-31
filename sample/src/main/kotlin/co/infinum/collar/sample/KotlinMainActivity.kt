@@ -4,10 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.sample.analytics.trackingplan.TrackingPlanScreens
 import co.infinum.collar.sample.databinding.ActivityMainKotlinBinding
 import co.infinum.collar.trackScreen
 
-@ScreenName(value = KotlinScreenNames.MAIN_SCREEN, enabled = true)
+@ScreenName(value = TrackingPlanScreens.HOME, enabled = true)
 class KotlinMainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
