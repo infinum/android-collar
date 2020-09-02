@@ -1,7 +1,7 @@
 ext.collar = [
     "group"      : "co.infinum.collar",
-    "version"    : "1.1.6",
-    "versionCode": 1 * 100 * 100 + 1 * 100 + 6
+    "version"    : "1.1.7",
+    "versionCode": 1 * 100 * 100 + 1 * 100 + 7
 ]
 
 ext.versions = [
@@ -22,6 +22,7 @@ ext.versions = [
     "livedata"     : "2.2.0",
     "recyclerview" : "1.1.0",
     "room"         : "2.2.5",
+    "startup"      : "1.0.0-alpha03",
     "design"       : "1.2.0",
     "maven"        : "2.0",
     "detekt"       : "1.11.0",
@@ -67,7 +68,8 @@ ext.packages = [
         "room"        : [
             "compiler": "androidx.room:room-compiler:${versions.room}",
             "runtime" : "androidx.room:room-runtime:${versions.room}"
-        ]
+        ],
+        "startup"     : "androidx.startup:startup-runtime:${versions.startup}"
     ],
     "google"     : [
         "design": "com.google.android.material:material:${versions.design}"
