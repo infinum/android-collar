@@ -5,10 +5,14 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuItemCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -18,12 +22,13 @@ import co.infinum.collar.ui.data.models.local.CollarEntity
 import co.infinum.collar.ui.data.models.local.EntityType
 import co.infinum.collar.ui.databinding.CollarActivityCollarBinding
 import co.infinum.collar.ui.databinding.CollarViewDetailBinding
-import co.infinum.collar.ui.presentation.decorations.LastDotDecoration
 import co.infinum.collar.ui.extensions.addBadge
+import co.infinum.collar.ui.presentation.decorations.LastDotDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 
 internal class CollarActivity : AppCompatActivity() {
 
@@ -59,6 +64,10 @@ internal class CollarActivity : AppCompatActivity() {
             setNavigationOnClickListener { finish() }
             setOnMenuItemClickListener {
                 when (it.itemId) {
+                    R.id.search -> {
+                        menu.findItem(R.id.filter).isVisible = false
+                        menu.findItem(R.id.settings).isVisible = false
+                    }
                     R.id.clear -> clear()
                     R.id.screens -> {
                         it.isChecked = !it.isChecked
@@ -83,14 +92,21 @@ internal class CollarActivity : AppCompatActivity() {
             }
             val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
             (menu.findItem(R.id.search).actionView as SearchView).apply {
+                (findViewById(androidx.appcompat.R.id.search_button) as? ImageView)?.setColorFilter(
+                    ContextCompat.getColor(context, R.color.collar_color_icon)
+                )
+                (findViewById(androidx.appcompat.R.id.search_close_btn) as? ImageView)?.setColorFilter(
+                    ContextCompat.getColor(context, R.color.collar_color_icon)
+                )
                 setSearchableInfo(searchManager.getSearchableInfo(componentName))
                 setIconifiedByDefault(true)
                 isSubmitButtonEnabled = false
                 isQueryRefinementEnabled = true
                 maxWidth = Integer.MAX_VALUE
-                setOnQueryTextFocusChangeListener { _, hasFocus ->
-                    menu.findItem(R.id.filter).isVisible = hasFocus.not()
-                    menu.findItem(R.id.settings).isVisible = hasFocus.not()
+                setOnCloseListener {
+                    menu.findItem(R.id.filter).isVisible = true
+                    menu.findItem(R.id.settings).isVisible = true
+                    false
                 }
                 setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
@@ -125,7 +141,7 @@ internal class CollarActivity : AppCompatActivity() {
         if (viewModel.entities().hasObservers().not()) {
             viewModel.entities().observe(this) {
                 entryAdapter.addItems(it)
-                viewBinding.emptyLayout.root.isVisible = entryAdapter.itemCount == 0
+                showEmptyView(entryAdapter.itemCount == 0)
             }
         }
         if (viewModel.settings().hasObservers().not()) {
@@ -220,5 +236,13 @@ internal class CollarActivity : AppCompatActivity() {
                 ).joinToString("\n")
             )
             .startChooser()
+    }
+
+    private fun showEmptyView(shouldShow: Boolean) {
+        with(viewBinding) {
+            val isInSearch = toolbar.menu.findItem(R.id.settings).isVisible.not()
+            emptyLayout.root.isVisible = shouldShow
+            emptyLayout.instructionsView.isVisible = isInSearch.not()
+        }
     }
 }
