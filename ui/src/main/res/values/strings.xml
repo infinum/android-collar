@@ -16,6 +16,6 @@
     <string name="collar_notifications_system">System notifications</string>
     <string name="collar_notifications_inapp">In app notifications</string>
     <string name="collar_empty">No analytics have been collected.</string>
-    <string name="collar_check_instructions"><a
-        href="https://github.com/infinum/android-collar/blob/master/README.md#getting-started">Check the setup instructions.</a></string>
+    <string name="collar_check_setup">How to setup</string>
+    <string name="collar_check_setup_link">https://github.com/infinum/android-collar/blob/master/README.md#getting-started</string>
 </resources>

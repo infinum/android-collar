@@ -3,16 +3,15 @@ package co.infinum.collar.ui.presentation
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
-import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuItemCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -133,7 +132,14 @@ internal class CollarActivity : AppCompatActivity() {
     }
 
     private fun setupEmptyView() {
-        viewBinding.emptyLayout.instructionsView.movementMethod = LinkMovementMethod.getInstance()
+        viewBinding.emptyLayout.instructionsButton.setOnClickListener {
+            startActivity(
+                Intent(Intent.ACTION_VIEW)
+                    .apply {
+                        data = Uri.parse(getString(R.string.collar_check_setup_link))
+                    }
+            )
+        }
     }
 
     private fun setupViewModel() {
@@ -242,7 +248,7 @@ internal class CollarActivity : AppCompatActivity() {
         with(viewBinding) {
             val isInSearch = toolbar.menu.findItem(R.id.settings).isVisible.not()
             emptyLayout.root.isVisible = shouldShow
-            emptyLayout.instructionsView.isVisible = isInSearch.not()
+            emptyLayout.instructionsButton.isVisible = isInSearch.not()
         }
     }
 }

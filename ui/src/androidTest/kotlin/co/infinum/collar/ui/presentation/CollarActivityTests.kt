@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import co.infinum.collar.Collar
 import co.infinum.collar.ui.CollarTestApplication
+import co.infinum.collar.ui.Configuration
 import co.infinum.collar.ui.LiveCollector
 import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.models.local.SettingsEntity
@@ -52,14 +53,14 @@ class CollarActivityTests {
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
         onView(withId(R.id.emptyLayout)).check(matches(isDisplayed()))
         onView(withId(R.id.instructionsLabel)).check(matches(isDisplayed()))
-        onView(withId(R.id.instructionsView)).check(matches(isDisplayed()))
+        onView(withId(R.id.instructionsButton)).check(matches(isDisplayed()))
         onView(withId(R.id.instructionsLabel)).check(matches(withText(R.string.collar_empty)))
-        onView(withId(R.id.instructionsView)).check(matches(withText(R.string.collar_check_instructions)))
+        onView(withId(R.id.instructionsButton)).check(matches(withText(R.string.collar_check_setup)))
     }
 
     @Test
     fun whenLaunchedWithCollector_thenShowEmptyState() {
-        Collar.attach(LiveCollector(showSystemNotifications = false, showInAppNotifications = false))
+        Collar.attach(LiveCollector(Configuration(showSystemNotifications = false, showInAppNotifications = false)))
 
         launchActivity<CollarActivity>()
 
@@ -68,9 +69,9 @@ class CollarActivityTests {
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
         onView(withId(R.id.emptyLayout)).check(matches(isDisplayed()))
         onView(withId(R.id.instructionsLabel)).check(matches(isDisplayed()))
-        onView(withId(R.id.instructionsView)).check(matches(isDisplayed()))
+        onView(withId(R.id.instructionsButton)).check(matches(isDisplayed()))
         onView(withId(R.id.instructionsLabel)).check(matches(withText(R.string.collar_empty)))
-        onView(withId(R.id.instructionsView)).check(matches(withText(R.string.collar_check_instructions)))
+        onView(withId(R.id.instructionsButton)).check(matches(withText(R.string.collar_check_setup)))
 
 //        onView(withId(R.id.search)).perform(click())
 
