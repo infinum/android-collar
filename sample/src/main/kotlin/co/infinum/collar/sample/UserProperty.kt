@@ -15,4 +15,9 @@ sealed class UserProperty {
     data class MyUUID(
         val uuid: String
     ) : UserProperty()
+
+    @PropertyName(enabled = false)
+    data class UnusedExample(
+        val value: String
+    ) : UserProperty()
 }

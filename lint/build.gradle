@@ -14,12 +14,12 @@ compileTestKotlin {
 
 dependencies {
     compileOnly packages.kotlin.core
-    compileOnly "com.android.tools.lint:lint-api:26.6.3"
+    compileOnly "com.android.tools.lint:lint-api:27.0.1"
 }
 
 jar {
     manifest {
-        attributes("Lint-Registry-v2": "co.infinum.collar.lint.registries.ScreenNameRegistry")
+        attributes("Lint-Registry-v2": "co.infinum.collar.lint.CollarRegistry")
     }
 }
 
