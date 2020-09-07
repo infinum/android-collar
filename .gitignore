@@ -19,4 +19,4 @@
 /ui/build/
 /ui-no-op/build/
 /lint/build/
-/sample/src/main/kotlin/co/infinum/collar/sample/analytics/generated/
+/.idea/codeStyles/

@@ -1,10 +1,10 @@
 package co.infinum.collar.processor.collectors
 
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.processor.extensions.asClassName
 import co.infinum.collar.processor.models.ScreenHolder
 import co.infinum.collar.processor.shared.Constants
 import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.asClassName
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement

@@ -2,11 +2,11 @@ package co.infinum.collar.processor.collectors
 
 import co.infinum.collar.annotations.PropertyName
 import co.infinum.collar.annotations.UserProperties
+import co.infinum.collar.processor.extensions.asClassName
 import co.infinum.collar.processor.extensions.constructorParameterNames
 import co.infinum.collar.processor.models.PropertyHolder
 import co.infinum.collar.processor.models.UserPropertiesHolder
 import co.infinum.collar.processor.extensions.toLowerSnakeCase
-import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
