@@ -1,7 +1,17 @@
 package co.infinum.collar.generator.models
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 internal data class AnalyticsModel(
-    val events: List<Event>,
-    val screens: List<Screen>,
-    val userProperties: List<Property>
+
+    @SerialName("screens")
+    val screens: List<Screen>? = null,
+
+    @SerialName("events")
+    val events: List<Event>? = null,
+
+    @SerialName("userProperties")
+    val properties: List<Property>? = null
 )

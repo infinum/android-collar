@@ -7,30 +7,36 @@ import com.squareup.kotlinpoet.TypeSpec
 import java.util.Locale
 
 internal class ScreensGenerator(
-    private val items: List<Screen>,
+    private val items: List<Screen>?,
     outputPath: String,
     packageName: String
 ) : CommonGenerator(outputPath, packageName, CLASS_NAME) {
 
     companion object {
-        const val CLASS_NAME = "AnalyticsScreens"
+        const val CLASS_NAME = "TrackingPlanScreens"
     }
 
-    override fun type(): TypeSpec =
-        TypeSpec.objectBuilder(CLASS_NAME)
-            .apply {
-                items.forEach {
-                    addProperty(
-                        PropertySpec.builder(
-                            it.name.toUpperCase(Locale.ENGLISH).replace(" ", "_"),
-                            String::class,
-                            KModifier.CONST
+    override fun type(): TypeSpec? =
+        items?.takeIf { it.isNotEmpty() }?.let {
+            TypeSpec.objectBuilder(CLASS_NAME)
+                .apply {
+                    it.forEach { screen ->
+                        addProperty(
+                            PropertySpec.builder(
+                                screen.name.toUpperCase(Locale.ENGLISH).replace(" ", "_"),
+                                String::class,
+                                KModifier.CONST
+                            )
+                                .initializer("%S", screen.name)
+                                .apply {
+                                    screen.description
+                                        ?.takeIf { it.isNotBlank() }
+                                        ?.let { addKdoc(it) }
+                                }
+                                .build()
                         )
-                            .initializer("%S", it.name)
-                            .addKdoc(it.description)
-                            .build()
-                    )
+                    }
                 }
-            }
-            .build()
+                .build()
+        }
 }

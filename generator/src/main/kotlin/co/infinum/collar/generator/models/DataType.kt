@@ -1,12 +1,16 @@
 package co.infinum.collar.generator.models
 
-internal enum class DataType {
-    TEXT,
-    NUMBER,
-    DECIMAL,
-    BOOLEAN;
+import com.squareup.kotlinpoet.ClassName
+import java.util.Locale
 
-    override fun toString(): String {
-        return super.toString().toLowerCase()
+internal enum class DataType(val className: ClassName) {
+    TEXT(ClassName("kotlin", "String")),
+    NUMBER(ClassName("kotlin", "Long")),
+    DECIMAL(ClassName("kotlin", "Double")),
+    BOOLEAN(ClassName("kotlin", "Boolean"));
+
+    companion object {
+
+        operator fun invoke(name: String) = values().firstOrNull { it.toString().toLowerCase(Locale.ENGLISH) == name }
     }
 }

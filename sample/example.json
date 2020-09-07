@@ -1,83 +1,181 @@
 {
   "events": [
     {
-      "name": "loginUser",
-      "description": "User clicked on login button",
-      "parameters": [
+      "name": "user_log_in",
+      "description": "User logged into the app",
+      "properties": [
         {
-          "name": "languageType",
-          "description": "Type of login clicked",
+          "name": "type",
+          "description": "Type of log in",
           "type": "text",
           "values": [
-            "kotlin",
-            "java"
+            "facebook",
+            "google",
+            "in app"
+          ]
+        },
+        {
+          "name": "source",
+          "description": "Source of the log in",
+          "type": "text",
+          "values": [
+            "onboarding",
+            "settings"
           ]
         }
       ]
     },
     {
-      "name": "checkTypes",
-      "description": "We need to check types here",
-      "parameters": [
+      "name": "analytics_consent",
+      "description": "User opts in or opts out for analytics",
+      "properties": [
         {
-          "name": "checkBool",
-          "description": "checki if bool is ok",
-          "type": "boolean"
+          "name": "type",
+          "description": "Information if a user gave consent",
+          "type": "text",
+          "values": [
+            "opt in",
+            "opt out"
+          ]
         },
         {
-          "name": "checkText",
-          "description": "check if text is ok",
-          "type": "text"
+          "name": "source",
+          "description": "Source where a user gave or declined analytics consent",
+          "type": "text",
+          "values": [
+            "onboarding",
+            "settings"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "philips_network_join",
+      "description": "User successfully completed connection or failed to connect to the Philips network",
+      "properties": [
+        {
+          "name": "status",
+          "description": "Status of joining to the Philips network",
+          "type": "text",
+          "values": [
+            "success",
+            "fail"
+          ]
         },
         {
-          "name": "checkNumber",
-          "description": "check if number is ok",
-          "type": "number"
+          "name": "source",
+          "description": "Part of the app from which a user joined Philips network",
+          "type": "text",
+          "values": [
+            "onboarding",
+            "home"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "machine_phone_pair",
+      "description": "User successfully completed pairing or failed to pair phone with the coffee machine",
+      "properties": [
+        {
+          "name": "status",
+          "description": "Status of phone pairing to the Coffee machine",
+          "type": "text",
+          "values": [
+            "success",
+            "fail"
+          ]
         },
         {
-          "name": "checkDecimal",
-          "description": "check if decimal is ok",
-          "type": "decimal"
+          "name": "source",
+          "description": "Source of the pairing",
+          "type": "text",
+          "values": [
+            "onboarding",
+            "home"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "machine_wifi_connect",
+      "description": "User successfully completed connection or failed connect Coffee machine to the local WiFi network",
+      "properties": [
+        {
+          "name": "status",
+          "description": "Status of the Coffee machine connecting to the WiFi network",
+          "type": "text",
+          "values": [
+            "success",
+            "fail"
+          ]
+        },
+        {
+          "name": "source",
+          "description": "Source of the machine connecting to the WiFi network",
+          "type": "text",
+          "values": [
+            "onboarding",
+            "home"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "machine_turn_on",
+      "description": "User turned on the Coffee machine from the app"
+    },
+    {
+      "name": "machine_turn_off",
+      "description": "User turned off the Coffee machine from the app"
+    },
+    {
+      "name": "machine_remove",
+      "description": "User removed Coffee machine from the app"
+    },
+    {
+      "name": "alexa_connect",
+      "description": "User connects or fails to connect Alexa",
+      "properties": [
+        {
+          "name": "status",
+          "description": "Status of connecting Alexa",
+          "type": "text",
+          "values": [
+            "success",
+            "fail"
+          ]
+        },
+        {
+          "name": "source",
+          "description": "Source of connecting Alexa",
+          "type": "text",
+          "values": [
+            "onboarding",
+            "settings"
+          ]
         }
       ]
     }
   ],
   "userProperties": [
     {
-      "name": "price",
-      "description": "user's price"
+      "name": "machine_model",
+      "description": "Model of the Coffee machine (e.g. Philips 3200 LatteGo)"
     },
     {
-      "name": "genderGo",
+      "name": "analytics_consent",
       "values": [
-        "male",
-        "female",
-        "unknown"
+        "opt in",
+        "opt out"
       ],
-      "description": "..."
-    },
-    {
-      "name": "userType",
-      "values": [
-        "corporate",
-        "retail",
-        "unknown"
-      ],
-      "description": "..."
-    },
-    {
-      "name": "userId",
-      "description": "..."
+      "description": "User segmentation by the analytics consent (opt in/opt out). Should be set and updated in two locations, onboarding and settings"
     }
   ],
   "screens": [
     {
-      "name": "Main Screen",
-      "description": "Main screen example"
-    },
-    {
-      "name": "Child Screen",
-      "description": "child screen example"
+      "name": "home",
+      "description": "Home screen viewed"
     }
   ]
 }

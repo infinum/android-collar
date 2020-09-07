@@ -7,6 +7,7 @@ dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.poet_metadata
     implementation packages.kotlin.poet
+    implementation packages.kotlin.reflect
     compileOnly packages.incap.core
     kapt packages.incap.processor
 

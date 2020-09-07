@@ -46,7 +46,7 @@ android {
         it.java.srcDirs += "src/$it.name/kotlin"
     }
 
-    viewBinding.enabled = true
+    buildFeatures.viewBinding = true
 }
 
 dependencies {

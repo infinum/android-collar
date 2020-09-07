@@ -5,10 +5,14 @@ import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
+
+import androidx.collection.ArraySet;
 import co.infinum.collar.Collar;
 import co.infinum.collar.Event;
 import co.infinum.collar.Property;
 import co.infinum.collar.Screen;
+import co.infinum.collar.ui.Configuration;
 import co.infinum.collar.ui.LiveCollector;
 
 public class SampleApplication extends Application {
@@ -21,7 +25,9 @@ public class SampleApplication extends Application {
     }
 
     private void attachCollar() {
-        Collar.attach(new LiveCollector(true, true) {
+        final Set<String> redactedWords = new ArraySet<>(1);
+        redactedWords.add("Java");
+        Collar.attach(new LiveCollector(new Configuration(true, true, redactedWords)) {
 
             @Override
             public void onScreen(@NotNull Screen screen) {

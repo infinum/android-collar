@@ -15,14 +15,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:maxWidth="56dp"
-        android:layout_marginBottom="8dp"
-        android:minHeight="48dp"
         android:maxLength="8"
         android:maxLines="1"
+        android:minHeight="48dp"
         android:visibility="invisible"
         tools:text="20:00:00" />
 
@@ -37,7 +36,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/collar_shape_background_icon" />
+            android:background="@drawable/collar_shape_background_item_line" />
 
         <ImageView
             android:id="@+id/iconView"
@@ -46,9 +45,10 @@
             android:layout_gravity="top"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/collar_shape_background_property"
+            android:background="@drawable/collar_shape_background_item_type"
+            android:backgroundTint="@color/collar_color_property"
             android:scaleType="centerInside"
-            android:src="@drawable/collar_ic_property" />
+            android:src="@drawable/collar_ic_property_white" />
 
     </FrameLayout>
 

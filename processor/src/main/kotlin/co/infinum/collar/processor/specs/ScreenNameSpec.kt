@@ -2,13 +2,9 @@ package co.infinum.collar.processor.specs
 
 import co.infinum.collar.processor.extensions.applyIf
 import co.infinum.collar.processor.models.ScreenHolder
-import co.infinum.collar.processor.shared.Constants.CLASS_ACTIVITY
-import co.infinum.collar.processor.shared.Constants.CLASS_ANDROIDX_FRAGMENT
-import co.infinum.collar.processor.shared.Constants.CLASS_COMPONENT_ACTIVITY
 import co.infinum.collar.processor.shared.Constants.CLASS_FRAGMENT
 import co.infinum.collar.processor.shared.Constants.CLASS_SUPPORT_FRAGMENT
 import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -23,8 +19,7 @@ internal class ScreenNameSpec private constructor(
         private const val SIMPLE_NAME = "ScreenNames"
         private const val FUNCTION_NAME = "trackScreen"
         private const val PARAMETER_NAME = "this"
-        private const val STATEMENT_ACTIVITY = "is %T -> %T.%L(%L, %S)"
-        private const val STATEMENT_FRAGMENT = "is %T -> activity?.let { %T.%L(it, %S) }"
+        private const val STATEMENT = "is %T -> %T.%L(%S)"
     }
 
     internal open class Builder(
@@ -61,22 +56,17 @@ internal class ScreenNameSpec private constructor(
                     .receiver(keyClass)
                     .applyIf(holders.isNotEmpty()) {
                         beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
-                        addCode(screens(keyClass, holders))
+                        addCode(screens(holders))
                         endControlFlow()
                     }
                     .build()
             }
 
-    private fun screens(keyClass: ClassName, holders: List<ScreenHolder>): CodeBlock =
+    private fun screens(holders: List<ScreenHolder>): CodeBlock =
         CodeBlock.builder()
             .apply {
                 holders.forEach {
-                    when (keyClass) {
-                        CLASS_COMPONENT_ACTIVITY -> addActivityStatement(this, it)
-                        CLASS_ACTIVITY -> addActivityStatement(this, it)
-                        CLASS_ANDROIDX_FRAGMENT -> addFragmentStatement(this, it)
-                        else -> addFragmentStatement(this, it)
-                    }
+                    addStatement(this, it)
                 }
             }
             .build()
@@ -93,19 +83,9 @@ internal class ScreenNameSpec private constructor(
             .addMember(CodeBlock.of("%S", "DEPRECATION"))
             .build()
 
-    private fun addActivityStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
+    private fun addStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
         builder.addStatement(
-            STATEMENT_ACTIVITY,
-            holder.className,
-            CLASS_COLLAR,
-            functionName(),
-            parameterName(),
-            holder.screenName
-        )
-
-    private fun addFragmentStatement(builder: CodeBlock.Builder, holder: ScreenHolder) =
-        builder.addStatement(
-            STATEMENT_FRAGMENT,
+            STATEMENT,
             holder.className,
             CLASS_COLLAR,
             functionName(),

@@ -2,10 +2,9 @@
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
     android:insetLeft="@dimen/collar_divider_inset"
     android:insetRight="@dimen/collar_divider_inset">
-    <shape
-        android:shape="oval">
+    <shape android:shape="oval">
 
-        <solid android:color="#dadada" />
+        <solid android:color="@color/collar_color_item_line" />
 
         <size
             android:width="15dp"

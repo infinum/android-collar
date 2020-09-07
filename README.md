@@ -33,7 +33,7 @@ buildscript {
         maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.1.5"
+        classpath "co.infinum.collar:collar-plugin:1.1.6"
     }
 }
 ```
@@ -46,7 +46,7 @@ buildscript {
         maven(url = "https://dl.bintray.com/infinum/android")
     }
     dependencies {
-        classpath("co.infinum.collar:collar-plugin:1.1.5")
+        classpath("co.infinum.collar:collar-plugin:1.1.6")
     }
 }
 ```
@@ -250,28 +250,32 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.1.5"
+    version "1.1.6"
 }
 ```        
 You can set a specific _Collar_ version to be used.
+
 ## Debug UI
+
+![UI](ui.jpg)
+
 A separate package and no-op package is provided if you want to visually track what has been sent through Collar.  
 You can search, filter and clear all sent analytics.  
 In your app `build.gradle` or `build.gradle.kts` add:
 **Groovy**
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.1.5"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.5"
+debugImplementation "co.infinum.collar:collar-ui:1.1.6"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.6"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("co.infinum.collar:collar-ui:1.1.5")
-releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.5")
+debugImplementation("co.infinum.collar:collar-ui:1.1.6")
+releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.6")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
- Collar.attach(object : LiveCollector(true, false) {
+ Collar.attach(object : LiveCollector() {
 
     override fun onScreen(screen: Screen) =
         super.onScreen(screen).run {
@@ -289,10 +293,11 @@ In order to start tracking with UI you must use _LiveCollector_ as in this examp
         }
 })
 ```
-If you put the first parameter *showSystemNotification* as *true* in *LiveCollector*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
-Second parameter *showInAppNotification* with value *true* in *LiveCollector* will show a Snackbar-ish popup once analytics are gathered inside the current running Activity.  
+_LiveCollector_ constructor has a _Configuration_ parameter that consists of following members.
+If you put the first parameter *showSystemNotification* as *true* in *Configuration*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
+Second parameter *showInAppNotification* with value *true* in *Configuration* will show a Snackbar-ish popup once analytics are gathered inside the current running Activity.  
 These parameters are default values per collector session but can be changed via _CollarActivity_ menu and will remain valid until the next session.  
-Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent:
+Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent instead of clicking the actual notification:
 ```kotlin
     startActivity(
         CollarUi.launchIntent().apply {
@@ -300,31 +305,37 @@ Otherwise if set to *false* notification will **not** be shown but you can alway
         }
     )
 ```
-Also you can use a dedicated method with default Intent setup:
+Alternatively, you can use a dedicated method with default Intent setup:
 ```kotlin
     CollarUi.show()
 ```
+Third parameter in *Configuration* is a set of keywords to redact if found in screen names, analytics events names and parameters and user properties names or values.
 
-![Notification](notification.jpg)![UI](ui.jpg)
+![Notification](notification.jpg) ![In app notification](in_app_notification.jpg)
+
+### Redaction
+In order to prevent potential leaks of user sensitive data, developers have an option to implement a set of keywords to be replaced by a • in length of the matched keyword.  
+This set of keywords is provided to _LiveCollector_ via _Configuration_.  
+
+![Redacted notification](redacted_notification.jpg)![UI](redacted_ui.jpg)
 
 ## Tasks
 ### Generate
 
 Gradle plugin supports code generation from a JSON formatted file.  
-You will need to specify `filePath` and `packageName` in  `collar` plugin extension.  
+You will need to specify `fileName` and `packageName` in  `collar` plugin extension.  
 For example:
 
 ```
 collar {
-    version "1.1.5"
+    version "1.1.6"
     filePath = "example.json"
     packageName = "co.infinum.collar.sample.analytics.generated"
-    variant = "main" // main by default
 }
 ```
 JSON file has to be formatted in the same way as it is in `sample` project module.  
-If you don't want to use this task simply don't specify mandatory data.  
-Using this file is just a temporary and fetching the tracking plan will be implemented soon in future releases.
+If you don't want to use this task simply don't specify data parameters in plugin extension.  
+Using this file is just a temporary solution and fetching the tracking plan will be implemented soon in future releases.
 
 To run the task you can:
 

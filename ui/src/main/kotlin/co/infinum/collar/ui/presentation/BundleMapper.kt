@@ -3,11 +3,12 @@ package co.infinum.collar.ui.presentation
 import android.os.Bundle
 import android.util.Log
 import co.infinum.collar.ui.CollarUi
+import co.infinum.collar.ui.extensions.redact
 
 @Suppress("ComplexMethod")
 internal object BundleMapper {
 
-    fun toMap(bundle: Bundle): String {
+    fun toMap(bundle: Bundle, redactedKeywords: Set<String>): String {
         val map = mutableMapOf<String, String>()
 
         val keys: Set<String> = bundle.keySet()
@@ -29,7 +30,7 @@ internal object BundleMapper {
                     is Short -> bundle.getShort(key).toString()
                     is CharSequence -> bundle.getCharSequence(key).toString()
                     is Bundle -> toMap(bundle.getBundle(key)
-                        ?: Bundle.EMPTY)
+                        ?: Bundle.EMPTY, redactedKeywords)
                     else -> {
                         Log.w(
                             CollarUi.javaClass.simpleName,
@@ -38,7 +39,7 @@ internal object BundleMapper {
                         ""
                     }
                 }
-            }.orEmpty()
+            }.orEmpty().redact(redactedKeywords)
         }
         return map.toList().joinToString("\n") { "${it.first} = ${it.second}" }
     }

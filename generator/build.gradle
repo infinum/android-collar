@@ -1,5 +1,14 @@
+buildscript {
+    repositories { jcenter() }
+
+    dependencies {
+        classpath packages.kotlin.serialization_plugin
+    }
+}
+
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
+apply plugin: 'kotlinx-serialization'
 
 compileKotlin {
     kotlinOptions {
@@ -21,7 +30,8 @@ test {
 dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.poet
-    implementation packages.moshi.kotlin
+    implementation packages.kotlin.reflect
+    implementation packages.kotlin.serialization_core
 
     testImplementation "junit:junit:4.13"
     testImplementation 'org.mockito:mockito-core:3.3.3'

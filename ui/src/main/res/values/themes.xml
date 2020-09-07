@@ -5,15 +5,6 @@
         <item name="colorPrimary">@color/collar_color_primary</item>
         <item name="colorPrimaryDark">@color/collar_color_primary_variant</item>
         <item name="colorSecondary">@color/collar_color_secondary</item>
-        <item name="android:colorBackground">@color/collar_color_background</item>
-        <item name="colorSurface">@color/collar_color_surface</item>
-        <item name="colorError">@color/collar_color_error</item>
-        <item name="colorOnPrimary">@color/collar_color_on_primary</item>
-        <item name="colorOnSecondary">@color/collar_color_on_secondary</item>
-        <item name="colorOnBackground">@color/collar_color_on_background</item>
-        <item name="colorOnSurface">@color/collar_color_on_surface</item>
-        <item name="colorOnError">@color/collar_color_on_error</item>
-        <item name="colorControlNormal">@color/collar_color_on_secondary</item>
     </style>
 
     <style name="Collar.Theme" parent="Collar.BaseTheme" />

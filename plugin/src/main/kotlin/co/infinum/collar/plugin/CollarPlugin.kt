@@ -1,6 +1,7 @@
 package co.infinum.collar.plugin
 
 import co.infinum.collar.plugin.tasks.GenerateTask
+import com.android.build.gradle.AppExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.net.URI
@@ -40,10 +41,19 @@ internal class CollarPlugin : Plugin<Project> {
 
     private fun addTasks(project: Project) {
         with(project) {
-            tasks.create(GenerateTask.NAME, GenerateTask::class.java).run {
-                group = GenerateTask.GROUP
-                description = GenerateTask.DESCRIPTION
+            tasks.register(GenerateTask.NAME, GenerateTask::class.java) { task ->
+                task.group = GenerateTask.GROUP
+                task.description = GenerateTask.DESCRIPTION
+                task.setSource(projectDir)
+                task.include {
+                    it.name == (extensions.findByName(CollarExtension.NAME) as CollarExtension).fileName
+                }
             }
+                .run {
+                    extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
+                        variant.registerJavaGeneratingTask(get(), get().outputDirectory)
+                    }
+                }
         }
     }
 }
