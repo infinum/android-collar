@@ -25,7 +25,7 @@ abstract class AbstractIssue : BaseIssue {
 
     private fun severity(): Severity = Severity.WARNING
 
-    private fun scopes(): Set<Scope> = setOf(Scope.ALL_JAVA_FILES)
+    private fun scope(): EnumSet<Scope> = Scope.JAVA_FILE_SCOPE
 
     override operator fun invoke(): Issue = Issue.create(
         id = id(),
@@ -36,8 +36,7 @@ abstract class AbstractIssue : BaseIssue {
         severity = severity(),
         implementation = Implementation(
             detector(),
-            EnumSet.copyOf(scopes())
+            scope()
         )
     )
-
 }
