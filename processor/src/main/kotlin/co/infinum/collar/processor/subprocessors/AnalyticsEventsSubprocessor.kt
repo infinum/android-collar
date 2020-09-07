@@ -1,10 +1,10 @@
 package co.infinum.collar.processor.subprocessors
 
 import co.infinum.collar.processor.collectors.AnalyticsEventsCollector
+import co.infinum.collar.processor.extensions.asClassName
 import co.infinum.collar.processor.extensions.showError
 import co.infinum.collar.processor.specs.analyticsEventsSpec
 import co.infinum.collar.processor.validators.AnalyticsEventsValidator
-import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 
