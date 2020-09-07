@@ -15,6 +15,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 import java.io.File
+import java.util.Locale
 
 @CacheableTask
 internal open class GenerateTask : BaseSourceTask() {
@@ -40,7 +41,12 @@ internal open class GenerateTask : BaseSourceTask() {
     @get:OutputDirectory
     var outputDirectory: File = File(
         project.buildDir,
-        "$FD_GENERATED${File.separatorChar}${CollarExtension.NAME}${File.separatorChar}trackingPlan"
+        "$FD_GENERATED${File.separatorChar}${CollarExtension.NAME}${File.separatorChar}${
+            (project.extensions.findByName(CollarExtension.NAME) as CollarExtension)
+                .fileName
+                .replace(".","_")
+                .toLowerCase(Locale.getDefault())
+        }"
     )
 
     @TaskAction
