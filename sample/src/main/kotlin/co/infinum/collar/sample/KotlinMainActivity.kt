@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import co.infinum.collar.annotations.ScreenName
+import co.infinum.collar.sample.analytics.trackingplan.TrackingPlanEvents
 import co.infinum.collar.sample.analytics.trackingplan.TrackingPlanScreens
 import co.infinum.collar.sample.databinding.ActivityMainKotlinBinding
 import co.infinum.collar.trackScreen

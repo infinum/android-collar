@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
 internal class CollarActivity : AppCompatActivity() {
 
     companion object {
@@ -51,8 +50,7 @@ internal class CollarActivity : AppCompatActivity() {
             setContentView(viewBinding.root)
 
             setupToolbar()
-            setupRecyclerView()
-            setupEmptyView()
+            setupList()
             setupViewModel()
         }
 
@@ -123,15 +121,12 @@ internal class CollarActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecyclerView() {
+    private fun setupList() {
         with(viewBinding.recyclerView) {
             addItemDecoration(LastDotDecoration(context))
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = entryAdapter
         }
-    }
-
-    private fun setupEmptyView() {
         viewBinding.emptyLayout.instructionsButton.setOnClickListener {
             startActivity(
                 Intent(Intent.ACTION_VIEW)

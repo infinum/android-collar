@@ -52,6 +52,7 @@ internal class CollarPlugin : Plugin<Project> {
                 .run {
                     extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
                         variant.registerJavaGeneratingTask(get(), get().outputDirectory)
+                        variant.sourceSets.forEach { it.javaDirectories += this.get().outputDirectory }
                     }
                 }
         }
