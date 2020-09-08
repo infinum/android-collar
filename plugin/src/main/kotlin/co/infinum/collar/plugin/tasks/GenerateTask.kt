@@ -25,23 +25,23 @@ internal open class GenerateTask : BaseSourceTask() {
         const val DESCRIPTION = "Generates Kotlin files for screen names, events and user properties."
     }
 
+    private val collarGenerator = CollarGenerator()
+
     @Suppress("unused") // Required to invalidate the task on version updates.
     @Input
-    val pluginVersion = CollarExtension.DEFAULT_VERSION
-
-    @get:OutputDirectory
-    var outputDirectory: File = File(
-        project.buildDir,
-        "$FD_GENERATED${File.separatorChar}${CollarExtension.NAME}${File.separatorChar}trackingPlan"
-    )
-
-    private val collarGenerator = CollarGenerator()
+    private val pluginVersion = CollarExtension.DEFAULT_VERSION
 
     @InputFiles
     @SkipWhenEmpty
     @PathSensitive(PathSensitivity.ABSOLUTE)
     override fun getSource(): FileTree =
         super.getSource()
+
+    @get:OutputDirectory
+    var outputDirectory: File = File(
+        project.buildDir,
+        "$FD_GENERATED${File.separatorChar}source${File.separatorChar}${CollarExtension.NAME}"
+    )
 
     @TaskAction
     fun doOnRun() {
