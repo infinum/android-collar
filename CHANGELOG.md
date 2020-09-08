@@ -3,7 +3,7 @@ Change Log
 
 ## Version 1.1.7
 
-_2020-04-28_
+_2020-09-09_
 
  * Replace ContentProvider with AndroidX Startup Initializer
 

@@ -48,13 +48,11 @@ internal class CollarPlugin : Plugin<Project> {
                 task.include {
                     it.name == (extensions.findByName(CollarExtension.NAME) as CollarExtension).fileName
                 }
-            }
-                .run {
-                    extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
-                        variant.registerJavaGeneratingTask(get(), get().outputDirectory)
-                        variant.sourceSets.forEach { it.javaDirectories += this.get().outputDirectory }
-                    }
+            }.let {
+                extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
+                    variant.registerJavaGeneratingTask(it.get(), it.get().outputDirectory)
                 }
+            }
         }
     }
 }
