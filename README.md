@@ -261,6 +261,7 @@ You can set a specific _Collar_ version to be used.
 
 A separate _ui_ and _ui-no-op_ packages are provided if you want to visually track what has been sent through Collar.  
 You can search, filter and clear all sent analytics.  
+
 In your app `build.gradle` or `build.gradle.kts` add:  
 **Groovy**
 ```gradle
