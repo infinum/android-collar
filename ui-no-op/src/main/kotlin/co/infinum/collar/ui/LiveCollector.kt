@@ -15,8 +15,7 @@ import co.infinum.collar.Screen
  */
 @Suppress("UNUSED_PARAMETER")
 open class LiveCollector(
-    showSystemNotifications: Boolean = false,
-    showInAppNotifications: Boolean = false
+    private val configuration: Configuration = Configuration()
 ) : Collector {
 
     /**
