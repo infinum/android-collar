@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 1.1.8
+
+_2020-09-28_
+
+* Fix no op package.
+* Update Kotlin on 1.4.10
+
 ## Version 1.1.7
 
 _2020-09-09_
