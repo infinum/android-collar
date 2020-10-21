@@ -6,11 +6,11 @@ ext.collar = [
 
 ext.versions = [
     "collar"       : "1.1.8",
-    "gradle"       : "4.0.1",
+    "gradle"       : "4.1.0",
     "kotlin"       : "1.4.10",
-    "poet"         : "1.6.0",
-    "poet_metadata": "1.6.0",
-    "serialization": "1.0.0-RC",
+    "poet"         : "1.7.2",
+    "poet_metadata": "1.7.2",
+    "serialization": "1.0.0",
     "annotations"  : "19.0.0",
     "incap"        : "0.2",
     "bintray"      : "1.8.5",
@@ -38,7 +38,7 @@ ext.packages = [
         "poet"                : "com.squareup:kotlinpoet:${versions.poet}",
         "poet_metadata"       : "com.squareup:kotlinpoet-metadata:${versions.poet_metadata}",
         "serialization_plugin": "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}",
-        "serialization_core"  : "org.jetbrains.kotlinx:kotlinx-serialization-core:${versions.serialization}"
+        "serialization_core"  : "org.jetbrains.kotlinx:kotlinx-serialization-json:${versions.serialization}"
     ],
     "annotations": "org.jetbrains:annotations-java5:${versions.annotations}",
     "incap"      : [
