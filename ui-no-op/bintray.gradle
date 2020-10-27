@@ -3,7 +3,10 @@ apply plugin: "com.jfrog.bintray"
 apply plugin: 'com.github.dcendents.android-maven'
 
 Properties properties = new Properties()
-properties.load(new FileInputStream(file(rootProject.file('bintray.properties'))))
+def bintrayProps = rootProject.file('bintray.properties')
+if (bintrayProps.exists()) {
+    properties.load(new FileInputStream(file(bintrayProps)))
+}
 
 group = collar.group
 version = collar.version
