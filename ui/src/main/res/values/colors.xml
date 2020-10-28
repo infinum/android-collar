@@ -12,6 +12,9 @@
     <color name="collar_color_property">#ffa000</color>
     <color name="collar_color_unknown">#F44336</color>
 
+    <color name="collar_collection_background">#E53935</color>
+    <color name="collar_collection_text">@android:color/white</color>
+
     <color name="collar_color_snackbar_background">#323232</color>
 
     <color name="collar_color_icon">@android:color/black</color>

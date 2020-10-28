@@ -151,6 +151,7 @@ internal class CollarActivity : AppCompatActivity() {
                     menu.findItem(R.id.systemNotifications).isChecked = it.showSystemNotifications
                     menu.findItem(R.id.inAppNotifications).isChecked = it.showInAppNotifications
                 }
+                viewBinding.collectionStatusText.isGone = it.analyticsCollectionEnabled
             }
         }
     }

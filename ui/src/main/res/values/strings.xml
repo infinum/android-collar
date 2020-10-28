@@ -18,4 +18,5 @@
     <string name="collar_empty">No analytics have been collected.</string>
     <string name="collar_check_setup">How to setup</string>
     <string name="collar_check_setup_link">https://github.com/infinum/android-collar/blob/master/README.md#getting-started</string>
+    <string name="collar_collection_disabled">Analytics collection is disabled!</string>
 </resources>
