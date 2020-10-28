@@ -21,6 +21,14 @@ open class LiveCollector(
     /**
      * No operation stub that does nothing.
      *
+     * @param enabled is unused.
+     */
+    @CallSuper
+    override fun setAnalyticsCollectionEnabled(enabled: Boolean) = Unit
+
+    /**
+     * No operation stub that does nothing.
+     *
      * @param screen is unused.
      */
     @CallSuper

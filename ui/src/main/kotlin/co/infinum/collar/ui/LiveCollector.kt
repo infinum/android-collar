@@ -31,6 +31,7 @@ open class LiveCollector constructor(
     private val inAppNotificationProvider: InAppNotificationProvider = Presentation.inAppNotification()
 
     private var settings = SettingsEntity(
+        analyticsCollectionEnabled = configuration.analyticsCollectionEnabled,
         showSystemNotifications = configuration.showSystemNotifications,
         showInAppNotifications = configuration.showInAppNotifications
     )
@@ -40,11 +41,20 @@ open class LiveCollector constructor(
         SettingsRepository.load().observeForever { entity ->
             entity?.let {
                 settings = settings.copy(
+                    analyticsCollectionEnabled = it.analyticsCollectionEnabled,
                     showSystemNotifications = it.showSystemNotifications,
                     showInAppNotifications = it.showInAppNotifications
                 )
             }
         }
+    }
+
+    @CallSuper
+    override fun setAnalyticsCollectionEnabled(enabled: Boolean) {
+        settings = settings.copy(
+            analyticsCollectionEnabled = enabled
+        )
+        SettingsRepository.save(settings)
     }
 
     /**

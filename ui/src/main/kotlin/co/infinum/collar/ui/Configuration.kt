@@ -2,6 +2,8 @@ package co.infinum.collar.ui
 
 data class Configuration(
 
+    val analyticsCollectionEnabled: Boolean = true,
+
     val showSystemNotifications: Boolean = true,
 
     val showInAppNotifications: Boolean = true,

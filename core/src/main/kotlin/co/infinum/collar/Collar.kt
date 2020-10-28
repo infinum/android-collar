@@ -20,6 +20,15 @@ object Collar {
     }
 
     /**
+     * Set the current analytics collection status (enabled or disabled).
+     *
+     * @param enabled is the analytics collection currently enabled.
+     */
+    fun setAnalyticsCollectionStatus(enabled: Boolean) {
+        collector?.setAnalyticsCollectionEnabled(enabled = enabled)
+    }
+
+    /**
      * Track screen names using a direct value.
      *
      * @param screenName value.
