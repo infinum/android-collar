@@ -243,7 +243,8 @@ internal class CollarActivity : AppCompatActivity() {
             .startChooser()
     }
 
-    private fun formatDateTime(timestampMillis: Long) = SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(timestampMillis))
+    private fun formatDateTime(timestampMillis: Long) =
+        SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(timestampMillis))
 
     private fun showEmptyView(shouldShow: Boolean) {
         with(viewBinding) {
