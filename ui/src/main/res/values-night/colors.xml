@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="collar_color_primary_variant">#121212</color>
-
+    <color name="collar_color_accent">@color/collar_color_primary</color>
     <color name="collar_collection_background">#F44336</color>
 
     <color name="collar_color_snackbar_background">#353535</color>

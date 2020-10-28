@@ -90,10 +90,10 @@ internal class CollarActivity : AppCompatActivity() {
             val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
             (menu.findItem(R.id.search).actionView as SearchView).apply {
                 (findViewById(androidx.appcompat.R.id.search_button) as? ImageView)?.setColorFilter(
-                    ContextCompat.getColor(context, R.color.collar_color_icon)
+                    ContextCompat.getColor(context, R.color.collar_color_accent)
                 )
                 (findViewById(androidx.appcompat.R.id.search_close_btn) as? ImageView)?.setColorFilter(
-                    ContextCompat.getColor(context, R.color.collar_color_icon)
+                    ContextCompat.getColor(context, R.color.collar_color_accent)
                 )
                 setSearchableInfo(searchManager.getSearchableInfo(componentName))
                 setIconifiedByDefault(true)
