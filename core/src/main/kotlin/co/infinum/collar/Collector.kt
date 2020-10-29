@@ -15,7 +15,7 @@ interface Collector {
      *
      * @param enabled is the analytics collection currently enabled.
      */
-    fun setAnalyticsCollectionEnabled(enabled: Boolean)
+    fun setAnalyticsCollectionEnabled(enabled: Boolean) = Unit
 
     /**
      * Invoked when a new screen is emitted.
