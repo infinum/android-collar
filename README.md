@@ -276,13 +276,13 @@ releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.8")
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
-val config = Configuration(
-  false, 
-  showSystemNotification = true, 
-  true, 
-  redactedWords
+val configuration = Configuration(
+  analyticsCollectionEnabled = true, 
+  showSystemNotifications = true, 
+  showInAppNotifications = true, 
+  redactedKeywords = redactedWords
 )
-Collar.attach(object : LiveCollector(config) {
+Collar.attach(object : LiveCollector(configuration) {
    
     override fun onScreen(screen: Screen) =
         super.onScreen(screen).run {
