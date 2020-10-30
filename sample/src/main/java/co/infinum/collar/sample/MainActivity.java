@@ -3,9 +3,11 @@ package co.infinum.collar.sample;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.CompoundButton;
 
 import java.util.UUID;
 
+import co.infinum.collar.Collar;
 import co.infinum.collar.CollarScreenNames;
 import co.infinum.collar.annotations.ScreenName;
 import co.infinum.collar.sample.databinding.ActivityMainBinding;
@@ -20,6 +22,10 @@ public class MainActivity extends Activity {
         final ActivityMainBinding viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
         setContentView(viewBinding.getRoot());
+
+        viewBinding.analyticsCollectionSwitch.setOnCheckedChangeListener(
+            (buttonView, isChecked) -> Collar.setAnalyticsCollectionStatus(isChecked)
+        );
 
         viewBinding.buttonProduceEvent1.setOnClickListener(v ->
             CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(

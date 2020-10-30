@@ -10,6 +10,14 @@ package co.infinum.collar
 interface Collector {
 
     /**
+     * Controls the collection of Analytics data, which can be either
+     * enabled (data is transmitted to the cloud) or disabled (data is only collected locally).
+     *
+     * @param enabled is the analytics collection currently enabled.
+     */
+    fun setAnalyticsCollectionEnabled(enabled: Boolean) = Unit
+
+    /**
      * Invoked when a new screen is emitted.
      *
      * @param screen wrapper class.

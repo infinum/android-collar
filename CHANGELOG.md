@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.1.9
+
+_2020-30-10_
+
+* New: Add collection disabled UI indicator.
+* New: Add analytics collection status setter method to Collector.
+* Fix Lint warnings.
+
 ## Version 1.1.8
 
 _2020-09-28_

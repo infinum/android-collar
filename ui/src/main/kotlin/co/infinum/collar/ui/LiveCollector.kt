@@ -19,6 +19,7 @@ import co.infinum.collar.ui.presentation.notifications.system.SystemNotification
 /**
  * Implementation of Collector interface providing UI for collected screen name, analytics event or user property.
  *
+ * @param analyticsCollectionEnabled is true by default.
  * @param showSystemNotifications is true by default.
  * @param showInAppNotifications is true by default.
  * @constructor Default values are provided.
@@ -31,6 +32,8 @@ open class LiveCollector constructor(
     private val inAppNotificationProvider: InAppNotificationProvider = Presentation.inAppNotification()
 
     private var settings = SettingsEntity(
+        analyticsCollectionEnabled = configuration.analyticsCollectionEnabled,
+        analyticsCollectionTimestamp = System.currentTimeMillis(),
         showSystemNotifications = configuration.showSystemNotifications,
         showInAppNotifications = configuration.showInAppNotifications
     )
@@ -40,11 +43,28 @@ open class LiveCollector constructor(
         SettingsRepository.load().observeForever { entity ->
             entity?.let {
                 settings = settings.copy(
+                    analyticsCollectionEnabled = it.analyticsCollectionEnabled,
+                    analyticsCollectionTimestamp = it.analyticsCollectionTimestamp,
                     showSystemNotifications = it.showSystemNotifications,
                     showInAppNotifications = it.showInAppNotifications
                 )
             }
         }
+    }
+
+    /**
+     * Invoked when the analytics connection status changes.
+     * This resets the analytics collection timestamp to the current time.
+     *
+     * @param enabled is analytics collection enabled
+     */
+    @CallSuper
+    override fun setAnalyticsCollectionEnabled(enabled: Boolean) {
+        settings = settings.copy(
+            analyticsCollectionEnabled = enabled,
+            analyticsCollectionTimestamp = System.currentTimeMillis()
+        )
+        SettingsRepository.save(settings)
     }
 
     /**

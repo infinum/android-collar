@@ -9,6 +9,8 @@
 Gradle plugin which collects all analytics screen names, events and user properties for Android projects.  
 This plugin has been written in Kotlin but works both inside Kotlin and Java projects.
 
+**IMPORTANT:** Collar does **NOT** send out analytics data to remote services. This is left for the developer to solve in their own codebase, with Collar being simply a reflection of the current state of analytics data.
+
 The project is organized in the following modules:
 
 - `annotations` - contains all annotations necessary for the plugin to work
@@ -33,7 +35,7 @@ buildscript {
         maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.1.8"
+        classpath "co.infinum.collar:collar-plugin:1.1.9"
     }
 }
 ```
@@ -46,7 +48,7 @@ buildscript {
         maven(url = "https://dl.bintray.com/infinum/android")
     }
     dependencies {
-        classpath("co.infinum.collar:collar-plugin:1.1.8")
+        classpath("co.infinum.collar:collar-plugin:1.1.9")
     }
 }
 ```
@@ -76,7 +78,7 @@ Create or inject an instance of _Collar_ in your Application class and attach a 
 
 ```kotlin
 Collar.attach(object : Collector {
-
+  
     override fun onScreen(screen: Screen) =
         analyticsProvider.sendScreenName(screenName = screen.name)
 
@@ -122,7 +124,7 @@ Class name will be processed into lowercase snake_case appropriate for most anal
 Variable values will be propagated as event parameter values.  
 You can override event name for specific nested class then use _EventName_ annotation with a respective new event name.  
 Accordingly, you can override event parameter name using _EventParameterName_ annotation too.
-  
+
 
 ```kotlin
 @AnalyticsEvents
@@ -150,7 +152,7 @@ However, you can always use _Collar_ methods explicitly besides the extension on
 ```kotlin
     Collar.trackEvent(event)
 ```
-  
+
 ```kotlin
 @ScreenName(AnalyticsKeys.ScreenName.BRAND_DETAILS)
 class BrandFragment : Fragment(R.layout.fragment_brand) {
@@ -179,7 +181,7 @@ Class name will be processed into lowercase snake_case appropriate for most anal
 Variable value will be propagated as user property value.  
 You can override user property name for specific nested class then use _PropertyName_ annotation with a respective new property name.  
 A property nested class can have only 1 declared variable as value. 
-  
+
 
 ```kotlin
 @UserProperties
@@ -201,7 +203,7 @@ However, you can always use _Collar_ methods explicitly besides the extension on
 ```kotlin
     Collar.trackProperty(property)
 ```
-  
+
 ```kotlin
 @ScreenName(AnalyticsKeys.ScreenName.BRAND_DETAILS)
 class BrandFragment : Fragment(R.layout.fragment_brand) {
@@ -250,14 +252,14 @@ javaCompileOptions {
 ### Plugin extension
 ```gradle
 collar {
-    version "1.1.8"
+    version "1.1.9"
 }
-```        
+```
 You can set a specific _Collar_ version to be used.
 
 ## Debug UI
 
-![UI](ui.jpg)
+![UI](ui.png)![ui-dark](ui-dark.png)
 
 A separate _ui_ and _ui-no-op_ packages are provided if you want to visually track what has been sent through Collar.  
 You can search, filter and clear all sent analytics.  
@@ -265,19 +267,25 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:  
 **Groovy**
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.1.8"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.8"
+debugImplementation "co.infinum.collar:collar-ui:1.1.9"
+releaseImplementation "co.infinum.collar:collar-ui-no-op:1.1.9"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("co.infinum.collar:collar-ui:1.1.8")
-releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.8")
+debugImplementation("co.infinum.collar:collar-ui:1.1.9")
+releaseImplementation("co.infinum.collar:collar-ui-no-op:1.1.9")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
 ```kotlin
- Collar.attach(object : LiveCollector() {
-
+val configuration = Configuration(
+  analyticsCollectionEnabled = true, 
+  showSystemNotifications = true, 
+  showInAppNotifications = true, 
+  redactedKeywords = redactedWords
+)
+Collar.attach(object : LiveCollector(configuration) {
+   
     override fun onScreen(screen: Screen) =
         super.onScreen(screen).run {
             analyticsProvider.sendScreenName(screenName = screen.name)
@@ -294,11 +302,13 @@ In order to start tracking with UI you must use _LiveCollector_ as in this examp
         }
 })
 ```
-_LiveCollector_ constructor has a _Configuration_ parameter that consists of following members.
-If you put the first parameter *showSystemNotification* as *true* in *Configuration*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
-Second parameter *showInAppNotification* with value *true* in *Configuration* will show a Snackbar-ish popup once analytics are gathered inside the current running Activity.  
+_LiveCollector_ constructor has a _Configuration_ parameter that consists of the following members. 
+The first parameter (*setAnalyticsCollectionEnabled*) defines the default state of analytics collection. If set to *false*, a warning message will appear in the Collar UI.
+If you set the second parameter (*showSystemNotification*) as *true*, a notification will show once analytics are gathered and clicking on it will open a dedicated screen.  
+The third parameter (*showInAppNotification*) with value *true* will show a Snackbar-ish popup once analytics are gathered inside the currently running Activity.  
 These parameters are default values per collector session but can be changed via _CollarActivity_ menu and will remain valid until the next session.  
 Otherwise if set to *false* notification will **not** be shown but you can always run the UI with following command of getting the launch Intent instead of clicking the actual notification:
+
 ```kotlin
     startActivity(
         CollarUi.launchIntent().apply {
@@ -310,7 +320,7 @@ Alternatively, you can use a dedicated method with default Intent setup:
 ```kotlin
     CollarUi.show()
 ```
-Third parameter in *Configuration* is a set of keywords to redact if found in screen names, analytics events names and parameters and user properties names or values.
+The final *Configuration* parameter is a set of keywords to redact if found in screen names, analytics events names and parameters and user properties names or values.
 
 ![Notification](notification.jpg) ![In app notification](in_app_notification.jpg)
 
@@ -329,7 +339,7 @@ For example:
 
 ```
 collar {
-    version "1.1.8"
+    version "1.1.9"
     fileName = "example.json"
     packageName = "co.infinum.collar.sample.analytics.generated"
 }

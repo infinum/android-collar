@@ -11,6 +11,12 @@ internal data class SettingsEntity(
     @ColumnInfo(name = "id")
     var id: Long = 1,
 
+    @ColumnInfo(name = "analyticsCollection")
+    var analyticsCollectionEnabled: Boolean = false,
+
+    @ColumnInfo(name = "analyticsCollectionTimestamp")
+    var analyticsCollectionTimestamp: Long = 0L,
+
     @ColumnInfo(name = "showSystemNotifications")
     var showSystemNotifications: Boolean = false,
 

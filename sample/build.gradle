@@ -23,8 +23,8 @@ android {
         applicationId "co.infinum.collar.sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 10108
-        versionName "1.1.8"
+        versionCode 10109
+        versionName "1.1.9"
 
         buildTypes {
             debug {
@@ -67,7 +67,7 @@ dependencies {
 }
 
 collar {
-    version "1.1.8"
+    version "1.1.9"
     fileName = "example.json"
     packageName = "co.infinum.collar.sample.analytics.trackingplan"
 }

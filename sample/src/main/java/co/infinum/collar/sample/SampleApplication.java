@@ -27,7 +27,7 @@ public class SampleApplication extends Application {
     private void attachCollar() {
         final Set<String> redactedWords = new ArraySet<>(1);
         redactedWords.add("Java");
-        Collar.attach(new LiveCollector(new Configuration(true, true, redactedWords)) {
+        Collar.attach(new LiveCollector(new Configuration(false, true, true, redactedWords)) {
 
             @Override
             public void onScreen(@NotNull Screen screen) {

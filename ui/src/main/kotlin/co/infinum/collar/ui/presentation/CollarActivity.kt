@@ -90,10 +90,10 @@ internal class CollarActivity : AppCompatActivity() {
             val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
             (menu.findItem(R.id.search).actionView as SearchView).apply {
                 (findViewById(androidx.appcompat.R.id.search_button) as? ImageView)?.setColorFilter(
-                    ContextCompat.getColor(context, R.color.collar_color_icon)
+                    ContextCompat.getColor(context, R.color.collar_color_accent)
                 )
                 (findViewById(androidx.appcompat.R.id.search_close_btn) as? ImageView)?.setColorFilter(
-                    ContextCompat.getColor(context, R.color.collar_color_icon)
+                    ContextCompat.getColor(context, R.color.collar_color_accent)
                 )
                 setSearchableInfo(searchManager.getSearchableInfo(componentName))
                 setIconifiedByDefault(true)
@@ -150,6 +150,10 @@ internal class CollarActivity : AppCompatActivity() {
                 with(viewBinding.toolbar) {
                     menu.findItem(R.id.systemNotifications).isChecked = it.showSystemNotifications
                     menu.findItem(R.id.inAppNotifications).isChecked = it.showInAppNotifications
+                }
+                with(viewBinding) {
+                    collectionStatusCard.isGone = it.analyticsCollectionEnabled
+                    collectionStatusTimestamp.text = formatDateTime(it.analyticsCollectionTimestamp)
                 }
             }
         }
@@ -229,7 +233,7 @@ internal class CollarActivity : AppCompatActivity() {
             .setType("text/plain")
             .setText(
                 listOfNotNull(
-                    "time: ${SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp))}",
+                    "time: ${formatDateTime(entity.timestamp)}",
                     entity.name?.let { "name: $it" },
                     entity.type?.let { "type: ${it.name.toLowerCase(Locale.getDefault())}" },
                     entity.value?.let { "value: $it" },
@@ -238,6 +242,9 @@ internal class CollarActivity : AppCompatActivity() {
             )
             .startChooser()
     }
+
+    private fun formatDateTime(timestampMillis: Long) =
+        SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(timestampMillis))
 
     private fun showEmptyView(shouldShow: Boolean) {
         with(viewBinding) {
