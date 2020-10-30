@@ -9,6 +9,8 @@
 Gradle plugin which collects all analytics screen names, events and user properties for Android projects.  
 This plugin has been written in Kotlin but works both inside Kotlin and Java projects.
 
+**IMPORTANT:** Collar does **NOT** send out analytics data to remote services. This is left for the developer to solve in their own codebase, with Collar being simply a reflection of the current state of analytics data.
+
 The project is organized in the following modules:
 
 - `annotations` - contains all annotations necessary for the plugin to work
