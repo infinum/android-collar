@@ -5,7 +5,7 @@ ext.collar = [
 ]
 
 ext.versions = [
-    "collar"       : "1.1.8",
+    "collar"       : "1.1.9",
     "gradle"       : "4.1.0",
     "kotlin"       : "1.4.10",
     "poet"         : "1.7.2",
@@ -14,7 +14,7 @@ ext.versions = [
     "annotations"  : "19.0.0",
     "incap"        : "0.2",
     "bintray"      : "1.8.5",
-    "core"         : "1.3.1",
+    "core"         : "1.3.2",
     "appcompat"    : "1.2.0",
     "fragment"     : "1.2.5",
     "lifecycle"    : "2.2.0",
@@ -22,7 +22,7 @@ ext.versions = [
     "livedata"     : "2.2.0",
     "recyclerview" : "1.1.0",
     "room"         : "2.2.5",
-    "startup"      : "1.0.0-beta01",
+    "startup"      : "1.0.0",
     "design"       : "1.2.1",
     "maven"        : "2.0",
     "detekt"       : "1.11.0",

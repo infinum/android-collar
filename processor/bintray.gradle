@@ -2,12 +2,6 @@ apply plugin: 'maven-publish'
 apply plugin: "com.jfrog.bintray"
 apply plugin: 'com.github.dcendents.android-maven'
 
-Properties properties = new Properties()
-def bintrayProps = rootProject.file('bintray.properties')
-if (bintrayProps.exists()) {
-    properties.load(new FileInputStream(file(bintrayProps)))
-}
-
 group = collar.group
 version = collar.version
 
@@ -55,6 +49,15 @@ publishing {
 }
 
 bintray {
+    Properties properties = new Properties()
+    def bintrayProperties = rootProject.file('bintray.properties')
+    if (bintrayProperties.exists()) {
+        properties.load(new FileInputStream(bintrayProperties))
+    } else {
+        properties.setProperty("bintray.user", "")
+        properties.setProperty("bintray.apikey", "")
+    }
+
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
 
