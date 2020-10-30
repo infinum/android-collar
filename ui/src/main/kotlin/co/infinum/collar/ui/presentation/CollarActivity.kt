@@ -153,7 +153,8 @@ internal class CollarActivity : AppCompatActivity() {
                 }
                 with(viewBinding) {
                     collectionStatusCard.isGone = it.analyticsCollectionEnabled
-                    collectionStatusTimestamp.text = formatDateTime(it.analyticsCollectionTimestamp)
+                    collectionStatusTimestamp.text =
+                        SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date((it.analyticsCollectionTimestamp)))
                 }
             }
         }
@@ -233,7 +234,7 @@ internal class CollarActivity : AppCompatActivity() {
             .setType("text/plain")
             .setText(
                 listOfNotNull(
-                    "time: ${formatDateTime(entity.timestamp)}",
+                    "time: ${SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp))}",
                     entity.name?.let { "name: $it" },
                     entity.type?.let { "type: ${it.name.toLowerCase(Locale.getDefault())}" },
                     entity.value?.let { "value: $it" },
@@ -242,9 +243,6 @@ internal class CollarActivity : AppCompatActivity() {
             )
             .startChooser()
     }
-
-    private fun formatDateTime(timestampMillis: Long) =
-        SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(timestampMillis))
 
     private fun showEmptyView(shouldShow: Boolean) {
         with(viewBinding) {
