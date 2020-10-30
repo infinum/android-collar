@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         setContentView(viewBinding.getRoot());
 
         viewBinding.analyticsCollectionSwitch.setOnCheckedChangeListener(
-            (buttonView, isChecked) -> Collar.INSTANCE.setAnalyticsCollectionStatus(isChecked)
+            (buttonView, isChecked) -> Collar.setAnalyticsCollectionStatus(isChecked)
         );
 
         viewBinding.buttonProduceEvent1.setOnClickListener(v ->

@@ -24,6 +24,7 @@ object Collar {
      *
      * @param enabled is the analytics collection currently enabled.
      */
+    @JvmStatic
     fun setAnalyticsCollectionStatus(enabled: Boolean) {
         collector?.setAnalyticsCollectionEnabled(enabled = enabled)
     }
