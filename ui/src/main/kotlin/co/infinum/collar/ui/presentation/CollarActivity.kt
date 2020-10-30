@@ -154,7 +154,8 @@ internal class CollarActivity : AppCompatActivity() {
                 with(viewBinding) {
                     collectionStatusCard.isGone = it.analyticsCollectionEnabled
                     collectionStatusTimestamp.text =
-                        SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date((it.analyticsCollectionTimestamp)))
+                        SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault())
+                            .format(Date((it.analyticsCollectionTimestamp)))
                 }
             }
         }
