@@ -68,10 +68,6 @@ bintray {
             name = "${collar.version}"
             released = new Date()
             vcsTag = "${collar.version}"
-            gpg {
-                sign = true
-                passphrase = properties.getProperty("bintray.gpg_passphrase")
-            }
         }
         publish = true
         override = true
