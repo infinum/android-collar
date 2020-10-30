@@ -1,11 +1,11 @@
 ext.collar = [
     "group"      : "co.infinum.collar",
-    "version"    : "1.1.8",
+    "version"    : "1.1.9",
     "versionCode": 1 * 100 * 100 + 1 * 100 + 8
 ]
 
 ext.versions = [
-    "collar"       : "1.1.8",
+    "collar"       : "1.1.9",
     "gradle"       : "4.1.0",
     "kotlin"       : "1.4.10",
     "poet"         : "1.7.2",
