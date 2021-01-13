@@ -17,6 +17,7 @@ afterEvaluate {
             infinum(MavenPublication) {
                 groupId = collar.group
                 artifactId = 'collar-lint'
+                version = collar.version
 
                 artifact sourcesJar
                 artifact javadocsJar

@@ -17,9 +17,11 @@ afterEvaluate {
             infinum(MavenPublication) {
                 groupId = collar.group
                 artifactId = 'collar-ui'
+                version = collar.version
 
                 artifact sourcesJar
                 artifact javadocsJar
+
                 pom {
                     name = 'Collar UI'
                     description = 'UI which provides single point for analytics collection preview.'

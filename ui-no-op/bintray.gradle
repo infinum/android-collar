@@ -17,6 +17,7 @@ afterEvaluate {
             infinum(MavenPublication) {
                 groupId = collar.group
                 artifactId = 'collar-ui-no-op'
+                version = collar.version
 
                 artifact sourcesJar
                 artifact javadocsJar
