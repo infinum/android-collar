@@ -1,13 +1,13 @@
 ext.collar = [
     "group"      : "co.infinum.collar",
-    "version"    : "1.1.9",
-    "versionCode": 1 * 100 * 100 + 1 * 100 + 9
+    "version"    : "1.2.0",
+    "versionCode": 1 * 100 * 100 + 2 * 100 + 0
 ]
 
 ext.versions = [
     "collar"       : "1.1.9",
-    "gradle"       : "4.1.0",
-    "kotlin"       : "1.4.10",
+    "gradle"       : "4.1.1",
+    "kotlin"       : "1.4.21",
     "poet"         : "1.7.2",
     "poet_metadata": "1.7.2",
     "serialization": "1.0.0",

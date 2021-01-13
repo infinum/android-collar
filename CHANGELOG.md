@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.2.0
+
+_2021-01-13_
+
+* Update Gradle to 6.8.
+* Update Kotlin to 1.4.21.
+* Make plugin extension public.
+
 ## Version 1.1.9
 
 _2020-30-10_

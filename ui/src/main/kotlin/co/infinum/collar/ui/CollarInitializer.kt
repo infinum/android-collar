@@ -11,6 +11,6 @@ class CollarInitializer : Initializer<Class<CollarInitializer>> {
         return CollarInitializer::class.java
     }
 
-    override fun dependencies(): MutableList<Class<out Initializer<*>>> =
-        mutableListOf()
+    override fun dependencies(): List<Class<out Initializer<*>>> =
+        listOf()
 }

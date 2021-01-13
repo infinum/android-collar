@@ -1,11 +1,11 @@
 package co.infinum.collar.plugin
 
-internal open class CollarExtension {
+open class CollarExtension {
 
     companion object {
         const val NAME = "collar"
 
-        const val DEFAULT_VERSION = "1.1.9"
+        const val DEFAULT_VERSION = "1.2.0"
         private const val DEFAULT_FILENAME = ""
         private const val DEFAULT_PACKAGE_NAME = ""
     }
