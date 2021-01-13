@@ -20,3 +20,4 @@
 /ui-no-op/build/
 /lint/build/
 /.idea/codeStyles/
+/ui/jacoco.exec
