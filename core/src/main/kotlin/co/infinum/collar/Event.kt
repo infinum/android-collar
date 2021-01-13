@@ -5,7 +5,7 @@ import android.os.Bundle
 /**
  * This is the container model for the triggered tracking analytics event.
  */
-data class Event(
+public data class Event(
 
     /**
      * Name of the tracked analytics event.

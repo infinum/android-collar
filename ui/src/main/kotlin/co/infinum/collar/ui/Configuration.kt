@@ -1,6 +1,6 @@
 package co.infinum.collar.ui
 
-data class Configuration(
+public data class Configuration(
 
     val analyticsCollectionEnabled: Boolean = true,
 

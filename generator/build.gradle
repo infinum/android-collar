@@ -10,6 +10,10 @@ apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: 'kotlinx-serialization'
 
+kotlin {
+    explicitApi()
+}
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"

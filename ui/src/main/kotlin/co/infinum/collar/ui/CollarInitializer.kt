@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.startup.Initializer
 import co.infinum.collar.ui.presentation.Presentation
 
-class CollarInitializer : Initializer<Class<CollarInitializer>> {
+public class CollarInitializer : Initializer<Class<CollarInitializer>> {
 
     override fun create(context: Context): Class<CollarInitializer> {
         Presentation.initialise(context)

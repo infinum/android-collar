@@ -1,6 +1,10 @@
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
+kotlin {
+    explicitApi()
+}
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"

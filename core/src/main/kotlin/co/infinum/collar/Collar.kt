@@ -5,7 +5,7 @@ import android.os.Bundle
 /**
  * Singleton object entry point for screen names, events and properties collection.
  */
-object Collar {
+public object Collar {
 
     private var collector: Collector? = null
 
@@ -15,7 +15,7 @@ object Collar {
      * @param collector interface or class implementing such interface.
      */
     @JvmStatic
-    fun attach(collector: Collector) {
+    public fun attach(collector: Collector) {
         this.collector = collector
     }
 
@@ -25,7 +25,7 @@ object Collar {
      * @param enabled is the analytics collection currently enabled.
      */
     @JvmStatic
-    fun setAnalyticsCollectionStatus(enabled: Boolean) {
+    public fun setAnalyticsCollectionStatus(enabled: Boolean) {
         collector?.setAnalyticsCollectionEnabled(enabled = enabled)
     }
 
@@ -34,20 +34,20 @@ object Collar {
      *
      * @param screenName value.
      */
-    fun trackScreen(screenName: String) =
+    public fun trackScreen(screenName: String): Unit =
         collector?.onScreen(
             Screen(
                 name = screenName
             )
-        )
+        ) ?: Unit
 
     /**
      * Track screen names using a provided wrapper class.
      *
      * @param screen wrapper class.
      */
-    fun trackScreen(screen: Screen) =
-        collector?.onScreen(screen)
+    public fun trackScreen(screen: Screen): Unit =
+        collector?.onScreen(screen) ?: Unit
 
     /**
      * Track events using direct values for event name and optional event parameters.
@@ -55,21 +55,21 @@ object Collar {
      * @param eventName value.
      * @param params value.
      */
-    fun trackEvent(eventName: String, params: Bundle) =
+    public fun trackEvent(eventName: String, params: Bundle): Unit =
         collector?.onEvent(
             Event(
                 name = eventName,
                 params = if (params.isEmpty) null else params
             )
-        )
+        ) ?: Unit
 
     /**
      * Track events using a provided wrapper class.
      *
      * @param event wrapper class.
      */
-    fun trackEvent(event: Event) =
-        collector?.onEvent(event)
+    public fun trackEvent(event: Event): Unit =
+        collector?.onEvent(event) ?: Unit
 
     /**
      * Track user properties using direct values for property name and optional property value.
@@ -78,19 +78,19 @@ object Collar {
      * @param name value.
      * @param value value.
      */
-    fun trackProperty(name: String, value: String?) =
+    public fun trackProperty(name: String, value: String?): Unit =
         collector?.onProperty(
             Property(
                 name = name,
                 value = value
             )
-        )
+        ) ?: Unit
 
     /**
      * Track user properties using a provided wrapper class.
      *
      * @param property wrapper class.
      */
-    fun trackProperty(property: Property) =
-        collector?.onProperty(property)
+    public fun trackProperty(property: Property): Unit =
+        collector?.onProperty(property) ?: Unit
 }

@@ -24,7 +24,7 @@ import co.infinum.collar.ui.presentation.notifications.system.SystemNotification
  * @param showInAppNotifications is true by default.
  * @constructor Default values are provided.
  */
-open class LiveCollector constructor(
+public open class LiveCollector constructor(
     private val configuration: Configuration = Configuration()
 ) : Collector {
 

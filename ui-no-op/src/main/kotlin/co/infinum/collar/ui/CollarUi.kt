@@ -5,17 +5,17 @@ import android.content.Intent
 /**
  * No operation singleton object for UI entry point with convenience methods
  */
-object CollarUi {
+public object CollarUi {
 
     /**
      * No operation stub that creates an empty Intent.
      */
     @JvmStatic
-    fun launchIntent() = Intent()
+    public fun launchIntent(): Intent = Intent()
 
     /**
      * No operation stub that does nothing.
      */
     @JvmStatic
-    fun show() = Unit
+    public fun show(): Unit = Unit
 }
