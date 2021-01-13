@@ -1,7 +1,7 @@
 ext.collar = [
     "group"      : "co.infinum.collar",
-    "version"    : "1.2.0",
-    "versionCode": 1 * 100 * 100 + 2 * 100 + 0
+    "version"    : "1.2.1",
+    "versionCode": 1 * 100 * 100 + 2 * 100 + 1
 ]
 
 ext.versions = [
@@ -24,9 +24,8 @@ ext.versions = [
     "room"         : "2.2.6",
     "startup"      : "1.0.0",
     "design"       : "1.2.1",
-    "maven"        : "2.1",
     "detekt"       : "1.15.0",
-    "dokka"        : "0.10.1"
+    "dokka"        : "1.4.20"
 ]
 
 ext.packages = [
@@ -74,14 +73,11 @@ ext.packages = [
     "google"     : [
         "design": "com.google.android.material:material:${versions.design}"
     ],
-    "maven"      : [
-        "plugin": "com.github.dcendents:android-maven-gradle-plugin:${versions.maven}"
-    ],
     "detekt"     : [
         "plugin"    : "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}",
         "formatting": "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
     ],
     "dokka"      : [
-        "plugin": "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"
+            "plugin": "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"
     ]
 ]
