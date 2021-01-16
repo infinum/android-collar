@@ -19,7 +19,7 @@ compileTestKotlin {
 dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.reflect
-    implementation project(":generator")
+    implementation packages.collar.generator
     compileOnly gradleApi()
     compileOnly packages.gradle
 }

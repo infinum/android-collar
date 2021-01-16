@@ -43,6 +43,15 @@ task deployProcessor(dependsOn: ordered(
     description = "Deploy module to Bintray"
 }
 
+task deployGenerator(dependsOn: ordered(
+        ':generator:clean',
+        ':generator:build',
+        ':generator:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
 task deployPlugin(dependsOn: ordered(
         ':plugin:clean',
         ':plugin:build',
@@ -56,6 +65,7 @@ task deployAll(dependsOn: ordered(
         'deployAnnotations',
         'deployCore',
         'deployProcessor',
+        'deployGenerator',
         'deployPlugin',
         'deployUi',
         'deployUiNoOp'
