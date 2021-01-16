@@ -1,3 +1,4 @@
+apply plugin: 'java-library'
 apply plugin: 'kotlin'
 
 kotlin {
@@ -18,7 +19,8 @@ compileTestKotlin {
 dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.reflect
-    implementation packages.collar.generator
+//    implementation packages.collar.generator
+    implementation project(":generator")
     compileOnly gradleApi()
     compileOnly packages.gradle
 }

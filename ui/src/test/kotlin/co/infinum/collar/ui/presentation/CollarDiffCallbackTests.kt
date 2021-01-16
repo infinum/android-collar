@@ -10,7 +10,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 
-class CollarDiffCallbackTests : MockitoTest {
+public class CollarDiffCallbackTests : MockitoTest {
 
     @Mock
     private lateinit var entity1: CollarEntity
@@ -19,7 +19,7 @@ class CollarDiffCallbackTests : MockitoTest {
     private lateinit var entity2: CollarEntity
 
     @Test
-    fun whenListsAreEmpty_thenTheyAreTheSame() {
+    public fun whenListsAreEmpty_thenTheyAreTheSame() {
         val oldList: List<CollarEntity> = listOf()
         val newList: List<CollarEntity> = listOf()
 
@@ -30,7 +30,7 @@ class CollarDiffCallbackTests : MockitoTest {
     }
 
     @Test
-    fun whenOldListIsEmpty_thenTheyAreNotTheSame() {
+    public fun whenOldListIsEmpty_thenTheyAreNotTheSame() {
         val oldList: List<CollarEntity> = listOf()
         val newList: List<CollarEntity> = listOf(entity1)
 
@@ -41,7 +41,7 @@ class CollarDiffCallbackTests : MockitoTest {
     }
 
     @Test
-    fun whenNewListIsEmpty_thenTheyAreNotTheSame() {
+    public fun whenNewListIsEmpty_thenTheyAreNotTheSame() {
         val oldList: List<CollarEntity> = listOf(entity1)
         val newList: List<CollarEntity> = listOf()
 
@@ -52,7 +52,7 @@ class CollarDiffCallbackTests : MockitoTest {
     }
 
     @Test
-    fun whenListsHaveSameItems_thenTheyAreTheSame() {
+    public fun whenListsHaveSameItems_thenTheyAreTheSame() {
         val oldList: List<CollarEntity> = listOf(entity1, entity2)
         val newList: List<CollarEntity> = listOf(entity1, entity2)
 
@@ -70,7 +70,7 @@ class CollarDiffCallbackTests : MockitoTest {
     }
 
     @Test
-    fun whenListsHaveDifferentItems_thenTheyAreNotTheSame() {
+    public fun whenListsHaveDifferentItems_thenTheyAreNotTheSame() {
         val oldList: List<CollarEntity> = listOf(entity1, entity2)
         val newList: List<CollarEntity> = listOf(entity2, entity1)
 

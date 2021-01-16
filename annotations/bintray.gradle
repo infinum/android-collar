@@ -15,6 +15,8 @@ afterEvaluate {
     publishing {
         publications {
             infinum(MavenPublication) {
+                from components.java
+
                 groupId = collar.group
                 artifactId = 'collar-annotations'
                 version = collar.version
@@ -43,16 +45,6 @@ afterEvaluate {
                         connection = "https://github.com/infinum/android-collar.git"
                         developerConnection = "https://github.com/infinum/android-collar.git"
                         url = "https://github.com/infinum/android-collar"
-                    }
-                }
-                pom.withXml {
-                    def root = asNode()
-                    def dependenciesNode = root.appendNode('dependencies')
-                    configurations.implementation.allDependencies.each {
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
-                        dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
                     }
                 }
             }

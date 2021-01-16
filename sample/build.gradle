@@ -2,8 +2,8 @@ buildscript {
     repositories {
         google()
         jcenter()
-        mavenCentral()
         maven { url "https://dl.bintray.com/infinum/android" }
+        mavenCentral()
     }
     dependencies {
         classpath packages.gradle
@@ -23,8 +23,8 @@ android {
         applicationId "co.infinum.collar.sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 10200
-        versionName "1.2.0"
+        versionCode 10201
+        versionName "1.2.1"
 
         buildTypes {
             debug {
@@ -62,12 +62,13 @@ dependencies {
     implementation packages.kotlin.core
     implementation packages.androidx.appcompat
     implementation packages.androidx.fragment
+    implementation packages.google.design
     lintChecks project(":lint")
     implementation packages.collar.ui
 }
 
 collar {
-    version "1.2.0"
+    version "1.2.1"
     fileName = "example.json"
     packageName = "co.infinum.collar.sample.analytics.trackingplan"
 }

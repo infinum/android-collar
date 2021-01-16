@@ -1,62 +1,53 @@
-task deployAnnotations(dependsOn: [
+task deployAnnotations(dependsOn: ordered(
         ':annotations:clean',
         ':annotations:build',
         ':annotations:bintrayUpload'
-]) {
+)) {
     group = "Deploy"
     description = "Deploy module to Bintray"
 }
 
-task deployCore(dependsOn: [
+task deployCore(dependsOn: ordered(
         ':core:clean',
         ':core:build',
         ':core:bintrayUpload'
-]) {
+)) {
     group = "Deploy"
     description = "Deploy module to Bintray"
 }
 
-task deployUi(dependsOn: [
+task deployUi(dependsOn: ordered(
         ':ui:clean',
         ':ui:build',
         ':ui:bintrayUpload'
-]) {
+)) {
     group = "Deploy"
     description = "Deploy module to Bintray"
 }
 
-task deployUiNoOp(dependsOn: [
+task deployUiNoOp(dependsOn: ordered(
         ':ui-no-op:clean',
         ':ui-no-op:build',
         ':ui-no-op:bintrayUpload'
-]) {
+)) {
     group = "Deploy"
     description = "Deploy module to Bintray"
 }
 
-task deployProcessor(dependsOn: [
+task deployProcessor(dependsOn: ordered(
         ':processor:clean',
         ':processor:build',
         ':processor:bintrayUpload'
-]) {
+)) {
     group = "Deploy"
     description = "Deploy module to Bintray"
 }
 
-task deployGenerator(dependsOn: [
-        ':generator:clean',
-        ':generator:build',
-        ':generator:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployPlugin(dependsOn: [
+task deployPlugin(dependsOn: ordered(
         ':plugin:clean',
         ':plugin:build',
         ':plugin:bintrayUpload'
-]) {
+)) {
     group = "Deploy"
     description = "Deploy module to Bintray"
 }
@@ -64,11 +55,10 @@ task deployPlugin(dependsOn: [
 task deployAll(dependsOn: ordered(
         'deployAnnotations',
         'deployCore',
-        'deployUi',
-        'deployUiNoOp',
         'deployProcessor',
-        'deployGenerator',
-        'deployPlugin'
+        'deployPlugin',
+        'deployUi',
+        'deployUiNoOp'
 )) {
     group = "Deploy"
     description = "Deploy all modules to Bintray"

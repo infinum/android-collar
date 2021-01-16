@@ -37,6 +37,7 @@ android {
 
 dependencies {
     api packages.collar.annotations
+//    api project(':annotations')
     implementation packages.kotlin.core
     compileOnly packages.annotations
     implementation packages.androidx.core
