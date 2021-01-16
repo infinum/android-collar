@@ -24,7 +24,6 @@ buildscript {
         classpath packages.kotlin.serialization_plugin
         classpath packages.detekt.plugin
         classpath packages.dokka.plugin
-//        classpath packages.collar.plugin
     }
 }
 
@@ -48,7 +47,6 @@ allprojects {
                     substitute module(packages.collar.ui) with project(':ui')
                     substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
                     substitute module(packages.collar.processor) with project(':processor')
-//                    substitute module(packages.collar.generator) with project(':generator')
                     substitute module(packages.collar.plugin) with project(':plugin')
                 }
             }
