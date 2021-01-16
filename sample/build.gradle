@@ -26,12 +26,22 @@ android {
         versionCode 10201
         versionName "1.2.1"
 
+        signingConfigs {
+            dummy {
+                storeFile file("dummy.jks")
+                storePassword "dummydummy"
+                keyAlias "dummy"
+                keyPassword "dummydummy"
+            }
+        }
+
         buildTypes {
             debug {
                 debuggable true
             }
             release {
                 debuggable true
+                signingConfig signingConfigs.dummy
             }
         }
 
@@ -64,7 +74,8 @@ dependencies {
     implementation packages.androidx.fragment
     implementation packages.google.design
     lintChecks project(":lint")
-    implementation packages.collar.ui
+    debugImplementation packages.collar.ui
+    releaseImplementation packages.collar.ui_no_op
 }
 
 collar {
