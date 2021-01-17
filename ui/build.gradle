@@ -38,6 +38,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += [
+                '-Xopt-in=org.koin.core.component.KoinApiExtension',
                 '-Xexplicit-api=strict'
         ]
     }
@@ -58,12 +59,18 @@ dependencies {
     implementation packages.androidx.appcompat
     implementation packages.androidx.core
     implementation packages.androidx.recyclerview
+    implementation packages.androidx.lifecycle.common
     implementation packages.androidx.lifecycle.viewmodel
-    implementation packages.androidx.lifecycle.livedata
     implementation packages.google.design
     implementation packages.androidx.room.runtime
+    implementation packages.androidx.room.ktx
     kapt packages.androidx.room.compiler
     implementation packages.androidx.startup
+    implementation packages.kotlinx.coroutines
+    implementation packages.koin.android
+    implementation packages.koin.scope
+    implementation packages.koin.viewmodel
+    implementation packages.timber.core
 
     testImplementation "junit:junit:4.13"
     testImplementation 'org.mockito:mockito-core:3.5.7'

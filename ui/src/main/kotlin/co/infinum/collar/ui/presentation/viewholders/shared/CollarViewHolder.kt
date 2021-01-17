@@ -1,4 +1,4 @@
-package co.infinum.collar.ui.presentation.viewholders
+package co.infinum.collar.ui.presentation.viewholders.shared
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

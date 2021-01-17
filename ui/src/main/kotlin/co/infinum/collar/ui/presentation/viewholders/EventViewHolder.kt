@@ -4,6 +4,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import co.infinum.collar.ui.data.models.local.CollarEntity
 import co.infinum.collar.ui.databinding.CollarItemEventBinding
+import co.infinum.collar.ui.presentation.viewholders.shared.CollarViewHolder
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

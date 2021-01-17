@@ -1,76 +1,105 @@
 package co.infinum.collar.ui.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import co.infinum.collar.ui.data.models.local.CollarEntity
 import co.infinum.collar.ui.data.models.local.EntityType
 import co.infinum.collar.ui.data.models.local.SettingsEntity
-import co.infinum.collar.ui.domain.repositories.EntityRepository
-import co.infinum.collar.ui.domain.repositories.SettingsRepository
+import co.infinum.collar.ui.domain.Repositories
+import co.infinum.collar.ui.domain.entities.models.EntityParameters
+import co.infinum.collar.ui.domain.settings.models.SettingsParameters
+import co.infinum.collar.ui.presentation.shared.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-internal class CollarViewModel : ViewModel() {
+internal class CollarViewModel(
+    private val entityRepository: Repositories.Entity,
+    private val settingsRepository: Repositories.Settings
+) : BaseViewModel() {
 
     companion object {
-        private val FILTERS_ALL = listOf(EntityType.SCREEN, EntityType.EVENT, EntityType.PROPERTY)
+        private val FILTERS_ALL = listOf(
+            EntityType.SCREEN,
+            EntityType.EVENT,
+            EntityType.PROPERTY
+        )
     }
 
-    private val searchQuery = MutableLiveData<String?>()
+    private var parameters: EntityParameters = EntityParameters(
+        query = null,
+        filters = FILTERS_ALL
+    )
 
-    private val filters = MutableLiveData<List<EntityType>>()
-
-    init {
-        search(null)
-        setFilters(FILTERS_ALL)
+    fun search(
+        value: String?,
+        onData: suspend (List<CollarEntity>) -> Unit
+    ) {
+        parameters = parameters.copy(query = value)
+        entities(onData)
     }
 
-    fun entities(): LiveData<List<CollarEntity>> = searchEntities()
-
-    fun search(value: String?) {
-        searchQuery.value = value
-    }
-
-    fun filter(entityType: EntityType, checked: Boolean) {
-        val currentFilters = filters.value.orEmpty().toMutableList()
+    fun filter(
+        entityType: EntityType,
+        checked: Boolean,
+        onData: suspend (List<CollarEntity>) -> Unit
+    ) {
+        val currentFilters = parameters.filters.toMutableList()
         when (checked) {
             true -> currentFilters.add(entityType)
             false -> currentFilters.remove(entityType)
         }
-        setFilters(currentFilters.toList())
+        parameters = parameters.copy(filters = currentFilters.toList())
+        entities(onData)
     }
-
-    fun settings() = SettingsRepository.load()
 
     fun notifications(enabledSystemNotifications: Boolean, enabledInAppNotifications: Boolean) =
-        SettingsRepository.save(
-            SettingsEntity(
-                id = 1,
-                showSystemNotifications = enabledSystemNotifications,
-                showInAppNotifications = enabledInAppNotifications
-            )
-        )
-
-    fun clear() = EntityRepository.clearAll()
-
-    private fun setFilters(value: List<EntityType>) {
-        filters.value = value
-    }
-
-    private fun searchEntities(): LiveData<List<CollarEntity>> =
-        Transformations.switchMap(this.searchQuery) { query ->
-            when {
-                query.isNullOrBlank() -> filterEntities()
-                else -> EntityRepository.load(query)
+        global {
+            io {
+                settingsRepository.save(
+                    SettingsParameters(
+                        entity = SettingsEntity(
+                            id = 1,
+                            showSystemNotifications = enabledSystemNotifications,
+                            showInAppNotifications = enabledInAppNotifications
+                        )
+                    )
+                )
             }
         }
 
-    private fun filterEntities(): LiveData<List<CollarEntity>> =
-        Transformations.switchMap(this.filters) { typeFilters ->
-            if (typeFilters == FILTERS_ALL) {
-                EntityRepository.loadAll()
-            } else {
-                EntityRepository.load(typeFilters)
+    fun clear(action: suspend () -> Unit) =
+        global {
+            io {
+                entityRepository.clear()
+            }
+            withContext(Dispatchers.Main) {
+                action()
+            }
+        }
+
+    fun entities(onData: suspend (List<CollarEntity>) -> Unit) =
+        global {
+            io {
+                entityRepository.load(parameters)
+                    .collectLatest {
+                        withContext(Dispatchers.Main) {
+                            onData(it)
+                        }
+                    }
+            }
+        }
+
+    fun settings(onData: (SettingsEntity) -> Unit) =
+        global {
+            io {
+                settingsRepository.load(
+                    SettingsParameters()
+                )
+                    .collectLatest {
+                        withContext(Dispatchers.Main) {
+                            onData(it)
+                        }
+                    }
             }
         }
 }

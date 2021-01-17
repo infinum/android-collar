@@ -8,13 +8,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.models.local.CollarEntity
@@ -23,12 +21,14 @@ import co.infinum.collar.ui.databinding.CollarActivityCollarBinding
 import co.infinum.collar.ui.databinding.CollarViewDetailBinding
 import co.infinum.collar.ui.extensions.addBadge
 import co.infinum.collar.ui.presentation.decorations.LastDotDecoration
+import co.infinum.collar.ui.presentation.shared.base.BaseActivity
+import co.infinum.collar.ui.presentation.shared.delegates.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-internal class CollarActivity : AppCompatActivity() {
+internal class CollarActivity : BaseActivity() {
 
     companion object {
         private const val FORMAT_DATETIME = "dd.MM.yyyy. HH:mm:ss"
@@ -36,26 +36,23 @@ internal class CollarActivity : AppCompatActivity() {
 
     private var detailDialog: AlertDialog? = null
 
-    private lateinit var viewBinding: CollarActivityCollarBinding
-
-    private lateinit var viewModel: CollarViewModel
-
     private val entryAdapter: CollarAdapter = CollarAdapter(
         onClick = this@CollarActivity::showDetail
     )
 
+    private val viewModel: CollarViewModel by viewModel()
+
+    override val binding by viewBinding(CollarActivityCollarBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) =
         super.onCreate(savedInstanceState).run {
-            viewBinding = CollarActivityCollarBinding.inflate(layoutInflater)
-            setContentView(viewBinding.root)
-
             setupToolbar()
             setupList()
             setupViewModel()
         }
 
     private fun setupToolbar() {
-        with(viewBinding.toolbar) {
+        with(binding.toolbar) {
             navigationIcon = applicationInfo.loadIcon(packageManager)?.addBadge(this@CollarActivity)
             subtitle = applicationInfo.loadLabel(packageManager)
             setNavigationOnClickListener { finish() }
@@ -68,15 +65,24 @@ internal class CollarActivity : AppCompatActivity() {
                     R.id.clear -> clear()
                     R.id.screens -> {
                         it.isChecked = !it.isChecked
-                        viewModel.filter(EntityType.SCREEN, it.isChecked)
+                        viewModel.filter(EntityType.SCREEN, it.isChecked) { items ->
+                            entryAdapter.submitList(items)
+                            showEmptyView(entryAdapter.itemCount == 0)
+                        }
                     }
                     R.id.events -> {
                         it.isChecked = !it.isChecked
-                        viewModel.filter(EntityType.EVENT, it.isChecked)
+                        viewModel.filter(EntityType.EVENT, it.isChecked) { items ->
+                            entryAdapter.submitList(items)
+                            showEmptyView(entryAdapter.itemCount == 0)
+                        }
                     }
                     R.id.properties -> {
                         it.isChecked = !it.isChecked
-                        viewModel.filter(EntityType.PROPERTY, it.isChecked)
+                        viewModel.filter(EntityType.PROPERTY, it.isChecked) { items ->
+                            entryAdapter.submitList(items)
+                            showEmptyView(entryAdapter.itemCount == 0)
+                        }
                     }
                     R.id.systemNotifications -> {
                         viewModel.notifications(it.isChecked.not(), menu.findItem(R.id.inAppNotifications).isChecked)
@@ -122,12 +128,12 @@ internal class CollarActivity : AppCompatActivity() {
     }
 
     private fun setupList() {
-        with(viewBinding.recyclerView) {
+        with(binding.recyclerView) {
             addItemDecoration(LastDotDecoration(context))
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = entryAdapter
         }
-        viewBinding.emptyLayout.instructionsButton.setOnClickListener {
+        binding.emptyLayout.instructionsButton.setOnClickListener {
             startActivity(
                 Intent(Intent.ACTION_VIEW)
                     .apply {
@@ -138,36 +144,25 @@ internal class CollarActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(this).get(CollarViewModel::class.java)
-        if (viewModel.entities().hasObservers().not()) {
-            viewModel.entities().observe(this) {
-                entryAdapter.addItems(it)
-                showEmptyView(entryAdapter.itemCount == 0)
-            }
+        viewModel.entities {
+            entryAdapter.submitList(it)
+            showEmptyView(entryAdapter.itemCount == 0)
         }
-        if (viewModel.settings().hasObservers().not()) {
-            viewModel.settings().observe(this) {
-                with(viewBinding.toolbar) {
-                    menu.findItem(R.id.systemNotifications).isChecked = it.showSystemNotifications
-                    menu.findItem(R.id.inAppNotifications).isChecked = it.showInAppNotifications
-                }
-                with(viewBinding) {
-                    collectionStatusCard.isGone = it.analyticsCollectionEnabled
-                    collectionStatusTimestamp.text =
-                        SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault())
-                            .format(Date((it.analyticsCollectionTimestamp)))
-                }
+        viewModel.settings {
+            with(binding.toolbar) {
+                menu.findItem(R.id.systemNotifications).isChecked = it.showSystemNotifications
+                menu.findItem(R.id.inAppNotifications).isChecked = it.showInAppNotifications
+            }
+            with(binding) {
+                collectionStatusCard.isGone = it.analyticsCollectionEnabled
+                collectionStatusTimestamp.text =
+                    SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault())
+                        .format(Date((it.analyticsCollectionTimestamp)))
             }
         }
     }
 
     override fun onDestroy() {
-        if (viewModel.entities().hasObservers()) {
-            viewModel.entities().removeObservers(this)
-        }
-        if (viewModel.settings().hasObservers()) {
-            viewModel.settings().removeObservers(this)
-        }
         detailDialog?.let {
             if (it.isShowing) {
                 it.dismiss()
@@ -177,11 +172,16 @@ internal class CollarActivity : AppCompatActivity() {
     }
 
     private fun clear() {
-        entryAdapter.clear()
-        viewModel.clear()
+        viewModel.clear{
+            entryAdapter.clear()
+            showEmptyView(entryAdapter.itemCount == 0)
+        }
     }
 
-    private fun search(query: String?) = viewModel.search(query)
+    private fun search(query: String?) = viewModel.search(query) {
+        entryAdapter.submitList(it)
+        showEmptyView(entryAdapter.itemCount == 0)
+    }
 
     @SuppressLint("DefaultLocale")
     @Suppress("ComplexMethod")
@@ -245,8 +245,9 @@ internal class CollarActivity : AppCompatActivity() {
             .startChooser()
     }
 
+    // TODO: There is a bug here with ListAdapter
     private fun showEmptyView(shouldShow: Boolean) {
-        with(viewBinding) {
+        with(binding) {
             val isInSearch = toolbar.menu.findItem(R.id.settings).isVisible.not()
             emptyLayout.root.isVisible = shouldShow
             emptyLayout.instructionsButton.isVisible = isInSearch.not()
