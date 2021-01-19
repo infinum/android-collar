@@ -31,8 +31,10 @@ public open class LiveCollector(
     private val configuration: Configuration = Configuration()
 ) : Collector {
 
-    private val systemNotificationFactory = LibraryKoin.koin().get(SystemNotificationFactory::class)
-    private val inAppNotificationFactory = LibraryKoin.koin().get(InAppNotificationFactory::class)
+    private val koin = LibraryKoin.koin()
+
+    private val systemNotificationFactory = koin.get(SystemNotificationFactory::class)
+    private val inAppNotificationFactory = koin.get(InAppNotificationFactory::class)
 
     private var settings = SettingsEntity(
         analyticsCollectionEnabled = configuration.analyticsCollectionEnabled,
@@ -45,7 +47,7 @@ public open class LiveCollector(
         saveSettings()
 
         GlobalScope.launch {
-            LibraryKoin.koin().get(Repositories.Settings::class)
+            koin.get(Repositories.Settings::class)
                 .load(SettingsParameters(entity = settings))
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
@@ -133,7 +135,7 @@ public open class LiveCollector(
 
     private fun saveEntity(entity: CollarEntity) =
         GlobalScope.launch {
-            LibraryKoin.koin().get(Repositories.Entity::class)
+            koin.get(Repositories.Entity::class)
                 .save(
                     EntityParameters(entity = entity)
                 )
@@ -141,7 +143,7 @@ public open class LiveCollector(
 
     private fun saveSettings() =
         GlobalScope.launch {
-            LibraryKoin.koin().get(Repositories.Settings::class)
+            koin.get(Repositories.Settings::class)
                 .save(
                     SettingsParameters(entity = settings)
                 )

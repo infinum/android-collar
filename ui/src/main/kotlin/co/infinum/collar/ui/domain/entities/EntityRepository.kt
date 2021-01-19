@@ -5,6 +5,7 @@ import co.infinum.collar.ui.data.sources.local.DatabaseProvider
 import co.infinum.collar.ui.domain.Repositories
 import co.infinum.collar.ui.domain.entities.models.EntityParameters
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 internal class EntityRepository(
     private val database: DatabaseProvider
@@ -23,6 +24,8 @@ internal class EntityRepository(
                     database.collar().entities().load(filters = filters)
                 query.isNullOrBlank().not() && filters.isEmpty() ->
                     database.collar().entities().load(query = query!!)
+                query.isNullOrBlank() && filters.isEmpty() ->
+                    flowOf(listOf())
                 else -> database.collar().entities().load()
             }
         }
