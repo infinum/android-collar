@@ -21,13 +21,9 @@ internal object Presentation {
         const val MIME_TYPE_TEXT = "text/plain"
     }
 
-    private lateinit var systemNotificationFactory: SystemNotificationFactory
-
-    private lateinit var inAppNotificationFactory: InAppNotificationFactory
+    private lateinit var context: Context
 
     private lateinit var launchIntent: Intent
-
-    private lateinit var context: Context
 
     fun init(context: Context) {
         when (BuildConfig.DEBUG) {
@@ -35,16 +31,17 @@ internal object Presentation {
             false -> Timber.plant(Stump())
         }
         this.context = context
-        this.launchIntent = Intent(this.context, CollarActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        this.systemNotificationFactory = SystemNotificationFactory(context)
-        this.inAppNotificationFactory = InAppNotificationFactory(context)
+        this.launchIntent = Intent(this.context, CollarActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
     }
 
-    fun systemNotificationFactory() = systemNotificationFactory
-
-    fun inAppNotificationFactory() = inAppNotificationFactory
-
-    fun launchIntent() = launchIntent
+    fun launchIntent() =
+        if (this::context.isInitialized) {
+            launchIntent
+        } else {
+            throw NullPointerException("Presentation context has not been initialized.")
+        }
 
     fun show() =
         if (this::context.isInitialized) {
@@ -56,9 +53,15 @@ internal object Presentation {
     fun modules(): List<Module> =
         Domain.modules().plus(
             listOf(
+                notifications(),
                 viewModels()
             )
         )
+
+    private fun notifications() = module {
+        single { SystemNotificationFactory(get()) }
+        single { InAppNotificationFactory(get()) }
+    }
 
     private fun viewModels() = module {
         viewModel { CollarViewModel(get(), get()) }

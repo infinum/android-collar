@@ -14,7 +14,8 @@ import co.infinum.collar.ui.domain.entities.models.EntityParameters
 import co.infinum.collar.ui.domain.settings.models.SettingsParameters
 import co.infinum.collar.ui.extensions.redact
 import co.infinum.collar.ui.presentation.BundleMapper
-import co.infinum.collar.ui.presentation.Presentation
+import co.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
+import co.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
@@ -30,8 +31,8 @@ public open class LiveCollector(
     private val configuration: Configuration = Configuration()
 ) : Collector {
 
-    private val systemNotificationFactory = Presentation.systemNotificationFactory()
-    private val inAppNotificationFactory = Presentation.inAppNotificationFactory()
+    private val systemNotificationFactory = LibraryKoin.koin().get(SystemNotificationFactory::class)
+    private val inAppNotificationFactory = LibraryKoin.koin().get(InAppNotificationFactory::class)
 
     private var settings = SettingsEntity(
         analyticsCollectionEnabled = configuration.analyticsCollectionEnabled,
