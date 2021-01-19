@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import co.infinum.collar.ui.R
 
-internal class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration() {
+internal class StartDotDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     private val divider = ContextCompat.getDrawable(context, R.drawable.collar_decoration_dot)
 
@@ -16,24 +16,25 @@ internal class LastDotDecoration(context: Context) : RecyclerView.ItemDecoration
         super.getItemOffsets(outRect, view, parent, state)
 
         val itemCount = state.itemCount
-        if (parent.getChildAdapterPosition(view) != itemCount - 1) {
+
+        if (parent.getChildAdapterPosition(view) == RecyclerView.NO_POSITION) {
+            return
+        }
+        if (parent.getChildAdapterPosition(view) > 0) {
             return
         }
 
-        outRect.bottom = divider?.intrinsicHeight ?: 0
+        outRect.top = divider?.intrinsicHeight ?: 0
     }
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         divider?.let {
             if (parent.childCount > 0) {
-                val lastChild = parent.getChildAt(parent.childCount - 1)
-                val lastChildLayoutParams = lastChild.layoutParams as RecyclerView.LayoutParams
-                val top = lastChild.bottom + lastChildLayoutParams.bottomMargin
+                val firstChild = parent.getChildAt(0)
+                val top = firstChild.top - it.intrinsicHeight
                 val bottom: Int = top + it.intrinsicHeight
-                val left = 0
-                val right = left + it.intrinsicWidth
 
-                it.setBounds(left, top, right, bottom)
+                it.setBounds(0, top, it.intrinsicWidth, bottom)
                 it.draw(c)
             }
         }

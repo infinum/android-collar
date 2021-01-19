@@ -19,7 +19,8 @@ import co.infinum.collar.ui.extensions.presentationFormat
 import co.infinum.collar.ui.extensions.safeDismiss
 import co.infinum.collar.ui.extensions.searchView
 import co.infinum.collar.ui.extensions.setup
-import co.infinum.collar.ui.presentation.decorations.LastDotDecoration
+import co.infinum.collar.ui.presentation.decorations.StartDotDecoration
+import co.infinum.collar.ui.presentation.decorations.EndDotDecoration
 import co.infinum.collar.ui.presentation.shared.base.BaseActivity
 import co.infinum.collar.ui.presentation.shared.delegates.viewBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -67,7 +68,8 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
             }
 
             with(recyclerView) {
-                addItemDecoration(LastDotDecoration(context))
+                addItemDecoration(StartDotDecoration(context))
+                addItemDecoration(EndDotDecoration(context))
                 layoutManager = LinearLayoutManager(
                     context,
                     LinearLayoutManager.VERTICAL,
