@@ -12,9 +12,9 @@ import androidx.core.content.ContextCompat
 import co.infinum.collar.ui.presentation.CollarActivity
 import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.models.local.CollarEntity
-import co.infinum.collar.ui.presentation.notifications.NotificationProvider
+import co.infinum.collar.ui.presentation.notifications.NotificationFactory
 
-internal class SystemNotificationProvider(private val context: Context) : NotificationProvider {
+internal class SystemNotificationFactory(private val context: Context) : NotificationFactory {
 
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"

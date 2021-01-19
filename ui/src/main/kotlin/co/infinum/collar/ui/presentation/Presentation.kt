@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import co.infinum.collar.ui.BuildConfig
 import co.infinum.collar.ui.domain.Domain
-import co.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationProvider
-import co.infinum.collar.ui.presentation.notifications.system.SystemNotificationProvider
+import co.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
+import co.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
 import co.infinum.collar.ui.presentation.shared.logger.Stump
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -14,9 +14,16 @@ import timber.log.Timber
 
 internal object Presentation {
 
-    private lateinit var systemNotificationProvider: SystemNotificationProvider
+    object Constants {
+        const val FORMAT_DATETIME = "dd.MM.yyyy. HH:mm:ss"
+        const val FORMAT_ITEM_DATETIME = "HH:mm:ss"
 
-    private lateinit var inAppNotificationProvider: InAppNotificationProvider
+        const val MIME_TYPE_TEXT = "text/plain"
+    }
+
+    private lateinit var systemNotificationFactory: SystemNotificationFactory
+
+    private lateinit var inAppNotificationFactory: InAppNotificationFactory
 
     private lateinit var launchIntent: Intent
 
@@ -29,13 +36,13 @@ internal object Presentation {
         }
         this.context = context
         this.launchIntent = Intent(this.context, CollarActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        this.systemNotificationProvider = SystemNotificationProvider(context)
-        this.inAppNotificationProvider = InAppNotificationProvider(context)
+        this.systemNotificationFactory = SystemNotificationFactory(context)
+        this.inAppNotificationFactory = InAppNotificationFactory(context)
     }
 
-    fun systemNotification() = systemNotificationProvider
+    fun systemNotificationFactory() = systemNotificationFactory
 
-    fun inAppNotification() = inAppNotificationProvider
+    fun inAppNotificationFactory() = inAppNotificationFactory
 
     fun launchIntent() = launchIntent
 

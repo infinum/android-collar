@@ -4,9 +4,7 @@ import co.infinum.collar.ui.data.models.local.SettingsEntity
 import co.infinum.collar.ui.data.sources.local.DatabaseProvider
 import co.infinum.collar.ui.domain.Repositories
 import co.infinum.collar.ui.domain.settings.models.SettingsParameters
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 internal class SettingsRepository(
     private val database: DatabaseProvider
