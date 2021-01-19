@@ -15,8 +15,6 @@ internal class StartDotDecoration(context: Context) : RecyclerView.ItemDecoratio
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
 
-        val itemCount = state.itemCount
-
         if (parent.getChildAdapterPosition(view) == RecyclerView.NO_POSITION) {
             return
         }
