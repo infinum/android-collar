@@ -1,11 +1,11 @@
 package co.infinum.collar.ui.presentation.shared.base
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.infinum.collar.ui.di.LibraryKoinComponent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -28,8 +28,8 @@ internal abstract class BaseViewModel : ViewModel(), LibraryKoinComponent {
         supervisorJob.cancel()
     }
 
-    protected fun global(block: suspend CoroutineScope.() -> Unit) {
-        GlobalScope.launch(errorHandler + Dispatchers.Main + supervisorJob) { block.invoke(this) }
+    protected fun launch(scope: CoroutineScope = viewModelScope, block: suspend CoroutineScope.() -> Unit) {
+        scope.launch(errorHandler + Dispatchers.Main + supervisorJob) { block.invoke(this) }
     }
 
     protected suspend fun <T> io(block: suspend CoroutineScope.() -> T) =

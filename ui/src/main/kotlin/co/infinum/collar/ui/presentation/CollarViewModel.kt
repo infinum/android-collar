@@ -9,8 +9,7 @@ import co.infinum.collar.ui.domain.settings.models.SettingsParameters
 import co.infinum.collar.ui.presentation.shared.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.flowOn
 
 internal class CollarViewModel(
     private val entityRepository: Repositories.Entity,
@@ -53,7 +52,7 @@ internal class CollarViewModel(
     }
 
     fun notifications(enabledSystemNotifications: Boolean, enabledInAppNotifications: Boolean) =
-        global {
+        launch {
             io {
                 settingsRepository.save(
                     SettingsParameters(
@@ -68,38 +67,28 @@ internal class CollarViewModel(
         }
 
     fun clear(action: suspend () -> Unit) =
-        global {
+        launch {
             io {
                 entityRepository.clear()
             }
-            withContext(Dispatchers.Main) {
-                action()
-            }
+            action()
         }
 
     fun entities(onData: suspend (List<CollarEntity>) -> Unit) =
-        global {
-            io {
-                entityRepository.load(parameters)
-                    .collectLatest {
-                        withContext(Dispatchers.Main) {
-                            onData(it)
-                        }
-                    }
-            }
+        launch {
+            entityRepository.load(parameters)
+                .flowOn(Dispatchers.IO)
+                .collectLatest {
+                    onData(it)
+                }
         }
 
     fun settings(onData: (SettingsEntity) -> Unit) =
-        global {
-            io {
-                settingsRepository.load(
-                    SettingsParameters()
-                )
-                    .collectLatest {
-                        withContext(Dispatchers.Main) {
-                            onData(it)
-                        }
-                    }
-            }
+        launch {
+            settingsRepository.load(SettingsParameters())
+                .flowOn(Dispatchers.IO)
+                .collectLatest {
+                    onData(it)
+                }
         }
 }
