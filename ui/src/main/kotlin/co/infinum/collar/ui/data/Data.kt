@@ -1,7 +1,7 @@
 package co.infinum.collar.ui.data
 
-import co.infinum.collar.ui.data.sources.local.DatabaseProvider
-import co.infinum.collar.ui.data.sources.local.RoomDatabaseProvider
+import androidx.room.Room
+import co.infinum.collar.ui.data.sources.local.CollarDatabase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -13,6 +13,13 @@ internal object Data {
         )
 
     private fun local() = module {
-        single<DatabaseProvider> { RoomDatabaseProvider(get()) }
+        single {
+            Room.inMemoryDatabaseBuilder(get(), CollarDatabase::class.java)
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+        single { get<CollarDatabase>().entities() }
+        single { get<CollarDatabase>().settings() }
     }
 }

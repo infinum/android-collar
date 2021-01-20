@@ -5,8 +5,7 @@ import androidx.startup.Initializer
 import co.infinum.collar.ui.di.LibraryKoin
 import co.infinum.collar.ui.presentation.Presentation
 
-@Suppress("unused")
-public class CollarInitializer : Initializer<Class<CollarInitializer>> {
+internal class CollarInitializer : Initializer<Class<CollarInitializer>> {
 
     override fun create(context: Context): Class<CollarInitializer> {
 

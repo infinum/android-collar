@@ -73,9 +73,8 @@ dependencies {
     implementation packages.androidx.appcompat
     implementation packages.androidx.fragment
     implementation packages.google.design
-    lintChecks project(":lint")
     implementation packages.collar.ui
-    //implementation packages.androidx.startup
+    lintChecks project(":lint")
 //    debugImplementation packages.collar.ui
 //    releaseImplementation packages.collar.ui_no_op
 }
