@@ -7,11 +7,9 @@ import co.infinum.collar.Property
 import co.infinum.collar.Screen
 
 /**
- * No operation stub that does nothing.
- * Parameters are unused.
+ * Implementation of Collector interface providing no-op UI.
  *
- * @param showSystemNotifications is false by default.
- * @param showInAppNotifications is false by default.
+ * @param configuration is instantiated with default values for no-op.
  */
 @Suppress("UNUSED_PARAMETER")
 public open class LiveCollector(

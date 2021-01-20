@@ -13,6 +13,18 @@ android {
         versionName collar.version
     }
 
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.txt"
+        }
+    }
+
     resourcePrefix 'collar_'
 
     compileOptions {
