@@ -6,7 +6,6 @@ import co.infinum.collar.ui.BuildConfig
 import co.infinum.collar.ui.domain.Domain
 import co.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
 import co.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
-import co.infinum.collar.ui.presentation.shared.logger.Stump
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -21,15 +20,17 @@ internal object Presentation {
         const val MIME_TYPE_TEXT = "text/plain"
     }
 
+    init {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+    }
+
     private lateinit var context: Context
 
     private lateinit var launchIntent: Intent
 
     fun init(context: Context) {
-        when (BuildConfig.DEBUG) {
-            true -> Timber.plant(Timber.DebugTree())
-            false -> Timber.plant(Stump())
-        }
         this.context = context
         this.launchIntent = Intent(this.context, CollarActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
