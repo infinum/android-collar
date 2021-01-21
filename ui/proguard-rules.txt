@@ -15,3 +15,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep public class co.infinum.collar.ui.CollarUi {
+  public protected *;
+}
+-keep public class co.infinum.collar.ui.LiveCollector {
+  public protected *;
+}
+-keep public class co.infinum.collar.ui.Configuration {
+  public protected *;
+}
