@@ -67,7 +67,7 @@ dependencies {
     implementation packages.androidx.appcompat
     implementation packages.androidx.core
     implementation packages.androidx.recyclerview
-    implementation packages.androidx.lifecycle.common
+    implementation packages.androidx.lifecycle.livedata
     implementation packages.androidx.lifecycle.viewmodel
     implementation packages.androidx.startup
     implementation packages.androidx.room.runtime

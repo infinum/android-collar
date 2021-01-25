@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
+import kotlinx.coroutines.flow.collectLatest
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -19,35 +20,34 @@ internal class ViewBindingDelegate<T : ViewBinding>(
     private var binding: T? = null
 
     init {
-        fragment.lifecycle.addObserver(
-            object : DefaultLifecycleObserver {
-                override fun onCreate(owner: LifecycleOwner) {
-                    fragment.viewLifecycleOwnerLiveData.observe(fragment) { viewLifecycleOwner ->
-                        viewLifecycleOwner.lifecycle.addObserver(
-                            object : DefaultLifecycleObserver {
-                                override fun onDestroy(owner: LifecycleOwner) {
-                                    binding = null
-                                }
-                            }
-                        )
+        fragment.lifecycleScope.launchWhenCreated {
+            fragment.viewLifecycleOwnerLiveData
+                .asFlow()
+                .collectLatest {
+                    if (it == null) {
+                        binding = null
                     }
                 }
-            }
-        )
+        }
     }
 
     override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
-        val binding = binding
-        if (binding != null) {
-            return binding
-        }
+        val existingBinding = binding
+        return when {
+            existingBinding != null -> existingBinding
+            else -> {
+                if (
+                    fragment.viewLifecycleOwner
+                        .lifecycle
+                        .currentState
+                        .isAtLeast(Lifecycle.State.INITIALIZED).not()
+                ) {
+                    throw IllegalStateException("Fragment views are not created yet.")
+                }
 
-        val lifecycle = fragment.viewLifecycleOwner.lifecycle
-        if (lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED).not()) {
-            throw IllegalStateException("Should not attempt to get bindings when Fragment views are destroyed.")
+                viewBindingFactory(thisRef.requireView()).also { this.binding = it }
+            }
         }
-
-        return viewBindingFactory(thisRef.requireView()).also { this.binding = it }
     }
 }
 

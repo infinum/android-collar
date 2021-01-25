@@ -65,7 +65,7 @@ ext.packages = [
                 "appcompat"   : "androidx.appcompat:appcompat:${versions.appcompat}",
                 "fragment"    : "androidx.fragment:fragment-ktx:${versions.fragment}",
                 "lifecycle"   : [
-                        "common"   : "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}",
+                        "livedata" : "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}",
                         "runtime"  : "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}",
                         "viewmodel": "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.viewmodel}"
                 ],
