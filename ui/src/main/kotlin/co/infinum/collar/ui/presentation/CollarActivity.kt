@@ -128,7 +128,7 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
         }
 
     private fun clear() =
-        viewModel.clear {
+        viewModel.clearEntities {
             entryAdapter.submitList(null)
         }
 

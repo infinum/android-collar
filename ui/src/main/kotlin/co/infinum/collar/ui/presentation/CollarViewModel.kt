@@ -66,7 +66,7 @@ internal class CollarViewModel(
             }
         }
 
-    fun clear(action: suspend () -> Unit) =
+    fun clearEntities(action: suspend () -> Unit) =
         launch {
             io {
                 entityRepository.clear()
