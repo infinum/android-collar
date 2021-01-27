@@ -63,8 +63,8 @@ subprojects {
         maven { url "https://dl.bintray.com/infinum/android" }
     }
 
-    apply from: "../detekt.gradle"
     apply from: "../dokka.gradle"
+    apply from: "../detekt.gradle"
 }
 
 tasks.withType(JavaCompile) {
@@ -89,7 +89,5 @@ task detektAll(dependsOn: [
 }
 
 apply from: "deploy.gradle"
-
-apply from: "dokka.gradle"
 
 apply from: "jacoco.gradle"
