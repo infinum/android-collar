@@ -47,7 +47,7 @@ private fun formatCamelCase(input: String, ignore: CharArray, upperCase: Boolean
  * @return **lowerCamelCase** formatted [String]
  * @since 1.0.0
  */
-public fun String.toLowerCamelCase(vararg ignore: Char): String =
+internal fun String.toLowerCamelCase(vararg ignore: Char): String =
     formatCamelCase(this, ignore, false)
 
 /**
@@ -59,7 +59,7 @@ public fun String.toLowerCamelCase(vararg ignore: Char): String =
  * @return **UpperCamelCase** formatted [String]
  * @since 1.0.0
  */
-public fun String.toUpperCamelCase(vararg ignore: Char): String =
+internal fun String.toUpperCamelCase(vararg ignore: Char): String =
     formatCamelCase(this, ignore, true)
 
 private fun formatCase(input: String, separator: Char, ignore: CharArray, upperCase: Boolean) =
@@ -113,7 +113,7 @@ private fun formatLowerCase(input: String, separator: Char, ignore: CharArray) =
  * @return **lower case** formatted [String]
  * @since 1.0.0
  */
-public fun String.toLowerCaseFormat(separator: Char, vararg ignore: Char) =
+internal fun String.toLowerCaseFormat(separator: Char, vararg ignore: Char): String =
     formatLowerCase(this, separator, ignore)
 
 /**
@@ -126,7 +126,7 @@ public fun String.toLowerCaseFormat(separator: Char, vararg ignore: Char) =
  * @return **lower-dash-case** formatted [String]
  * @since 1.0.0
  */
-public fun String.toLowerDashCase(vararg ignore: Char): String =
+internal fun String.toLowerDashCase(vararg ignore: Char): String =
     formatLowerCase(this, '-', ignore)
 
 /**
@@ -138,7 +138,7 @@ public fun String.toLowerDashCase(vararg ignore: Char): String =
  * @return **lower&#95;snake&#95;case** formatted [String]
  * @since 1.0.0
  */
-public fun String.toLowerSnakeCase(vararg ignore: Char): String =
+internal fun String.toLowerSnakeCase(vararg ignore: Char): String =
     formatLowerCase(this, '_', ignore)
 
 private fun formatUpperCase(input: String, separator: Char, ignore: CharArray) =
@@ -155,7 +155,7 @@ private fun formatUpperCase(input: String, separator: Char, ignore: CharArray) =
  * @return **UPPER CASE** formatted [String]
  * @since 1.0.0
  */
-public fun String.toUpperCaseFormat(separator: Char, vararg ignore: Char) =
+internal fun String.toUpperCaseFormat(separator: Char, vararg ignore: Char): String =
     formatUpperCase(this, separator, ignore)
 
 /**
@@ -168,7 +168,7 @@ public fun String.toUpperCaseFormat(separator: Char, vararg ignore: Char) =
  * @return **UPPER-DASH-CASE** formatted [String]
  * @since 1.0.0
  */
-public fun String.toUpperDashCase(vararg ignore: Char): String =
+internal fun String.toUpperDashCase(vararg ignore: Char): String =
     formatUpperCase(this, '-', ignore)
 
 /**
@@ -180,5 +180,5 @@ public fun String.toUpperDashCase(vararg ignore: Char): String =
  * @return **UPPER&#95;SNAKE&#95;CASE** formatted [String]
  * @since 1.0.0
  */
-public fun String.toUpperSnakeCase(vararg ignore: Char): String =
+internal fun String.toUpperSnakeCase(vararg ignore: Char): String =
     formatUpperCase(this, '_', ignore)

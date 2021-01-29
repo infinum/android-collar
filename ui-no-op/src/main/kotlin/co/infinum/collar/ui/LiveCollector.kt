@@ -7,14 +7,12 @@ import co.infinum.collar.Property
 import co.infinum.collar.Screen
 
 /**
- * No operation stub that does nothing.
- * Parameters are unused.
+ * Implementation of Collector interface providing no-op UI.
  *
- * @param showSystemNotifications is false by default.
- * @param showInAppNotifications is false by default.
+ * @param configuration is instantiated with default values for no-op.
  */
 @Suppress("UNUSED_PARAMETER")
-open class LiveCollector(
+public open class LiveCollector(
     private val configuration: Configuration = Configuration()
 ) : Collector {
 
@@ -24,7 +22,7 @@ open class LiveCollector(
      * @param enabled is unused.
      */
     @CallSuper
-    override fun setAnalyticsCollectionEnabled(enabled: Boolean) = Unit
+    override fun setAnalyticsCollectionEnabled(enabled: Boolean): Unit = Unit
 
     /**
      * No operation stub that does nothing.
@@ -32,7 +30,7 @@ open class LiveCollector(
      * @param screen is unused.
      */
     @CallSuper
-    override fun onScreen(screen: Screen) = Unit
+    override fun onScreen(screen: Screen): Unit = Unit
 
     /**
      * No operation stub that does nothing.
@@ -40,7 +38,7 @@ open class LiveCollector(
      * @param event is unused.
      */
     @CallSuper
-    override fun onEvent(event: Event) = Unit
+    override fun onEvent(event: Event): Unit = Unit
 
     /**
      * No operation stub that does nothing.
@@ -48,5 +46,5 @@ open class LiveCollector(
      * @param property is unused.
      */
     @CallSuper
-    override fun onProperty(property: Property) = Unit
+    override fun onProperty(property: Property): Unit = Unit
 }

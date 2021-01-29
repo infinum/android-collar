@@ -26,6 +26,7 @@
         tools:text="20:00:00" />
 
     <FrameLayout
+        android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"

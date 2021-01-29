@@ -5,12 +5,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 
-class CollarTypeConverterTests {
+public class CollarTypeConverterTests {
 
     private val typeConverter = CollarTypeConverter()
 
     @Test
-    fun whenScreenEntitySaved_thenConvertToNameScreen() {
+    public fun whenScreenEntitySaved_thenConvertToNameScreen() {
         val entity = EntityType.SCREEN
 
         val expectedData = EntityType.SCREEN.name
@@ -22,7 +22,7 @@ class CollarTypeConverterTests {
     }
 
     @Test
-    fun whenEventEntitySaved_thenConvertToNameEvent() {
+    public fun whenEventEntitySaved_thenConvertToNameEvent() {
         val entity = EntityType.EVENT
 
         val expectedData = EntityType.EVENT.name
@@ -34,7 +34,7 @@ class CollarTypeConverterTests {
     }
 
     @Test
-    fun whenPropertyEntitySaved_thenConvertToNameProperty() {
+    public fun whenPropertyEntitySaved_thenConvertToNameProperty() {
         val entity = EntityType.PROPERTY
 
         val expectedData = EntityType.PROPERTY.name
@@ -46,7 +46,7 @@ class CollarTypeConverterTests {
     }
 
     @Test
-    fun whenScreenEntityLoaded_thenConvertToScreenType() {
+    public fun whenScreenEntityLoaded_thenConvertToScreenType() {
         val entity = EntityType.SCREEN
 
         val expectedData = EntityType.SCREEN
@@ -58,7 +58,7 @@ class CollarTypeConverterTests {
     }
 
     @Test
-    fun whenEventEntityLoaded_thenConvertToEventType() {
+    public fun whenEventEntityLoaded_thenConvertToEventType() {
         val entity = EntityType.EVENT
 
         val expectedData = EntityType.EVENT
@@ -70,7 +70,7 @@ class CollarTypeConverterTests {
     }
 
     @Test
-    fun whenPropertyEntityLoaded_thenConvertToPropertyType() {
+    public fun whenPropertyEntityLoaded_thenConvertToPropertyType() {
         val entity = EntityType.PROPERTY
 
         val expectedData = EntityType.PROPERTY

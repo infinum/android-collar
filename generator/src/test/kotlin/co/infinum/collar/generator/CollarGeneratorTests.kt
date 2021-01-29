@@ -3,10 +3,10 @@ package co.infinum.collar.generator
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class CollarGeneratorTests {
+public class CollarGeneratorTests {
 
     @Test
-    fun someTest() {
+    public fun someTest() {
         assertEquals(1, 1)
     }
 }

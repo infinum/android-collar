@@ -6,9 +6,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.net.URI
 
-internal class CollarPlugin : Plugin<Project> {
+public class CollarPlugin : Plugin<Project> {
 
-    override fun apply(project: Project) =
+    override fun apply(project: Project): Unit =
         with(project) {
             addRepositories(this)
             addDependencies(this)
@@ -26,6 +26,7 @@ internal class CollarPlugin : Plugin<Project> {
         with(project) {
             val settings = extensions.create(CollarExtension.NAME, CollarExtension::class.java)
 
+            dependencies.add("implementation", "co.infinum.collar:collar-annotations:${settings.version}")
             dependencies.add("implementation", "co.infinum.collar:collar-core:${settings.version}")
 
             if (pluginManager.hasPlugin("kotlin-android")) {

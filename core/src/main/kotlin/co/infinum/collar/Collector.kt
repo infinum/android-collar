@@ -7,7 +7,7 @@ package co.infinum.collar
  * Implementation or invocation of this interface is intended for implementing analytics tools
  * such as Firebase, Amplitude, Mixpanel, etc.
  */
-interface Collector {
+public interface Collector {
 
     /**
      * Controls the collection of Analytics data, which can be either
@@ -15,26 +15,26 @@ interface Collector {
      *
      * @param enabled is the analytics collection currently enabled.
      */
-    fun setAnalyticsCollectionEnabled(enabled: Boolean) = Unit
+    public fun setAnalyticsCollectionEnabled(enabled: Boolean)
 
     /**
      * Invoked when a new screen is emitted.
      *
      * @param screen wrapper class.
      */
-    fun onScreen(screen: Screen)
+    public fun onScreen(screen: Screen)
 
     /**
      * Invoked when a new analytics event is emitted.
      *
      * @param event wrapper class.
      */
-    fun onEvent(event: Event)
+    public fun onEvent(event: Event)
 
     /**
      * Invoked when a new user property is emitted.
      *
      * @param property wrapper class.
      */
-    fun onProperty(property: Property)
+    public fun onProperty(property: Property)
 }

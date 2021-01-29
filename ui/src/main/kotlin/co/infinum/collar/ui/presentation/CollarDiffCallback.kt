@@ -3,18 +3,11 @@ package co.infinum.collar.ui.presentation
 import androidx.recyclerview.widget.DiffUtil
 import co.infinum.collar.ui.data.models.local.CollarEntity
 
-internal class CollarDiffCallback(
-    private val oldList: List<CollarEntity>,
-    private val newList: List<CollarEntity>
-) : DiffUtil.Callback() {
+internal class CollarDiffCallback : DiffUtil.ItemCallback<CollarEntity>() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldList[oldItemPosition].id == newList[newItemPosition].id
+    override fun areItemsTheSame(oldItem: CollarEntity, newItem: CollarEntity): Boolean =
+        oldItem.id == newItem.id
 
-    override fun getOldListSize(): Int = oldList.size
-
-    override fun getNewListSize(): Int = newList.size
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldList[oldItemPosition] == newList[newItemPosition]
+    override fun areContentsTheSame(oldItem: CollarEntity, newItem: CollarEntity): Boolean =
+        oldItem == newItem
 }

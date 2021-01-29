@@ -17,7 +17,7 @@ import co.infinum.collar.ui.LiveCollector
 import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.models.local.SettingsEntity
 import co.infinum.collar.ui.domain.Domain
-import co.infinum.collar.ui.domain.repositories.SettingsRepository
+import co.infinum.collar.ui.domain.settings.SettingsRepository
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test

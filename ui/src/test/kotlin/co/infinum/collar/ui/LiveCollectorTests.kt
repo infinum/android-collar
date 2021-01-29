@@ -11,7 +11,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 
-class LiveCollectorTests : MockitoTest {
+public class LiveCollectorTests : MockitoTest {
 
     @Mock
     private lateinit var collector: LiveCollector
@@ -26,26 +26,26 @@ class LiveCollectorTests : MockitoTest {
     private lateinit var property: Property
 
     @Before
-    fun attachCollarWithCollector() {
+    public fun attachCollarWithCollector() {
         Collar.attach(collector)
     }
 
     @Test
-    fun whenScreenTracked_thenVerifyOnScreenCalledOnce() {
+    public fun whenScreenTracked_thenVerifyOnScreenCalledOnce() {
         Collar.trackScreen(screen)
 
         verify(collector, times(1)).onScreen(screen)
     }
 
     @Test
-    fun whenEventTracked_thenVerifyOnEventCalledOnce() {
+    public fun whenEventTracked_thenVerifyOnEventCalledOnce() {
         Collar.trackEvent(event)
 
         verify(collector, times(1)).onEvent(event)
     }
 
     @Test
-    fun whenPropertyTracked_thenVerifyOnPropertyCalledOnce() {
+    public fun whenPropertyTracked_thenVerifyOnPropertyCalledOnce() {
         Collar.trackProperty(property)
 
         verify(collector, times(1)).onProperty(property)

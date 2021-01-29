@@ -7,8 +7,7 @@
         <activity
             android:name="co.infinum.collar.ui.presentation.CollarActivity"
             android:label="@string/collar_name"
-            android:launchMode="singleTask"
-            android:taskAffinity="co.infinum.collar.task"
+            android:taskAffinity="co.infinum.collar"
             android:theme="@style/Collar.Theme">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

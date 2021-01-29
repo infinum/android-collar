@@ -13,7 +13,7 @@ import java.io.File
 /**
  * Generator class used to parse JSON into according Kotlin models for Collar processor consumption.
  */
-class CollarGenerator {
+public class CollarGenerator {
 
     /**
      * Generate models from provided JSON.
@@ -23,7 +23,7 @@ class CollarGenerator {
      * @param output absolute path for the generated classes.
      * @param packageName package name for the generated classes.
      */
-    fun generate(filePath: String, output: String, packageName: String): Boolean =
+    public fun generate(filePath: String, output: String, packageName: String): Boolean =
         try {
             Json
                 .decodeFromString<AnalyticsModel>(File(filePath).readText(Charsets.UTF_8))

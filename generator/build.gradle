@@ -1,14 +1,10 @@
-buildscript {
-    repositories { jcenter() }
-
-    dependencies {
-        classpath packages.kotlin.serialization_plugin
-    }
-}
-
 apply plugin: 'java-library'
 apply plugin: 'kotlin'
 apply plugin: 'kotlinx-serialization'
+
+kotlin {
+    explicitApi()
+}
 
 compileKotlin {
     kotlinOptions {

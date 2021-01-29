@@ -4,9 +4,9 @@ import org.junit.Rule
 import org.mockito.junit.MockitoJUnit
 import org.mockito.junit.MockitoRule
 
-interface MockitoTest {
+public interface MockitoTest {
 
     @get:Rule
-    val mockitoRule: MockitoRule
+    public val mockitoRule: MockitoRule
         get() = MockitoJUnit.rule()
 }

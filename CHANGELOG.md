@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+## Version 1.2.2
+
+_2021-01-29_
+
+* Update Gradle to 6.8.1.
+* Fix a crash bug when shadowing ViewModel clear() method.
+
+## Version 1.2.1
+
+_2021-01-18_
+
+* Enable Kotlin explicit mode.
+
 ## Version 1.2.0
 
 _2021-01-13_

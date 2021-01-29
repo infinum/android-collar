@@ -1,75 +1,83 @@
-task deployAll(dependsOn: [
-    'deployAnnotations',
-    'deployCore',
-    'deployUi',
-    'deployUiNoOp',
-    'deployProcessor',
-    'deployGenerator',
-    'deployPlugin'
-]) {
+task deployAnnotations(dependsOn: ordered(
+        ':annotations:clean',
+        ':annotations:build',
+        ':annotations:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployCore(dependsOn: ordered(
+        ':core:clean',
+        ':core:build',
+        ':core:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployUi(dependsOn: ordered(
+        ':ui:clean',
+        ':ui:build',
+        ':ui:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployUiNoOp(dependsOn: ordered(
+        ':ui-no-op:clean',
+        ':ui-no-op:build',
+        ':ui-no-op:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployProcessor(dependsOn: ordered(
+        ':processor:clean',
+        ':processor:build',
+        ':processor:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployGenerator(dependsOn: ordered(
+        ':generator:clean',
+        ':generator:build',
+        ':generator:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployPlugin(dependsOn: ordered(
+        ':plugin:clean',
+        ':plugin:build',
+        ':plugin:bintrayUpload'
+)) {
+    group = "Deploy"
+    description = "Deploy module to Bintray"
+}
+
+task deployAll(dependsOn: ordered(
+        'deployAnnotations',
+        'deployCore',
+        'deployProcessor',
+        'deployGenerator',
+        'deployPlugin',
+        'deployUi',
+        'deployUiNoOp'
+)) {
     group = "Deploy"
     description = "Deploy all modules to Bintray"
 }
 
-task deployAnnotations(dependsOn: [
-    ':annotations:build',
-    ':annotations:install',
-    ':annotations:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployCore(dependsOn: [
-    ':core:build',
-    ':core:install',
-    ':core:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployUi(dependsOn: [
-    ':ui:build',
-    ':ui:install',
-    ':ui:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployUiNoOp(dependsOn: [
-    ':ui-no-op:build',
-    ':ui-no-op:install',
-    ':ui-no-op:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployProcessor(dependsOn: [
-    ':processor:build',
-    ':processor:install',
-    ':processor:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployGenerator(dependsOn: [
-    ':generator:build',
-    ':generator:install',
-    ':generator:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
-}
-
-task deployPlugin(dependsOn: [
-    ':plugin:build',
-    ':plugin:install',
-    ':plugin:bintrayUpload'
-]) {
-    group = "Deploy"
-    description = "Deploy module to Bintray"
+def ordered(String... taskPaths) {
+    def allTasks = taskPaths.collect { tasks.getByPath(it) }
+    for (int i = 0; i < allTasks.size() - 1; i++) {
+        allTasks[i + 1].mustRunAfter(allTasks[i])
+    }
+    return allTasks
 }

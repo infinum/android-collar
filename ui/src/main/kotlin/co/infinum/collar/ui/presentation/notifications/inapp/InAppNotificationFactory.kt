@@ -3,27 +3,20 @@ package co.infinum.collar.ui.presentation.notifications.inapp
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.app.ShareCompat
 import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.models.local.CollarEntity
+import co.infinum.collar.ui.extensions.presentationItemFormat
+import co.infinum.collar.ui.presentation.Presentation
+import co.infinum.collar.ui.presentation.notifications.NotificationFactory
 import co.infinum.collar.ui.presentation.notifications.inapp.snackbar.CollarSnackbar
-import co.infinum.collar.ui.presentation.notifications.NotificationProvider
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
-internal class InAppNotificationProvider(
+internal class InAppNotificationFactory(
     context: Context
-) : NotificationProvider {
-
-    companion object {
-        const val FORMAT_DATETIME = "HH:mm:ss"
-        const val SHARE_TYPE = "text/plain"
-        const val LINE_SEPARATOR = "\n"
-    }
+) : NotificationFactory {
 
     private val callbacks = CollarActivityLifecycleCallbacks()
 
@@ -70,20 +63,19 @@ internal class InAppNotificationProvider(
             icon,
             entity.name,
             entity.parameters,
-            SimpleDateFormat(FORMAT_DATETIME, Locale.getDefault()).format(Date(entity.timestamp)),
-            View.OnClickListener {
-                activity?.let {
-                    it.startActivity(
-                        ShareCompat.IntentBuilder.from(it)
-                            .setType(SHARE_TYPE)
-                            .setText(listOfNotNull(
-                                entity.name,
-                                entity.parameters
-                            ).joinToString(LINE_SEPARATOR))
-                            .createChooserIntent()
-                    )
-                }
+            Date(entity.timestamp).presentationItemFormat
+        ) {
+            activity?.let {
+                it.startActivity(
+                    ShareCompat.IntentBuilder.from(it)
+                        .setType(Presentation.Constants.MIME_TYPE_TEXT)
+                        .setText(listOfNotNull(
+                            entity.name,
+                            entity.parameters
+                        ).joinToString(System.lineSeparator()))
+                        .createChooserIntent()
+                )
             }
-        ).show()
+        }.show()
     }
 }

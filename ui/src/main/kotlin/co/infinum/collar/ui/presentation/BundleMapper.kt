@@ -1,9 +1,8 @@
 package co.infinum.collar.ui.presentation
 
 import android.os.Bundle
-import android.util.Log
-import co.infinum.collar.ui.CollarUi
 import co.infinum.collar.ui.extensions.redact
+import timber.log.Timber
 
 @Suppress("ComplexMethod")
 internal object BundleMapper {
@@ -32,8 +31,7 @@ internal object BundleMapper {
                     is Bundle -> toMap(bundle.getBundle(key)
                         ?: Bundle.EMPTY, redactedKeywords)
                     else -> {
-                        Log.w(
-                            CollarUi.javaClass.simpleName,
+                        Timber.w(
                             "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""
                         )
                         ""
@@ -59,8 +57,7 @@ internal object BundleMapper {
                 is Short -> putShort(key, value)
                 is CharSequence -> putCharSequence(key, value)
                 is Bundle -> putBundle(key, value)
-                else -> Log.w(
-                    CollarUi.javaClass.simpleName,
+                else -> Timber.w(
                     "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""
                 )
             }

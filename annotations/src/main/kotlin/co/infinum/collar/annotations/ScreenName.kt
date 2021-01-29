@@ -18,7 +18,7 @@ package co.infinum.collar.annotations
  */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ScreenName(
+public annotation class ScreenName(
     val value: String = "",
     val enabled: Boolean = true
 )

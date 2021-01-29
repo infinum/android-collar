@@ -1,4 +1,4 @@
-package co.infinum.collar.ui.presentation.viewholders
+package co.infinum.collar.ui.presentation.viewholders.shared
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -8,11 +8,11 @@ internal abstract class CollarViewHolder(
     view: View
 ) : RecyclerView.ViewHolder(view) {
 
-    companion object {
-        const val FORMAT_DATETIME = "HH:mm:ss"
-    }
-
-    abstract fun bind(entity: CollarEntity, showTimestamp: Boolean, onClick: (CollarEntity) -> Unit)
+    abstract fun bind(
+        entity: CollarEntity,
+        showTimestamp: Boolean,
+        onClick: (CollarEntity) -> Unit
+    )
 
     abstract fun unbind()
 }
