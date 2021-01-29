@@ -3,7 +3,7 @@ Change Log
 
 ## Version 1.2.2
 
-_2021-01-27_
+_2021-01-29_
 
 * Update Gradle to 6.8.1.
 * Fix a crash bug when shadowing ViewModel clear() method.
