@@ -14,13 +14,13 @@ import co.infinum.collar.processor.subprocessors.AnalyticsEventsSubprocessor
 import co.infinum.collar.processor.subprocessors.ScreenNamesSubprocessor
 import co.infinum.collar.processor.subprocessors.UserPropertiesSubprocessor
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
-import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
-import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
+import net.ltgt.gradle.incap.IncrementalAnnotationProcessor
+import net.ltgt.gradle.incap.IncrementalAnnotationProcessorType
 
 @IncrementalAnnotationProcessor(IncrementalAnnotationProcessorType.AGGREGATING)
 internal class CollarProcessor : AbstractProcessor() {

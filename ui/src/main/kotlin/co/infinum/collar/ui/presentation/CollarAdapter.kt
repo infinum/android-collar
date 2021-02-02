@@ -35,21 +35,27 @@ internal class CollarAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollarViewHolder =
         when (viewType) {
-            VIEW_TYPE_SCREEN -> ScreenViewHolder(CollarItemScreenBinding.inflate(
-                parent.inflater,
-                parent,
-                false
-            ))
-            VIEW_TYPE_EVENT -> EventViewHolder(CollarItemEventBinding.inflate(
-                parent.inflater,
-                parent,
-                false
-            ))
-            VIEW_TYPE_PROPERTY -> PropertyViewHolder(CollarItemPropertyBinding.inflate(
-                parent.inflater,
-                parent,
-                false
-            ))
+            VIEW_TYPE_SCREEN -> ScreenViewHolder(
+                CollarItemScreenBinding.inflate(
+                    parent.inflater,
+                    parent,
+                    false
+                )
+            )
+            VIEW_TYPE_EVENT -> EventViewHolder(
+                CollarItemEventBinding.inflate(
+                    parent.inflater,
+                    parent,
+                    false
+                )
+            )
+            VIEW_TYPE_PROPERTY -> PropertyViewHolder(
+                CollarItemPropertyBinding.inflate(
+                    parent.inflater,
+                    parent,
+                    false
+                )
+            )
             else -> throw NotImplementedError()
         }
 

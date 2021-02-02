@@ -16,7 +16,7 @@ internal class UserPropertiesSpec private constructor(
 
     companion object {
         private const val SIMPLE_NAME = "UserProperties"
-        private const val FUNCTION_NAME = "trackProperty"
+        private const val FUNCTION_TRACK_PROPERTY = "trackProperty"
         private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L)"
     }
 
@@ -31,15 +31,9 @@ internal class UserPropertiesSpec private constructor(
         fun build() = UserPropertiesSpec(outputDir!!, className.packageName, className.simpleName, holders)
     }
 
-    init {
-        build()
-    }
-
-    override fun functionName(): String = FUNCTION_NAME
-
     override fun extensions(): List<FunSpec> =
         listOf(
-            FunSpec.builder(functionName())
+            FunSpec.builder(FUNCTION_TRACK_PROPERTY)
                 .addParameter(parameterName(), ClassName(packageName, simpleName))
                 .applyIf(holders.isNotEmpty()) {
                     beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
@@ -57,7 +51,7 @@ internal class UserPropertiesSpec private constructor(
                         STATEMENT,
                         it.className,
                         CLASS_COLLAR,
-                        functionName(),
+                        FUNCTION_TRACK_PROPERTY,
                         it.propertyName,
                         parameterName(),
                         it.propertyParameterNames.single()

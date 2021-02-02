@@ -35,9 +35,10 @@ internal class AnalyticsEventsValidator(
             setOf()
         } else {
             validRootClasses.map { rootClass ->
-                rootClass.copy(eventHolders = rootClass.eventHolders
-                    .filter { it.enabled && validateSuperType(it, rootClass) }
-                    .toSet()
+                rootClass.copy(
+                    eventHolders = rootClass.eventHolders
+                        .filter { it.enabled && validateSuperType(it, rootClass) }
+                        .toSet()
                 )
             }.toSet()
         }
@@ -47,7 +48,7 @@ internal class AnalyticsEventsValidator(
         if (typeUtils.directSupertypes(holder.type).contains(rootClass.rootClass.asType())) {
             validateNameLength(holder)
         } else {
-            messager.showWarning("$holder does not extend from $rootClass.")
+            messager.showWarning("Event $holder does not extend from $rootClass.")
             false
         }
 
@@ -85,7 +86,8 @@ internal class AnalyticsEventsValidator(
         }
 
     private fun validateReserved(holder: EventHolder): Boolean =
-        if (processorOptions
+        if (
+            processorOptions
                 .reservedPrefixes()
                 .any { holder.eventName.startsWith(it, false) }.not() && processorOptions.reserved()
                 .any { holder.eventName.equals(it, false) }.not()
@@ -93,9 +95,12 @@ internal class AnalyticsEventsValidator(
             validateParameterCount(holder)
         } else {
             messager.showWarning(
-                "The ${processorOptions
+                "The ${
+                processorOptions
                     .reservedPrefixes()
-                    .plus(processorOptions.reserved()).joinToString { "\"$it\"" }}" +
+                    .plus(processorOptions.reserved())
+                    .joinToString { "\"$it\"" }
+                }" +
                     " event names are reserved and cannot be used as in ${holder.eventName}."
             )
             false
@@ -117,7 +122,8 @@ internal class AnalyticsEventsValidator(
         return if (invalidParameterTypes.isNotEmpty()) {
             messager.showWarning(
                 "Event parameters ${invalidParameterTypes.joinToString(", ") { it.variableName }}" +
-                    " from event ${holder.className.simpleName} are not supported.")
+                    " from event ${holder.className.simpleName} are not supported."
+            )
             false
         } else {
             true

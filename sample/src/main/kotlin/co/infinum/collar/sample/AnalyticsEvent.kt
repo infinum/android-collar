@@ -34,15 +34,7 @@ sealed class AnalyticsEvent {
     @EventName("event3")
     data class EventThree(
         val myString: String,
-        val myBoolean: Boolean,
-        val myByte: Byte,
-        val myChar: Char,
-        val myDouble: Double,
-        val myFloat: Float,
-        val myInt: Int,
-        val myLong: Long,
-        val myShort: Short,
-        val myBundle: Bundle
+        val myBoolean: Boolean
     ) : AnalyticsEvent()
 
     @EventName("event4")

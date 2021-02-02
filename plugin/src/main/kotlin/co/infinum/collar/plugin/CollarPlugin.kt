@@ -2,9 +2,9 @@ package co.infinum.collar.plugin
 
 import co.infinum.collar.plugin.tasks.GenerateTask
 import com.android.build.gradle.AppExtension
+import java.net.URI
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.net.URI
 
 public class CollarPlugin : Plugin<Project> {
 

@@ -69,10 +69,12 @@ internal class InAppNotificationFactory(
                 it.startActivity(
                     ShareCompat.IntentBuilder.from(it)
                         .setType(Presentation.Constants.MIME_TYPE_TEXT)
-                        .setText(listOfNotNull(
-                            entity.name,
-                            entity.parameters
-                        ).joinToString(System.lineSeparator()))
+                        .setText(
+                            listOfNotNull(
+                                entity.name,
+                                entity.parameters
+                            ).joinToString(System.lineSeparator())
+                        )
                         .createChooserIntent()
                 )
             }

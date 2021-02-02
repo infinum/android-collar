@@ -6,10 +6,10 @@ import co.infinum.collar.annotations.EventParameterName
 import co.infinum.collar.processor.extensions.asClassName
 import co.infinum.collar.processor.extensions.fieldElements
 import co.infinum.collar.processor.extensions.resolveMethod
+import co.infinum.collar.processor.extensions.toLowerSnakeCase
 import co.infinum.collar.processor.models.AnalyticsEventsHolder
 import co.infinum.collar.processor.models.EventHolder
 import co.infinum.collar.processor.models.EventParameterHolder
-import co.infinum.collar.processor.extensions.toLowerSnakeCase
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element

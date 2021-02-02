@@ -27,19 +27,7 @@ class KotlinMainActivity : Activity() {
         viewBinding.buttonProduceEvent3.setOnClickListener {
             trackEvent(AnalyticsEvent.EventThree(
                 myString = "cool",
-                myBoolean = false,
-                myByte = 101,
-                myChar = Character.MIN_VALUE,
-                myDouble = 24.7,
-                myFloat = 11.5f,
-                myInt = 1,
-                myLong = 198L,
-                myShort = 4096,
-                myBundle = Bundle().apply {
-                    "1" to 1
-                    "2" to 2
-                    "3" to 1
-                }
+                myBoolean = false
             ))
         }
 

@@ -35,9 +35,11 @@ internal class UserPropertiesValidator(
             setOf()
         } else {
             validRootClasses.map { rootClass ->
-                rootClass.copy(propertyHolders = rootClass.propertyHolders
-                    .filter { it.enabled && validateSuperType(it, rootClass) }
-                    .toSet())
+                rootClass.copy(
+                    propertyHolders = rootClass.propertyHolders
+                        .filter { it.enabled && validateSuperType(it, rootClass) }
+                        .toSet()
+                )
             }.toSet()
         }
     }
@@ -46,7 +48,7 @@ internal class UserPropertiesValidator(
         if (typeUtils.directSupertypes(holder.type).contains(rootClass.rootClass.asType())) {
             validateNameLength(holder)
         } else {
-            messager.showWarning("$holder does not extend from $rootClass.")
+            messager.showWarning("Property $holder does not extend from $rootClass.")
             false
         }
 
@@ -84,7 +86,8 @@ internal class UserPropertiesValidator(
         }
 
     private fun validateReserved(holder: PropertyHolder): Boolean =
-        if (processorOptions
+        if (
+            processorOptions
                 .reservedPrefixes()
                 .any { holder.propertyName.startsWith(it, false) }.not() && processorOptions.reserved()
                 .any { holder.propertyName.equals(it, false) }.not()
@@ -92,9 +95,12 @@ internal class UserPropertiesValidator(
             validateExistingParameters(holder)
         } else {
             messager.showWarning(
-                "The ${processorOptions
+                "The ${
+                processorOptions
                     .reservedPrefixes()
-                    .plus(processorOptions.reserved()).joinToString { "\"$it\"" }}" +
+                    .plus(processorOptions.reserved())
+                    .joinToString { "\"$it\"" }
+                }" +
                     " user properties are reserved and cannot be used as in ${holder.propertyName}."
             )
             false

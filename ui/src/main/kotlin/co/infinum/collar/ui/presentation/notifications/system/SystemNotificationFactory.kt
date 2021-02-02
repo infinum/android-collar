@@ -9,9 +9,9 @@ import android.os.Build
 import android.util.LongSparseArray
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import co.infinum.collar.ui.presentation.CollarActivity
 import co.infinum.collar.ui.R
 import co.infinum.collar.ui.data.models.local.CollarEntity
+import co.infinum.collar.ui.presentation.CollarActivity
 import co.infinum.collar.ui.presentation.notifications.NotificationFactory
 
 internal class SystemNotificationFactory(private val context: Context) : NotificationFactory {
