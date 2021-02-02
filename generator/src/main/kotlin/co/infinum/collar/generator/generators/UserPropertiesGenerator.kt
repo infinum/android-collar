@@ -1,5 +1,6 @@
 package co.infinum.collar.generator.generators
 
+import co.infinum.collar.generator.extensions.addValue
 import co.infinum.collar.generator.extensions.toCamelCase
 import co.infinum.collar.generator.extensions.toEnumValue
 import co.infinum.collar.generator.generators.Generator.Companion.COLLAR_ANNOTATION_PACKAGE
@@ -65,23 +66,7 @@ internal class UserPropertiesGenerator(
                         if (userProperty.values?.isNotEmpty() == true) {
                             val enumBuilder = TypeSpec.enumBuilder(
                                 userProperty.name.toCamelCase()
-                            )
-                                .primaryConstructor(
-                                    FunSpec.constructorBuilder()
-                                        .addParameter("value", String::class, KModifier.PRIVATE)
-                                        .build()
-                                )
-                                .addProperty(
-                                    PropertySpec.builder("value", String::class)
-                                        .initializer("value")
-                                        .build()
-                                )
-                                .addFunction(
-                                    FunSpec.builder("toString")
-                                        .addModifiers(KModifier.OVERRIDE)
-                                        .addStatement("return value")
-                                        .build()
-                                )
+                            ).addValue()
 
                             userProperty.values.forEach { value ->
                                 enumBuilder.addEnumConstant(

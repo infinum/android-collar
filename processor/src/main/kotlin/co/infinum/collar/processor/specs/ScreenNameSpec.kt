@@ -17,7 +17,7 @@ internal class ScreenNameSpec private constructor(
 
     companion object {
         private const val SIMPLE_NAME = "ScreenNames"
-        private const val FUNCTION_NAME = "trackScreen"
+        private const val FUNCTION_TRACK_SCREEN = "trackScreen"
         private const val PARAMETER_NAME = "this"
         private const val STATEMENT = "is %T -> %T.%L(%S)"
     }
@@ -31,16 +31,10 @@ internal class ScreenNameSpec private constructor(
         fun build() = ScreenNameSpec(outputDir!!, holders)
     }
 
-    init {
-        build()
-    }
-
     override fun file(): FileSpec =
         super.file().toBuilder(PACKAGE_NAME, SIMPLE_NAME)
             .applyIf(hasDeprecatedClasses()) { addAnnotation(suppressDeprecation()) }
             .build()
-
-    override fun functionName(): String = FUNCTION_NAME
 
     override fun parameterName(): String = PARAMETER_NAME
 
@@ -52,7 +46,7 @@ internal class ScreenNameSpec private constructor(
             .map { it to holders.groupBy { holder -> holder.superClassName }[it].orEmpty() }
             .toMap()
             .map { (keyClass, holders) ->
-                FunSpec.builder(functionName())
+                FunSpec.builder(FUNCTION_TRACK_SCREEN)
                     .receiver(keyClass)
                     .applyIf(holders.isNotEmpty()) {
                         beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
@@ -88,7 +82,7 @@ internal class ScreenNameSpec private constructor(
             STATEMENT,
             holder.className,
             CLASS_COLLAR,
-            functionName(),
+            FUNCTION_TRACK_SCREEN,
             holder.screenName
         )
 }

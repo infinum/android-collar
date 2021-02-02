@@ -48,7 +48,7 @@ internal class UserPropertiesValidator(
         if (typeUtils.directSupertypes(holder.type).contains(rootClass.rootClass.asType())) {
             validateNameLength(holder)
         } else {
-            messager.showWarning("$holder does not extend from $rootClass.")
+            messager.showWarning("Property $holder does not extend from $rootClass.")
             false
         }
 

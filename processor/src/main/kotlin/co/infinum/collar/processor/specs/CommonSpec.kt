@@ -24,6 +24,10 @@ internal abstract class CommonSpec(
         private const val COMMENT = "This is a Collar generated extension file. Do not edit manually."
     }
 
+    init {
+        build()
+    }
+
     override fun file(): FileSpec =
         FileSpec.builder(packageName, simpleName)
             .addAnnotation(jvmName())
@@ -43,5 +47,5 @@ internal abstract class CommonSpec(
 
     override fun parameterName(): String = PARAMETER_NAME
 
-    override fun build() = file().writeTo(outputDir)
+    final override fun build() = file().writeTo(outputDir)
 }

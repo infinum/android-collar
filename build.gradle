@@ -103,7 +103,7 @@ task ktlintAll(dependsOn: [
         ':generator:ktlintCheck'
 ]) {
     group = "Verification"
-    description = "Run detekt on all modules"
+    description = "Run ktlint on all modules"
 }
 
 task cpdAll(dependsOn: [
@@ -116,7 +116,7 @@ task cpdAll(dependsOn: [
         ':generator:cpdCheck'
 ]) {
     group = "Verification"
-    description = "Run detekt on all modules"
+    description = "Run CPD on all modules"
 }
 
 apply from: "shared.gradle"

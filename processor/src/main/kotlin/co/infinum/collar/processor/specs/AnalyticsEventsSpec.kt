@@ -16,7 +16,7 @@ internal class AnalyticsEventsSpec private constructor(
 
     companion object {
         private const val SIMPLE_NAME = "AnalyticsEvents"
-        private const val FUNCTION_NAME = "trackEvent"
+        private const val FUNCTION_TRACK_EVENT = "trackEvent"
 
         private const val STATEMENT_EVENT_CLASS_START = "is %T -> %T.%L("
         private const val STATEMENT_EVENT_CLASS_END = ")"
@@ -40,15 +40,9 @@ internal class AnalyticsEventsSpec private constructor(
         fun build() = AnalyticsEventsSpec(outputDir!!, className.packageName, className.simpleName, holders)
     }
 
-    init {
-        build()
-    }
-
-    override fun functionName(): String = FUNCTION_NAME
-
     override fun extensions(): List<FunSpec> =
         listOf(
-            FunSpec.builder(functionName())
+            FunSpec.builder(FUNCTION_TRACK_EVENT)
                 .addParameter(parameterName(), ClassName(packageName, simpleName))
                 .applyIf(holders.isNotEmpty()) {
                     beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
@@ -63,7 +57,7 @@ internal class AnalyticsEventsSpec private constructor(
         CodeBlock.builder()
             .apply {
                 holders.forEach { holder ->
-                    addStatement(STATEMENT_EVENT_CLASS_START, holder.className, CLASS_COLLAR, functionName())
+                    addStatement(STATEMENT_EVENT_CLASS_START, holder.className, CLASS_COLLAR, FUNCTION_TRACK_EVENT)
                     indent()
                     eventName(this, holder)
                         .apply {
