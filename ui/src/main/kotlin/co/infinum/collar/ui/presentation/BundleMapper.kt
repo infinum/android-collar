@@ -28,8 +28,10 @@ internal object BundleMapper {
                     is Long -> bundle.getLong(key).toString()
                     is Short -> bundle.getShort(key).toString()
                     is CharSequence -> bundle.getCharSequence(key).toString()
-                    is Bundle -> toMap(bundle.getBundle(key)
-                        ?: Bundle.EMPTY, redactedKeywords)
+                    is Bundle -> toMap(
+                        bundle.getBundle(key) ?: Bundle.EMPTY,
+                        redactedKeywords
+                    )
                     else -> {
                         Timber.w(
                             "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""

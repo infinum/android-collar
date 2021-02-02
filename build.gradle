@@ -12,9 +12,10 @@ buildscript {
 
     repositories {
         google()
+        maven { url "https://dl.bintray.com/infinum/android" }
         jcenter()
         mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     dependencies {
@@ -22,8 +23,9 @@ buildscript {
         classpath packages.bintray
         classpath packages.kotlin.plugin
         classpath packages.kotlin.serialization_plugin
-        classpath 'de.aaschmid:gradle-cpd-plugin:3.1'
+        classpath packages.cpd.plugin
         classpath packages.detekt.plugin
+        classpath packages.ktlint.plugin
         classpath packages.dokka.plugin
     }
 }
@@ -32,9 +34,9 @@ allprojects {
 
     repositories {
         google()
+        maven { url "https://dl.bintray.com/infinum/android" }
         jcenter()
         mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
     }
 
     def buildProperties = new Properties()
@@ -59,13 +61,14 @@ allprojects {
 subprojects {
     repositories {
         google()
+        maven { url "https://dl.bintray.com/infinum/android" }
         jcenter()
         mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
     }
 
     apply from: "../cpd.gradle"
     apply from: "../dokka.gradle"
+    apply from: "../ktlint.gradle"
     apply from: "../detekt.gradle"
 }
 
@@ -88,6 +91,43 @@ task detektAll(dependsOn: [
 ]) {
     group = "Verification"
     description = "Run detekt on all modules"
+}
+
+task ktlintAll(dependsOn: [
+        ':annotations:ktlintCheck',
+        ':core:ktlintCheck',
+        ':ui:ktlintCheck',
+        ':ui-no-op:ktlintCheck',
+        ':processor:ktlintCheck',
+        ':plugin:ktlintCheck',
+        ':generator:ktlintCheck'
+]) {
+    group = "Verification"
+    description = "Run detekt on all modules"
+}
+
+task cpdAll(dependsOn: [
+        ':annotations:cpdCheck',
+        ':core:cpdCheck',
+        ':ui:cpdCheck',
+        ':ui-no-op:cpdCheck',
+        ':processor:cpdCheck',
+        ':plugin:cpdCheck',
+        ':generator:cpdCheck'
+]) {
+    group = "Verification"
+    description = "Run detekt on all modules"
+}
+
+apply from: "shared.gradle"
+
+task runStaticChecks(dependsOn: ordered(
+        ':detektAll',
+        ':ktlintAll',
+        ':cpdAll'
+)) {
+    group = "Verification"
+    description = "Run static checks on all modules"
 }
 
 apply from: "deploy.gradle"

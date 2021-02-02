@@ -5,10 +5,10 @@ import co.infinum.collar.generator.generators.Generator
 import co.infinum.collar.generator.generators.ScreensGenerator
 import co.infinum.collar.generator.generators.UserPropertiesGenerator
 import co.infinum.collar.generator.models.AnalyticsModel
+import java.io.File
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import java.io.File
 
 /**
  * Generator class used to parse JSON into according Kotlin models for Collar processor consumption.

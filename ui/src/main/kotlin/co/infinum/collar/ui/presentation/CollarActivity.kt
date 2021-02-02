@@ -23,8 +23,8 @@ import co.infinum.collar.ui.presentation.decorations.Decoration
 import co.infinum.collar.ui.presentation.decorations.DotDecoration
 import co.infinum.collar.ui.presentation.shared.base.BaseActivity
 import co.infinum.collar.ui.presentation.shared.delegates.viewBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Date
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
 
