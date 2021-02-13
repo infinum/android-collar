@@ -21,8 +21,8 @@ dependencies {
 
 jar {
     manifest {
-        attributes("Lint-Registry-v2": "co.infinum.collar.lint.registries.ScreenNameRegistry")
+        attributes("Lint-Registry-v2": "com.infinum.collar.lint.registries.ScreenNameRegistry")
     }
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

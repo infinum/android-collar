@@ -35,4 +35,4 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.3.3'
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

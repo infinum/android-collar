@@ -1,5 +1,5 @@
 ext.collar = [
-        "group"      : "co.infinum.collar",
+        "group"      : "com.infinum.collar",
         "version"    : "1.2.3",
         "versionCode": 1 * 100 * 100 + 2 * 100 + 3
 ]
@@ -51,15 +51,14 @@ ext.packages = [
                 "core"     : "net.ltgt.gradle.incap:incap:${versions.incap}",
                 "processor": "net.ltgt.gradle.incap:incap-processor:${versions.incap}"
         ],
-        "bintray"    : "com.jfrog.bintray.gradle:gradle-bintray-plugin:${versions.bintray}",
         "collar"     : [
-                "annotations": "co.infinum.collar:collar-annotations:${versions.collar}",
-                "core"       : "co.infinum.collar:collar-core:${versions.collar}",
-                "processor"  : "co.infinum.collar:collar-processor:${versions.collar}",
-                "plugin"     : "co.infinum.collar:collar-plugin:${versions.collar}",
-                "generator"  : "co.infinum.collar:collar-generator:${versions.collar}",
-                "ui"         : "co.infinum.collar:collar-ui:${versions.collar}",
-                "ui_no_op"   : "co.infinum.collar:collar-ui-no-op:${versions.collar}"
+                "annotations": "com.infinum.collar:collar-annotations:${versions.collar}",
+                "core"       : "com.infinum.collar:collar-core:${versions.collar}",
+                "processor"  : "com.infinum.collar:collar-processor:${versions.collar}",
+                "plugin"     : "com.infinum.collar:collar-plugin:${versions.collar}",
+                "generator"  : "com.infinum.collar:collar-generator:${versions.collar}",
+                "ui"         : "com.infinum.collar:collar-ui:${versions.collar}",
+                "ui_no_op"   : "com.infinum.collar:collar-ui-no-op:${versions.collar}"
         ],
         "androidx"   : [
                 "core"        : "androidx.core:core-ktx:${versions.core}",

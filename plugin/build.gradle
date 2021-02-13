@@ -26,4 +26,4 @@ dependencies {
     compileOnly packages.gradle
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

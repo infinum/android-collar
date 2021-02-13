@@ -17,18 +17,18 @@ plugins {
     id "kotlin-kapt"
 }
 
-//apply plugin: 'co.infinum.collar.plugin'
+//apply plugin: 'com.infinum.collar.plugin'
 
 android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        applicationId "co.infinum.collar.sample"
+        applicationId "com.infinum.collar.sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 10201
-        versionName "1.2.1"
+        versionCode 10203
+        versionName "1.2.3"
 
         signingConfigs {
             dummy {
@@ -75,9 +75,8 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
 
     buildFeatures.viewBinding = true
@@ -98,5 +97,5 @@ dependencies {
 //collar {
 //    version "1.2.1"
 //    fileName = "example.json"
-//    packageName = "co.infinum.collar.sample.analytics.trackingplan"
+//    packageName = "com.infinum.collar.sample.analytics.trackingplan"
 //}

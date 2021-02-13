@@ -1,7 +1,7 @@
 plugins {
     id "com.android.library"
     id "kotlin-android"
-    id "kotlin-kapt" // TODO:  Check if this is needed at all
+//    id "kotlin-kapt" // TODO:  Check if this is needed at all
 }
 
 android {
@@ -56,16 +56,15 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
 }
 
 dependencies {
     implementation packages.kotlin.core
-    api packages.collar.core
     implementation packages.androidx.appcompat
+    api packages.collar.core
 }
 
 apply from: "publish.gradle"

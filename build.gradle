@@ -8,6 +8,7 @@ buildscript {
         "buildTools": "30.0.3"
     ]
 
+    apply from: "maven.gradle"
     apply from: "dependencies.gradle"
 
     repositories {
@@ -18,7 +19,6 @@ buildscript {
 
     dependencies {
         classpath packages.gradle
-        classpath packages.bintray
         classpath packages.kotlin.plugin
         classpath packages.kotlin.serialization_plugin
         classpath packages.cpd.plugin
@@ -53,7 +53,7 @@ subprojects {
         maven {
             url "https://dl.bintray.com/infinum/android"
             content {
-                includeGroup("co.infinum.collar")
+                includeGroup("com.infinum.collar")
             }
         }
         jcenter() {

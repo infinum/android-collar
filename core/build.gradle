@@ -52,8 +52,8 @@ android {
         exclude("META-INF/*.kotlin_module")
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
 }
 

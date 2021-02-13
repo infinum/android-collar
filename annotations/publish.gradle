@@ -1,4 +1,5 @@
 apply plugin: "maven-publish"
+apply plugin: "signing"
 
 task sourcesJar(type: Jar, dependsOn: assemble) {
     archiveClassifier.set("sources")
@@ -31,7 +32,7 @@ afterEvaluate {
             }
             maven {
                 name bintray.name()
-                url bintray.url() + "/tool-collar/;publish=1;override=1"
+                url bintray.url() + "/collar-annotations/;publish=1;override=1"
                 credentials {
                     username bintray.username()
                     password bintray.password()
@@ -51,7 +52,7 @@ afterEvaluate {
 
                 pom {
                     name = "Collar Annotations"
-                    description = "Gradle plugin which provides single point for analytics collection."
+                    description = "Annotations for Gradle plugin which provides single entry point for analytics collection."
                     url = "https://github.com/infinum/android-collar"
                     licenses {
                         license {
@@ -72,42 +73,10 @@ afterEvaluate {
                         url = "https://github.com/infinum/android-collar"
                     }
                 }
+                signing {
+                    sign publishing.publications.release
+                }
             }
         }
-    }
-}
-
-bintray {
-    Properties properties = new Properties()
-    def bintrayProperties = rootProject.file("bintray.properties")
-    if (bintrayProperties.exists()) {
-        properties.load(new FileInputStream(bintrayProperties))
-    } else {
-        properties.setProperty("bintray.user", "")
-        properties.setProperty("bintray.apikey", "")
-    }
-
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-
-    publications = ["infinum"]
-
-    pkg {
-        repo = "android"
-        name = "collar-annotations"
-        userOrg = "infinum"
-        desc = "Collar Annotations package"
-        websiteUrl = "https://github.com/infinum/android-collar"
-        issueTrackerUrl = "https://github.com/infinum/android-collar/issues"
-        vcsUrl = "https://github.com/infinum/android-collar.git"
-        licenses = ["Apache-2.0"]
-        version {
-            name = "${collar.version}"
-            released = new Date()
-            vcsTag = "${collar.version}"
-        }
-        publish = true
-        override = true
-        publicDownloadNumbers = true
     }
 }

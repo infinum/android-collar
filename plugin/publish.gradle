@@ -1,0 +1,82 @@
+apply plugin: "maven-publish"
+apply plugin: "signing"
+
+task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+}
+
+task javadocsJar(type: Jar, dependsOn: "dokkaJavadoc") {
+    archiveClassifier.set("javadoc")
+    from dokkaJavadoc.outputDirectory
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name sonatype.name()
+                url sonatype.url()
+                credentials {
+                    username sonatype.username()
+                    password sonatype.password()
+                }
+            }
+            maven {
+                name github.name()
+                url github.url()
+                credentials {
+                    username github.username()
+                    password github.password()
+                }
+            }
+            maven {
+                name bintray.name()
+                url bintray.url() + "/collar-plugin/;publish=1;override=1"
+                credentials {
+                    username bintray.username()
+                    password bintray.password()
+                }
+            }
+        }
+        publications {
+            release(MavenPublication) {
+                from components.java
+
+                groupId = collar.group
+                artifactId = "collar-plugin"
+                version = collar.version
+
+                artifact sourcesJar
+                artifact javadocsJar
+
+                pom {
+                    name = "Collar Plugin"
+                    description = "Gradle plugin which provides single point for analytics collection."
+                    url = "https://github.com/infinum/android-collar"
+                    licenses {
+                        license {
+                            name = "Apache License 2.0"
+                            url = "https://github.com/infinum/android-collar/blob/master/LICENSE"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "knobtviker"
+                            name = "Bojan Komljenović"
+                            email = "bojan.komljenovic@infinum.com"
+                        }
+                    }
+                    scm {
+                        connection = "https://github.com/infinum/android-collar.git"
+                        developerConnection = "https://github.com/infinum/android-collar.git"
+                        url = "https://github.com/infinum/android-collar"
+                    }
+                }
+                signing {
+                    sign publishing.publications.release
+                }
+            }
+        }
+    }
+}

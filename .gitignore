@@ -21,3 +21,6 @@
 /lint/build/
 /.idea/codeStyles/
 /ui/jacoco.exec
+
+publish.properties
+*.gpg
