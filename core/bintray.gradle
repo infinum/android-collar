@@ -1,5 +1,4 @@
 apply plugin: 'maven-publish'
-apply plugin: "com.jfrog.bintray"
 
 task sourcesJar(type: Jar, dependsOn: assemble) {
     archiveClassifier.set('sources')

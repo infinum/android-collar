@@ -1,5 +1,7 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+plugins {
+    id "java-library"
+    id "kotlin"
+}
 
 kotlin {
     explicitApi()
@@ -20,4 +22,4 @@ dependencies {
     compileOnly packages.kotlin.core
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

@@ -27,9 +27,7 @@ To include plugin to your project, you have to add buildscript dependencies in y
 ```gradle
 buildscript {
     repositories {
-        jcenter()
-        // for plugin
-        maven { url "https://dl.bintray.com/infinum/android" }
+        mavenCentral()
     }
     dependencies {
         classpath "co.infinum.collar:collar-plugin:1.2.2"
@@ -40,9 +38,7 @@ buildscript {
 ```kotlin
 buildscript {
     repositories {
-        jcenter()
-        // for plugin
-        maven(url = "https://dl.bintray.com/infinum/android")
+        mavenCentral()
     }
     dependencies {
         classpath("co.infinum.collar:collar-plugin:1.2.2")

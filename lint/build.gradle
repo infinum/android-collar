@@ -1,5 +1,7 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+plugins {
+    id "java-library"
+    id "kotlin"
+}
 
 compileKotlin {
     kotlinOptions {
@@ -14,7 +16,7 @@ compileTestKotlin {
 
 dependencies {
     compileOnly packages.kotlin.core
-    compileOnly "com.android.tools.lint:lint-api:26.6.3"
+    compileOnly "com.android.tools.lint:lint-api:27.1.2"
 }
 
 jar {

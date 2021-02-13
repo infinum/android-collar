@@ -1,8 +1,7 @@
-apply plugin: 'maven-publish'
-apply plugin: "com.jfrog.bintray"
+apply plugin: "maven-publish"
 
 task sourcesJar(type: Jar, dependsOn: assemble) {
-    archiveClassifier.set('sources')
+    archiveClassifier.set("sources")
     from sourceSets.main.allSource
 }
 
@@ -13,12 +12,38 @@ task javadocsJar(type: Jar, dependsOn: "dokkaJavadoc") {
 
 afterEvaluate {
     publishing {
+        repositories {
+            maven {
+                name sonatype.name()
+                url sonatype.url()
+                credentials {
+                    username sonatype.username()
+                    password sonatype.password()
+                }
+            }
+            maven {
+                name github.name()
+                url github.url()
+                credentials {
+                    username github.username()
+                    password github.password()
+                }
+            }
+            maven {
+                name bintray.name()
+                url bintray.url() + "/tool-collar/;publish=1;override=1"
+                credentials {
+                    username bintray.username()
+                    password bintray.password()
+                }
+            }
+        }
         publications {
-            infinum(MavenPublication) {
+            release(MavenPublication) {
                 from components.java
 
                 groupId = collar.group
-                artifactId = 'collar-annotations'
+                artifactId = "collar-annotations"
                 version = collar.version
 
                 artifact javadocsJar

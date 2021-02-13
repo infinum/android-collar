@@ -7,12 +7,11 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
-internal class AnalyticsEventsSpec private constructor(
+internal class AnalyticsEventsSpec(
     outputDir: File,
-    private val packageName: String,
-    private val simpleName: String,
+    private val className: ClassName,
     private val holders: Set<EventHolder>
-) : CommonSpec(outputDir, packageName, simpleName) {
+) : CommonSpec(outputDir, className.packageName, className.simpleName) {
 
     companion object {
         private const val SIMPLE_NAME = "AnalyticsEvents"
@@ -29,21 +28,10 @@ internal class AnalyticsEventsSpec private constructor(
         private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
     }
 
-    open class Builder(
-        private var outputDir: File? = null,
-        private var className: ClassName = ClassName(PACKAGE_NAME, SIMPLE_NAME),
-        private var holders: Set<EventHolder> = setOf()
-    ) {
-        fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
-        fun className(className: ClassName) = apply { this.className = className }
-        fun holders(holders: Set<EventHolder>) = apply { this.holders = holders }
-        fun build() = AnalyticsEventsSpec(outputDir!!, className.packageName, className.simpleName, holders)
-    }
-
     override fun extensions(): List<FunSpec> =
         listOf(
             FunSpec.builder(FUNCTION_TRACK_EVENT)
-                .addParameter(parameterName(), ClassName(packageName, simpleName))
+                .addParameter(parameterName(), className)
                 .applyIf(holders.isNotEmpty()) {
                     beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
                     addCode(events())
@@ -97,16 +85,4 @@ internal class AnalyticsEventsSpec private constructor(
 
     private fun eventName(builder: CodeBlock.Builder, holder: EventHolder): CodeBlock.Builder =
         builder.addStatement(STATEMENT_EVENT_NAME, holder.eventName)
-}
-
-@DslMarker
-internal annotation class AnalyticsEventsSpecDsl
-
-@AnalyticsEventsSpecDsl
-internal class AnalyticsEventsSpecBuilder : AnalyticsEventsSpec.Builder()
-
-internal inline fun analyticsEventsSpec(builder: AnalyticsEventsSpecBuilder.() -> Unit): AnalyticsEventsSpec {
-    val specBuilder = AnalyticsEventsSpecBuilder()
-    specBuilder.builder()
-    return specBuilder.build()
 }

@@ -7,12 +7,11 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
-internal class UserPropertiesSpec private constructor(
+internal class UserPropertiesSpec(
     outputDir: File,
-    private val packageName: String,
-    private val simpleName: String,
+    private val className: ClassName,
     private val holders: Set<PropertyHolder>
-) : CommonSpec(outputDir, packageName, simpleName) {
+) : CommonSpec(outputDir, className.packageName, className.simpleName) {
 
     companion object {
         private const val SIMPLE_NAME = "UserProperties"
@@ -20,21 +19,10 @@ internal class UserPropertiesSpec private constructor(
         private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L)"
     }
 
-    internal open class Builder(
-        private var outputDir: File? = null,
-        private var className: ClassName = ClassName(PACKAGE_NAME, SIMPLE_NAME),
-        private var holders: Set<PropertyHolder> = setOf()
-    ) {
-        fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
-        fun className(className: ClassName) = apply { this.className = className }
-        fun holders(holders: Set<PropertyHolder>) = apply { this.holders = holders }
-        fun build() = UserPropertiesSpec(outputDir!!, className.packageName, className.simpleName, holders)
-    }
-
     override fun extensions(): List<FunSpec> =
         listOf(
             FunSpec.builder(FUNCTION_TRACK_PROPERTY)
-                .addParameter(parameterName(), ClassName(packageName, simpleName))
+                .addParameter(parameterName(), className)
                 .applyIf(holders.isNotEmpty()) {
                     beginControlFlow(CONTROL_FLOW_WHEN, parameterName())
                     addCode(properties())
@@ -59,16 +47,4 @@ internal class UserPropertiesSpec private constructor(
                 }
             }
             .build()
-}
-
-@DslMarker
-internal annotation class UserPropertiesSpecDsl
-
-@UserPropertiesSpecDsl
-internal class UserPropertiesSpecBuilder : UserPropertiesSpec.Builder()
-
-internal inline fun userPropertiesSpec(builder: UserPropertiesSpecBuilder.() -> Unit): UserPropertiesSpec {
-    val specBuilder = UserPropertiesSpecBuilder()
-    specBuilder.builder()
-    return specBuilder.build()
 }

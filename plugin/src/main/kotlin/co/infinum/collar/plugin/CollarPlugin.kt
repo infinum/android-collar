@@ -17,7 +17,6 @@ public class CollarPlugin : Plugin<Project> {
 
     private fun addRepositories(project: Project) =
         with(project.repositories) {
-            jcenter()
             mavenCentral()
             maven {}.url = URI("https://dl.bintray.com/infinum/android")
         }

@@ -17,5 +17,5 @@ internal interface Spec {
 
     fun extensions(): List<FunSpec>
 
-    fun build()
+    operator fun invoke()
 }

@@ -1,8 +1,15 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    id "kotlin-kapt" // TODO:  Check if this is needed at all
+}
 
 android {
+    buildFeatures {
+        buildConfig = true
+        viewBinding = false
+    }
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
@@ -37,13 +44,22 @@ android {
                 '-Xexplicit-api=strict'
         ]
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
     }
-
-    buildFeatures.viewBinding = true
 }
 
 dependencies {
@@ -52,4 +68,4 @@ dependencies {
     implementation packages.androidx.appcompat
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

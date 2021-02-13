@@ -10,7 +10,7 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
-internal class ScreenNameSpec private constructor(
+internal class ScreenNameSpec(
     outputDir: File,
     private val holders: Set<ScreenHolder>
 ) : CommonSpec(outputDir, PACKAGE_NAME, SIMPLE_NAME) {
@@ -22,18 +22,9 @@ internal class ScreenNameSpec private constructor(
         private const val STATEMENT = "is %T -> %T.%L(%S)"
     }
 
-    internal open class Builder(
-        private var outputDir: File? = null,
-        private var holders: Set<ScreenHolder> = setOf()
-    ) {
-        fun outputDir(outputDir: File) = apply { this.outputDir = outputDir }
-        fun holders(holders: Set<ScreenHolder>) = apply { this.holders = holders }
-        fun build() = ScreenNameSpec(outputDir!!, holders)
-    }
-
     override fun file(): FileSpec =
         super.file().toBuilder(PACKAGE_NAME, SIMPLE_NAME)
-            .applyIf(hasDeprecatedClasses()) { addAnnotation(suppressDeprecation()) }
+            .applyIf(hasDeprecatedClasses(holders)) { addAnnotation(suppressDeprecation()) }
             .build()
 
     override fun parameterName(): String = PARAMETER_NAME
@@ -65,7 +56,7 @@ internal class ScreenNameSpec private constructor(
             }
             .build()
 
-    private fun hasDeprecatedClasses(): Boolean =
+    private fun hasDeprecatedClasses(holders: Set<ScreenHolder>): Boolean =
         holders
             .groupBy { it.superClassName }
             .map { it.key }
@@ -85,16 +76,4 @@ internal class ScreenNameSpec private constructor(
             FUNCTION_TRACK_SCREEN,
             holder.screenName
         )
-}
-
-@DslMarker
-internal annotation class ScreenNameSpecDsl
-
-@ScreenNameSpecDsl
-internal class ScreenNameSpecBuilder : ScreenNameSpec.Builder()
-
-internal inline fun screenNameSpec(builder: ScreenNameSpecBuilder.() -> Unit): ScreenNameSpec {
-    val specBuilder = ScreenNameSpecBuilder()
-    specBuilder.builder()
-    return specBuilder.build()
 }

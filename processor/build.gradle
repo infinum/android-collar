@@ -1,6 +1,8 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id "java-library"
+    id "kotlin"
+    id "kotlin-kapt"
+}
 
 kotlin {
     explicitApi()
@@ -25,4 +27,4 @@ test {
     reports.html.enabled = true
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"
