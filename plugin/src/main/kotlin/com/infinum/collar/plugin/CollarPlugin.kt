@@ -8,6 +8,10 @@ import org.gradle.api.Project
 
 public class CollarPlugin : Plugin<Project> {
 
+    public companion object {
+        public const val VERSION: String = "1.2.3"
+    }
+
     override fun apply(project: Project): Unit =
         with(project) {
             addRepositories(this)
@@ -23,18 +27,16 @@ public class CollarPlugin : Plugin<Project> {
 
     private fun addDependencies(project: Project) {
         with(project) {
-            val settings = extensions.create(CollarExtension.NAME, CollarExtension::class.java)
-
-            dependencies.add("implementation", "com.infinum.collar:collar-annotations:${settings.version}")
-            dependencies.add("implementation", "com.infinum.collar:collar-core:${settings.version}")
+            dependencies.add("implementation", "com.infinum.collar:collar-annotations:$VERSION")
+            dependencies.add("implementation", "com.infinum.collar:collar-core:$VERSION")
 
             if (pluginManager.hasPlugin("kotlin-android")) {
                 if (pluginManager.hasPlugin("kotlin-kapt").not()) {
                     pluginManager.apply("kotlin-kapt")
                 }
-                dependencies.add("kapt", "com.infinum.collar:collar-processor:${settings.version}")
+                dependencies.add("kapt", "com.infinum.collar:collar-processor:$VERSION")
             } else {
-                dependencies.add("annotationProcessor", "com.infinum.collar:collar-processor:${settings.version}")
+                dependencies.add("annotationProcessor", "com.infinum.collar:collar-processor:$VERSION")
             }
         }
     }

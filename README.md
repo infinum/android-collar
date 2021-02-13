@@ -242,13 +242,6 @@ javaCompileOptions {
     }
 }
 ```
-### Plugin extension
-```gradle
-collar {
-    version "1.2.3"
-}
-```
-You can set a specific _Collar_ version to be used.
 
 ## Debug UI
 
@@ -332,7 +325,6 @@ For example:
 
 ```
 collar {
-    version "1.2.3"
     fileName = "example.json"
     packageName = "com.infinum.collar.sample.analytics.generated"
 }
