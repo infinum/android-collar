@@ -62,7 +62,7 @@ sourceSets {
 task pluginVersion {
     def outputDir = file(versionDirectory)
 
-    inputs.property 'version', collar.version
+    inputs.property 'version', releaseConfig.version
     outputs.dir outputDir
 
     doLast {
@@ -70,7 +70,7 @@ task pluginVersion {
         versionFile.parentFile.mkdirs()
         versionFile.text = """// Generated file. Do not edit!
 package com.infinum.collar.plugin
-internal const val collarVersion = "${collar.version}"
+internal const val collarVersion = "${releaseConfig.version}"
 """
     }
 }

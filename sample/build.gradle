@@ -2,12 +2,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url "https://dl.bintray.com/infinum/android"
-            content {
-                includeGroup("com.infinum.collar")
-            }
-        }
     }
     dependencies {
         classpath packages.gradle
@@ -28,11 +22,12 @@ android {
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        applicationId "com.infinum.collar.sample"
+        applicationId releaseConfig.group
+        applicationIdSuffix ".sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 10203
-        versionName "1.2.3"
+        versionCode releaseConfig.versionCode
+        versionName releaseConfig.version
 
         signingConfigs {
             dummy {

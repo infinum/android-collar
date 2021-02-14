@@ -41,9 +41,9 @@ afterEvaluate {
         }
         publications {
             release(MavenPublication) {
-                groupId = collar.group
+                groupId = releaseConfig.group
                 artifactId = 'collar-ui'
-                version = collar.version
+                version = releaseConfig.version
 
                 artifact bundleReleaseAar
                 artifact sourcesJar
