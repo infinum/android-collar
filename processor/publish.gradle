@@ -43,9 +43,9 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.java
 
-                groupId = collar.group
+                groupId = releaseConfig.group
                 artifactId = "collar-processor"
-                version = collar.version
+                version = releaseConfig.version
 
                 artifact sourcesJar
                 artifact javadocsJar

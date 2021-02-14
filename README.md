@@ -1,4 +1,4 @@
-[ ![Download](https://api.bintray.com/packages/infinum/android/collar-plugin/images/download.svg) ](https://bintray.com/infinum/android/collar-plugin/_latestVersion) ![Validate Gradle Wrapper](https://github.com/infinum/android-collar/workflows/Validate%20Gradle%20Wrapper/badge.svg) ![Code analysis](https://github.com/infinum/android-collar/workflows/Code%20analysis/badge.svg)
+![Download](https://img.shields.io/maven-central/v/com.infinum.collar/collar-plugin) ![Validate Gradle Wrapper](https://github.com/infinum/android-collar/workflows/Validate%20Gradle%20Wrapper/badge.svg) ![Code analysis](https://github.com/infinum/android-collar/workflows/Code%20analysis/badge.svg)
 
 ### <img align="left" src="logo.svg" width="48">
 # Collar Android plugin
