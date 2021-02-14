@@ -1,9 +1,13 @@
 buildscript {
     repositories {
         google()
-        jcenter()
-        maven { url "https://dl.bintray.com/infinum/android" }
         mavenCentral()
+        maven {
+            url "https://dl.bintray.com/infinum/android"
+            content {
+                includeGroup("com.infinum.collar")
+            }
+        }
     }
     dependencies {
         classpath packages.gradle
@@ -11,20 +15,24 @@ buildscript {
     }
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'co.infinum.collar.plugin'
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "kotlin-kapt"
+}
+
+apply plugin: "com.infinum.collar.plugin"
 
 android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        applicationId "co.infinum.collar.sample"
+        applicationId "com.infinum.collar.sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 10201
-        versionName "1.2.1"
+        versionCode 10203
+        versionName "1.2.3"
 
         signingConfigs {
             dummy {
@@ -55,14 +63,20 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
 
     buildFeatures.viewBinding = true
@@ -79,7 +93,6 @@ dependencies {
 }
 
 collar {
-    version "1.2.1"
     fileName = "example.json"
-    packageName = "co.infinum.collar.sample.analytics.trackingplan"
+    packageName = "com.infinum.collar.sample.analytics.trackingplan"
 }

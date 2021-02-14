@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="co.infinum.collar.sample">
+    package="com.infinum.collar.sample">
 
     <application
-        android:name=".SampleApplication"
+        android:name="com.infinum.collar.sample.SampleApplication"
         android:label="Collar Sample"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.infinum.collar.sample.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChildActivity" />
-        <activity android:name=".KotlinMainActivity" />
-        <activity android:name=".KotlinChildActivity" />
+        <activity android:name="com.infinum.collar.sample.ChildActivity" />
+        <activity android:name="com.infinum.collar.sample.KotlinMainActivity" />
+        <activity android:name="com.infinum.collar.sample.KotlinChildActivity" />
     </application>
 
 </manifest>

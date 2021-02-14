@@ -27,12 +27,10 @@ To include plugin to your project, you have to add buildscript dependencies in y
 ```gradle
 buildscript {
     repositories {
-        jcenter()
-        // for plugin
-        maven { url "https://dl.bintray.com/infinum/android" }
+        mavenCentral()
     }
     dependencies {
-        classpath "co.infinum.collar:collar-plugin:1.2.2"
+        classpath "com.infinum.collar:collar-plugin:1.2.3"
     }
 }
 ```
@@ -40,12 +38,10 @@ buildscript {
 ```kotlin
 buildscript {
     repositories {
-        jcenter()
-        // for plugin
-        maven(url = "https://dl.bintray.com/infinum/android")
+        mavenCentral()
     }
     dependencies {
-        classpath("co.infinum.collar:collar-plugin:1.2.2")
+        classpath("com.infinum.collar:collar-plugin:1.2.3")
     }
 }
 ```
@@ -54,14 +50,14 @@ Then apply the plugin in your app `build.gradle` or `build.gradle.kts` :
 
 **Groovy**
 ```gradle
-apply plugin: "co.infinum.collar.plugin"
+apply plugin: "com.infinum.collar.plugin"
 ```
 **KotlinDSL**
 ```kotlin
 plugins {
     ...
     
-    id("co.infinum.collar.plugin")
+    id("com.infinum.collar.plugin")
 }
 ```
 
@@ -246,13 +242,6 @@ javaCompileOptions {
     }
 }
 ```
-### Plugin extension
-```gradle
-collar {
-    version "1.2.2"
-}
-```
-You can set a specific _Collar_ version to be used.
 
 ## Debug UI
 
@@ -264,13 +253,13 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:  
 **Groovy**
 ```gradle
-debugImplementation "co.infinum.collar:collar-ui:1.2.2"
-releaseImplementation "co.infinum.collar:collar-ui-no-op:1.2.2"
+debugImplementation "com.infinum.collar:collar-ui:1.2.3"
+releaseImplementation "com.infinum.collar:collar-ui-no-op:1.2.3"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("co.infinum.collar:collar-ui:1.2.2")
-releaseImplementation("co.infinum.collar:collar-ui-no-op:1.2.2")
+debugImplementation("com.infinum.collar:collar-ui:1.2.3")
+releaseImplementation("com.infinum.collar:collar-ui-no-op:1.2.3")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
@@ -336,9 +325,8 @@ For example:
 
 ```
 collar {
-    version "1.2.2"
     fileName = "example.json"
-    packageName = "co.infinum.collar.sample.analytics.generated"
+    packageName = "com.infinum.collar.sample.analytics.generated"
 }
 ```
 JSON file has to be formatted in the same way as it is in `sample` project module.  

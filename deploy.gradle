@@ -2,65 +2,72 @@ apply from: "shared.gradle"
 
 task deployAnnotations(dependsOn: ordered(
         ':annotations:clean',
-        ':annotations:build',
-        ':annotations:bintrayUpload'
+        ':annotations:publishReleasePublicationToBintrayRepository',
+        ':annotations:publishReleasePublicationToGithubRepository',
+        ':annotations:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployCore(dependsOn: ordered(
         ':core:clean',
-        ':core:build',
-        ':core:bintrayUpload'
+        ':core:publishReleasePublicationToBintrayRepository',
+        ':core:publishReleasePublicationToGithubRepository',
+        ':core:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployUi(dependsOn: ordered(
         ':ui:clean',
-        ':ui:build',
-        ':ui:bintrayUpload'
+        ':ui:publishReleasePublicationToBintrayRepository',
+        ':ui:publishReleasePublicationToGithubRepository',
+        ':ui:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployUiNoOp(dependsOn: ordered(
         ':ui-no-op:clean',
-        ':ui-no-op:build',
-        ':ui-no-op:bintrayUpload'
+        ':ui-no-op:publishReleasePublicationToBintrayRepository',
+        ':ui-no-op:publishReleasePublicationToGithubRepository',
+        ':ui-no-op:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployProcessor(dependsOn: ordered(
         ':processor:clean',
-        ':processor:build',
-        ':processor:bintrayUpload'
+        ':processor:publishReleasePublicationToBintrayRepository',
+        ':processor:publishReleasePublicationToGithubRepository',
+        ':processor:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployGenerator(dependsOn: ordered(
         ':generator:clean',
-        ':generator:build',
-        ':generator:bintrayUpload'
+        ':generator:publishReleasePublicationToBintrayRepository',
+        ':generator:publishReleasePublicationToGithubRepository',
+        ':generator:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployPlugin(dependsOn: ordered(
         ':plugin:clean',
-        ':plugin:build',
-        ':plugin:bintrayUpload'
+        ':plugin:publishReleasePublicationToBintrayRepository',
+        ':plugin:publishReleasePublicationToGithubRepository',
+        ':plugin:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployAll(dependsOn: ordered(
@@ -73,5 +80,5 @@ task deployAll(dependsOn: ordered(
         'deployUiNoOp'
 )) {
     group = "Deploy"
-    description = "Deploy all modules to Bintray"
+    description = "Deploy all modules to repositories"
 }

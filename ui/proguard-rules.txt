@@ -1,9 +1,9 @@
--keep public class co.infinum.collar.ui.CollarUi {
+-keep public class com.infinum.collar.ui.CollarUi {
   public protected *;
 }
--keep public class co.infinum.collar.ui.LiveCollector {
+-keep public class com.infinum.collar.ui.LiveCollector {
   public protected *;
 }
--keep public class co.infinum.collar.ui.Configuration {
+-keep public class com.infinum.collar.ui.Configuration {
   public protected *;
 }
