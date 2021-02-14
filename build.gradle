@@ -28,7 +28,7 @@ buildscript {
     }
 }
 
-allprojects {
+subprojects {
     def buildProperties = new Properties()
     file(rootDir.absolutePath+"/build.properties").withInputStream { buildProperties.load(it) }
     if (buildProperties.getProperty("build.debug").toBoolean()) {
@@ -47,29 +47,6 @@ allprojects {
         }
     }
 
-    repositories {
-        google()
-        mavenCentral()
-        maven {
-            url "https://dl.bintray.com/infinum/android"
-            content {
-                includeGroup("com.infinum.collar")
-            }
-        }
-        jcenter() {
-            content {
-                includeModule("com.soywiz.korlibs.korte", "korte-jvm")
-                includeModule("org.jetbrains.trove4j", "trove4j")
-                includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
-                includeGroup("org.jetbrains.dokka")
-                includeGroup("org.jetbrains")
-                includeGroup("org.koin")
-            }
-        }
-    }
-}
-
-subprojects {
     repositories {
         google()
         mavenCentral()
