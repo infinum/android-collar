@@ -5,7 +5,7 @@ ext.collar = [
 ]
 
 ext.versions = [
-        "collar"       : "1.2.2",
+        "collar"       : "1.2.3",
         "gradle"       : "4.1.2",
         "kotlin"       : "1.4.30",
         "coroutines"   : "1.4.2",

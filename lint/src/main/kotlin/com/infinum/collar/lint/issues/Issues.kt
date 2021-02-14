@@ -1,11 +1,11 @@
 package com.infinum.collar.lint.issues
 
-import com.infinum.collar.lint.detectors.ScreenNameDetector
 import com.android.tools.lint.detector.api.Category.Companion.CORRECTNESS
 import com.android.tools.lint.detector.api.Implementation
 import com.android.tools.lint.detector.api.Issue
 import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Severity
+import com.infinum.collar.lint.detectors.ScreenNameDetector
 import java.util.EnumSet
 
 @Suppress("UnstableApiUsage")

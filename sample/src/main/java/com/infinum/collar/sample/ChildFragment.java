@@ -33,11 +33,19 @@ public class ChildFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewBinding.buttonProduceEvent2.setOnClickListener(v ->
-            CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2("bla", 0))
-        );
+        viewBinding.buttonProduceEvent2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event2("bla", 0));
+            }
+        });
 
-        viewBinding.buttonShowKotlinMain.setOnClickListener(v -> showKotlinMainScreen());
+        viewBinding.buttonShowKotlinMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showKotlinMainScreen();
+            }
+        });
     }
 
     @Override

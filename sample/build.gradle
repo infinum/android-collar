@@ -2,12 +2,16 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-//        maven { url "https://dl.bintray.com/infinum/android" }
-//        jcenter()
+        maven {
+            url "https://dl.bintray.com/infinum/android"
+            content {
+                includeGroup("com.infinum.collar")
+            }
+        }
     }
     dependencies {
         classpath packages.gradle
-//        classpath packages.collar.plugin
+        classpath packages.collar.plugin
     }
 }
 
@@ -17,7 +21,7 @@ plugins {
     id "kotlin-kapt"
 }
 
-//apply plugin: 'com.infinum.collar.plugin'
+apply plugin: "com.infinum.collar.plugin"
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -59,10 +63,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -90,12 +90,9 @@ dependencies {
     lintChecks project(":lint")
     debugImplementation packages.collar.ui
     releaseImplementation packages.collar.ui_no_op
-    implementation project(":core")
-    kapt project(":processor")
 }
 
-//collar {
-//    version "1.2.1"
-//    fileName = "example.json"
-//    packageName = "com.infinum.collar.sample.analytics.trackingplan"
-//}
+collar {
+    fileName = "example.json"
+    packageName = "com.infinum.collar.sample.analytics.trackingplan"
+}

@@ -3,7 +3,7 @@ package com.infinum.collar.plugin.tasks
 import com.android.builder.model.AndroidProject.FD_GENERATED
 import com.infinum.collar.generator.CollarGenerator
 import com.infinum.collar.plugin.CollarExtension
-import com.infinum.collar.plugin.CollarPlugin
+import com.infinum.collar.plugin.collarVersion
 import com.infinum.collar.plugin.tasks.shared.BaseSourceTask
 import com.infinum.collar.plugin.validate
 import java.io.File
@@ -28,9 +28,10 @@ internal open class GenerateTask : BaseSourceTask() {
 
     private val collarGenerator = CollarGenerator()
 
-    @Suppress("unused") // Required to invalidate the task on version updates.
-    @Input
-    private val pluginVersion = CollarPlugin.VERSION
+    // Required to invalidate the task on version updates.
+    @Suppress("unused", "ANNOTATION_TARGETS_NON_EXISTENT_ACCESSOR")
+    @get:Input
+    private val pluginVersion = collarVersion
 
     @InputFiles
     @SkipWhenEmpty

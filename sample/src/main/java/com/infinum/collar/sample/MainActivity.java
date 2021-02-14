@@ -3,6 +3,8 @@ package com.infinum.collar.sample;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CompoundButton;
 
 import java.util.UUID;
 
@@ -27,25 +29,41 @@ public class MainActivity extends Activity {
         setContentView(viewBinding.getRoot());
 
         viewBinding.analyticsCollectionSwitch.setOnCheckedChangeListener(
-            (buttonView, isChecked) -> Collar.setAnalyticsCollectionStatus(isChecked)
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        Collar.setAnalyticsCollectionStatus(isChecked);
+                    }
+                }
+
         );
 
-        viewBinding.buttonProduceEvent1.setOnClickListener(v ->
-            CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
-                "awesome",
-                true,
-                Byte.MAX_VALUE,
-                Character.MAX_VALUE,
-                7.11,
-                31.5f,
-                18,
-                2L,
-                Short.MAX_VALUE,
-                buildBundle()
-            ))
+        viewBinding.buttonProduceEvent1.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
+                                "awesome",
+                                true,
+                                Byte.MAX_VALUE,
+                                Character.MAX_VALUE,
+                                7.11,
+                                31.5f,
+                                18,
+                                2L,
+                                Short.MAX_VALUE,
+                                buildBundle()
+                        ));
+                    }
+                }
         );
 
-        viewBinding.buttonShowChild.setOnClickListener(v -> showChildScreen());
+        viewBinding.buttonShowChild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChildScreen();
+            }
+        });
 
         CollarUserProperty.trackProperty(new UserProperty.MyUUID(UUID.randomUUID().toString()));
         CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));

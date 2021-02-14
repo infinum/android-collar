@@ -1,9 +1,9 @@
 package com.infinum.collar.lint.detectors
 
-import com.infinum.collar.lint.issues.Issues
 import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.SourceCodeScanner
+import com.infinum.collar.lint.issues.Issues
 import org.jetbrains.uast.UClass
 
 @Suppress("UnstableApiUsage")

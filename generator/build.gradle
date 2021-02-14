@@ -1,11 +1,16 @@
 plugins {
     id "java-library"
-    id "kotlin"
+    id "org.jetbrains.kotlin.jvm"
     id "kotlinx-serialization"
 }
 
 kotlin {
     explicitApi()
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
 }
 
 compileKotlin {
@@ -17,12 +22,6 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-}
-
-test {
-    useJUnit()
-
-    reports.html.enabled = true
 }
 
 dependencies {

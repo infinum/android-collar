@@ -1,10 +1,15 @@
 plugins {
-    id "java-library"
-    id "kotlin"
+    id "java-gradle-plugin"
+    id "org.jetbrains.kotlin.jvm"
 }
 
 kotlin {
     explicitApi()
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
 }
 
 compileKotlin {
@@ -18,6 +23,17 @@ compileTestKotlin {
     }
 }
 
+gradlePlugin {
+    plugins {
+        collar {
+            id = "com.infinum.collar.plugin"
+            displayName = "Collar Analytics"
+            description = "Gradle plugin which provides single point for analytics collection."
+            implementationClass = "com.infinum.collar.plugin.CollarPlugin"
+        }
+    }
+}
+
 dependencies {
     implementation packages.kotlin.core
     implementation packages.kotlin.reflect
@@ -27,3 +43,27 @@ dependencies {
 }
 
 apply from: "publish.gradle"
+
+def versionDirectory = "$buildDir/generated/version/"
+
+sourceSets {
+    main.java.srcDir versionDirectory
+}
+
+task pluginVersion {
+    def outputDir = file(versionDirectory)
+
+    inputs.property 'version', collar.version
+    outputs.dir outputDir
+
+    doLast {
+        def versionFile = file("$outputDir/com/infinum/collar/plugin/version.kt")
+        versionFile.parentFile.mkdirs()
+        versionFile.text = """// Generated file. Do not edit!
+package com.infinum.collar.plugin
+internal const val collarVersion = "${collar.version}"
+"""
+    }
+}
+
+tasks.getByName('compileKotlin').dependsOn('pluginVersion')
