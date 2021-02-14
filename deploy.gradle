@@ -3,8 +3,8 @@ apply from: "shared.gradle"
 task deployAnnotations(dependsOn: ordered(
         ':annotations:clean',
         ':annotations:publishReleasePublicationToBintrayRepository',
-//        ':annotations:publishReleasePublicationToGithubRepository',
-//        ':annotations:publishReleasePublicationToSonatypeRepository'
+        ':annotations:publishReleasePublicationToGithubRepository',
+        ':annotations:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
     description = "Deploy module to repositories"
@@ -13,8 +13,8 @@ task deployAnnotations(dependsOn: ordered(
 task deployCore(dependsOn: ordered(
         ':core:clean',
         ':core:publishReleasePublicationToBintrayRepository',
-//        ':core:publishReleasePublicationToGithubRepository',
-//        ':core:publishReleasePublicationToSonatypeRepository'
+        ':core:publishReleasePublicationToGithubRepository',
+        ':core:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
     description = "Deploy module to repositories"
@@ -23,8 +23,8 @@ task deployCore(dependsOn: ordered(
 task deployUi(dependsOn: ordered(
         ':ui:clean',
         ':ui:publishReleasePublicationToBintrayRepository',
-//        ':ui:publishReleasePublicationToGithubRepository',
-//        ':ui:publishReleasePublicationToSonatypeRepository'
+        ':ui:publishReleasePublicationToGithubRepository',
+        ':ui:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
     description = "Deploy module to repositories"
@@ -33,8 +33,8 @@ task deployUi(dependsOn: ordered(
 task deployUiNoOp(dependsOn: ordered(
         ':ui-no-op:clean',
         ':ui-no-op:publishReleasePublicationToBintrayRepository',
-//        ':ui-no-op:publishReleasePublicationToGithubRepository',
-//        ':ui-no-op:publishReleasePublicationToSonatypeRepository'
+        ':ui-no-op:publishReleasePublicationToGithubRepository',
+        ':ui-no-op:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
     description = "Deploy module to repositories"
@@ -43,8 +43,8 @@ task deployUiNoOp(dependsOn: ordered(
 task deployProcessor(dependsOn: ordered(
         ':processor:clean',
         ':processor:publishReleasePublicationToBintrayRepository',
-//        ':processor:publishReleasePublicationToGithubRepository',
-//        ':processor:publishReleasePublicationToSonatypeRepository'
+        ':processor:publishReleasePublicationToGithubRepository',
+        ':processor:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
     description = "Deploy module to repositories"
@@ -53,8 +53,8 @@ task deployProcessor(dependsOn: ordered(
 task deployGenerator(dependsOn: ordered(
         ':generator:clean',
         ':generator:publishReleasePublicationToBintrayRepository',
-//        ':generator:publishReleasePublicationToGithubRepository',
-//        ':generator:publishReleasePublicationToSonatypeRepository'
+        ':generator:publishReleasePublicationToGithubRepository',
+        ':generator:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
     description = "Deploy module to repositories"
@@ -63,8 +63,8 @@ task deployGenerator(dependsOn: ordered(
 task deployPlugin(dependsOn: ordered(
         ':plugin:clean',
         ':plugin:publishReleasePublicationToBintrayRepository',
-//        ':plugin:publishReleasePublicationToGithubRepository',
-//        ':plugin:publishReleasePublicationToSonatypeRepository'
+        ':plugin:publishReleasePublicationToGithubRepository',
+        ':plugin:publishReleasePublicationToSonatypeRepository'
 )) {
     group = "Deploy"
     description = "Deploy module to repositories"
