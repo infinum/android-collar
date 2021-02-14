@@ -2,7 +2,6 @@ package com.infinum.collar.plugin
 
 import com.android.build.gradle.AppExtension
 import com.infinum.collar.plugin.tasks.GenerateTask
-import java.net.URI
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -22,7 +21,6 @@ public class CollarPlugin : Plugin<Project> {
     private fun addRepositories(project: Project) =
         with(project.repositories) {
             mavenCentral()
-            maven {}.url = URI("https://dl.bintray.com/infinum/android")
         }
 
     private fun addDependencies(project: Project) {
