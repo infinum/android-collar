@@ -1,5 +1,11 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+plugins {
+    id "java-library"
+    id "org.jetbrains.kotlin.jvm"
+}
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
 
 compileKotlin {
     kotlinOptions {
@@ -14,13 +20,13 @@ compileTestKotlin {
 
 dependencies {
     compileOnly packages.kotlin.core
-    compileOnly "com.android.tools.lint:lint-api:26.6.3"
+    compileOnly "com.android.tools.lint:lint-api:27.1.2"
 }
 
 jar {
     manifest {
-        attributes("Lint-Registry-v2": "co.infinum.collar.lint.registries.ScreenNameRegistry")
+        attributes("Lint-Registry-v2": "com.infinum.collar.lint.registries.ScreenNameRegistry")
     }
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

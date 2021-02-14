@@ -1,8 +1,15 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    id "kotlin-kapt"
+}
 
 android {
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
@@ -49,6 +56,17 @@ android {
                 '-Xexplicit-api=strict'
         ]
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
     testOptions {
         animationsDisabled = true
     }
@@ -56,8 +74,6 @@ android {
     sourceSets.each {
         it.java.srcDirs += "src/$it.name/kotlin"
     }
-
-    buildFeatures.viewBinding = true
 }
 
 dependencies {
@@ -92,7 +108,7 @@ dependencies {
 //    testImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"
 
 project.gradle.taskGraph.whenReady {
     connectedDebugAndroidTest {

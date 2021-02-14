@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## Version 1.2.3
+
+_2021-02-13_
+
+* Update Gradle to 6.8.2.
+* Fix bugs in processor specs.
+* Move to Maven Central.
+* Remove version from plugin extension.
+
 ## Version 1.2.2
 
 _2021-01-29_
