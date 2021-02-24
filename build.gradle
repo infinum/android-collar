@@ -23,7 +23,7 @@ buildscript {
 
 subprojects {
     def buildProperties = new Properties()
-    file(rootDir.absolutePath+"/build.properties").withInputStream { buildProperties.load(it) }
+    file(rootDir.absolutePath + "/build.properties").withInputStream { buildProperties.load(it) }
     if (buildProperties.getProperty("build.debug").toBoolean()) {
         configurations.all {
             resolutionStrategy {
@@ -61,7 +61,6 @@ subprojects {
     apply from: "$rootDir/detekt.gradle"
 }
 
-apply from: "shared.gradle"
 apply from: "deploy.gradle"
 apply from: "jacoco.gradle"
 
@@ -73,17 +72,26 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task detektAll(dependsOn: [
-    ':annotations:detekt',
-    ':core:detekt',
-    ':ui:detekt',
-    ':ui-no-op:detekt',
-    ':processor:detekt',
-    ':plugin:detekt',
-    ':generator:detekt'
+task lintAll(dependsOn: [
+        ':core:lintRelease',
+        ':ui:lintRelease',
+        ':ui-no-op:lintRelease'
 ]) {
     group = "Verification"
-    description = "Run detekt on all modules"
+    description = "Run Lint on all modules"
+}
+
+task detektAll(dependsOn: [
+        ':annotations:detekt',
+        ':core:detekt',
+        ':ui:detekt',
+        ':ui-no-op:detekt',
+        ':processor:detekt',
+        ':plugin:detekt',
+        ':generator:detekt'
+]) {
+    group = "Verification"
+    description = "Run Detekt on all modules"
 }
 
 task ktlintAll(dependsOn: [
@@ -112,11 +120,12 @@ task cpdAll(dependsOn: [
     description = "Run CPD on all modules"
 }
 
-task runStaticChecks(dependsOn: ordered(
+task runStaticChecks(dependsOn: [
+        ':lintAll',
         ':detektAll',
         ':ktlintAll',
         ':cpdAll'
-)) {
+]) {
     group = "Verification"
     description = "Run static checks on all modules"
 }
