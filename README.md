@@ -340,10 +340,6 @@ To run the task you can:
 
 `generate` Gradle task will create classes prepared for the _Collar_ annotation processor.
 
-## TODO
-- Provide arbitrary map of key/value event support
-- Write tests before public release milestone  
-
 ## Contributing
 
 Feedback and code contributions are very much welcome. Just make a pull request with a short description of your changes. By making contributions to this project you give permission for your code to be used under the same [license](LICENSE).  
