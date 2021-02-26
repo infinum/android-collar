@@ -55,6 +55,7 @@ android {
                 '-Xopt-in=org.koin.core.component.KoinApiExtension',
                 '-Xexplicit-api=strict'
         ]
+        useIR = true
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -86,6 +87,7 @@ dependencies {
     implementation packages.androidx.lifecycle.livedata
     implementation packages.androidx.lifecycle.viewmodel
     implementation packages.androidx.startup
+    implementation packages.androidx.dynamicanimation
     implementation packages.androidx.room.runtime
     implementation packages.androidx.room.ktx
     kapt packages.androidx.room.compiler

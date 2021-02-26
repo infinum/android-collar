@@ -23,6 +23,7 @@ import com.infinum.collar.ui.presentation.decorations.Decoration
 import com.infinum.collar.ui.presentation.decorations.DotDecoration
 import com.infinum.collar.ui.presentation.shared.base.BaseActivity
 import com.infinum.collar.ui.presentation.shared.delegates.viewBinding
+import com.infinum.collar.ui.presentation.shared.edgefactories.bounce.BounceEdgeEffectFactory
 import java.util.Date
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -76,6 +77,7 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
                     false
                 )
                 adapter = entryAdapter
+                edgeEffectFactory = BounceEdgeEffectFactory()
             }
             emptyLayout.instructionsButton.setOnClickListener {
                 startActivity(
