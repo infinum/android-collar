@@ -7,7 +7,6 @@ ext.versions = [
         "poet_metadata"   : "1.7.2",
         "serialization"   : "1.0.1",
         "annotations"     : "20.1.0",
-        "incap"           : "0.3",
         "core"            : "1.3.2",
         "appcompat"       : "1.2.0",
         "fragment"        : "1.3.0",
@@ -40,10 +39,6 @@ ext.packages = [
                 "coroutines": "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
         ],
         "annotations": "org.jetbrains:annotations-java5:${versions.annotations}",
-        "incap"      : [
-                "core"     : "net.ltgt.gradle.incap:incap:${versions.incap}",
-                "processor": "net.ltgt.gradle.incap:incap-processor:${versions.incap}"
-        ],
         "collar"     : [
                 "annotations": "com.infinum.collar:collar-annotations:${versions.collar}",
                 "core"       : "com.infinum.collar:collar-core:${versions.collar}",
