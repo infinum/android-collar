@@ -13,7 +13,7 @@ import kotlin.reflect.KProperty
 import kotlinx.coroutines.flow.collectLatest
 
 internal class ViewBindingDelegate<T : ViewBinding>(
-    val fragment: Fragment,
+    private val fragment: Fragment,
     val viewBindingFactory: (View) -> T
 ) : ReadOnlyProperty<Fragment, T> {
 

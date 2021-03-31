@@ -61,8 +61,8 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
                         }
                     },
                     onQueryTextChanged = {
-                        viewModel.search(it) {
-                            entryAdapter.submitList(it)
+                        viewModel.search(it) { entities ->
+                            entryAdapter.submitList(entities)
                         }
                     }
                 )

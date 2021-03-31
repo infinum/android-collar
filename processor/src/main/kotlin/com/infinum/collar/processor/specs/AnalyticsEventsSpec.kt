@@ -14,7 +14,6 @@ internal class AnalyticsEventsSpec(
 ) : CommonSpec(outputDir, className.packageName, className.simpleName) {
 
     companion object {
-        private const val SIMPLE_NAME = "AnalyticsEvents"
         private const val FUNCTION_TRACK_EVENT = "trackEvent"
 
         private const val STATEMENT_EVENT_CLASS_START = "is %T -> %T.%L("

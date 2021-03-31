@@ -22,7 +22,7 @@ compileTestKotlin {
 
 dependencies {
     compileOnly packages.kotlin.core
-    compileOnly "com.android.tools.lint:lint-api:27.1.2"
+    compileOnly "com.android.tools.lint:lint-api:27.1.3"
 }
 
 jar {

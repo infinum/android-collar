@@ -45,6 +45,9 @@ android {
 
     resourcePrefix 'collar_'
 
+    lintOptions {
+        disable 'RtlEnabled', 'VectorPath', 'IconLocation'
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

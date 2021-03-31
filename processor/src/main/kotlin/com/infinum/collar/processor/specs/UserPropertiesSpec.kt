@@ -14,7 +14,6 @@ internal class UserPropertiesSpec(
 ) : CommonSpec(outputDir, className.packageName, className.simpleName) {
 
     companion object {
-        private const val SIMPLE_NAME = "UserProperties"
         private const val FUNCTION_TRACK_PROPERTY = "trackProperty"
         private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L)"
     }
