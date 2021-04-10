@@ -1,5 +1,6 @@
 package com.infinum.collar.ui.presentation
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import com.infinum.collar.ui.BuildConfig
@@ -11,6 +12,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import timber.log.Timber
 
+@SuppressLint("StaticFieldLeak")
 internal object Presentation {
 
     object Constants {

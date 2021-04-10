@@ -24,7 +24,7 @@ class ScreenNameDetector : Detector(), SourceCodeScanner {
         private const val ANNOTATION_SCREEN_NAME = "com.infinum.collar.annotations.ScreenName"
     }
 
-    override fun applicableSuperClasses(): List<String>? = SUPPORTED_CLASSES
+    override fun applicableSuperClasses(): List<String> = SUPPORTED_CLASSES
 
     override fun visitClass(context: JavaContext, declaration: UClass) {
         if (!context.project.reportIssues) {

@@ -15,16 +15,18 @@ java {
 compileKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
+        useIR = true
     }
 }
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = "1.8"
+        useIR = true
     }
 }
 
 dependencies {
-    compileOnly packages.kotlin.core
+    compileOnly libs.kotlin.core
 }
 
 apply from: "publish.gradle"

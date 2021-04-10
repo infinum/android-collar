@@ -58,7 +58,7 @@ internal open class GenerateTask : BaseSourceTask() {
         }
     }
 
-    @Suppress("TooGenericExceptionCaught")
+    @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
     private fun generateTrackingPlan(packageName: String) {
         try {
             println("Tracking plan file path: ${source.first().absolutePath}")

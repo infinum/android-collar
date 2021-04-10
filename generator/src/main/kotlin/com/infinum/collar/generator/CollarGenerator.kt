@@ -23,6 +23,7 @@ public class CollarGenerator {
      * @param output absolute path for the generated classes.
      * @param packageName package name for the generated classes.
      */
+    @Suppress("PrintStackTrace")
     public fun generate(filePath: String, output: String, packageName: String): Boolean =
         try {
             Json

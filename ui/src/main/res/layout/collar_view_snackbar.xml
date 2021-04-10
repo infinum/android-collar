@@ -19,6 +19,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/collar_shape_background_item_type"
+        android:importantForAccessibility="no"
         android:scaleType="centerInside"
         android:src="@drawable/collar_ic_screen_white" />
 

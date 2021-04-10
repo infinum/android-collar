@@ -35,6 +35,7 @@ internal class CollarDialogFactory(private val activity: Activity) {
             else -> 0
         }
 
+    @Suppress("DefaultLocale")
     private fun resolveDetailTitle(entity: CollarEntity) =
         entity.type?.name?.toLowerCase(Locale.getDefault())?.capitalize(Locale.getDefault())
 
