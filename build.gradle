@@ -2,7 +2,6 @@ buildscript {
 
     apply from: "config.gradle"
     apply from: "maven.gradle"
-    apply from: "dependencies.gradle"
 
     repositories {
         google()
@@ -11,13 +10,13 @@ buildscript {
     }
 
     dependencies {
-        classpath packages.gradle
-        classpath packages.kotlin.plugin
-        classpath packages.kotlin.serialization_plugin
-        classpath packages.cpd.plugin
-        classpath packages.detekt.plugin
-        classpath packages.ktlint.plugin
-        classpath packages.dokka.plugin
+        classpath libs.gradle
+        classpath libs.kotlin.plugin
+        classpath libs.serialization.plugin
+        classpath libs.cpd
+        classpath libs.detekt.plugin
+        classpath libs.ktlint
+        classpath libs.dokka
     }
 }
 
@@ -28,13 +27,21 @@ subprojects {
         configurations.all {
             resolutionStrategy {
                 dependencySubstitution {
-                    substitute module(packages.collar.annotations) with project(':annotations')
-                    substitute module(packages.collar.core) with project(':core')
-                    substitute module(packages.collar.ui) with project(':ui')
-                    substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
-                    substitute module(packages.collar.processor) with project(':processor')
-                    substitute module(packages.collar.generator) with project(':generator')
-                    substitute module(packages.collar.plugin) with project(':plugin')
+                    def libraryannotations = libs.libraryannotations.get()
+                    def librarycore = libs.librarycore.get()
+                    def libraryui = libs.libraryui.get()
+                    def libraryuinoop = libs.libraryuinoop.get()
+                    def libraryprocessor = libs.libraryprocessor.get()
+                    def librarygenerator = libs.librarygenerator.get()
+                    def libraryplugin = libs.libraryplugin.get()
+
+                    substitute module(libraryannotations.getModule().toString() + ":" + libraryannotations.getVersionConstraint().toString()) with project(':annotations')
+                    substitute module(librarycore.getModule().toString() + ":" + librarycore.getVersionConstraint().toString()) with project(':core')
+                    substitute module(libraryui.getModule().toString() + ":" + libraryui.getVersionConstraint().toString()) with project(':ui')
+                    substitute module(libraryuinoop.getModule().toString() + ":" + libraryuinoop.getVersionConstraint().toString()) with project(':ui-no-op')
+                    substitute module(libraryprocessor.getModule().toString() + ":" + libraryprocessor.getVersionConstraint().toString()) with project(':processor')
+                    substitute module(librarygenerator.getModule().toString() + ":" + librarygenerator.getVersionConstraint().toString()) with project(':generator')
+                    substitute module(libraryplugin.getModule().toString() + ":" + libraryplugin.getVersionConstraint().toString()) with project(':plugin')
                 }
             }
         }
@@ -45,12 +52,7 @@ subprojects {
         mavenCentral()
         jcenter() {
             content {
-                includeModule("com.soywiz.korlibs.korte", "korte-jvm")
-                includeModule("org.jetbrains.trove4j", "trove4j")
                 includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
-                includeGroup("org.jetbrains.dokka")
-                includeGroup("org.jetbrains")
-                includeGroup("org.koin")
             }
         }
     }

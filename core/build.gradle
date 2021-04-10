@@ -59,10 +59,10 @@ android {
 }
 
 dependencies {
-    api packages.collar.annotations
-    implementation packages.kotlin.core
-    compileOnly packages.annotations
-    implementation packages.androidx.core
+    api libs.libraryannotations
+    implementation libs.kotlin.core
+    compileOnly libs.annotations
+    implementation libs.androidx.core
 
     testImplementation "junit:junit:4.13"
     testImplementation 'org.mockito:mockito-core:3.3.3'

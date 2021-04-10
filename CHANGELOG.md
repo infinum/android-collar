@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+## Version 1.2.4
+
+_2021-04-10_
+
+* Update Gradle to 7.0.
+* Replace dependencies.gradle with version catalogs.
+* Update to stable dependencies.
+* Remove Bintray configuration.
+
 ## Version 1.2.3
 
 _2021-02-13_
