@@ -27,11 +27,11 @@ compileTestKotlin {
 }
 
 dependencies {
-    api packages.collar.annotations
-    implementation packages.kotlin.core
-    implementation packages.kotlin.poet_metadata
-    implementation packages.kotlin.poet
-    implementation packages.kotlin.reflect
+    api libs.libraryannotations
+    implementation libs.kotlin.core
+    implementation libs.poetmetadata
+    implementation libs.poet
+    implementation libs.kotlin.reflect
 
     testImplementation "junit:junit:4.13"
     testImplementation 'org.mockito:mockito-core:3.3.3'

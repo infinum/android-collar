@@ -27,10 +27,10 @@ compileTestKotlin {
 }
 
 dependencies {
-    implementation packages.kotlin.core
-    implementation packages.kotlin.poet
-    implementation packages.kotlin.reflect
-    implementation packages.kotlin.serialization_core
+    implementation libs.kotlin.core
+    implementation libs.poet
+    implementation libs.kotlin.reflect
+    implementation libs.serialization.core
 
     testImplementation "junit:junit:4.13"
     testImplementation 'org.mockito:mockito-core:3.3.3'

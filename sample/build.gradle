@@ -4,8 +4,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath packages.gradle
-        classpath packages.collar.plugin
+        classpath libs.gradle
+        classpath libs.libraryplugin
     }
 }
 
@@ -78,13 +78,13 @@ android {
 }
 
 dependencies {
-    implementation packages.kotlin.core
-    implementation packages.androidx.appcompat
-    implementation packages.androidx.fragment
-    implementation packages.google.design
+    implementation libs.kotlin.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.fragment
+    implementation libs.material
     lintChecks project(":lint")
-    debugImplementation packages.collar.ui
-    releaseImplementation packages.collar.ui_no_op
+    debugImplementation libs.libraryui
+    releaseImplementation libs.libraryuinoop
 }
 
 collar {

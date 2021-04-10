@@ -1,6 +1,5 @@
 task deployAnnotations(dependsOn: [
         ':annotations:clean',
-        ':annotations:publishReleasePublicationToBintrayRepository',
         ':annotations:publishReleasePublicationToGithubRepository',
         ':annotations:publishReleasePublicationToSonatypeRepository'
 ]) {
@@ -10,7 +9,6 @@ task deployAnnotations(dependsOn: [
 
 task deployCore(dependsOn: [
         ':core:clean',
-        ':core:publishReleasePublicationToBintrayRepository',
         ':core:publishReleasePublicationToGithubRepository',
         ':core:publishReleasePublicationToSonatypeRepository'
 ]) {
@@ -20,7 +18,6 @@ task deployCore(dependsOn: [
 
 task deployUi(dependsOn: [
         ':ui:clean',
-        ':ui:publishReleasePublicationToBintrayRepository',
         ':ui:publishReleasePublicationToGithubRepository',
         ':ui:publishReleasePublicationToSonatypeRepository'
 ]) {
@@ -30,7 +27,6 @@ task deployUi(dependsOn: [
 
 task deployUiNoOp(dependsOn: [
         ':ui-no-op:clean',
-        ':ui-no-op:publishReleasePublicationToBintrayRepository',
         ':ui-no-op:publishReleasePublicationToGithubRepository',
         ':ui-no-op:publishReleasePublicationToSonatypeRepository'
 ]) {
@@ -40,7 +36,6 @@ task deployUiNoOp(dependsOn: [
 
 task deployProcessor(dependsOn: [
         ':processor:clean',
-        ':processor:publishReleasePublicationToBintrayRepository',
         ':processor:publishReleasePublicationToGithubRepository',
         ':processor:publishReleasePublicationToSonatypeRepository'
 ]) {
@@ -50,7 +45,6 @@ task deployProcessor(dependsOn: [
 
 task deployGenerator(dependsOn: [
         ':generator:clean',
-        ':generator:publishReleasePublicationToBintrayRepository',
         ':generator:publishReleasePublicationToGithubRepository',
         ':generator:publishReleasePublicationToSonatypeRepository'
 ]) {
@@ -60,7 +54,6 @@ task deployGenerator(dependsOn: [
 
 task deployPlugin(dependsOn: [
         ':plugin:clean',
-        ':plugin:publishReleasePublicationToBintrayRepository',
         ':plugin:publishReleasePublicationToGithubRepository',
         ':plugin:publishReleasePublicationToSonatypeRepository'
 ]) {

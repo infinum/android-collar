@@ -62,9 +62,9 @@ android {
 }
 
 dependencies {
-    implementation packages.kotlin.core
-    implementation packages.androidx.appcompat
-    api packages.collar.core
+    implementation libs.kotlin.core
+    implementation libs.androidx.appcompat
+    api libs.librarycore
 }
 
 apply from: "publish.gradle"

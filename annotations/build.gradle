@@ -26,7 +26,7 @@ compileTestKotlin {
 }
 
 dependencies {
-    compileOnly packages.kotlin.core
+    compileOnly libs.kotlin.core
 }
 
 apply from: "publish.gradle"
