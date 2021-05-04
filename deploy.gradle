@@ -61,15 +61,28 @@ task deployPlugin(dependsOn: [
     description = "Deploy module to repositories"
 }
 
-task deployAll(dependsOn: [
+task deployStage1(dependsOn: [
         'deployAnnotations',
-        'deployCore',
-        'deployProcessor',
-        'deployGenerator',
-        'deployPlugin',
-        'deployUi',
-        'deployUiNoOp'
+        'deployGenerator'
 ]) {
     group = "Deploy"
-    description = "Deploy all modules to repositories"
+    description = "Deploy all stage 1 modules to repositories"
+}
+
+task deployStage2(dependsOn: [
+        'deployCore',
+        'deployProcessor'
+]) {
+    group = "Deploy"
+    description = "Deploy all stage 2 modules to repositories"
+}
+
+
+task deployStage3(dependsOn: [
+        'deployUi',
+        'deployUiNoOp',
+        'deployPlugin'
+]) {
+    group = "Deploy"
+    description = "Deploy all stage 3 modules to repositories"
 }
