@@ -49,7 +49,8 @@
             android:backgroundTint="@color/collar_color_event"
             android:importantForAccessibility="no"
             android:scaleType="centerInside"
-            android:src="@drawable/collar_ic_event_white" />
+            android:src="@drawable/collar_ic_event_white"
+            tools:targetApi="lollipop" />
 
     </FrameLayout>
 

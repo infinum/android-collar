@@ -37,7 +37,10 @@ internal class CollarDialogFactory(private val activity: Activity) {
 
     @Suppress("DefaultLocale")
     private fun resolveDetailTitle(entity: CollarEntity) =
-        entity.type?.name?.toLowerCase(Locale.getDefault())?.capitalize(Locale.getDefault())
+        entity.type
+            ?.name
+            ?.lowercase(Locale.getDefault())
+            ?.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 
     private fun resolveDetailView(entity: CollarEntity) =
         with(CollarViewDetailBinding.inflate(inflater)) {
@@ -67,14 +70,14 @@ internal class CollarDialogFactory(private val activity: Activity) {
         }
 
     private fun share(entity: CollarEntity) {
-        ShareCompat.IntentBuilder.from(activity)
+        ShareCompat.IntentBuilder(activity)
             .setChooserTitle(R.string.collar_name)
             .setType(Presentation.Constants.MIME_TYPE_TEXT)
             .setText(
                 listOfNotNull(
                     "time: ${Date(entity.timestamp).presentationFormat}",
                     entity.name?.let { "name: $it" },
-                    entity.type?.let { "type: ${it.name.toLowerCase(Locale.getDefault())}" },
+                    entity.type?.let { "type: ${it.name.lowercase(Locale.getDefault())}" },
                     entity.value?.let { "value: $it" },
                     entity.parameters?.let { "parameters: $it" }
                 ).joinToString("\n")

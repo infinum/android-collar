@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+## Version 1.2.6
+
+_2021-05-21_
+
+* Update dependencies.
+* Fix API 19 compatibility issues.
+
+## Version 1.2.5
+
+_2021-05-04_
+
+* Lower min SDK from 21 to 19 per client request.
+
 ## Version 1.2.4
 
 _2021-04-10_

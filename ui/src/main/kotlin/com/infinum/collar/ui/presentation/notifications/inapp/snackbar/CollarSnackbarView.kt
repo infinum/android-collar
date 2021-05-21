@@ -2,6 +2,9 @@ package com.infinum.collar.ui.presentation.notifications.inapp.snackbar
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -49,7 +52,15 @@ internal class CollarSnackbarView @JvmOverloads constructor(
     }
 
     fun setIconBackgroundTint(@ColorRes colorResId: Int) {
-        viewBinding.iconView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(context, colorResId))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            viewBinding.iconView.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(context, colorResId))
+        } else {
+            viewBinding.iconView.background.colorFilter =
+                PorterDuffColorFilter(ContextCompat.getColor(context, colorResId), PorterDuff.Mode.SRC_ATOP)
+            viewBinding.iconView.drawable.colorFilter =
+                PorterDuffColorFilter(ContextCompat.getColor(context, android.R.color.white), PorterDuff.Mode.SRC_ATOP)
+        }
     }
 
     fun setIconResource(@DrawableRes drawableResId: Int) {

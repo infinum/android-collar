@@ -1,8 +1,8 @@
 apply plugin: 'jacoco'
 
 jacoco {
-    toolVersion = "0.8.5"
-    reportsDir = file("$buildDir/reports/jacoco")
+    toolVersion = "0.8.7"
+    reportsDirectory.set(file("$buildDir/reports/jacoco"))
 }
 
 task jacocoTestReport(type: JacocoReport) {

@@ -67,7 +67,7 @@ internal class InAppNotificationFactory(
         ) {
             activity?.let {
                 it.startActivity(
-                    ShareCompat.IntentBuilder.from(it)
+                    ShareCompat.IntentBuilder(it)
                         .setType(Presentation.Constants.MIME_TYPE_TEXT)
                         .setText(
                             listOfNotNull(
