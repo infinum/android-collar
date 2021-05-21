@@ -7,6 +7,7 @@ internal class EventViewHolder(
     viewBinding: CollarItemEventBinding
 ) : CollarViewHolder(
     viewBinding.root,
+    viewBinding.iconView,
     viewBinding.timeView,
     viewBinding.nameView,
     viewBinding.valueView

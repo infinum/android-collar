@@ -50,11 +50,6 @@ subprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() {
-            content {
-                includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
-            }
-        }
     }
 
     apply from: "$rootDir/cpd.gradle"

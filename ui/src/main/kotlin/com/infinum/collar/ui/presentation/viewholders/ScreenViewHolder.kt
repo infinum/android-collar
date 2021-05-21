@@ -7,6 +7,7 @@ internal class ScreenViewHolder(
     viewBinding: CollarItemScreenBinding
 ) : CollarViewHolder(
     viewBinding.root,
+    viewBinding.iconView,
     viewBinding.timeView,
     viewBinding.nameView
 )

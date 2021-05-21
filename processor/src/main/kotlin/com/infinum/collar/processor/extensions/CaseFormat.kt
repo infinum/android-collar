@@ -20,12 +20,12 @@ private fun formatCamelCase(input: String, ignore: CharArray, upperCase: Boolean
                     seenUpperCase = false
                 }
                 in 'a'..'z' -> {
-                    it.append(if (seenSeparator) c.toUpperCase() else c)
+                    it.append(if (seenSeparator) c.uppercaseChar() else c)
                     seenSeparator = false
                     seenUpperCase = false
                 }
                 in 'A'..'Z' -> {
-                    it.append(if (seenUpperCase) c.toLowerCase() else c)
+                    it.append(if (seenUpperCase) c.lowercaseChar() else c)
                     seenSeparator = false
                     seenUpperCase = true
                 }
@@ -80,13 +80,13 @@ private fun formatCase(input: String, separator: Char, ignore: CharArray, upperC
                     seenUpperCase = false
                 }
                 in 'a'..'z' -> {
-                    it.append(if (upperCase) c.toUpperCase() else c)
+                    it.append(if (upperCase) c.uppercaseChar() else c)
                     seenSeparator = false
                     seenUpperCase = false
                 }
                 in 'A'..'Z' -> {
                     if (!seenSeparator && !seenUpperCase) it.append(separator)
-                    it.append(if (upperCase) c else c.toLowerCase())
+                    it.append(if (upperCase) c else c.lowercaseChar())
                     seenSeparator = false
                     seenUpperCase = true
                 }

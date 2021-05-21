@@ -7,6 +7,7 @@ internal class PropertyViewHolder(
     viewBinding: CollarItemPropertyBinding
 ) : CollarViewHolder(
     viewBinding.root,
+    viewBinding.iconView,
     viewBinding.timeView,
     viewBinding.nameView,
     viewBinding.valueView

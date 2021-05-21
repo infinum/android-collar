@@ -3,6 +3,11 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
       <module name="annotations" target="1.8" />
+      <module name="Collar.buildSrc" target="11" />
+      <module name="Collar.core" target="11" />
+      <module name="Collar.sample" target="11" />
+      <module name="Collar.ui" target="11" />
+      <module name="Collar.ui-no-op" target="11" />
       <module name="core" target="1.8" />
       <module name="generator" target="1.8" />
       <module name="lint" target="1.8" />
