@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 1.2.6
+
+_2021-05-21_
+
+* Update dependencies.
+* Fix API 19 compatibility issues.
+
 ## Version 1.2.5
 
 _2021-05-04_
