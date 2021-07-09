@@ -56,7 +56,7 @@ internal class EventsGenerator(
                             }
 
                             val constructorParamBuilder = ParameterSpec.builder(
-                                parameter.name.toCamelCase().decapitalize(Locale.ENGLISH),
+                                parameter.name.toCamelCase().replaceFirstChar { it.lowercase(Locale.ENGLISH) },
                                 type
                             ).apply {
                                 parameter.description
@@ -85,10 +85,10 @@ internal class EventsGenerator(
 
                             eventClass.addProperty(
                                 PropertySpec.builder(
-                                    parameter.name.toCamelCase().decapitalize(Locale.ENGLISH),
+                                    parameter.name.toCamelCase().replaceFirstChar { it.lowercase(Locale.ENGLISH) },
                                     type
                                 )
-                                    .initializer(parameter.name.toCamelCase().decapitalize(Locale.ENGLISH))
+                                    .initializer(parameter.name.toCamelCase().replaceFirstChar { it.lowercase(Locale.ENGLISH) })
                                     .build()
                             )
                         }

@@ -39,7 +39,6 @@ android {
         freeCompilerArgs += [
                 '-Xexplicit-api=strict'
         ]
-        useIR = true
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -64,8 +63,8 @@ dependencies {
     compileOnly libs.annotations
     implementation libs.androidx.core
 
-    testImplementation "junit:junit:4.13"
-    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.mockito:mockito-core:3.11.2'
 }
 
 apply from: "publish.gradle"

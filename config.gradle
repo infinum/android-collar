@@ -7,7 +7,7 @@ ext {
     ]
     releaseConfig = [
             "group"      : "com.infinum.collar",
-            "version"    : "1.2.6",
-            "versionCode": 1 * 100 * 100 + 2 * 100 + 6
+            "version"    : "1.2.7",
+            "versionCode": 1 * 100 * 100 + 2 * 100 + 7
     ]
 }

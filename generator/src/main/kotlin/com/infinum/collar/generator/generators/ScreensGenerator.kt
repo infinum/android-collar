@@ -23,7 +23,7 @@ internal class ScreensGenerator(
                     it.forEach { screen ->
                         addProperty(
                             PropertySpec.builder(
-                                screen.name.toUpperCase(Locale.ENGLISH).replace(" ", "_"),
+                                screen.name.uppercase(Locale.ENGLISH).replace(" ", "_"),
                                 String::class,
                                 KModifier.CONST
                             )

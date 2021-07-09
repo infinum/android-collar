@@ -11,6 +11,6 @@ internal enum class DataType(val className: ClassName) {
 
     companion object {
 
-        operator fun invoke(name: String) = values().firstOrNull { it.toString().toLowerCase(Locale.ENGLISH) == name }
+        operator fun invoke(name: String) = values().firstOrNull { it.toString().lowercase(Locale.ENGLISH) == name }
     }
 }

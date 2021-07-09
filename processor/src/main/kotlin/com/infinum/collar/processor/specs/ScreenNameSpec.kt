@@ -64,7 +64,7 @@ internal class ScreenNameSpec(
             .any { it == CLASS_SUPPORT_FRAGMENT || it == CLASS_FRAGMENT }
 
     private fun suppressDeprecation(): AnnotationSpec =
-        AnnotationSpec.builder(Suppress::class.java)
+        AnnotationSpec.builder(Suppress::class)
             .addMember(CodeBlock.of("%S", "DEPRECATION"))
             .build()
 

@@ -8,15 +8,23 @@
         android:label="Collar Sample"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.infinum.collar.sample.MainActivity">
+        <activity
+            android:name="com.infinum.collar.sample.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.infinum.collar.sample.ChildActivity" />
-        <activity android:name="com.infinum.collar.sample.KotlinMainActivity" />
-        <activity android:name="com.infinum.collar.sample.KotlinChildActivity" />
+        <activity
+            android:name="com.infinum.collar.sample.ChildActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.infinum.collar.sample.KotlinMainActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.infinum.collar.sample.KotlinChildActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

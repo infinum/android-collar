@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath libs.gradle
-        classpath libs.libraryplugin
+//        classpath libs.libraryplugin
     }
 }
 
@@ -15,7 +15,7 @@ plugins {
     id "kotlin-kapt"
 }
 
-apply plugin: "com.infinum.collar.plugin"
+//apply plugin: "com.infinum.collar.plugin"
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -87,7 +87,7 @@ dependencies {
     releaseImplementation libs.libraryuinoop
 }
 
-collar {
-    fileName = "example.json"
-    packageName = "com.infinum.collar.sample.analytics.trackingplan"
-}
+//collar {
+//    fileName = "example.json"
+//    packageName = "com.infinum.collar.sample.analytics.trackingplan"
+//}

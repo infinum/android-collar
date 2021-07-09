@@ -6,6 +6,7 @@
     <application>
         <activity
             android:name="com.infinum.collar.ui.presentation.CollarActivity"
+            android:exported="true"
             android:label="@string/collar_name"
             android:taskAffinity="com.infinum.collar"
             android:theme="@style/Collar.Theme">
@@ -24,7 +25,7 @@
             tools:node="merge">
             <meta-data
                 android:name="com.infinum.collar.ui.CollarInitializer"
-                android:value="androidx.startup"/>
+                android:value="androidx.startup" />
         </provider>
     </application>
 

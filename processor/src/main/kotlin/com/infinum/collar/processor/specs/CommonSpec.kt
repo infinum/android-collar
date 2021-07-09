@@ -32,7 +32,7 @@ internal abstract class CommonSpec(
             .build()
 
     override fun jvmName(): AnnotationSpec =
-        AnnotationSpec.builder(JvmName::class.java)
+        AnnotationSpec.builder(JvmName::class)
             .addMember(CodeBlock.of("%S", "${CLASS_COLLAR.simpleName}$simpleName"))
             .build()
 

@@ -58,7 +58,6 @@ android {
                 '-Xexplicit-api=strict',
                 '-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi'
         ]
-        useIR = true
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
