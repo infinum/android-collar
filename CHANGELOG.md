@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 1.2.8
+
+_2021-07-22_
+
+* Update dependencies.
+* Fix memory leaks.
+
 ## Version 1.2.7
 
 _2021-07-09_

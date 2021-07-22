@@ -27,7 +27,7 @@ import com.infinum.collar.ui.presentation.shared.edgefactories.bounce.BounceEdge
 import java.util.Date
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener {
+internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolbar.OnMenuItemClickListener {
 
     private lateinit var dialogFactory: CollarDialogFactory
     private var detailDialog: AlertDialog? = null
@@ -37,7 +37,7 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
         onClick = this@CollarActivity::showDetail
     )
 
-    private val viewModel: CollarViewModel by viewModel()
+    override val viewModel: CollarViewModel by viewModel()
 
     override val binding by viewBinding(CollarActivityCollarBinding::inflate)
 
@@ -61,9 +61,7 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
                         }
                     },
                     onQueryTextChanged = {
-                        viewModel.search(it) { entities ->
-                            entryAdapter.submitList(entities)
-                        }
+                        viewModel.search(it)
                     }
                 )
             }
@@ -89,12 +87,8 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
             }
         }
 
-        viewModel.entities {
-            entryAdapter.submitList(it)
-        }
-        viewModel.settings {
-            onSettingsChanged(it)
-        }
+        viewModel.entities()
+        viewModel.settings()
     }
 
     override fun onDestroy() {
@@ -102,19 +96,32 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
         super.onDestroy()
     }
 
+    override fun onState(state: CollarState) {
+        when (state) {
+            is CollarState.Data -> entryAdapter.submitList(state.entities)
+        }
+    }
+
+    override fun onEvent(event: CollarEvent) {
+        when (event) {
+            is CollarEvent.Settings -> onSettingsChanged(event.entity)
+            is CollarEvent.Clear -> entryAdapter.submitList(null)
+        }
+    }
+
     override fun onMenuItemClick(item: MenuItem): Boolean {
         with(binding) {
             when (item.itemId) {
                 R.id.search -> onSearchStarted()
-                R.id.clear -> clear()
+                R.id.clear -> viewModel.clearEntities()
                 R.id.screens -> onFilterToggled(EntityType.SCREEN, item)
                 R.id.events -> onFilterToggled(EntityType.EVENT, item)
                 R.id.properties -> onFilterToggled(EntityType.PROPERTY, item)
-                R.id.systemNotifications -> onNotificationsToggled(
+                R.id.systemNotifications -> viewModel.notifications(
                     item.isChecked.not(),
                     toolbar.menu.findItem(R.id.inAppNotifications).isChecked
                 )
-                R.id.inAppNotifications -> onNotificationsToggled(
+                R.id.inAppNotifications -> viewModel.notifications(
                     toolbar.menu.findItem(R.id.systemNotifications).isChecked,
                     item.isChecked.not()
                 )
@@ -129,20 +136,10 @@ internal class CollarActivity : BaseActivity(), Toolbar.OnMenuItemClickListener 
             findItem(R.id.settings).isVisible = false
         }
 
-    private fun clear() =
-        viewModel.clearEntities {
-            entryAdapter.submitList(null)
-        }
-
     private fun onFilterToggled(type: EntityType, menuItem: MenuItem) {
         menuItem.isChecked = !menuItem.isChecked
-        viewModel.filter(type, menuItem.isChecked) { items ->
-            entryAdapter.submitList(items)
-        }
+        viewModel.filter(type, menuItem.isChecked)
     }
-
-    private fun onNotificationsToggled(isSystemChecked: Boolean, isInAppChecked: Boolean) =
-        viewModel.notifications(isSystemChecked, isInAppChecked)
 
     private fun showDetail(entity: CollarEntity) {
         detailDialog = dialogFactory.entityDetail(entity)

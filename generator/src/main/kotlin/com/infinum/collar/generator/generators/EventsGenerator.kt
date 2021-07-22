@@ -88,7 +88,12 @@ internal class EventsGenerator(
                                     parameter.name.toCamelCase().replaceFirstChar { it.lowercase(Locale.ENGLISH) },
                                     type
                                 )
-                                    .initializer(parameter.name.toCamelCase().replaceFirstChar { it.lowercase(Locale.ENGLISH) })
+                                    .initializer(
+                                        parameter
+                                            .name
+                                            .toCamelCase()
+                                            .replaceFirstChar { it.lowercase(Locale.ENGLISH) }
+                                    )
                                     .build()
                             )
                         }
