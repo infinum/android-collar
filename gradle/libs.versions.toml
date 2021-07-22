@@ -1,8 +1,8 @@
 [versions]
-collar = "1.2.7"
+collar = "1.2.8"
 gradle = "4.2.2"
-kotlin = "1.5.20"
-coroutines = "1.5.0"
+kotlin = "1.5.21"
+coroutines = "1.5.1"
 serialization = "1.2.1"
 poet = "1.9.0"
 annotations = "21.0.1"

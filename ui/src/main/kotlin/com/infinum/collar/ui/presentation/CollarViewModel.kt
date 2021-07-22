@@ -1,20 +1,19 @@
 package com.infinum.collar.ui.presentation
 
-import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.data.models.local.EntityType
 import com.infinum.collar.ui.data.models.local.SettingsEntity
 import com.infinum.collar.ui.domain.Repositories
 import com.infinum.collar.ui.domain.entities.models.EntityParameters
 import com.infinum.collar.ui.domain.settings.models.SettingsParameters
 import com.infinum.collar.ui.presentation.shared.base.BaseViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 
 internal class CollarViewModel(
     private val entityRepository: Repositories.Entity,
     private val settingsRepository: Repositories.Settings
-) : BaseViewModel() {
+) : BaseViewModel<CollarState, CollarEvent>() {
 
     companion object {
         private val FILTERS_ALL = listOf(
@@ -29,18 +28,14 @@ internal class CollarViewModel(
         filters = FILTERS_ALL
     )
 
-    fun search(
-        value: String?,
-        onData: suspend (List<CollarEntity>) -> Unit
-    ) {
+    fun search(value: String?) {
         parameters = parameters.copy(query = value)
-        entities(onData)
+        entities()
     }
 
     fun filter(
         entityType: EntityType,
-        checked: Boolean,
-        onData: suspend (List<CollarEntity>) -> Unit
+        checked: Boolean
     ) {
         val currentFilters = parameters.filters.toMutableList()
         when (checked) {
@@ -48,7 +43,7 @@ internal class CollarViewModel(
             false -> currentFilters.remove(entityType)
         }
         parameters = parameters.copy(filters = currentFilters.toList())
-        entities(onData)
+        entities()
     }
 
     fun notifications(enabledSystemNotifications: Boolean, enabledInAppNotifications: Boolean) =
@@ -66,29 +61,31 @@ internal class CollarViewModel(
             }
         }
 
-    fun clearEntities(action: suspend () -> Unit) =
+    fun clearEntities() =
         launch {
             io {
                 entityRepository.clear()
             }
-            action()
+            emitEvent(CollarEvent.Clear())
         }
 
-    fun entities(onData: suspend (List<CollarEntity>) -> Unit) =
+    fun entities() =
         launch {
             entityRepository.load(parameters)
-                .flowOn(Dispatchers.IO)
+                .flowOn(runningDispatchers)
+                .catch { error -> setError(error) }
                 .collectLatest {
-                    onData(it)
+                    setState(CollarState.Data(entities = it))
                 }
         }
 
-    fun settings(onData: (SettingsEntity) -> Unit) =
+    fun settings() =
         launch {
             settingsRepository.load(SettingsParameters())
-                .flowOn(Dispatchers.IO)
+                .flowOn(runningDispatchers)
+                .catch { error -> setError(error) }
                 .collectLatest {
-                    onData(it)
+                    emitEvent(CollarEvent.Settings(entity = it))
                 }
         }
 }
