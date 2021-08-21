@@ -55,6 +55,7 @@ task lintAll(dependsOn: [
 
 task detektAll(dependsOn: [
         ':annotations:detekt',
+        ':lint:detekt',
         ':core:detekt',
         ':ui:detekt',
         ':ui-no-op:detekt',
@@ -68,6 +69,7 @@ task detektAll(dependsOn: [
 
 task ktlintAll(dependsOn: [
         ':annotations:ktlintCheck',
+        ':lint:ktlintCheck',
         ':core:ktlintCheck',
         ':ui:ktlintCheck',
         ':ui-no-op:ktlintCheck',
@@ -81,6 +83,7 @@ task ktlintAll(dependsOn: [
 
 task cpdAll(dependsOn: [
         ':annotations:cpdCheck',
+        ':lint:cpdCheck',
         ':core:cpdCheck',
         ':ui:cpdCheck',
         ':ui-no-op:cpdCheck',

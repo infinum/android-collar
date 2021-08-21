@@ -17,9 +17,10 @@ internal object IssueFactory {
 
     val MISSING_SCREEN_NAME_ANNOTATION: Issue = Issue.create(
         id = "MissingScreenNameAnnotation",
-        briefDescription = "Missing screen name annotation",
+        briefDescription = "Missing screen name annotation.",
         explanation = "All Activities and Fragments require a valid screen name annotation on the class." +
-            "\nYou must use annotate this Activity or Fragment with @ScreenName with a valid value parameter or set enabled parameter to false.",
+            "\nYou must annotate an Activity or Fragment with @ScreenName with a valid value parameter " +
+            "or set enabled parameter to false.",
         category = Category.CORRECTNESS,
         priority = 5,
         severity = Severity.WARNING,

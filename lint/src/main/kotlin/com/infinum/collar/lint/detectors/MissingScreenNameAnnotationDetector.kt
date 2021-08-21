@@ -12,12 +12,7 @@ internal class MissingScreenNameAnnotationDetector : Detector(), SourceCodeScann
     companion object {
         private val SUPPORTED_CLASSES = listOf(
             "android.app.Activity",
-            "androidx.activity.ComponentActivity",
-            "androidx.core.app.ComponentActivity",
-            "androidx.appcompat.app.AppCompatActivity",
-            "androidx.fragment.app.FragmentActivity",
-            "android.support.v7.app.AppCompatActivity",
-            "android.support.v4.app.FragmentActivity",
+            "android.app.Fragment",
             "androidx.fragment.app.Fragment",
             "android.support.v4.app.Fragment"
         )
@@ -28,16 +23,21 @@ internal class MissingScreenNameAnnotationDetector : Detector(), SourceCodeScann
 
     override fun visitClass(context: JavaContext, declaration: UClass) {
         if (context.project.reportIssues) {
-            SUPPORTED_CLASSES.forEach {
-                if (context.evaluator.extendsClass(declaration, it, false)) {
-                    if (declaration.hasAnnotation(ANNOTATION_SCREEN_NAME).not()) {
-                        context.report(
-                            IssueFactory.MISSING_SCREEN_NAME_ANNOTATION,
-                            declaration,
-                            context.getNameLocation(declaration),
-                            "Missing ScreenName annotation."
-                        )
-                    }
+            visitExtendedClass(context, declaration)
+        }
+    }
+
+    private fun visitExtendedClass(context: JavaContext, declaration: UClass) {
+        loop@ for (className in SUPPORTED_CLASSES) {
+            if (context.evaluator.extendsClass(declaration, className, false)) {
+                if (declaration.hasAnnotation(ANNOTATION_SCREEN_NAME).not()) {
+                    context.report(
+                        IssueFactory.MISSING_SCREEN_NAME_ANNOTATION,
+                        declaration,
+                        context.getNameLocation(declaration),
+                        "Missing screen name annotation."
+                    )
+                    break@loop
                 }
             }
         }
