@@ -30,7 +30,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.infinum.collar:collar-plugin:1.2.8"
+        classpath "com.infinum.collar:collar-plugin:1.2.9"
     }
 }
 ```
@@ -41,7 +41,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.infinum.collar:collar-plugin:1.2.8")
+        classpath("com.infinum.collar:collar-plugin:1.2.9")
     }
 }
 ```
@@ -253,13 +253,13 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:  
 **Groovy**
 ```gradle
-debugImplementation "com.infinum.collar:collar-ui:1.2.8"
-releaseImplementation "com.infinum.collar:collar-ui-no-op:1.2.8"
+debugImplementation "com.infinum.collar:collar-ui:1.2.9"
+releaseImplementation "com.infinum.collar:collar-ui-no-op:1.2.9"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("com.infinum.collar:collar-ui:1.2.8")
-releaseImplementation("com.infinum.collar:collar-ui-no-op:1.2.8")
+debugImplementation("com.infinum.collar:collar-ui:1.2.9")
+releaseImplementation("com.infinum.collar:collar-ui-no-op:1.2.9")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
@@ -343,8 +343,7 @@ To run the task you can:
 ## Contributing
 
 Feedback and code contributions are very much welcome. Just make a pull request with a short description of your changes. By making contributions to this project you give permission for your code to be used under the same [license](LICENSE).  
-For easier developing a `sample` application with proper implementations is provided.  
-It is also recommended to uncomment the block of dependency substitution in project level `build.gradle`.
+For easier developing a `sample` application with proper implementations is provided.
 
 ## License
 

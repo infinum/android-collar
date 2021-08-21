@@ -1,11 +1,12 @@
 buildscript {
     repositories {
         google()
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
-        classpath libs.gradle
-        classpath libs.libraryplugin
+        classpath libs.tools.gradle
+        classpath libs.librarygradle
     }
 }
 
