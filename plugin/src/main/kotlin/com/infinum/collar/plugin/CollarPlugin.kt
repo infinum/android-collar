@@ -49,9 +49,9 @@ public class CollarPlugin : Plugin<Project> {
                     task.include {
                         it.name == collarExtension.fileName
                     }
-                }.let {
+                }.let { provider ->
                     extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
-                        variant.registerJavaGeneratingTask(it.get(), it.get().outputDirectory)
+                        variant.registerJavaGeneratingTask(provider, provider.get().outputDirectory)
                     }
                 }
             }
