@@ -17,6 +17,7 @@ The project is organized in the following modules:
 - `ui` - contains a single screen UI that provides visual tracking of sent events
 - `ui-no-op` - contains a stub for easy release implementation of UI package
 - `generator` - contains a generator code for provided tracking plan
+- `lint` - contains custom Lint checks
 - `sample` - a sample app for testing the Gradle plugin
 
 ## Usage

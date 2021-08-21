@@ -6,6 +6,7 @@ Change Log
 _2021-08-23_
 
 * Add custom Lint checks.
+* Fix R8 collisions on obfuscated class names.
 
 ## Version 1.2.9
 
