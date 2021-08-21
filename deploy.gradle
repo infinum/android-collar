@@ -6,6 +6,14 @@ task deployAnnotations(dependsOn: [
     description = "Deploy module to repositories"
 }
 
+task deployLint(dependsOn: [
+        ':lint:clean',
+        ':lint:publishReleasePublicationToSonatypeRepository'
+]) {
+    group = "Deploy"
+    description = "Deploy module to repositories"
+}
+
 task deployCore(dependsOn: [
         ':core:clean',
         ':core:publishReleasePublicationToSonatypeRepository'
@@ -56,6 +64,7 @@ task deployPlugin(dependsOn: [
 
 task deployStage1(dependsOn: [
         'deployAnnotations',
+        'deployLint',
         'deployGenerator'
 ]) {
     group = "Deploy"
@@ -81,6 +90,7 @@ task deployStage3(dependsOn: [
 
 task deployDebug(dependsOn: [
         ':annotations:clean',
+        ':lint:clean',
         ':core:clean',
         ':ui:clean',
         ':ui-no-op:clean',
@@ -88,6 +98,7 @@ task deployDebug(dependsOn: [
         ':generator:clean',
         ':plugin:clean',
         ':annotations:publishReleasePublicationToMavenLocal',
+        ':lint:publishReleasePublicationToMavenLocal',
         ':core:publishReleasePublicationToMavenLocal',
         ':ui:publishReleasePublicationToMavenLocal',
         ':ui-no-op:publishReleasePublicationToMavenLocal',

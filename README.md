@@ -17,6 +17,7 @@ The project is organized in the following modules:
 - `ui` - contains a single screen UI that provides visual tracking of sent events
 - `ui-no-op` - contains a stub for easy release implementation of UI package
 - `generator` - contains a generator code for provided tracking plan
+- `lint` - contains custom Lint checks
 - `sample` - a sample app for testing the Gradle plugin
 
 ## Usage
@@ -30,7 +31,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.infinum.collar:collar-plugin:1.2.9"
+        classpath "com.infinum.collar:collar-plugin:1.3.0"
     }
 }
 ```
@@ -41,7 +42,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.infinum.collar:collar-plugin:1.2.9")
+        classpath("com.infinum.collar:collar-plugin:1.3.0")
     }
 }
 ```
@@ -243,6 +244,12 @@ javaCompileOptions {
 }
 ```
 
+## Lint checks
+
+_Collar_ plugin provides it's own custom Lint checks. These can be disabled, suppressed or fixed like any other Lint registered issues.    
+Checks:
+- `MissingScreenNameAnnotation` - All Activities and Fragments require a valid screen name annotation on the class.  You must annotate an Activity or Fragment with @ScreenName with a valid value parameter or set enabled parameter to false.
+
 ## Debug UI
 
 ![UI](ui.png)![ui-dark](ui-dark.png)
@@ -253,13 +260,13 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:  
 **Groovy**
 ```gradle
-debugImplementation "com.infinum.collar:collar-ui:1.2.9"
-releaseImplementation "com.infinum.collar:collar-ui-no-op:1.2.9"
+debugImplementation "com.infinum.collar:collar-ui:1.3.0"
+releaseImplementation "com.infinum.collar:collar-ui-no-op:1.3.0"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("com.infinum.collar:collar-ui:1.2.9")
-releaseImplementation("com.infinum.collar:collar-ui-no-op:1.2.9")
+debugImplementation("com.infinum.collar:collar-ui:1.3.0")
+releaseImplementation("com.infinum.collar:collar-ui-no-op:1.3.0")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
