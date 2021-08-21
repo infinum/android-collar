@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 1.3.0
+
+_2021-08-23_
+
+* Add custom Lint checks.
+
 ## Version 1.2.9
 
 _2021-08-21_
