@@ -2,6 +2,11 @@ plugins {
     id "java-library"
     id "org.jetbrains.kotlin.jvm"
 }
+
+kotlin {
+    explicitApi()
+}
+
 java {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
@@ -18,14 +23,30 @@ compileTestKotlin {
     }
 }
 
+test {
+    useJUnitPlatform()
+}
+
+sourceSets.each {
+    it.java.srcDirs += "src/$it.name/kotlin"
+}
+
 dependencies {
     compileOnly libs.kotlin.core
-    compileOnly "com.android.tools.lint:lint-api:30.0.1"
+    compileOnly libs.tools.lintapi
+    compileOnly libs.tools.lintchecks
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.2"
+    testImplementation libs.tools.lintapi
+    testImplementation libs.tools.lintchecks
+    testImplementation libs.tools.linttests
 }
 
 jar {
     manifest {
-        attributes("Lint-Registry-v2": "com.infinum.collar.lint.registries.ScreenNameRegistry")
+        attributes("Lint-Registry-v2": "com.infinum.collar.lint.CollarIssueRegistry")
     }
 }
 

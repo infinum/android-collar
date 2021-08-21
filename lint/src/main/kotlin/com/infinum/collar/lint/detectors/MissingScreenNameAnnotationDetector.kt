@@ -3,11 +3,11 @@ package com.infinum.collar.lint.detectors
 import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.SourceCodeScanner
-import com.infinum.collar.lint.issues.Issues
+import com.infinum.collar.lint.IssueFactory
 import org.jetbrains.uast.UClass
 
 @Suppress("UnstableApiUsage")
-class ScreenNameDetector : Detector(), SourceCodeScanner {
+internal class MissingScreenNameAnnotationDetector : Detector(), SourceCodeScanner {
 
     companion object {
         private val SUPPORTED_CLASSES = listOf(
@@ -27,19 +27,17 @@ class ScreenNameDetector : Detector(), SourceCodeScanner {
     override fun applicableSuperClasses(): List<String> = SUPPORTED_CLASSES
 
     override fun visitClass(context: JavaContext, declaration: UClass) {
-        if (!context.project.reportIssues) {
-            return
-        }
-
-        SUPPORTED_CLASSES.forEach {
-            if (context.evaluator.extendsClass(declaration, it, false)) {
-                if (!declaration.hasAnnotation(ANNOTATION_SCREEN_NAME)) {
-                    context.report(
-                        Issues.ISSUE_SCREEN_NAME,
-                        declaration,
-                        context.getNameLocation(declaration),
-                        "Missing ScreenName annotation."
-                    )
+        if (context.project.reportIssues) {
+            SUPPORTED_CLASSES.forEach {
+                if (context.evaluator.extendsClass(declaration, it, false)) {
+                    if (declaration.hasAnnotation(ANNOTATION_SCREEN_NAME).not()) {
+                        context.report(
+                            IssueFactory.MISSING_SCREEN_NAME_ANNOTATION,
+                            declaration,
+                            context.getNameLocation(declaration),
+                            "Missing ScreenName annotation."
+                        )
+                    }
                 }
             }
         }
