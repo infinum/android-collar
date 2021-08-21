@@ -1,70 +1,40 @@
 buildscript {
 
-    ext.buildConfig = [
-        "minSdk"    : 21,
-        "compileSdk": 29,
-        "targetSdk" : 29,
-
-        "buildTools": "30.0.1"
-    ]
-
-    apply from: "dependencies.gradle"
+    apply from: "config.gradle"
+    apply from: "maven.gradle"
 
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
+        gradlePluginPortal()
     }
 
     dependencies {
-        classpath packages.gradle
-        classpath packages.maven.plugin
-        classpath packages.bintray
-        classpath packages.kotlin.plugin
-        classpath packages.detekt.plugin
-        classpath packages.dokka.plugin
-    }
-}
-
-allprojects {
-
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
-    }
-
-    def buildProperties = new Properties()
-    file(rootDir.absolutePath+"/build.properties").withInputStream { buildProperties.load(it) }
-    if (buildProperties.getProperty("build.debug").toBoolean()) {
-        configurations.all {
-            resolutionStrategy {
-                dependencySubstitution {
-                    substitute module(packages.collar.annotations) with project(':annotations')
-                    substitute module(packages.collar.core) with project(':core')
-                    substitute module(packages.collar.ui) with project(':ui')
-                    substitute module(packages.collar.ui_no_op) with project(':ui-no-op')
-                    substitute module(packages.collar.processor) with project(':processor')
-                    substitute module(packages.collar.generator) with project(':generator')
-                    substitute module(packages.collar.plugin) with project(':plugin')
-                }
-            }
-        }
+        classpath libs.tools.gradle
+        classpath libs.kotlin.gradle
+        classpath libs.serialization.gradle
+        classpath libs.cpd
+        classpath libs.detekt.gradle
+        classpath libs.ktlint
+        classpath libs.dokka
     }
 }
 
 subprojects {
     repositories {
         google()
-        jcenter()
+        mavenLocal()
         mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
     }
 
-    apply from: "../detekt.gradle"
+    apply from: "$rootDir/cpd.gradle"
+    apply from: "$rootDir/dokka.gradle"
+    apply from: "$rootDir/ktlint.gradle"
+    apply from: "$rootDir/detekt.gradle"
 }
+
+apply from: "deploy.gradle"
+apply from: "jacoco.gradle"
 
 tasks.withType(JavaCompile) {
     options.compilerArgs += ["--release", "8"]
@@ -74,21 +44,60 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task detektAll(dependsOn: [
-    ':annotations:detekt',
-    ':core:detekt',
-    ':ui:detekt',
-    ':ui-no-op:detekt',
-    ':processor:detekt',
-    ':plugin:detekt',
-    ':generator:detekt'
+task lintAll(dependsOn: [
+        ':core:lintRelease',
+        ':ui:lintRelease',
+        ':ui-no-op:lintRelease'
 ]) {
     group = "Verification"
-    description = "Run detekt on all modules"
+    description = "Run Lint on all modules"
 }
 
-apply from: "deploy.gradle"
+task detektAll(dependsOn: [
+        ':annotations:detekt',
+        ':core:detekt',
+        ':ui:detekt',
+        ':ui-no-op:detekt',
+        ':processor:detekt',
+        ':plugin:detekt',
+        ':generator:detekt'
+]) {
+    group = "Verification"
+    description = "Run Detekt on all modules"
+}
 
-apply from: "dokka.gradle"
+task ktlintAll(dependsOn: [
+        ':annotations:ktlintCheck',
+        ':core:ktlintCheck',
+        ':ui:ktlintCheck',
+        ':ui-no-op:ktlintCheck',
+        ':processor:ktlintCheck',
+        ':plugin:ktlintCheck',
+        ':generator:ktlintCheck'
+]) {
+    group = "Verification"
+    description = "Run ktlint on all modules"
+}
 
-apply from: "jacoco.gradle"
+task cpdAll(dependsOn: [
+        ':annotations:cpdCheck',
+        ':core:cpdCheck',
+        ':ui:cpdCheck',
+        ':ui-no-op:cpdCheck',
+        ':processor:cpdCheck',
+        ':plugin:cpdCheck',
+        ':generator:cpdCheck'
+]) {
+    group = "Verification"
+    description = "Run CPD on all modules"
+}
+
+task runStaticChecks(dependsOn: [
+        ':lintAll',
+        ':detektAll',
+        ':ktlintAll',
+        ':cpdAll'
+]) {
+    group = "Verification"
+    description = "Run static checks on all modules"
+}

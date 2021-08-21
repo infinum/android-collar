@@ -26,11 +26,11 @@
         tools:text="20:00:00" />
 
     <FrameLayout
+        android:id="@+id/line"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp">
+        android:layout_marginStart="16dp">
 
         <View
             android:layout_width="1dp"
@@ -47,8 +47,10 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/collar_shape_background_item_type"
             android:backgroundTint="@color/collar_color_property"
+            android:importantForAccessibility="no"
             android:scaleType="centerInside"
-            android:src="@drawable/collar_ic_property_white" />
+            android:src="@drawable/collar_ic_property_white"
+            tools:targetApi="lollipop" />
 
     </FrameLayout>
 

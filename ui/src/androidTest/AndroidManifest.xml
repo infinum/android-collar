@@ -1,11 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="co.infinum.collar">
+    package="com.infinum.collar">
 
     <application
         android:name=".ui.CollarTestApplication"
         android:label="@string/collar_name">
         <activity
             android:name=".ui.presentation.CollarActivity"
+            android:exported="true"
             android:label="@string/collar_name"
             android:theme="@style/Collar.Theme" />
     </application>

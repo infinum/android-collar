@@ -1,3 +1,5 @@
+enableFeaturePreview("VERSION_CATALOGS")
+
 rootProject.name = "Collar"
 
 include ":core", ":plugin", ":annotations", ":processor", ":ui", ":ui-no-op", ":generator", ":lint", ":sample"

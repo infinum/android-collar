@@ -1,5 +1,16 @@
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+plugins {
+    id "java-library"
+    id "org.jetbrains.kotlin.jvm"
+}
+
+kotlin {
+    explicitApi()
+}
+
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
 
 compileKotlin {
     kotlinOptions {
@@ -13,7 +24,7 @@ compileTestKotlin {
 }
 
 dependencies {
-    compileOnly packages.kotlin.core
+    compileOnly libs.kotlin.core
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

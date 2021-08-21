@@ -4,8 +4,11 @@
     <style name="Collar.BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/collar_color_primary</item>
         <item name="colorPrimaryDark">@color/collar_color_primary_variant</item>
-        <item name="colorSecondary">@color/collar_color_secondary</item>
+        <item name="colorAccent">@color/collar_color_secondary</item>
     </style>
 
-    <style name="Collar.Theme" parent="Collar.BaseTheme" />
+    <style name="Collar.Theme" parent="Collar.BaseTheme">
+        <item name="android:textDirection">locale</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
 </resources>

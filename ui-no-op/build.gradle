@@ -1,16 +1,34 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+}
 
 android {
+    buildFeatures {
+        buildConfig = true
+        viewBinding = false
+    }
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode collar.versionCode
-        versionName collar.version
+        versionCode releaseConfig.versionCode
+        versionName releaseConfig.version
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.txt"
+        }
     }
 
     resourcePrefix 'collar_'
@@ -20,21 +38,32 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += [
+                '-Xexplicit-api=strict'
+        ]
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
-
-    buildFeatures.viewBinding = true
 }
 
 dependencies {
-    implementation packages.kotlin.core
-    api packages.collar.core
-    implementation packages.androidx.appcompat
+    implementation libs.kotlin.core
+    implementation libs.androidx.appcompat
+    api libs.librarycore
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"

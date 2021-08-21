@@ -1,37 +1,51 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenLocal()
         mavenCentral()
-        maven { url "https://dl.bintray.com/infinum/android" }
     }
     dependencies {
-        classpath packages.gradle
-        classpath packages.collar.plugin
+        classpath libs.tools.gradle
+        classpath libs.librarygradle
     }
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'co.infinum.collar.plugin'
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "kotlin-kapt"
+}
+
+apply plugin: "com.infinum.collar.plugin"
 
 android {
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        applicationId "co.infinum.collar.sample"
+        applicationId releaseConfig.group
+        applicationIdSuffix ".sample"
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode 10107
-        versionName "1.1.7"
+        versionCode releaseConfig.versionCode
+        versionName releaseConfig.version
+
+        signingConfigs {
+            dummy {
+                storeFile file("dummy.jks")
+                storePassword "dummydummy"
+                keyAlias "dummy"
+                keyPassword "dummydummy"
+            }
+        }
 
         buildTypes {
             debug {
                 debuggable true
             }
             release {
-                debuggable true
+                debuggable false
+                signingConfig signingConfigs.dummy
             }
         }
 
@@ -45,29 +59,36 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
     }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
 
     buildFeatures.viewBinding = true
 }
 
 dependencies {
-    implementation packages.kotlin.core
-    implementation packages.androidx.appcompat
-    implementation packages.androidx.fragment
+    implementation libs.kotlin.core
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.fragment
+    implementation libs.material
     lintChecks project(":lint")
-    implementation packages.collar.ui
+    debugImplementation libs.libraryui
+    releaseImplementation libs.libraryuinoop
 }
 
 collar {
-    version "1.1.6"
     fileName = "example.json"
-    packageName = "co.infinum.collar.sample.analytics.trackingplan"
+    packageName = "com.infinum.collar.sample.analytics.trackingplan"
 }

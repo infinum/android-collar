@@ -3,9 +3,10 @@
     <color name="collar_color_primary">#ffa000</color>
     <color name="collar_color_primary_variant">#c67100</color>
     <color name="collar_color_secondary">#049ce5</color>
+    <color name="collar_color_accent">@android:color/black</color>
 
     <color name="collar_color_error">#F44336</color>
-    <color name="collar_color_item_line">#FFF7F8</color>
+    <color name="collar_color_item_line">#e2e2e2</color>
 
     <color name="collar_color_screen">#00ffa0</color>
     <color name="collar_color_event">#005fff</color>
@@ -13,6 +14,4 @@
     <color name="collar_color_unknown">#F44336</color>
 
     <color name="collar_color_snackbar_background">#323232</color>
-
-    <color name="collar_color_icon">@android:color/black</color>
 </resources>

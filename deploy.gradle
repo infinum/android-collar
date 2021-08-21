@@ -1,75 +1,100 @@
-task deployAll(dependsOn: [
-    'deployAnnotations',
-    'deployCore',
-    'deployUi',
-    'deployUiNoOp',
-    'deployProcessor',
-    'deployGenerator',
-    'deployPlugin'
-]) {
-    group = "Deploy"
-    description = "Deploy all modules to Bintray"
-}
-
 task deployAnnotations(dependsOn: [
-    ':annotations:build',
-    ':annotations:install',
-    ':annotations:bintrayUpload'
+        ':annotations:clean',
+        ':annotations:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployCore(dependsOn: [
-    ':core:build',
-    ':core:install',
-    ':core:bintrayUpload'
+        ':core:clean',
+        ':core:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployUi(dependsOn: [
-    ':ui:build',
-    ':ui:install',
-    ':ui:bintrayUpload'
+        ':ui:clean',
+        ':ui:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployUiNoOp(dependsOn: [
-    ':ui-no-op:build',
-    ':ui-no-op:install',
-    ':ui-no-op:bintrayUpload'
+        ':ui-no-op:clean',
+        ':ui-no-op:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployProcessor(dependsOn: [
-    ':processor:build',
-    ':processor:install',
-    ':processor:bintrayUpload'
+        ':processor:clean',
+        ':processor:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployGenerator(dependsOn: [
-    ':generator:build',
-    ':generator:install',
-    ':generator:bintrayUpload'
+        ':generator:clean',
+        ':generator:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
 }
 
 task deployPlugin(dependsOn: [
-    ':plugin:build',
-    ':plugin:install',
-    ':plugin:bintrayUpload'
+        ':plugin:clean',
+        ':plugin:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
-    description = "Deploy module to Bintray"
+    description = "Deploy module to repositories"
+}
+
+task deployStage1(dependsOn: [
+        'deployAnnotations',
+        'deployGenerator'
+]) {
+    group = "Deploy"
+    description = "Deploy all stage 1 modules to repositories"
+}
+
+task deployStage2(dependsOn: [
+        'deployCore',
+        'deployProcessor'
+]) {
+    group = "Deploy"
+    description = "Deploy all stage 2 modules to repositories"
+}
+
+task deployStage3(dependsOn: [
+        'deployUi',
+        'deployUiNoOp',
+        'deployPlugin'
+]) {
+    group = "Deploy"
+    description = "Deploy all stage 3 modules to repositories"
+}
+
+task deployDebug(dependsOn: [
+        ':annotations:clean',
+        ':core:clean',
+        ':ui:clean',
+        ':ui-no-op:clean',
+        ':processor:clean',
+        ':generator:clean',
+        ':plugin:clean',
+        ':annotations:publishReleasePublicationToMavenLocal',
+        ':core:publishReleasePublicationToMavenLocal',
+        ':ui:publishReleasePublicationToMavenLocal',
+        ':ui-no-op:publishReleasePublicationToMavenLocal',
+        ':processor:publishReleasePublicationToMavenLocal',
+        ':generator:publishReleasePublicationToMavenLocal',
+        ':plugin:publishReleasePublicationToMavenLocal',
+]) {
+    group = "Deploy"
+    description = "Deploy all modules to Maven Local repository"
 }

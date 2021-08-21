@@ -1,6 +1,98 @@
 Change Log
 ==========
 
+## Version 1.2.9
+
+_2021-08-21_
+
+* Update dependencies.
+
+## Version 1.2.8
+
+_2021-07-22_
+
+* Update dependencies.
+* Fix memory leaks.
+
+## Version 1.2.7
+
+_2021-07-09_
+
+* Update dependencies.
+
+## Version 1.2.6
+
+_2021-05-21_
+
+* Update dependencies.
+* Fix API 19 compatibility issues.
+
+## Version 1.2.5
+
+_2021-05-04_
+
+* Lower min SDK from 21 to 19 per client request.
+
+## Version 1.2.4
+
+_2021-04-10_
+
+* Update Gradle to 7.0.
+* Replace dependencies.gradle with version catalogs.
+* Update to stable dependencies.
+* Remove Bintray configuration.
+
+## Version 1.2.3
+
+_2021-02-13_
+
+* Update Gradle to 6.8.2.
+* Fix bugs in processor specs.
+* Move to Maven Central.
+* Remove version from plugin extension.
+
+## Version 1.2.2
+
+_2021-01-29_
+
+* Update Gradle to 6.8.1.
+* Fix a crash bug when shadowing ViewModel clear() method.
+
+## Version 1.2.1
+
+_2021-01-18_
+
+* Enable Kotlin explicit mode.
+
+## Version 1.2.0
+
+_2021-01-13_
+
+* Update Gradle to 6.8.
+* Update Kotlin to 1.4.21.
+* Make plugin extension public.
+
+## Version 1.1.9
+
+_2020-30-10_
+
+* New: Add collection disabled UI indicator.
+* New: Add analytics collection status setter method to Collector.
+* Fix Lint warnings.
+
+## Version 1.1.8
+
+_2020-09-28_
+
+* Fix no op package.
+* Update Kotlin on 1.4.10
+
+## Version 1.1.7
+
+_2020-09-09_
+
+ * Replace ContentProvider with AndroidX Startup Initializer
+
 ## Version 1.1.6
 
 _2020-09-01_

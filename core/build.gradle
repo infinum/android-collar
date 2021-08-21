@@ -1,21 +1,32 @@
-apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+}
 
 android {
+    buildFeatures {
+        buildConfig = false
+    }
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
-        versionCode collar.versionCode
-        versionName collar.version
+        versionCode releaseConfig.versionCode
+        versionName releaseConfig.version
     }
 
     buildTypes {
-        release {
+        debug {
+            debuggable true
             minifyEnabled false
-            consumerProguardFiles "consumer-proguard-rules.pro"
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.txt"
         }
     }
 
@@ -23,20 +34,37 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += [
+                '-Xexplicit-api=strict'
+        ]
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    sourceSets.each {
+        it.java.srcDirs += "src/$it.name/kotlin"
     }
 }
 
 dependencies {
-    api packages.collar.annotations
-    implementation packages.kotlin.core
-    compileOnly packages.annotations
-    implementation packages.androidx.core
+    api libs.libraryannotations
+    implementation libs.kotlin.core
+    compileOnly libs.annotations
+    implementation libs.androidx.core
 
-    testImplementation "junit:junit:4.13"
-    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.mockito:mockito-core:3.11.2'
 }
 
-apply from: "bintray.gradle"
+apply from: "publish.gradle"
