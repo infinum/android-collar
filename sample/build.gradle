@@ -1,11 +1,12 @@
 buildscript {
     repositories {
         google()
+        mavenLocal()
         mavenCentral()
     }
     dependencies {
-        classpath libs.gradle
-        classpath libs.libraryplugin
+        classpath libs.tools.gradle
+        classpath libs.librarygradle
     }
 }
 
@@ -82,7 +83,6 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.fragment
     implementation libs.material
-    lintChecks project(":lint")
     debugImplementation libs.libraryui
     releaseImplementation libs.libraryuinoop
 }

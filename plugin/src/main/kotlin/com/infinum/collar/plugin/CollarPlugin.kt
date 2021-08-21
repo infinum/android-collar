@@ -26,7 +26,8 @@ public class CollarPlugin : Plugin<Project> {
     private fun addDependencies(project: Project) {
         with(project) {
             dependencies.add("implementation", "com.infinum.collar:collar-annotations:$collarVersion")
-            dependencies.add("implementation", "com.infinum.collar:collar-core:$collarVersion")
+            dependencies.add("implementation", "com.infinum.collar:collar-annotations:$collarVersion")
+            dependencies.add("lintChecks", "com.infinum.collar:collar-lint:$collarVersion")
 
             if (pluginManager.hasPlugin("kotlin-android")) {
                 if (pluginManager.hasPlugin("kotlin-kapt").not()) {
@@ -49,9 +50,9 @@ public class CollarPlugin : Plugin<Project> {
                     task.include {
                         it.name == collarExtension.fileName
                     }
-                }.let {
+                }.let { provider ->
                     extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
-                        variant.registerJavaGeneratingTask(it.get(), it.get().outputDirectory)
+                        variant.registerJavaGeneratingTask(provider, provider.get().outputDirectory)
                     }
                 }
             }

@@ -10,45 +10,20 @@ buildscript {
     }
 
     dependencies {
-        classpath libs.gradle
-        classpath libs.kotlin.plugin
-        classpath libs.serialization.plugin
+        classpath libs.tools.gradle
+        classpath libs.kotlin.gradle
+        classpath libs.serialization.gradle
         classpath libs.cpd
-        classpath libs.detekt.plugin
+        classpath libs.detekt.gradle
         classpath libs.ktlint
         classpath libs.dokka
     }
 }
 
 subprojects {
-    def buildProperties = new Properties()
-    file(rootDir.absolutePath + "/build.properties").withInputStream { buildProperties.load(it) }
-    if (buildProperties.getProperty("build.debug").toBoolean()) {
-        configurations.all {
-            resolutionStrategy {
-                dependencySubstitution {
-                    def libraryannotations = libs.libraryannotations.get()
-                    def librarycore = libs.librarycore.get()
-                    def libraryui = libs.libraryui.get()
-                    def libraryuinoop = libs.libraryuinoop.get()
-                    def libraryprocessor = libs.libraryprocessor.get()
-                    def librarygenerator = libs.librarygenerator.get()
-                    def libraryplugin = libs.libraryplugin.get()
-
-                    substitute module(libraryannotations.getModule().toString() + ":" + libraryannotations.getVersionConstraint().toString()) with project(':annotations')
-                    substitute module(librarycore.getModule().toString() + ":" + librarycore.getVersionConstraint().toString()) with project(':core')
-                    substitute module(libraryui.getModule().toString() + ":" + libraryui.getVersionConstraint().toString()) with project(':ui')
-                    substitute module(libraryuinoop.getModule().toString() + ":" + libraryuinoop.getVersionConstraint().toString()) with project(':ui-no-op')
-                    substitute module(libraryprocessor.getModule().toString() + ":" + libraryprocessor.getVersionConstraint().toString()) with project(':processor')
-                    substitute module(librarygenerator.getModule().toString() + ":" + librarygenerator.getVersionConstraint().toString()) with project(':generator')
-                    substitute module(libraryplugin.getModule().toString() + ":" + libraryplugin.getVersionConstraint().toString()) with project(':plugin')
-                }
-            }
-        }
-    }
-
     repositories {
         google()
+        mavenLocal()
         mavenCentral()
     }
 
@@ -80,6 +55,7 @@ task lintAll(dependsOn: [
 
 task detektAll(dependsOn: [
         ':annotations:detekt',
+        ':lint:detekt',
         ':core:detekt',
         ':ui:detekt',
         ':ui-no-op:detekt',
@@ -93,6 +69,7 @@ task detektAll(dependsOn: [
 
 task ktlintAll(dependsOn: [
         ':annotations:ktlintCheck',
+        ':lint:ktlintCheck',
         ':core:ktlintCheck',
         ':ui:ktlintCheck',
         ':ui-no-op:ktlintCheck',
@@ -106,6 +83,7 @@ task ktlintAll(dependsOn: [
 
 task cpdAll(dependsOn: [
         ':annotations:cpdCheck',
+        ':lint:cpdCheck',
         ':core:cpdCheck',
         ':ui:cpdCheck',
         ':ui-no-op:cpdCheck',

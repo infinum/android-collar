@@ -1,7 +1,14 @@
 task deployAnnotations(dependsOn: [
         ':annotations:clean',
-        ':annotations:publishReleasePublicationToGithubRepository',
         ':annotations:publishReleasePublicationToSonatypeRepository'
+]) {
+    group = "Deploy"
+    description = "Deploy module to repositories"
+}
+
+task deployLint(dependsOn: [
+        ':lint:clean',
+        ':lint:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
     description = "Deploy module to repositories"
@@ -9,7 +16,6 @@ task deployAnnotations(dependsOn: [
 
 task deployCore(dependsOn: [
         ':core:clean',
-        ':core:publishReleasePublicationToGithubRepository',
         ':core:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
@@ -18,7 +24,6 @@ task deployCore(dependsOn: [
 
 task deployUi(dependsOn: [
         ':ui:clean',
-        ':ui:publishReleasePublicationToGithubRepository',
         ':ui:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
@@ -27,7 +32,6 @@ task deployUi(dependsOn: [
 
 task deployUiNoOp(dependsOn: [
         ':ui-no-op:clean',
-        ':ui-no-op:publishReleasePublicationToGithubRepository',
         ':ui-no-op:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
@@ -36,7 +40,6 @@ task deployUiNoOp(dependsOn: [
 
 task deployProcessor(dependsOn: [
         ':processor:clean',
-        ':processor:publishReleasePublicationToGithubRepository',
         ':processor:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
@@ -45,7 +48,6 @@ task deployProcessor(dependsOn: [
 
 task deployGenerator(dependsOn: [
         ':generator:clean',
-        ':generator:publishReleasePublicationToGithubRepository',
         ':generator:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
@@ -54,7 +56,6 @@ task deployGenerator(dependsOn: [
 
 task deployPlugin(dependsOn: [
         ':plugin:clean',
-        ':plugin:publishReleasePublicationToGithubRepository',
         ':plugin:publishReleasePublicationToSonatypeRepository'
 ]) {
     group = "Deploy"
@@ -63,6 +64,7 @@ task deployPlugin(dependsOn: [
 
 task deployStage1(dependsOn: [
         'deployAnnotations',
+        'deployLint',
         'deployGenerator'
 ]) {
     group = "Deploy"
@@ -77,7 +79,6 @@ task deployStage2(dependsOn: [
     description = "Deploy all stage 2 modules to repositories"
 }
 
-
 task deployStage3(dependsOn: [
         'deployUi',
         'deployUiNoOp',
@@ -85,4 +86,26 @@ task deployStage3(dependsOn: [
 ]) {
     group = "Deploy"
     description = "Deploy all stage 3 modules to repositories"
+}
+
+task deployDebug(dependsOn: [
+        ':annotations:clean',
+        ':lint:clean',
+        ':core:clean',
+        ':ui:clean',
+        ':ui-no-op:clean',
+        ':processor:clean',
+        ':generator:clean',
+        ':plugin:clean',
+        ':annotations:publishReleasePublicationToMavenLocal',
+        ':lint:publishReleasePublicationToMavenLocal',
+        ':core:publishReleasePublicationToMavenLocal',
+        ':ui:publishReleasePublicationToMavenLocal',
+        ':ui-no-op:publishReleasePublicationToMavenLocal',
+        ':processor:publishReleasePublicationToMavenLocal',
+        ':generator:publishReleasePublicationToMavenLocal',
+        ':plugin:publishReleasePublicationToMavenLocal',
+]) {
+    group = "Deploy"
+    description = "Deploy all modules to Maven Local repository"
 }

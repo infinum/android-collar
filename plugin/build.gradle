@@ -39,7 +39,7 @@ dependencies {
     implementation libs.kotlin.reflect
     implementation libs.librarygenerator
     compileOnly gradleApi()
-    compileOnly libs.gradle
+    compileOnly libs.tools.gradle
 
     constraints {
         implementation(libs.kotlin.reflect) {

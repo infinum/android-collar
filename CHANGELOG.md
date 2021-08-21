@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+## Version 1.3.0
+
+_2021-08-23_
+
+* Add custom Lint checks.
+* Fix R8 collisions on obfuscated class names.
+
+## Version 1.2.9
+
+_2021-08-21_
+
+* Update dependencies.
+
 ## Version 1.2.8
 
 _2021-07-22_

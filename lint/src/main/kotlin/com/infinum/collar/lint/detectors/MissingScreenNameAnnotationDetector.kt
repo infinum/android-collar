@@ -3,21 +3,16 @@ package com.infinum.collar.lint.detectors
 import com.android.tools.lint.detector.api.Detector
 import com.android.tools.lint.detector.api.JavaContext
 import com.android.tools.lint.detector.api.SourceCodeScanner
-import com.infinum.collar.lint.issues.Issues
+import com.infinum.collar.lint.IssueFactory
 import org.jetbrains.uast.UClass
 
 @Suppress("UnstableApiUsage")
-class ScreenNameDetector : Detector(), SourceCodeScanner {
+internal class MissingScreenNameAnnotationDetector : Detector(), SourceCodeScanner {
 
     companion object {
         private val SUPPORTED_CLASSES = listOf(
             "android.app.Activity",
-            "androidx.activity.ComponentActivity",
-            "androidx.core.app.ComponentActivity",
-            "androidx.appcompat.app.AppCompatActivity",
-            "androidx.fragment.app.FragmentActivity",
-            "android.support.v7.app.AppCompatActivity",
-            "android.support.v4.app.FragmentActivity",
+            "android.app.Fragment",
             "androidx.fragment.app.Fragment",
             "android.support.v4.app.Fragment"
         )
@@ -27,19 +22,22 @@ class ScreenNameDetector : Detector(), SourceCodeScanner {
     override fun applicableSuperClasses(): List<String> = SUPPORTED_CLASSES
 
     override fun visitClass(context: JavaContext, declaration: UClass) {
-        if (!context.project.reportIssues) {
-            return
+        if (context.project.reportIssues) {
+            visitExtendedClass(context, declaration)
         }
+    }
 
-        SUPPORTED_CLASSES.forEach {
-            if (context.evaluator.extendsClass(declaration, it, false)) {
-                if (!declaration.hasAnnotation(ANNOTATION_SCREEN_NAME)) {
+    private fun visitExtendedClass(context: JavaContext, declaration: UClass) {
+        loop@ for (className in SUPPORTED_CLASSES) {
+            if (context.evaluator.extendsClass(declaration, className, false)) {
+                if (declaration.hasAnnotation(ANNOTATION_SCREEN_NAME).not()) {
                     context.report(
-                        Issues.ISSUE_SCREEN_NAME,
+                        IssueFactory.MISSING_SCREEN_NAME_ANNOTATION,
                         declaration,
                         context.getNameLocation(declaration),
-                        "Missing ScreenName annotation."
+                        "Missing screen name annotation."
                     )
+                    break@loop
                 }
             }
         }
