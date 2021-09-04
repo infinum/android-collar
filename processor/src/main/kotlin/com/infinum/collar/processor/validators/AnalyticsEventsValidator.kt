@@ -6,7 +6,6 @@ import com.infinum.collar.processor.extensions.showWarning
 import com.infinum.collar.processor.models.AnalyticsEventsHolder
 import com.infinum.collar.processor.models.EventHolder
 import com.infinum.collar.processor.options.Options
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.Messager
 import javax.lang.model.util.Types
 
@@ -16,7 +15,6 @@ internal class AnalyticsEventsValidator(
     private val messager: Messager
 ) : Validator<AnalyticsEventsHolder> {
 
-    @KotlinPoetMetadataPreview
     override fun validate(elements: Set<AnalyticsEventsHolder>): Set<AnalyticsEventsHolder> {
         val validRootClasses = elements.filter {
             if (it.rootClass.isSealedClass().not()) {

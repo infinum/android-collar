@@ -71,7 +71,11 @@ internal class SystemNotificationFactory(private val context: Context) : Notific
                     context,
                     NOTIFICATION_ID,
                     Intent(context, CollarActivity::class.java),
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    when {
+                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+                            PendingIntent.FLAG_MUTABLE
+                        else -> PendingIntent.FLAG_UPDATE_CURRENT
+                    }
                 )
             )
             .setLocalOnly(true)

@@ -31,6 +31,17 @@ subprojects {
     apply from: "$rootDir/dokka.gradle"
     apply from: "$rootDir/ktlint.gradle"
     apply from: "$rootDir/detekt.gradle"
+
+    afterEvaluate {
+        if (project.hasProperty('kapt')) {
+            kapt {
+                javacOptions {
+                    option("-source", "8")
+                    option("-target", "8")
+                }
+            }
+        }
+    }
 }
 
 apply from: "deploy.gradle"

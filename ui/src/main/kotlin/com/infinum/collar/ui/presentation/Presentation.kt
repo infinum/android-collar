@@ -20,6 +20,12 @@ internal object Presentation {
         const val FORMAT_ITEM_DATETIME = "HH:mm:ss"
 
         const val MIME_TYPE_TEXT = "text/plain"
+
+        const val KEY_ENTITY_TYPE = "KEY_ENTITY_TYPE"
+        const val KEY_ENTITY_TIMESTAMP = "KEY_ENTITY_TIMESTAMP"
+        const val KEY_ENTITY_NAME = "KEY_ENTITY_NAME"
+        const val KEY_ENTITY_PARAMETERS = "KEY_ENTITY_PARAMETERS"
+        const val KEY_ENTITY_VALUE = "KEY_ENTITY_VALUE"
     }
 
     init {

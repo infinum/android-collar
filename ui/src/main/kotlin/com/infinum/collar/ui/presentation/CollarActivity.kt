@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -16,7 +15,6 @@ import com.infinum.collar.ui.data.models.local.SettingsEntity
 import com.infinum.collar.ui.databinding.CollarActivityCollarBinding
 import com.infinum.collar.ui.extensions.addBadge
 import com.infinum.collar.ui.extensions.presentationFormat
-import com.infinum.collar.ui.extensions.safeDismiss
 import com.infinum.collar.ui.extensions.searchView
 import com.infinum.collar.ui.extensions.setup
 import com.infinum.collar.ui.presentation.decorations.Decoration
@@ -29,9 +27,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolbar.OnMenuItemClickListener {
 
-    private lateinit var dialogFactory: CollarDialogFactory
-    private var detailDialog: AlertDialog? = null
-
     private val entryAdapter: CollarAdapter = CollarAdapter(
         onListChanged = this@CollarActivity::showEmptyView,
         onClick = this@CollarActivity::showDetail
@@ -43,8 +38,6 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        dialogFactory = CollarDialogFactory(this)
 
         with(binding) {
             with(toolbar) {
@@ -89,11 +82,6 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
 
         viewModel.entities()
         viewModel.settings()
-    }
-
-    override fun onDestroy() {
-        detailDialog?.safeDismiss()
-        super.onDestroy()
     }
 
     override fun onState(state: CollarState) {
@@ -142,8 +130,7 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
     }
 
     private fun showDetail(entity: CollarEntity) {
-        detailDialog = dialogFactory.entityDetail(entity)
-        detailDialog?.show()
+        CollarDetailDialog.newInstance(entity).show(supportFragmentManager, null)
     }
 
     private fun showEmptyView(shouldShow: Boolean) {

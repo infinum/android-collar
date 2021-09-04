@@ -10,7 +10,6 @@ import com.infinum.collar.processor.extensions.toLowerSnakeCase
 import com.infinum.collar.processor.models.AnalyticsEventsHolder
 import com.infinum.collar.processor.models.EventHolder
 import com.infinum.collar.processor.models.EventParameterHolder
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
@@ -30,7 +29,6 @@ internal class AnalyticsEventsCollector(
         )
     }
 
-    @KotlinPoetMetadataPreview
     override fun collect(): Set<AnalyticsEventsHolder> =
         roundEnvironment.getElementsAnnotatedWith(ANNOTATION_ANALYTICS_EVENTS).orEmpty()
             .filterIsInstance<TypeElement>()

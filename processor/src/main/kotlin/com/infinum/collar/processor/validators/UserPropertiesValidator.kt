@@ -6,7 +6,6 @@ import com.infinum.collar.processor.extensions.showWarning
 import com.infinum.collar.processor.models.PropertyHolder
 import com.infinum.collar.processor.models.UserPropertiesHolder
 import com.infinum.collar.processor.options.Options
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.Messager
 import javax.lang.model.util.Types
 
@@ -16,7 +15,6 @@ internal class UserPropertiesValidator(
     private val messager: Messager
 ) : Validator<UserPropertiesHolder> {
 
-    @KotlinPoetMetadataPreview
     override fun validate(elements: Set<UserPropertiesHolder>): Set<UserPropertiesHolder> {
         val validRootClasses = elements.filter {
             if (it.rootClass.isSealedClass().not()) {

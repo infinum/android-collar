@@ -3,4 +3,6 @@
     <dimen name="collar_padding_default">16dp</dimen>
     <dimen name="collar_application_icon_size">32dp</dimen>
     <dimen name="collar_badge_icon_size">16dp</dimen>
+    <dimen name="collar_blur_radius">13dp</dimen>
+    <dimen name="collar_corner_radius">16dp</dimen>
 </resources>

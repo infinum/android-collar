@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Collar.BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/collar_color_primary</item>
         <item name="colorPrimaryDark">@color/collar_color_primary_variant</item>
         <item name="colorAccent">@color/collar_color_secondary</item>
+        <item name="bottomSheetDialogTheme">@style/Collar.Theme.BottomSheetDialog</item>
     </style>
 
     <style name="Collar.Theme" parent="Collar.BaseTheme">
         <item name="android:textDirection">locale</item>
         <item name="android:textAlignment">viewStart</item>
     </style>
+
+    <style name="Collar.Theme.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Collar.Theme.BottomSheetDialog.Style</item>
+        <item name="android:windowBlurBehindEnabled" tools:targetApi="s">true</item>
+        <item name="android:windowBlurBehindRadius" tools:targetApi="s">@dimen/collar_blur_radius
+        </item>
+    </style>
+
+    <style name="Collar.Theme.BottomSheetDialog.Style" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/Collar.ShapeAppearanceOverlay.BottomSheet</item>
+    </style>
+
+    <style name="Collar.ShapeAppearanceOverlay.BottomSheet" parent="">
+        <item name="cornerSizeTopLeft">@dimen/collar_corner_radius</item>
+        <item name="cornerSizeTopRight">@dimen/collar_corner_radius</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
 </resources>
