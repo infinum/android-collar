@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.3.1
+
+_2021-09-06_
+
+* Update dependencies.
+* Refactor AlertDialgo to BottomSheetDialogFragment.
+* Prepare and optimize for Android 12.
+
 ## Version 1.3.0
 
 _2021-08-23_
