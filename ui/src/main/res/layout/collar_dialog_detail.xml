@@ -10,7 +10,9 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:menu="@menu/collar_detail_menu" />
+        app:menu="@menu/collar_detail_menu"
+        app:navigationIcon="@drawable/collar_ic_close"
+        app:titleCentered="true" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -21,6 +23,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="24dp">
+
+            <ImageView
+                android:id="@+id/iconView"
+                android:layout_width="?attr/listPreferredItemHeightSmall"
+                android:layout_height="?attr/listPreferredItemHeightSmall"
+                android:layout_gravity="center_horizontal"
+                android:importantForAccessibility="no" />
 
             <com.google.android.material.textview.MaterialTextView
                 style="@style/TextAppearance.MaterialComponents.Caption"

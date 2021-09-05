@@ -23,6 +23,9 @@ internal class CollarViewModel(
         )
     }
 
+    private var showSystemNotifications: Boolean = false
+    private var showInAppNotifications: Boolean = false
+
     private var parameters: EntityParameters = EntityParameters(
         query = null,
         filters = FILTERS_ALL
@@ -34,19 +37,32 @@ internal class CollarViewModel(
     }
 
     fun filter(
-        entityType: EntityType,
-        checked: Boolean
+        screens: Boolean,
+        events: Boolean,
+        properties: Boolean
     ) {
-        val currentFilters = parameters.filters.toMutableList()
-        when (checked) {
-            true -> currentFilters.add(entityType)
-            false -> currentFilters.remove(entityType)
+        var currentFilters = parameters.filters.toSet()
+        currentFilters = when (screens) {
+            true -> currentFilters.plus(EntityType.SCREEN)
+            false -> currentFilters.minus(EntityType.SCREEN)
         }
+        currentFilters = when (events) {
+            true -> currentFilters.plus(EntityType.EVENT)
+            false -> currentFilters.minus(EntityType.EVENT)
+        }
+        currentFilters = when (properties) {
+            true -> currentFilters.plus(EntityType.PROPERTY)
+            false -> currentFilters.minus(EntityType.PROPERTY)
+        }
+
         parameters = parameters.copy(filters = currentFilters.toList())
         entities()
     }
 
-    fun notifications(enabledSystemNotifications: Boolean, enabledInAppNotifications: Boolean) =
+    fun notifications(
+        enabledSystemNotifications: Boolean,
+        enabledInAppNotifications: Boolean
+    ) =
         launch {
             io {
                 settingsRepository.save(
@@ -59,14 +75,6 @@ internal class CollarViewModel(
                     )
                 )
             }
-        }
-
-    fun clearEntities() =
-        launch {
-            io {
-                entityRepository.clear()
-            }
-            emitEvent(CollarEvent.Clear())
         }
 
     fun entities() =
@@ -85,7 +93,52 @@ internal class CollarViewModel(
                 .flowOn(runningDispatchers)
                 .catch { error -> setError(error) }
                 .collectLatest {
-                    emitEvent(CollarEvent.Settings(entity = it))
+                    showSystemNotifications = it.showSystemNotifications
+                    showInAppNotifications = it.showInAppNotifications
+                    emitEvent(
+                        CollarEvent.SettingsChanged(
+                            analyticsCollectionEnabled = it.analyticsCollectionEnabled,
+                            analyticsCollectionTimestamp = it.analyticsCollectionTimestamp
+                        )
+                    )
                 }
+        }
+
+    fun filters() {
+        launch {
+            val result: Triple<Boolean, Boolean, Boolean> = io {
+                Triple(
+                    first = parameters.filters.contains(EntityType.SCREEN),
+                    second = parameters.filters.contains(EntityType.EVENT),
+                    third = parameters.filters.contains(EntityType.PROPERTY)
+                )
+            }
+            emitEvent(
+                CollarEvent.Filters(
+                    screens = result.first,
+                    events = result.second,
+                    properties = result.third
+                )
+            )
+        }
+    }
+
+    fun showSettings() {
+        launch {
+            emitEvent(
+                CollarEvent.Settings(
+                    showSystemNotifications = showSystemNotifications,
+                    showInAppNotifications = showInAppNotifications
+                )
+            )
+        }
+    }
+
+    fun clearEntities() =
+        launch {
+            io {
+                entityRepository.clear()
+            }
+            emitEvent(CollarEvent.Clear())
         }
 }

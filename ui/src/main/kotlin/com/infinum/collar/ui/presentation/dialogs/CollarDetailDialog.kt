@@ -1,4 +1,4 @@
-package com.infinum.collar.ui.presentation
+package com.infinum.collar.ui.presentation.dialogs
 
 import android.os.Bundle
 import android.view.View
@@ -10,6 +10,7 @@ import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.data.models.local.EntityType
 import com.infinum.collar.ui.databinding.CollarDialogDetailBinding
 import com.infinum.collar.ui.extensions.presentationFormat
+import com.infinum.collar.ui.presentation.Presentation
 import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_NAME
 import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_PARAMETERS
 import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_TIMESTAMP
@@ -66,14 +67,9 @@ internal class CollarDetailDialog : BaseBottomSheetDialogFragment<Any, Any>(R.la
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
-            toolbar.setNavigationIcon(
-                when (type) {
-                    EntityType.SCREEN -> R.drawable.collar_ic_screen
-                    EntityType.EVENT -> R.drawable.collar_ic_event
-                    EntityType.PROPERTY -> R.drawable.collar_ic_property
-                    else -> 0
-                }
-            )
+            toolbar.setNavigationOnClickListener {
+                dismiss()
+            }
             toolbar.title = type
                 ?.name
                 ?.lowercase(Locale.getDefault())
@@ -93,6 +89,14 @@ internal class CollarDetailDialog : BaseBottomSheetDialogFragment<Any, Any>(R.la
                     else -> false
                 }
             }
+            when (type) {
+                EntityType.SCREEN -> R.drawable.collar_ic_screen
+                EntityType.EVENT -> R.drawable.collar_ic_event
+                EntityType.PROPERTY -> R.drawable.collar_ic_property
+                else -> null
+            }?.let {
+                iconView.setImageResource(it)
+            } ?: run { iconView.isGone = true }
             timeView.text = timestamp?.let { Date(it).presentationFormat }
             nameView.text = name
             valueCaptionView.text = when (type) {
