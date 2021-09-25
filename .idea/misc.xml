@@ -13,6 +13,9 @@
         <entry key="ui/src/main/res/layout/collar_dialog_detail.xml" value="0.21145833333333333" />
         <entry key="ui/src/main/res/layout/collar_dialog_filter.xml" value="0.18125" />
         <entry key="ui/src/main/res/layout/collar_dialog_settings.xml" value="0.1703125" />
+        <entry key="ui/src/main/res/layout/collar_view_snackbar.xml" value="0.1793478260869565" />
+        <entry key="ui/src/main/res/layout/collar_view_snackbar_bkp.xml" value="0.121875" />
+        <entry key="ui/src/main/res/layout/collar_view_tutorial.xml" value="0.1793478260869565" />
         <entry key="ui/src/main/res/menu/collar_detailmenu.xml" value="0.21145833333333333" />
         <entry key="ui/src/main/res/menu/collar_filter_menu.xml" value="0.14010416666666667" />
         <entry key="ui/src/main/res/menu/collar_menu.xml" value="0.21145833333333333" />

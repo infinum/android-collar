@@ -30,10 +30,16 @@ public class CollarPlugin : Plugin<Project> {
             dependencies.add("lintChecks", "com.infinum.collar:collar-lint:$collarVersion")
 
             if (pluginManager.hasPlugin("kotlin-android")) {
-                if (pluginManager.hasPlugin("kotlin-kapt").not()) {
-                    pluginManager.apply("kotlin-kapt")
-                }
-                dependencies.add("kapt", "com.infinum.collar:collar-processor:$collarVersion")
+                // id "com.google.devtools.ksp" version "1.5.30-1.0.0"
+//                if (pluginManager.hasPlugin("kotlin-kapt").not()) {
+//                    pluginManager.apply("kotlin-kapt")
+//                }
+//                dependencies.add("kapt", "com.infinum.collar:collar-processor:$collarVersion")
+
+//                if (pluginManager.hasPlugin("com.google.devtools.ksp").not()) {
+//                    pluginManager.apply("com.google.devtools.ksp")
+//                }
+//                dependencies.add("ksp", "com.infinum.collar:collar-processor:$collarVersion")
             } else {
                 dependencies.add("annotationProcessor", "com.infinum.collar:collar-processor:$collarVersion")
             }

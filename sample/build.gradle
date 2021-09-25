@@ -13,7 +13,7 @@ buildscript {
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "kotlin-kapt"
+    id "com.google.devtools.ksp" version "1.5.30-1.0.0"
 }
 
 apply plugin: "com.infinum.collar.plugin"
@@ -49,13 +49,19 @@ android {
             }
         }
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                argument "events_count", "100"
-                argument "event_parameters_count", "17"
-                argument "event_name_length", "20"
-                argument "reserved_prefixes", "ga_,fb_"
-            }
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                argument "events_count", "100"
+//                argument "event_parameters_count", "17"
+//                argument "event_name_length", "20"
+//                argument "reserved_prefixes", "ga_,fb_"
+//            }
+//        }
+        ksp {
+            arg "events_count", "100"
+            arg "event_parameters_count", "17"
+            arg "event_name_length", "20"
+            arg "reserved_prefixes", "ga_,fb_"
         }
     }
 
@@ -85,6 +91,7 @@ dependencies {
     implementation libs.material
     debugImplementation libs.libraryui
     releaseImplementation libs.libraryuinoop
+    ksp "com.infinum.collar:collar-processor:1.3.1"
 }
 
 collar {
