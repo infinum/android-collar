@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="Collar.BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/collar_color_primary</item>
@@ -15,9 +15,6 @@
 
     <style name="Collar.Theme.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Collar.Theme.BottomSheetDialog.Style</item>
-        <item name="android:windowBlurBehindEnabled" tools:targetApi="s">true</item>
-        <item name="android:windowBlurBehindRadius" tools:targetApi="s">@dimen/collar_blur_radius
-        </item>
     </style>
 
     <style name="Collar.Theme.BottomSheetDialog.Style" parent="Widget.MaterialComponents.BottomSheet">

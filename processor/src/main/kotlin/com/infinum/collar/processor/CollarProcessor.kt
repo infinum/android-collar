@@ -8,7 +8,6 @@ import com.infinum.collar.processor.configurations.ScreenNamesConfiguration
 import com.infinum.collar.processor.configurations.UserPropertiesConfiguration
 import com.infinum.collar.processor.extensions.consume
 import com.infinum.collar.processor.options.AnalyticsEventsOptions
-import com.infinum.collar.processor.options.ScreenNamesOptions
 import com.infinum.collar.processor.options.UserPropertiesOptions
 import com.infinum.collar.processor.subprocessors.AnalyticsEventsSubprocessor
 import com.infinum.collar.processor.subprocessors.ScreenNamesSubprocessor
@@ -39,7 +38,6 @@ internal class CollarProcessor : AbstractProcessor() {
 
     override fun getSupportedOptions(): Set<String> =
         setOf(
-            ScreenNamesOptions.SUPPORTED,
             AnalyticsEventsOptions.SUPPORTED,
             UserPropertiesOptions.SUPPORTED
         )

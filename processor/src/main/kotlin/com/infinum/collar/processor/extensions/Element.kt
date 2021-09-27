@@ -3,7 +3,7 @@ package com.infinum.collar.processor.extensions
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.metadata.isClass
 import com.squareup.kotlinpoet.metadata.isSealed
-import com.squareup.kotlinpoet.metadata.toImmutableKmClass
+import com.squareup.kotlinpoet.metadata.toKmClass
 import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.NestingKind
@@ -14,14 +14,14 @@ import javax.lang.model.util.ElementFilter
 
 internal fun Element.isSealedClass(): Boolean =
     this.getAnnotation(Metadata::class.java)
-        .toImmutableKmClass()
+        .toKmClass()
         .run {
-            this.isClass && this.isSealed
+            this.isClass && this.flags.isSealed
         }
 
 internal fun Element.constructorParameterNames(): List<String> =
     this.getAnnotation(Metadata::class.java)
-        .toImmutableKmClass()
+        .toKmClass()
         .constructors
         .firstOrNull()
         ?.valueParameters

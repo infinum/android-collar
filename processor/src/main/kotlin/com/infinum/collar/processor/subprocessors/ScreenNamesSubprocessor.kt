@@ -10,7 +10,7 @@ internal class ScreenNamesSubprocessor : CommonSubprocessor() {
 
     override fun process(roundEnvironment: RoundEnvironment) {
         val collector = ScreenNamesCollector(roundEnvironment, elementUtils, typeUtils)
-        val validator = ScreenNamesValidator(processorOptions, messager)
+        val validator = ScreenNamesValidator()
 
         collector.collect().run {
             validator.validate(this).also {

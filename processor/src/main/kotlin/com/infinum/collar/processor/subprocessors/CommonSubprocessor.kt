@@ -11,7 +11,7 @@ internal abstract class CommonSubprocessor : Subprocessor {
 
     internal lateinit var messager: Messager
     internal var generatedDir: File? = null
-    internal lateinit var processorOptions: Options
+    internal var processorOptions: Options? = null
     internal lateinit var elementUtils: Elements
     internal lateinit var typeUtils: Types
 
