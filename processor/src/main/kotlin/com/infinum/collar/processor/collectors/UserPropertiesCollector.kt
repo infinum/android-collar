@@ -7,7 +7,6 @@ import com.infinum.collar.processor.extensions.constructorParameterNames
 import com.infinum.collar.processor.extensions.toLowerSnakeCase
 import com.infinum.collar.processor.models.PropertyHolder
 import com.infinum.collar.processor.models.UserPropertiesHolder
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
@@ -22,7 +21,6 @@ internal class UserPropertiesCollector(
         val SUPPORTED = setOf(ANNOTATION_USER_PROPERTIES.name, ANNOTATION_PROPERTY_NAME.name)
     }
 
-    @KotlinPoetMetadataPreview
     override fun collect(): Set<UserPropertiesHolder> =
         roundEnvironment.getElementsAnnotatedWith(ANNOTATION_USER_PROPERTIES).orEmpty()
             .filterIsInstance<TypeElement>()

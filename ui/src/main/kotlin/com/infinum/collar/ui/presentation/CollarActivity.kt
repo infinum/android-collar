@@ -4,23 +4,30 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
-import com.infinum.collar.ui.data.models.local.EntityType
-import com.infinum.collar.ui.data.models.local.SettingsEntity
 import com.infinum.collar.ui.databinding.CollarActivityCollarBinding
 import com.infinum.collar.ui.extensions.addBadge
 import com.infinum.collar.ui.extensions.presentationFormat
-import com.infinum.collar.ui.extensions.safeDismiss
 import com.infinum.collar.ui.extensions.searchView
 import com.infinum.collar.ui.extensions.setup
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_EVENTS
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_PROPERTIES
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_SCREENS
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_CLEAR
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_FILTERS_APPLY
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_SETTINGS_APPLY
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_IN_APP_NOTIFICATIONS
+import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_SYSTEM_NOTIFICATIONS
 import com.infinum.collar.ui.presentation.decorations.Decoration
 import com.infinum.collar.ui.presentation.decorations.DotDecoration
+import com.infinum.collar.ui.presentation.dialogs.CollarDetailDialog
+import com.infinum.collar.ui.presentation.dialogs.CollarFilterDialog
+import com.infinum.collar.ui.presentation.dialogs.CollarSettingsDialog
 import com.infinum.collar.ui.presentation.shared.base.BaseActivity
 import com.infinum.collar.ui.presentation.shared.delegates.viewBinding
 import com.infinum.collar.ui.presentation.shared.edgefactories.bounce.BounceEdgeEffectFactory
@@ -28,9 +35,6 @@ import java.util.Date
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolbar.OnMenuItemClickListener {
-
-    private lateinit var dialogFactory: CollarDialogFactory
-    private var detailDialog: AlertDialog? = null
 
     private val entryAdapter: CollarAdapter = CollarAdapter(
         onListChanged = this@CollarActivity::showEmptyView,
@@ -41,10 +45,9 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
 
     override val binding by viewBinding(CollarActivityCollarBinding::inflate)
 
+    @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        dialogFactory = CollarDialogFactory(this)
 
         with(binding) {
             with(toolbar) {
@@ -87,13 +90,27 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
             }
         }
 
+        with(supportFragmentManager) {
+            setFragmentResultListener(KEY_REQUEST_FILTERS_APPLY, this@CollarActivity) { _, bundle ->
+                viewModel.filter(
+                    bundle.getBoolean(KEY_FILTER_SCREENS, true),
+                    bundle.getBoolean(KEY_FILTER_EVENTS, true),
+                    bundle.getBoolean(KEY_FILTER_PROPERTIES, true)
+                )
+            }
+            setFragmentResultListener(KEY_REQUEST_SETTINGS_APPLY, this@CollarActivity) { _, bundle ->
+                viewModel.notifications(
+                    bundle.getBoolean(KEY_SETTINGS_SYSTEM_NOTIFICATIONS, true),
+                    bundle.getBoolean(KEY_SETTINGS_IN_APP_NOTIFICATIONS, true)
+                )
+            }
+            setFragmentResultListener(KEY_REQUEST_CLEAR, this@CollarActivity) { _, _ ->
+                viewModel.clearEntities()
+            }
+        }
+
         viewModel.entities()
         viewModel.settings()
-    }
-
-    override fun onDestroy() {
-        detailDialog?.safeDismiss()
-        super.onDestroy()
     }
 
     override fun onState(state: CollarState) {
@@ -104,28 +121,28 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
 
     override fun onEvent(event: CollarEvent) {
         when (event) {
-            is CollarEvent.Settings -> onSettingsChanged(event.entity)
+            is CollarEvent.Filters -> CollarFilterDialog.newInstance(
+                screens = event.screens,
+                events = event.events,
+                properties = event.properties
+            ).show(supportFragmentManager, null)
+            is CollarEvent.Settings -> CollarSettingsDialog.newInstance(
+                systemNotifications = event.showSystemNotifications,
+                inAppNotifications = event.showInAppNotifications
+            ).show(supportFragmentManager, null)
+            is CollarEvent.SettingsChanged -> onSettingsChanged(
+                event.analyticsCollectionEnabled,
+                event.analyticsCollectionTimestamp
+            )
             is CollarEvent.Clear -> entryAdapter.submitList(null)
         }
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
-        with(binding) {
-            when (item.itemId) {
-                R.id.search -> onSearchStarted()
-                R.id.clear -> viewModel.clearEntities()
-                R.id.screens -> onFilterToggled(EntityType.SCREEN, item)
-                R.id.events -> onFilterToggled(EntityType.EVENT, item)
-                R.id.properties -> onFilterToggled(EntityType.PROPERTY, item)
-                R.id.systemNotifications -> viewModel.notifications(
-                    item.isChecked.not(),
-                    toolbar.menu.findItem(R.id.inAppNotifications).isChecked
-                )
-                R.id.inAppNotifications -> viewModel.notifications(
-                    toolbar.menu.findItem(R.id.systemNotifications).isChecked,
-                    item.isChecked.not()
-                )
-            }
+        when (item.itemId) {
+            R.id.search -> onSearchStarted()
+            R.id.filter -> viewModel.filters()
+            R.id.settings -> viewModel.showSettings()
         }
         return true
     }
@@ -136,14 +153,8 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
             findItem(R.id.settings).isVisible = false
         }
 
-    private fun onFilterToggled(type: EntityType, menuItem: MenuItem) {
-        menuItem.isChecked = !menuItem.isChecked
-        viewModel.filter(type, menuItem.isChecked)
-    }
-
     private fun showDetail(entity: CollarEntity) {
-        detailDialog = dialogFactory.entityDetail(entity)
-        detailDialog?.show()
+        CollarDetailDialog.newInstance(entity).show(supportFragmentManager, null)
     }
 
     private fun showEmptyView(shouldShow: Boolean) {
@@ -154,12 +165,9 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
         }
     }
 
-    private fun onSettingsChanged(settings: SettingsEntity) =
+    private fun onSettingsChanged(analyticsCollectionEnabled: Boolean, analyticsCollectionTimestamp: Long) =
         with(binding) {
-            toolbar.menu.findItem(R.id.systemNotifications).isChecked = settings.showSystemNotifications
-            toolbar.menu.findItem(R.id.inAppNotifications).isChecked = settings.showInAppNotifications
-            collectionStatusCard.isGone = settings.analyticsCollectionEnabled
-            collectionStatusTimestamp.text =
-                Date((settings.analyticsCollectionTimestamp)).presentationFormat
+            collectionStatusCard.isGone = analyticsCollectionEnabled
+            collectionStatusTimestamp.text = Date((analyticsCollectionTimestamp)).presentationFormat
         }
 }

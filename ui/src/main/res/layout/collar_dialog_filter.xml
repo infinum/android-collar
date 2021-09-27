@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:menu="@menu/collar_filter_menu"
+        app:navigationIcon="@drawable/collar_ic_close"
+        app:title="@string/collar_filter"
+        app:titleCentered="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/screensButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            android:checkable="true"
+            android:text="@string/collar_screens"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/collar_ic_screen" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/eventsButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            android:checkable="true"
+            android:text="@string/collar_events"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/collar_ic_event" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/propertiesButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            android:checkable="true"
+            android:text="@string/collar_properties"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/collar_ic_property" />
+
+    </LinearLayout>
+
+</LinearLayout>

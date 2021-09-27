@@ -26,7 +26,7 @@ internal class CollarSnackbarView @JvmOverloads constructor(
         this,
         true
     ).apply {
-        this.rootLayout.setOnClickListener { CollarUi.show() }
+        this.root.setOnClickListener { CollarUi.show() }
     }
 
     override fun animateContentIn(delay: Int, duration: Int) {

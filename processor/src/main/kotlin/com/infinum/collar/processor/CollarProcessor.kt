@@ -8,12 +8,10 @@ import com.infinum.collar.processor.configurations.ScreenNamesConfiguration
 import com.infinum.collar.processor.configurations.UserPropertiesConfiguration
 import com.infinum.collar.processor.extensions.consume
 import com.infinum.collar.processor.options.AnalyticsEventsOptions
-import com.infinum.collar.processor.options.ScreenNamesOptions
 import com.infinum.collar.processor.options.UserPropertiesOptions
 import com.infinum.collar.processor.subprocessors.AnalyticsEventsSubprocessor
 import com.infinum.collar.processor.subprocessors.ScreenNamesSubprocessor
 import com.infinum.collar.processor.subprocessors.UserPropertiesSubprocessor
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
@@ -40,7 +38,6 @@ internal class CollarProcessor : AbstractProcessor() {
 
     override fun getSupportedOptions(): Set<String> =
         setOf(
-            ScreenNamesOptions.SUPPORTED,
             AnalyticsEventsOptions.SUPPORTED,
             UserPropertiesOptions.SUPPORTED
         )
@@ -54,7 +51,6 @@ internal class CollarProcessor : AbstractProcessor() {
             userPropertiesSubprocessor.init(UserPropertiesConfiguration(processingEnv))
         }
 
-    @KotlinPoetMetadataPreview
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean =
         consume {
             screenNamesSubprocessor.process(roundEnv)

@@ -14,51 +14,11 @@
         android:id="@+id/filter"
         android:icon="@drawable/collar_ic_filter"
         android:title="@string/collar_filter"
-        app:showAsAction="always">
-        <menu>
-            <group android:checkableBehavior="all">
-                <item
-                    android:id="@+id/screens"
-                    android:checked="true"
-                    android:icon="@drawable/collar_ic_screen"
-                    android:title="@string/collar_screens" />
-                <item
-                    android:id="@+id/events"
-                    android:checked="true"
-                    android:icon="@drawable/collar_ic_event"
-                    android:title="@string/collar_events" />
-                <item
-                    android:id="@+id/properties"
-                    android:checked="true"
-                    android:icon="@drawable/collar_ic_property"
-                    android:title="@string/collar_properties" />
-            </group>
-        </menu>
-    </item>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/settings"
         android:icon="@drawable/collar_ic_settings"
         android:title="@string/collar_settings"
-        app:showAsAction="always">
-        <menu>
-            <group android:checkableBehavior="all">
-                <item
-                    android:id="@+id/systemNotifications"
-                    android:icon="@drawable/collar_ic_notifications_system"
-                    android:title="@string/collar_notifications_system" />
-                <item
-                    android:id="@+id/inAppNotifications"
-                    android:icon="@drawable/collar_ic_notifications_inapp"
-                    android:title="@string/collar_notifications_inapp" />
-            </group>
-            <group>
-                <item
-                    android:id="@+id/clear"
-                    android:icon="@drawable/collar_ic_clear"
-                    android:title="@string/collar_clear"
-                    app:showAsAction="always" />
-            </group>
-        </menu>
-    </item>
+        app:showAsAction="always" />
 </menu>

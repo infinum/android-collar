@@ -36,10 +36,6 @@ subprojects {
 apply from: "deploy.gradle"
 apply from: "jacoco.gradle"
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs += ["--release", "8"]
-}
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

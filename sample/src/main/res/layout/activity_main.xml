@@ -16,7 +16,7 @@
             android:id="@+id/analyticsCollectionSwitch"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall"
-            android:checked="false"
+            android:checked="true"
             android:text="Analytics collection enabled"
             app:thumbTint="@color/color_primary"
             app:trackTint="@android:color/darker_gray" />

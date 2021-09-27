@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+## Version 1.3.1
+
+_2021-09-27_
+
+* Deprecate screen name length limit.
+* Update Kotlin to 1.5.31.
+* Update Kotlin Poet and fix breaking changes.
+* Update various dependencies.
+* Prepare and optimize for Android 12.
+* Use KSP for Room in UI module.
+* Refactor AlertDialog to BottomSheetDialogFragment.
+* Optimize Snackbar ViewBinding.
+
 ## Version 1.3.0
 
 _2021-08-23_

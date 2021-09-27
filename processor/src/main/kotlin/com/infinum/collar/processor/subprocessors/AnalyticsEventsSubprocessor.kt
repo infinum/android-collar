@@ -5,12 +5,10 @@ import com.infinum.collar.processor.extensions.asClassName
 import com.infinum.collar.processor.extensions.showError
 import com.infinum.collar.processor.specs.AnalyticsEventsSpec
 import com.infinum.collar.processor.validators.AnalyticsEventsValidator
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 
 internal class AnalyticsEventsSubprocessor : CommonSubprocessor() {
 
-    @KotlinPoetMetadataPreview
     override fun process(roundEnvironment: RoundEnvironment) {
         val collector = AnalyticsEventsCollector(roundEnvironment)
         val validator = AnalyticsEventsValidator(processorOptions, typeUtils, messager)

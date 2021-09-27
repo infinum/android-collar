@@ -99,11 +99,11 @@ task deployDebug(dependsOn: [
         ':plugin:clean',
         ':annotations:publishReleasePublicationToMavenLocal',
         ':lint:publishReleasePublicationToMavenLocal',
+        ':generator:publishReleasePublicationToMavenLocal',
         ':core:publishReleasePublicationToMavenLocal',
+        ':processor:publishReleasePublicationToMavenLocal',
         ':ui:publishReleasePublicationToMavenLocal',
         ':ui-no-op:publishReleasePublicationToMavenLocal',
-        ':processor:publishReleasePublicationToMavenLocal',
-        ':generator:publishReleasePublicationToMavenLocal',
         ':plugin:publishReleasePublicationToMavenLocal',
 ]) {
     group = "Deploy"

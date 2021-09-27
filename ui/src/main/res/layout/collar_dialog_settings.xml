@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:menu="@menu/collar_settings_menu"
+        app:navigationIcon="@drawable/collar_ic_close"
+        app:title="@string/collar_settings"
+        app:titleCentered="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/systemNotificationsButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            android:checkable="true"
+            android:text="@string/collar_notifications_system"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/collar_ic_notifications_system" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/inAppNotificationsButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            android:checkable="true"
+            android:text="@string/collar_notifications_inapp"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/collar_ic_notifications_inapp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clearButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            android:text="@string/collar_clear"
+            app:cornerRadius="24dp"
+            app:icon="@drawable/collar_ic_clear" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -5,12 +5,10 @@ import com.infinum.collar.processor.extensions.asClassName
 import com.infinum.collar.processor.extensions.showError
 import com.infinum.collar.processor.specs.UserPropertiesSpec
 import com.infinum.collar.processor.validators.UserPropertiesValidator
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import javax.annotation.processing.RoundEnvironment
 
 internal class UserPropertiesSubprocessor : CommonSubprocessor() {
 
-    @KotlinPoetMetadataPreview
     override fun process(roundEnvironment: RoundEnvironment) {
         val collector = UserPropertiesCollector(roundEnvironment)
         val validator = UserPropertiesValidator(processorOptions, typeUtils, messager)
