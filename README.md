@@ -233,7 +233,6 @@ _Collar_ plugin has been tuned per default for the most often used Firebase Anal
 ```gradle
 javaCompileOptions {
     annotationProcessorOptions {
-        argument "screen_name_length", "33"
         argument "events_count", "100"
         argument "event_parameters_count", "10"
         argument "event_name_length", "20"

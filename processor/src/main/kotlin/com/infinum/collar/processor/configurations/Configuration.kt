@@ -12,7 +12,7 @@ internal interface Configuration {
 
     fun outputDir(): File?
 
-    fun options(): Options
+    fun options(): Options?
 
     fun elementUtils(): Elements
 

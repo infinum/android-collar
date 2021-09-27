@@ -1,7 +1,7 @@
 plugins {
     id "com.android.library"
     id "kotlin-android"
-    id "kotlin-kapt"
+    id "com.google.devtools.ksp" version "1.5.31-1.0.0"
 }
 
 android {
@@ -84,7 +84,7 @@ dependencies {
     implementation libs.coroutines
     api libs.librarycore
     implementation libs.bundles.androidx
-    kapt libs.androidx.room.compiler
+    ksp libs.androidx.room.compiler
     implementation libs.material
     implementation libs.koin
     implementation libs.timber
