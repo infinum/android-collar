@@ -56,6 +56,7 @@ internal class AnalyticsEventsSpec(
                     unindent()
                     addStatement(STATEMENT_EVENT_CLASS_END)
                 }
+                addStatement("else -> Unit")
             }
             .build()
 

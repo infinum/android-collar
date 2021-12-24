@@ -3,7 +3,6 @@ package com.infinum.collar.ui.presentation.shared.base
 import android.os.Bundle
 import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.infinum.collar.ui.di.LibraryKoinComponent
 
@@ -17,6 +16,6 @@ internal abstract class BaseActivity<State, Event> : AppCompatActivity(), BaseVi
 
         setContentView(binding.root)
 
-        collectFlows(lifecycleScope)
+        collectFlows(this)
     }
 }

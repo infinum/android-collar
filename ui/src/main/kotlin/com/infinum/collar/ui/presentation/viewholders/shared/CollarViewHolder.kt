@@ -52,7 +52,7 @@ internal abstract class CollarViewHolder(
         }
         timeView.text = Date(entity.timestamp).presentationItemFormat
         nameView.text = entity.name
-        valueView?.text = entity.value
+        valueView?.text = entity.value ?: entity.parameters
         rootView.setOnClickListener { onClick(entity) }
     }
 

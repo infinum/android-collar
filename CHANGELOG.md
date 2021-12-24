@@ -1,6 +1,20 @@
 Change Log
 ==========
 
+## Version 1.3.2
+
+_2021-12-24_
+
+* Update Kotlin to 1.6.10.
+* Update Gradle wrapper to 7.3.3.
+* Update AndroidX dependencies.
+* Fix collecting flows on lifecycle.
+* Fix core JVM static method calls with Kotlin 1.6.x.
+* Fix missing event parameters in session list.
+* Fix large event parameters in detail view.
+* Fix large event parameters for in app notification.
+* Add exhaustive branches in generated code.
+
 ## Version 1.3.1
 
 _2021-09-27_

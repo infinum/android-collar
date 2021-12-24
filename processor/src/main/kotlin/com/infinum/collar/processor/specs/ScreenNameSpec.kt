@@ -53,6 +53,7 @@ internal class ScreenNameSpec(
                 holders.forEach {
                     addStatement(this, it)
                 }
+                addStatement("else -> Unit")
             }
             .build()
 

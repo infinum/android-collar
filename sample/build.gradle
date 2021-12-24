@@ -52,7 +52,7 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 argument "events_count", "100"
-                argument "event_parameters_count", "17"
+                argument "event_parameters_count", "60"
                 argument "event_name_length", "20"
                 argument "reserved_prefixes", "ga_,fb_"
             }

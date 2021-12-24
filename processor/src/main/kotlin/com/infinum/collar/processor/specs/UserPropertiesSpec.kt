@@ -44,6 +44,7 @@ internal class UserPropertiesSpec(
                         it.propertyParameterNames.single()
                     )
                 }
+                addStatement("else -> Unit")
             }
             .build()
 }

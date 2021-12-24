@@ -34,6 +34,7 @@ public object Collar {
      *
      * @param screenName value.
      */
+    @JvmStatic
     public fun trackScreen(screenName: String): Unit =
         collector?.onScreen(
             Screen(
@@ -46,6 +47,7 @@ public object Collar {
      *
      * @param screen wrapper class.
      */
+    @JvmStatic
     public fun trackScreen(screen: Screen): Unit =
         collector?.onScreen(screen) ?: Unit
 
@@ -55,6 +57,7 @@ public object Collar {
      * @param eventName value.
      * @param params value.
      */
+    @JvmStatic
     public fun trackEvent(eventName: String, params: Bundle): Unit =
         collector?.onEvent(
             Event(
@@ -68,6 +71,7 @@ public object Collar {
      *
      * @param event wrapper class.
      */
+    @JvmStatic
     public fun trackEvent(event: Event): Unit =
         collector?.onEvent(event) ?: Unit
 
@@ -78,6 +82,7 @@ public object Collar {
      * @param name value.
      * @param value value.
      */
+    @JvmStatic
     public fun trackProperty(name: String, value: String?): Unit =
         collector?.onProperty(
             Property(
@@ -91,6 +96,7 @@ public object Collar {
      *
      * @param property wrapper class.
      */
+    @JvmStatic
     public fun trackProperty(property: Property): Unit =
         collector?.onProperty(property) ?: Unit
 }
