@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Build
+import android.text.method.ScrollingMovementMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -26,6 +27,7 @@ internal class CollarSnackbarView @JvmOverloads constructor(
         this,
         true
     ).apply {
+        this.valueView.movementMethod = ScrollingMovementMethod()
         this.root.setOnClickListener { CollarUi.show() }
     }
 

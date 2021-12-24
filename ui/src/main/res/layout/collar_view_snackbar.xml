@@ -43,6 +43,7 @@
             style="@style/TextAppearance.MaterialComponents.Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollbars="vertical"
             android:textColor="@android:color/white"
             tools:text="test_property_value\ntest_property_value\ntest_property_value\ntest_property_value" />
 

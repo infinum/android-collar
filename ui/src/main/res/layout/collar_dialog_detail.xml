@@ -6,15 +6,25 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:menu="@menu/collar_detail_menu"
-        app:navigationIcon="@drawable/collar_ic_close"
-        app:titleCentered="true" />
+        android:layout_height="wrap_content"
+        android:background="?colorSurface"
+        app:liftOnScroll="true">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/collar_detail_menu"
+            app:navigationIcon="@drawable/collar_ic_close"
+            app:titleCentered="true" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

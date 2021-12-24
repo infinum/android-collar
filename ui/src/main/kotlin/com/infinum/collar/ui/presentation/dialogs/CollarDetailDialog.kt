@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.app.ShareCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.data.models.local.EntityType
@@ -62,11 +63,13 @@ internal class CollarDetailDialog : BaseBottomSheetDialogFragment<Any, Any>(R.la
         }
     }
 
-    @Suppress("ComplexMethod")
+    @Suppress("ComplexMethod", "LongMethod")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
+            appBarLayout.isLiftOnScroll = true
+            appBarLayout.isLifted = false
             toolbar.setNavigationOnClickListener {
                 dismiss()
             }
@@ -119,6 +122,22 @@ internal class CollarDetailDialog : BaseBottomSheetDialogFragment<Any, Any>(R.la
                     }
                 }
             }
+            contentView.setOnScrollChangeListener(
+                NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+                    if (scrollY > oldScrollY) {
+                        appBarLayout.isLifted = true
+                    }
+                    if (scrollY < oldScrollY) {
+                        appBarLayout.isLifted = true
+                    }
+                    if (scrollY == 0) {
+                        appBarLayout.isLifted = false
+                    }
+                    if (scrollY == v.measuredHeight - v.getChildAt(0).measuredHeight) {
+                        appBarLayout.isLifted = true
+                    }
+                }
+            )
         }
     }
 
