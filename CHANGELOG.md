@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 1.3.3
+
+_2022-05-06_
+
+* Fix plugin implicit dependencies.
+
 ## Version 1.3.2
 
 _2021-12-24_

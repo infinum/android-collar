@@ -26,7 +26,7 @@ public class CollarPlugin : Plugin<Project> {
     private fun addDependencies(project: Project) {
         with(project) {
             dependencies.add("implementation", "com.infinum.collar:collar-annotations:$collarVersion")
-            dependencies.add("implementation", "com.infinum.collar:collar-annotations:$collarVersion")
+            dependencies.add("implementation", "com.infinum.collar:collar-core:$collarVersion")
             dependencies.add("lintChecks", "com.infinum.collar:collar-lint:$collarVersion")
 
             if (pluginManager.hasPlugin("kotlin-android")) {
