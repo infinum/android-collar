@@ -31,7 +31,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.infinum.collar:collar-plugin:1.3.2"
+        classpath "com.infinum.collar:collar-plugin:1.3.3"
     }
 }
 ```
@@ -42,7 +42,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.infinum.collar:collar-plugin:1.3.2")
+        classpath("com.infinum.collar:collar-plugin:1.3.3")
     }
 }
 ```
@@ -259,13 +259,13 @@ You can search, filter and clear all sent analytics.
 In your app `build.gradle` or `build.gradle.kts` add:  
 **Groovy**
 ```gradle
-debugImplementation "com.infinum.collar:collar-ui:1.3.2"
-releaseImplementation "com.infinum.collar:collar-ui-no-op:1.3.2"
+debugImplementation "com.infinum.collar:collar-ui:1.3.3"
+releaseImplementation "com.infinum.collar:collar-ui-no-op:1.3.3"
 ```
 **KotlinDSL**
 ```kotlin
-debugImplementation("com.infinum.collar:collar-ui:1.3.2")
-releaseImplementation("com.infinum.collar:collar-ui-no-op:1.3.2")
+debugImplementation("com.infinum.collar:collar-ui:1.3.3")
+releaseImplementation("com.infinum.collar:collar-ui-no-op:1.3.3")
 ```
 
 In order to start tracking with UI you must use _LiveCollector_ as in this example:
