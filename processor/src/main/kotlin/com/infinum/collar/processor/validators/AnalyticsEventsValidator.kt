@@ -6,6 +6,7 @@ import com.infinum.collar.processor.extensions.showError
 import com.infinum.collar.processor.extensions.showWarning
 import com.infinum.collar.processor.models.AnalyticsEventsHolder
 import com.infinum.collar.processor.models.EventHolder
+import com.infinum.collar.processor.options.AnalyticsEventsOptions
 import com.infinum.collar.processor.options.Options
 import javax.annotation.processing.Messager
 import javax.lang.model.util.Types
@@ -63,11 +64,15 @@ internal class AnalyticsEventsValidator(
         }
 
     private fun validateName(holder: EventHolder): Boolean =
-        if (holder.eventName.matches(Regex("^[a-zA-Z0-9_]*$"))) {
+        if (processorOptions != null && holder.eventName.matches(Regex(processorOptions.nameRegex()))) {
             validateNameStart(holder)
         } else {
             messager.showWarning(
-                "Event name may only contain alphanumeric characters and underscores (\"_\"). " +
+                "Event name may only contain characters " +
+                    "allowed by ${
+                    processorOptions?.nameRegex()
+                        ?: AnalyticsEventsOptions.DEFAULT_REGEX_EVENT_NAME
+                    } regex. " +
                     "${holder.eventName} does not."
             )
             false

@@ -1,5 +1,5 @@
 [versions]
-collar = "1.3.2"
+collar = "1.3.4"
 gradle = "7.0.4"
 lint = "30.0.4"
 kotlin = "1.6.10"

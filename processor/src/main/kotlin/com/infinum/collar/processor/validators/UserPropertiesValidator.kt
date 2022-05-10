@@ -7,6 +7,7 @@ import com.infinum.collar.processor.extensions.showWarning
 import com.infinum.collar.processor.models.PropertyHolder
 import com.infinum.collar.processor.models.UserPropertiesHolder
 import com.infinum.collar.processor.options.Options
+import com.infinum.collar.processor.options.UserPropertiesOptions
 import javax.annotation.processing.Messager
 import javax.lang.model.util.Types
 
@@ -63,11 +64,15 @@ internal class UserPropertiesValidator(
         }
 
     private fun validateName(holder: PropertyHolder): Boolean =
-        if (holder.propertyName.matches(Regex("^[a-zA-Z0-9_]*$"))) {
+        if (processorOptions != null && holder.propertyName.matches(Regex(processorOptions.nameRegex()))) {
             validateNameStart(holder)
         } else {
             messager.showWarning(
-                "Property name may only contain alphanumeric characters and underscores (\"_\"). " +
+                "Property name may only contain characters " +
+                    "allowed by ${
+                    processorOptions?.nameRegex()
+                        ?: UserPropertiesOptions.DEFAULT_REGEX_PROPERTY_NAME
+                    } regex. " +
                     "${holder.propertyName} does not."
             )
             false
