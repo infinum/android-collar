@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 1.3.4
+
+_2022-05-10_
+
+* Expose event and property name Regex to plugin configuration.
+
 ## Version 1.3.3
 
 _2022-05-06_

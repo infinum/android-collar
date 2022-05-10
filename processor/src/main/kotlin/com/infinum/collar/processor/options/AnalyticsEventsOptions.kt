@@ -8,12 +8,14 @@ internal class AnalyticsEventsOptions(
         private const val OPTION_EVENTS_COUNT = "events_count"
         private const val OPTION_EVENT_PARAMETERS_COUNT = "event_parameters_count"
         private const val OPTION_EVENT_NAME_LENGTH = "event_name_length"
+        private const val OPTION_EVENT_NAME_REGEX = "event_name_regex"
         private const val OPTION_RESERVED_PREFIXES = "reserved_prefixes"
         private const val OPTION_RESERVED_EVENTS = "reserved_events"
 
         private const val DEFAULT_COUNT_MAX_EVENTS = 500
         private const val DEFAULT_COUNT_MAX_EVENT_PARAMETERS = 25
         private const val DEFAULT_SIZE_EVENT_NAME = 40
+        const val DEFAULT_REGEX_EVENT_NAME = "^[a-zA-Z0-9_]*$"
         private val DEFAULT_RESERVED_PREFIXES = listOf("firebase_", "google_", "ga_")
         private val DEFAULT_RESERVED_EVENTS = listOf(
             "ad_activeview",
@@ -44,6 +46,7 @@ internal class AnalyticsEventsOptions(
                 OPTION_EVENTS_COUNT,
                 OPTION_EVENT_PARAMETERS_COUNT,
                 OPTION_EVENT_NAME_LENGTH,
+                OPTION_EVENT_NAME_REGEX,
                 OPTION_RESERVED_PREFIXES,
                 OPTION_RESERVED_EVENTS
             )
@@ -51,6 +54,7 @@ internal class AnalyticsEventsOptions(
 
     private var maxEventsCount = DEFAULT_COUNT_MAX_EVENTS
     private var maxEventNameSize = DEFAULT_SIZE_EVENT_NAME
+    private var eventNameRegex = DEFAULT_REGEX_EVENT_NAME
     private var maxEventParametersCount = DEFAULT_COUNT_MAX_EVENT_PARAMETERS
     private var reservedPrefixes = DEFAULT_RESERVED_PREFIXES
     private var reservedEvents = DEFAULT_RESERVED_EVENTS
@@ -60,6 +64,7 @@ internal class AnalyticsEventsOptions(
             this[OPTION_EVENTS_COUNT]?.let { maxEventsCount = it.toInt() }
             this[OPTION_EVENT_PARAMETERS_COUNT]?.let { maxEventParametersCount = it.toInt() }
             this[OPTION_EVENT_NAME_LENGTH]?.let { maxEventNameSize = it.toInt() }
+            this[OPTION_EVENT_NAME_REGEX]?.let { eventNameRegex = it }
             this[OPTION_RESERVED_PREFIXES]?.let { reservedPrefixes = it.split(",") }
             this[OPTION_RESERVED_EVENTS]?.let { reservedEvents = it.split(",") }
         }
@@ -68,6 +73,8 @@ internal class AnalyticsEventsOptions(
     override fun maxCount(): Int = maxEventsCount
 
     override fun maxNameSize(): Int = maxEventNameSize
+
+    override fun nameRegex(): String = eventNameRegex
 
     override fun maxParametersCount(): Int = maxEventParametersCount
 

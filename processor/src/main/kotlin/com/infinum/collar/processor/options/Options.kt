@@ -6,6 +6,8 @@ internal interface Options {
 
     fun maxNameSize(): Int = throw UnsupportedOperationException()
 
+    fun nameRegex(): String = throw UnsupportedOperationException()
+
     fun maxParametersCount(): Int = throw UnsupportedOperationException()
 
     fun reservedPrefixes(): List<String> = throw UnsupportedOperationException()
