@@ -27,7 +27,7 @@ internal abstract class CommonSpec(
     override fun file(): FileSpec =
         FileSpec.builder(packageName, simpleName)
             .addAnnotation(jvmName())
-            .addComment(comment().toString())
+            .addFileComment(comment().toString())
             .apply { extensions().map { addFunction(it) } }
             .build()
 

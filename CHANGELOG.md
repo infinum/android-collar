@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 1.3.5
+
+_2022-08-05_
+
+* Update dependencies.
+* Add Kotlin default parameter option for compiler backend.
+
 ## Version 1.3.4
 
 _2022-05-10_
