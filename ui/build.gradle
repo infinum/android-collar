@@ -1,7 +1,7 @@
 plugins {
     id "com.android.library"
     id "kotlin-android"
-    id "com.google.devtools.ksp" version "1.6.10-1.0.2"
+    id "com.google.devtools.ksp" version "1.7.10-1.0.6"
 }
 
 android {
@@ -24,7 +24,7 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
-                    "room.incremental": "true",
+                        "room.incremental": "true",
                 ]
             }
         }
@@ -55,8 +55,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += [
-            '-Xexplicit-api=strict',
-            '-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi'
+                '-Xjvm-default=all',
+                '-Xexplicit-api=strict',
+                '-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi'
         ]
     }
     packagingOptions {
@@ -76,6 +77,13 @@ android {
 
     sourceSets.each {
         it.java.srcDirs += "src/$it.name/kotlin"
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 

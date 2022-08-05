@@ -13,7 +13,7 @@ internal class EntityRepository(
 
     override suspend fun save(input: EntityParameters) =
         input.entity?.let { dao.save(it) }
-            ?: throw IllegalStateException("Cannot save null entity")
+            ?: error("Cannot save null entity")
 
     override suspend fun load(input: EntityParameters): Flow<List<CollarEntity>> =
         with(input) {

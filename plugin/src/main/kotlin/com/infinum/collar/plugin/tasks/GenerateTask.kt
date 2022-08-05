@@ -1,6 +1,5 @@
 package com.infinum.collar.plugin.tasks
 
-import com.android.builder.model.AndroidProject.FD_GENERATED
 import com.infinum.collar.generator.CollarGenerator
 import com.infinum.collar.plugin.CollarExtension
 import com.infinum.collar.plugin.collarVersion
@@ -24,6 +23,7 @@ internal open class GenerateTask : BaseSourceTask() {
         const val GROUP = "collar"
         const val NAME = "generate"
         const val DESCRIPTION = "Generates Kotlin files for screen names, events and user properties."
+        const val FD_GENERATED = "generated"
     }
 
     private val collarGenerator = CollarGenerator()
