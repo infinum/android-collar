@@ -37,6 +37,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += [
+                '-Xjvm-default=all',
                 '-Xexplicit-api=strict'
         ]
     }
@@ -54,6 +55,13 @@ android {
 
     sourceSets.each {
         it.java.srcDirs += "src/$it.name/kotlin"
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 

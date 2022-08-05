@@ -1,13 +1,17 @@
 ext {
+    def major = 1
+    def minor = 3
+    def patch = 5
+
     buildConfig = [
             "minSdk"    : 19,
-            "compileSdk": 31,
-            "targetSdk" : 31,
-            "buildTools": "31.0.0"
+            "compileSdk": 32,
+            "targetSdk" : 32,
+            "buildTools": "32.0.0"
     ]
     releaseConfig = [
             "group"      : "com.infinum.collar",
-            "version"    : "1.3.4",
-            "versionCode": 1 * 100 * 100 + 3 * 100 + 4
+            "version"    : "$major.$minor.$patch",
+            "versionCode": major * 100 * 100 + minor * 100 + patch
     ]
 }
