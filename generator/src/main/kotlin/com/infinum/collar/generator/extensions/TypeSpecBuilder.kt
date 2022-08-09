@@ -5,20 +5,21 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 
-internal fun TypeSpec.Builder.addValue() =
-    this.primaryConstructor(
+internal fun TypeSpec.Builder.addValue(parameterName: String = "parameter"): TypeSpec.Builder {
+    return this.primaryConstructor(
         FunSpec.constructorBuilder()
-            .addParameter("value", String::class, KModifier.PRIVATE)
+            .addParameter(parameterName, String::class)
             .build()
     )
         .addProperty(
-            PropertySpec.builder("value", String::class)
-                .initializer("value")
+            PropertySpec.builder(parameterName, String::class)
+                .initializer(parameterName)
                 .build()
         )
         .addFunction(
             FunSpec.builder("toString")
                 .addModifiers(KModifier.OVERRIDE)
-                .addStatement("return value")
+                .addStatement("return $parameterName")
                 .build()
         )
+}

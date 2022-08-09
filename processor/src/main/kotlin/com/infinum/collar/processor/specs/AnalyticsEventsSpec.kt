@@ -15,6 +15,7 @@ internal class AnalyticsEventsSpec(
 
     companion object {
         private const val FUNCTION_TRACK_EVENT = "trackEvent"
+        private const val PARAMETER_NAME_EVENT = "event"
 
         private const val STATEMENT_EVENT_CLASS_START = "is %T -> %T.%L("
         private const val STATEMENT_EVENT_CLASS_END = ")"
@@ -26,6 +27,8 @@ internal class AnalyticsEventsSpec(
 
         private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
     }
+
+    override fun parameterName(): String = PARAMETER_NAME_EVENT
 
     override fun extensions(): List<FunSpec> =
         listOf(
