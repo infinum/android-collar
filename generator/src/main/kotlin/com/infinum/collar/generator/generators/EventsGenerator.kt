@@ -69,7 +69,9 @@ internal class EventsGenerator(
                             if (parameter.values?.isNotEmpty() == true) {
                                 val enumBuilder = TypeSpec.enumBuilder(
                                     parameter.name.toCamelCase()
-                                ).addValue()
+                                ).addValue(
+                                    parameter.name.toCamelCase(capitalize = false)
+                                )
 
                                 parameter.values.forEach { value ->
                                     enumBuilder.addEnumConstant(

@@ -15,8 +15,11 @@ internal class UserPropertiesSpec(
 
     companion object {
         private const val FUNCTION_TRACK_PROPERTY = "trackProperty"
+        private const val PARAMETER_NAME_PROPERTY = "userProperty"
         private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L)"
     }
+
+    override fun parameterName(): String = PARAMETER_NAME_PROPERTY
 
     override fun extensions(): List<FunSpec> =
         listOf(

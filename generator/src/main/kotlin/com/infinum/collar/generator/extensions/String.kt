@@ -3,7 +3,7 @@ package com.infinum.collar.generator.extensions
 import com.infinum.collar.generator.models.DataType
 import java.util.Locale
 
-internal fun String.toCamelCase(): String = split(" ", "_")
+internal fun String.toCamelCase(capitalize: Boolean = true): String = split(" ", "_")
     .joinToString("") {
         it.replaceFirstChar { value ->
             if (value.isLowerCase()) {
@@ -12,6 +12,9 @@ internal fun String.toCamelCase(): String = split(" ", "_")
                 value.toString()
             }
         }
+    }
+    .replaceFirstChar {
+        if (capitalize) it.uppercase() else it.lowercase()
     }
 
 internal fun String.isFirstCharDigit(): Boolean = this.firstOrNull()?.isDigit() ?: false

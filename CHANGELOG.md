@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.3.6
+
+_2022-08-09_
+
+* Fix generator value modifiers.
+* Avoid reserved Kotlin keywords in generator.
+* Fix Kotlin compiler flags.
+
 ## Version 1.3.5
 
 _2022-08-05_

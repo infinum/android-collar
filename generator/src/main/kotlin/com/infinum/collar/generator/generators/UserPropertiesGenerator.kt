@@ -66,7 +66,9 @@ internal class UserPropertiesGenerator(
                         if (userProperty.values?.isNotEmpty() == true) {
                             val enumBuilder = TypeSpec.enumBuilder(
                                 userProperty.name.toCamelCase()
-                            ).addValue()
+                            ).addValue(
+                                userProperty.name.toCamelCase(capitalize = false)
+                            )
 
                             userProperty.values.forEach { value ->
                                 enumBuilder.addEnumConstant(

@@ -57,7 +57,7 @@ android {
         freeCompilerArgs += [
                 '-Xjvm-default=all',
                 '-Xexplicit-api=strict',
-                '-Xopt-in=kotlinx.coroutines.DelicateCoroutinesApi'
+                '-opt-in=kotlinx.coroutines.DelicateCoroutinesApi'
         ]
     }
     packagingOptions {
