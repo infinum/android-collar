@@ -15,6 +15,7 @@ internal object BundleMapper {
         val iterator = keys.iterator()
         while (iterator.hasNext()) {
             val key = iterator.next()
+            @Suppress("DEPRECATION")
             val value = bundle.get(key)
             map[key] = value?.let {
                 when (value) {
