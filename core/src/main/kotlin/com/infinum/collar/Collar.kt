@@ -1,7 +1,5 @@
 package com.infinum.collar
 
-import android.os.Bundle
-
 /**
  * Singleton object entry point for screen names, events and properties collection.
  */
@@ -58,11 +56,11 @@ public object Collar {
      * @param params value.
      */
     @JvmStatic
-    public fun trackEvent(eventName: String, params: Bundle): Unit =
+    public fun trackEvent(eventName: String, params: Map<String, *>): Unit =
         collector?.onEvent(
             Event(
                 name = eventName,
-                params = if (params.isEmpty) null else params
+                params = params.ifEmpty { null }
             )
         ) ?: Unit
 

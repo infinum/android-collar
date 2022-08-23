@@ -5,7 +5,7 @@ import com.infinum.collar.annotations.EventName
 import com.infinum.collar.annotations.EventParameterName
 import com.infinum.collar.processor.extensions.asClassName
 import com.infinum.collar.processor.extensions.fieldElements
-import com.infinum.collar.processor.extensions.resolveMethod
+import com.infinum.collar.processor.extensions.isSupported
 import com.infinum.collar.processor.extensions.toLowerSnakeCase
 import com.infinum.collar.processor.models.AnalyticsEventsHolder
 import com.infinum.collar.processor.models.EventHolder
@@ -48,7 +48,7 @@ internal class AnalyticsEventsCollector(
                                     .map { fieldParameter ->
                                         EventParameterHolder(
                                             enabled = parameterEnabled(fieldParameter),
-                                            method = fieldParameter.resolveMethod(),
+                                            isSupported = fieldParameter.isSupported(),
                                             resolvedName = parameterName(fieldParameter),
                                             variableName = fieldParameter.simpleName.toString()
                                         )

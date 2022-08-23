@@ -31,20 +31,20 @@ internal fun Element.constructorParameterNames(): List<String> =
 internal fun Element.fieldElements(): List<VariableElement> =
     ElementFilter.fieldsIn(this.enclosedElements).orEmpty()
 
-internal fun VariableElement.resolveMethod(): String =
+internal fun VariableElement.isSupported(): Boolean =
     this.asType().toString().let {
         when (it) {
-            "java.lang.String" -> "putString"
-            "boolean" -> "putBoolean"
-            "byte" -> "putByte"
-            "char" -> "putChar"
-            "double" -> "putDouble"
-            "float" -> "putFloat"
-            "int" -> "putInt"
-            "long" -> "putLong"
-            "short" -> "putShort"
-            "android.os.Bundle" -> "putBundle"
-            else -> ""
+            "java.lang.String" -> true
+            "boolean" -> true
+            "byte" -> true
+            "char" -> true
+            "double" -> true
+            "float" -> true
+            "int" -> true
+            "long" -> true
+            "short" -> true
+            "kotlin.collections.Map" -> true
+            else -> false
         }
     }
 
