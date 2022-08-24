@@ -21,7 +21,11 @@ class KotlinMainActivity : Activity() {
             trackEvent(
                 AnalyticsEvent.EventThree(
                     myString = "cool",
-                    myBoolean = false
+                    myBoolean = false,
+                    myMap = mapOf(
+                        "1" to 1,
+                        "2" to 2
+                    )
                 )
             )
         }

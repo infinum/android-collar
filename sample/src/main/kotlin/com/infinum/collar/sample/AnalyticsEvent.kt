@@ -1,6 +1,5 @@
 package com.infinum.collar.sample
 
-import android.os.Bundle
 import com.infinum.collar.annotations.AnalyticsEvents
 import com.infinum.collar.annotations.EventName
 import com.infinum.collar.annotations.EventParameterName
@@ -19,7 +18,7 @@ sealed class AnalyticsEvent {
         val myInt: Int,
         val myLong: Long,
         val myShort: Short,
-        val myBundle: Bundle,
+        val myMap: Map<String, *>,
         val myOtherString: String,
         val myOtherBoolean: Boolean,
         val myOtherByte: Byte,
@@ -47,7 +46,7 @@ sealed class AnalyticsEvent {
         val myInt2: Int,
         val myLong2: Long,
         val myShort2: Short,
-        val myBundle2: Bundle,
+        val myMap2: Map<String, *>,
         val myOtherString2: String,
         val myOtherBoolean2: Boolean,
         val myOtherByte2: Byte,
@@ -80,7 +79,8 @@ sealed class AnalyticsEvent {
     @EventName("event3")
     data class EventThree(
         val myString: String,
-        val myBoolean: Boolean
+        val myBoolean: Boolean,
+        val myMap: Map<String, Any>
     ) : AnalyticsEvent()
 
     @EventName("event4")
