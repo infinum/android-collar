@@ -20,12 +20,12 @@ internal class AnalyticsEventsSpec(
         private const val STATEMENT_EVENT_CLASS_START = "is %T -> %T.%L("
         private const val STATEMENT_EVENT_CLASS_END = ")"
         private const val STATEMENT_EVENT_NAME = "%S,"
-        private const val STATEMENT_BUNDLE_EMPTY = "%T()"
-        private const val STATEMENT_BUNDLE_START = "%T().apply {"
-        private const val STATEMENT_BUNDLE_END = "}"
-        private const val STATEMENT_EVENT_PARAMETER = "%L(%S, %L.%L)"
+        private const val STATEMENT_BUNDLE_EMPTY = "mapOf<String,Nothing>()"
+        private const val STATEMENT_BUNDLE_START = "mapOf("
+        private const val STATEMENT_BUNDLE_END = ")"
+        private const val STATEMENT_EVENT_PARAMETER = "%S to %L.%L"
 
-        private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
+//        private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
     }
 
     override fun parameterName(): String = PARAMETER_NAME_EVENT
@@ -64,22 +64,21 @@ internal class AnalyticsEventsSpec(
             .build()
 
     private fun eventParametersEmpty(builder: CodeBlock.Builder): CodeBlock.Builder =
-        builder.addStatement(STATEMENT_BUNDLE_EMPTY, CLASS_BUNDLE)
+        builder.addStatement(STATEMENT_BUNDLE_EMPTY)
 
     private fun eventParameters(builder: CodeBlock.Builder, holder: EventHolder): CodeBlock.Builder =
         with(builder) {
-            addStatement(STATEMENT_BUNDLE_START, CLASS_BUNDLE)
+            addStatement(STATEMENT_BUNDLE_START)
             indent()
             holder.eventParameters
                 .filter { parameterHolder -> parameterHolder.enabled }
-                .withIndex()
-                .forEach {
+                .forEachIndexed { index, eventParameterHolder ->
                     addStatement(
-                        STATEMENT_EVENT_PARAMETER,
-                        it.value.method,
-                        it.value.resolvedName,
+                        STATEMENT_EVENT_PARAMETER
+                            .plus(",".takeIf { index != holder.eventParameters.size - 1 }.orEmpty()),
+                        eventParameterHolder.resolvedName,
                         parameterName(),
-                        it.value.variableName
+                        eventParameterHolder.variableName
                     )
                 }
             unindent()

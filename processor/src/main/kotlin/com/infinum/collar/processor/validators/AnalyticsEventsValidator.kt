@@ -118,7 +118,7 @@ internal class AnalyticsEventsValidator(
         }
 
     private fun validateParametersType(holder: EventHolder): Boolean {
-        val invalidParameterTypes = holder.eventParameters.filter { it.method.isBlank() }
+        val invalidParameterTypes = holder.eventParameters.filter { it.isSupported.not() }
         return if (invalidParameterTypes.isNotEmpty()) {
             messager.showWarning(
                 "Event parameters ${invalidParameterTypes.joinToString(", ") { it.variableName }}" +

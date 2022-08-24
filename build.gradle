@@ -41,7 +41,6 @@ task clean(type: Delete) {
 }
 
 task lintAll(dependsOn: [
-        ':core:lintRelease',
         ':ui:lintRelease',
         ':ui-no-op:lintRelease'
 ]) {

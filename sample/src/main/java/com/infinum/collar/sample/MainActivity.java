@@ -3,19 +3,15 @@ package com.infinum.collar.sample;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
-
-import java.util.UUID;
 
 import com.infinum.collar.Collar;
 import com.infinum.collar.CollarScreenNames;
 import com.infinum.collar.annotations.ScreenName;
-
-import com.infinum.collar.sample.AnalyticsEvent;
-import com.infinum.collar.sample.KotlinScreenNames;
-import com.infinum.collar.sample.UserProperty;
 import com.infinum.collar.sample.databinding.ActivityMainBinding;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @ScreenName(value = KotlinScreenNames.MAIN_SCREEN_JAVA)
 public class MainActivity extends Activity {
@@ -29,87 +25,72 @@ public class MainActivity extends Activity {
         setContentView(viewBinding.getRoot());
 
         viewBinding.analyticsCollectionSwitch.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        Collar.setAnalyticsCollectionStatus(isChecked);
-                    }
-                }
+                (buttonView, isChecked) -> Collar.setAnalyticsCollectionStatus(isChecked)
 
         );
 
         viewBinding.buttonProduceEvent1.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
-                                "awesome",
-                                true,
-                                Byte.MAX_VALUE,
-                                Character.MAX_VALUE,
-                                7.11,
-                                31.5f,
-                                18,
-                                2L,
-                                Short.MAX_VALUE,
-                                buildBundle(),
-                                "awesome",
-                                true,
-                                Byte.MAX_VALUE,
-                                Character.MAX_VALUE,
-                                7.11,
-                                31.5f,
-                                18,
-                                2L,
-                                Short.MAX_VALUE,
-                                "awesome",
-                                true,
-                                Byte.MAX_VALUE,
-                                Character.MAX_VALUE,
-                                7.11,
-                                31.5f,
-                                18,
-                                2L,
-                                Short.MAX_VALUE,
-                                "awesome",
-                                true,
-                                Byte.MAX_VALUE,
-                                Character.MAX_VALUE,
-                                7.11,
-                                31.5f,
-                                18,
-                                2L,
-                                Short.MAX_VALUE,
-                                buildBundle(),
-                                "awesome",
-                                true,
-                                Byte.MAX_VALUE,
-                                Character.MAX_VALUE,
-                                7.11,
-                                31.5f,
-                                18,
-                                2L,
-                                Short.MAX_VALUE,
-                                "awesome",
-                                true,
-                                Byte.MAX_VALUE,
-                                Character.MAX_VALUE,
-                                7.11,
-                                31.5f,
-                                18,
-                                2L,
-                                Short.MAX_VALUE
-                        ));
-                    }
-                }
+                v -> CollarAnalyticsEvent.trackEvent(new AnalyticsEvent.Event1(
+                        "awesome",
+                        true,
+                        Byte.MAX_VALUE,
+                        Character.MAX_VALUE,
+                        7.11,
+                        31.5f,
+                        18,
+                        2L,
+                        Short.MAX_VALUE,
+                        buildMap(),
+                        "awesome",
+                        true,
+                        Byte.MAX_VALUE,
+                        Character.MAX_VALUE,
+                        7.11,
+                        31.5f,
+                        18,
+                        2L,
+                        Short.MAX_VALUE,
+                        "awesome",
+                        true,
+                        Byte.MAX_VALUE,
+                        Character.MAX_VALUE,
+                        7.11,
+                        31.5f,
+                        18,
+                        2L,
+                        Short.MAX_VALUE,
+                        "awesome",
+                        true,
+                        Byte.MAX_VALUE,
+                        Character.MAX_VALUE,
+                        7.11,
+                        31.5f,
+                        18,
+                        2L,
+                        Short.MAX_VALUE,
+                        buildMap(),
+                        "awesome",
+                        true,
+                        Byte.MAX_VALUE,
+                        Character.MAX_VALUE,
+                        7.11,
+                        31.5f,
+                        18,
+                        2L,
+                        Short.MAX_VALUE,
+                        "awesome",
+                        true,
+                        Byte.MAX_VALUE,
+                        Character.MAX_VALUE,
+                        7.11,
+                        31.5f,
+                        18,
+                        2L,
+                        Short.MAX_VALUE
+                ))
         );
 
-        viewBinding.buttonShowChild.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showChildScreen();
-            }
-        });
+        viewBinding.buttonShowChild.setOnClickListener(v -> showChildScreen());
 
         CollarUserProperty.trackProperty(new UserProperty.MyUUID(UUID.randomUUID().toString()));
         CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));
@@ -125,11 +106,11 @@ public class MainActivity extends Activity {
         startActivity(new Intent(this, ChildActivity.class));
     }
 
-    private Bundle buildBundle() {
-        final Bundle bundle = new Bundle();
-        bundle.putInt("4", 4);
-        bundle.putInt("5", 5);
-        bundle.putInt("6", 6);
-        return bundle;
+    private Map<String, Integer> buildMap() {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("4", 4);
+        map.put("5", 5);
+        map.put("6", 6);
+        return map;
     }
 }

@@ -4,9 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.infinum.collar.annotations.ScreenName
-// import com.infinum.collar.sample.analytics.trackingplan.TrackingPlanEvents
-// import com.infinum.collar.sample.analytics.trackingplan.TrackingPlanScreens
-// import com.infinum.collar.sample.analytics.trackingplan.trackEvent
 import com.infinum.collar.sample.databinding.ActivityMainKotlinBinding
 import com.infinum.collar.trackScreen
 
@@ -20,15 +17,15 @@ class KotlinMainActivity : Activity() {
 
         setContentView(viewBinding.root)
 
-//        trackEvent(
-//            TrackingPlanEvents.AlexaConnect("", "")
-//        )
-
         viewBinding.buttonProduceEvent3.setOnClickListener {
             trackEvent(
                 AnalyticsEvent.EventThree(
                     myString = "cool",
-                    myBoolean = false
+                    myBoolean = false,
+                    myMap = mapOf(
+                        "1" to 1,
+                        "2" to 2
+                    )
                 )
             )
         }

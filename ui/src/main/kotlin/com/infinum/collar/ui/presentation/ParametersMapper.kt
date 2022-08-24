@@ -5,34 +5,37 @@ import com.infinum.collar.ui.extensions.redact
 import timber.log.Timber
 
 @Suppress("ComplexMethod")
-internal object BundleMapper {
+internal object ParametersMapper {
 
-    fun toMap(bundle: Bundle, redactedKeywords: Set<String>): String {
+    @Suppress("NestedBlockDepth")
+    fun toRedactedString(parameterMap: Map<String, *>, redactedKeywords: Set<String>): String {
         val map = mutableMapOf<String, String>()
 
-        val keys: Set<String> = bundle.keySet()
+        val keys: Set<String> = parameterMap.keys
 
         val iterator = keys.iterator()
         while (iterator.hasNext()) {
             val key = iterator.next()
-            @Suppress("DEPRECATION")
-            val value = bundle.get(key)
+            val value = parameterMap[key]
+
             map[key] = value?.let {
-                when (value) {
-                    is String -> bundle.getString(key)
-                    is Boolean -> bundle.getBoolean(key).toString()
-                    is Byte -> bundle.getByte(key).toString()
-                    is Char -> bundle.getChar(key).toString()
-                    is Double -> bundle.getDouble(key).toString()
-                    is Float -> bundle.getFloat(key).toString()
-                    is Int -> bundle.getInt(key).toString()
-                    is Long -> bundle.getLong(key).toString()
-                    is Short -> bundle.getShort(key).toString()
-                    is CharSequence -> bundle.getCharSequence(key).toString()
-                    is Bundle -> toMap(
-                        bundle.getBundle(key) ?: Bundle.EMPTY,
-                        redactedKeywords
-                    )
+                when (it) {
+                    is String -> parameterMap[key].toString()
+                    is Boolean -> parameterMap[key].toString()
+                    is Byte -> parameterMap[key].toString()
+                    is Char -> parameterMap[key].toString()
+                    is Double -> parameterMap[key].toString()
+                    is Float -> parameterMap[key].toString()
+                    is Int -> parameterMap[key].toString()
+                    is Long -> parameterMap[key].toString()
+                    is Short -> parameterMap[key].toString()
+                    is CharSequence -> parameterMap[key].toString()
+                    is Map<*, *> -> {
+                        @Suppress("UNCHECKED_CAST")
+                        (parameterMap[key] as? Map<String, *>)?.let { childMap ->
+                            toRedactedString(childMap, redactedKeywords)
+                        }
+                    }
                     else -> {
                         Timber.w(
                             "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""
