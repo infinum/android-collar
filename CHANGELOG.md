@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.3.7
+
+_2022-08-24_
+
+* Make core module pure Kotlin.
+* Replace Bundle with Map dependency.
+* Fix Android 13 compatibility issues.
+
 ## Version 1.3.6
 
 _2022-08-09_

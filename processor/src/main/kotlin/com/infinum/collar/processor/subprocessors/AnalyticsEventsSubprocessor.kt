@@ -10,7 +10,7 @@ import javax.annotation.processing.RoundEnvironment
 internal class AnalyticsEventsSubprocessor : CommonSubprocessor() {
 
     override fun process(roundEnvironment: RoundEnvironment) {
-        val collector = AnalyticsEventsCollector(roundEnvironment)
+        val collector = AnalyticsEventsCollector(roundEnvironment, elementUtils, typeUtils)
         val validator = AnalyticsEventsValidator(processorOptions, typeUtils, messager)
 
         collector.collect().run {

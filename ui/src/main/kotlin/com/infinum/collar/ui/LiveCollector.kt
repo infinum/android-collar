@@ -13,7 +13,7 @@ import com.infinum.collar.ui.domain.Repositories
 import com.infinum.collar.ui.domain.entities.models.EntityParameters
 import com.infinum.collar.ui.domain.settings.models.SettingsParameters
 import com.infinum.collar.ui.extensions.redact
-import com.infinum.collar.ui.presentation.BundleMapper
+import com.infinum.collar.ui.presentation.ParametersMapper
 import com.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
 import com.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
 import kotlinx.coroutines.Dispatchers
@@ -101,7 +101,9 @@ public open class LiveCollector(
         CollarEntity(
             type = EntityType.EVENT,
             name = event.name.redact(configuration.redactedKeywords),
-            parameters = event.params?.let { BundleMapper.toMap(it, configuration.redactedKeywords) }
+            parameters = event.params?.let {
+                ParametersMapper.toRedactedString(it, configuration.redactedKeywords)
+            }
         ).let {
             saveEntity(it)
             if (settings.showSystemNotifications) {

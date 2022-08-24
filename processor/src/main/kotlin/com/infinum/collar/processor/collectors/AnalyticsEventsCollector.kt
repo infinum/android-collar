@@ -5,7 +5,7 @@ import com.infinum.collar.annotations.EventName
 import com.infinum.collar.annotations.EventParameterName
 import com.infinum.collar.processor.extensions.asClassName
 import com.infinum.collar.processor.extensions.fieldElements
-import com.infinum.collar.processor.extensions.resolveMethod
+import com.infinum.collar.processor.extensions.isSupported
 import com.infinum.collar.processor.extensions.toLowerSnakeCase
 import com.infinum.collar.processor.models.AnalyticsEventsHolder
 import com.infinum.collar.processor.models.EventHolder
@@ -13,9 +13,13 @@ import com.infinum.collar.processor.models.EventParameterHolder
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
+import javax.lang.model.util.Elements
+import javax.lang.model.util.Types
 
 internal class AnalyticsEventsCollector(
-    private val roundEnvironment: RoundEnvironment
+    private val roundEnvironment: RoundEnvironment,
+    private val elementUtils: Elements,
+    private val typeUtils: Types
 ) : Collector<AnalyticsEventsHolder> {
 
     companion object {
@@ -48,7 +52,7 @@ internal class AnalyticsEventsCollector(
                                     .map { fieldParameter ->
                                         EventParameterHolder(
                                             enabled = parameterEnabled(fieldParameter),
-                                            method = fieldParameter.resolveMethod(),
+                                            isSupported = fieldParameter.isSupported(typeUtils, elementUtils),
                                             resolvedName = parameterName(fieldParameter),
                                             variableName = fieldParameter.simpleName.toString()
                                         )

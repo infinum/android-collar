@@ -1,7 +1,5 @@
 package com.infinum.collar
 
-import android.os.Bundle
-
 /**
  * This is the container model for the triggered tracking analytics event.
  */
@@ -15,5 +13,5 @@ public data class Event(
     /**
      * Optional parameters of the tracked analytics event.
      */
-    val params: Bundle? = null
+    val params: Map<String, *>? = null
 )
