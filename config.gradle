@@ -1,13 +1,13 @@
 ext {
     def major = 1
     def minor = 3
-    def patch = 7
+    def patch = 8
 
     buildConfig = [
             "minSdk"    : 19,
             "compileSdk": 33,
             "targetSdk" : 33,
-            "buildTools": "33.0.0"
+            "buildTools": "33.0.1"
     ]
     releaseConfig = [
             "group"      : "com.infinum.collar",
