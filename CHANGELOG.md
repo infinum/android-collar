@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## Version 1.3.8
+
+_2023-01-31_
+
+* Update dependencies.
+* Fix Koin backwards compatibility issues.
+
 ## Version 1.3.7
 
 _2022-08-24_
