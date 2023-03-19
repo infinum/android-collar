@@ -6,8 +6,9 @@
       <module name="Collar.buildSrc" target="11" />
       <module name="Collar.buildSrc.main" target="11" />
       <module name="Collar.buildSrc.test" target="11" />
-      <module name="Collar.sample" target="11" />
-      <module name="Collar.ui" target="11" />
+      <module name="Collar.plugin" target="11" />
+      <module name="Collar.plugin.main" target="11" />
+      <module name="Collar.plugin.test" target="11" />
       <module name="Collar.ui-no-op" target="11" />
       <module name="core" target="1.8" />
       <module name="generator" target="1.8" />

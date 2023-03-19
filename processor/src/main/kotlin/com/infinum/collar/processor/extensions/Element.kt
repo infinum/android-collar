@@ -1,9 +1,6 @@
 package com.infinum.collar.processor.extensions
 
 import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.metadata.isClass
-import com.squareup.kotlinpoet.metadata.isSealed
-import com.squareup.kotlinpoet.metadata.toKmClass
 import javax.lang.model.element.Element
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.NestingKind
@@ -15,22 +12,31 @@ import javax.lang.model.type.TypeKind
 import javax.lang.model.util.ElementFilter
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
+import kotlinx.metadata.Flag
+import kotlinx.metadata.jvm.KotlinClassMetadata
 
 internal fun Element.isSealedClass(): Boolean =
-    this.getAnnotation(Metadata::class.java)
-        .toKmClass()
-        .run {
-            this.isClass && this.flags.isSealed
+    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.read(it) }) {
+        is KotlinClassMetadata.Class -> {
+            val kmClass = metadata.toKmClass()
+            Flag.Common.IS_SEALED(kmClass.flags)
         }
+        else -> false
+    }
 
 internal fun Element.constructorParameterNames(): List<String> =
-    this.getAnnotation(Metadata::class.java)
-        .toKmClass()
-        .constructors
-        .firstOrNull()
-        ?.valueParameters
-        .orEmpty()
-        .map { valueParameter -> valueParameter.name }
+    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.read(it) }) {
+        is KotlinClassMetadata.Class -> {
+            val kmClass = metadata.toKmClass()
+            kmClass.constructors
+                .filterNot { Flag.Constructor.IS_SECONDARY(it.flags) }
+                .firstOrNull()
+                ?.valueParameters
+                .orEmpty()
+                .map { valueParameter -> valueParameter.name }
+        }
+        else -> emptyList()
+    }
 
 internal fun Element.fieldElements(): List<VariableElement> =
     ElementFilter.fieldsIn(this.enclosedElements).orEmpty()

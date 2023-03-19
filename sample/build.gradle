@@ -49,6 +49,15 @@ android {
             }
         }
 
+        kotlin {
+            jvmToolchain(8)
+        }
+        java {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(8))
+            }
+        }
+
         javaCompileOptions {
             annotationProcessorOptions {
                 argument "events_count", "100"

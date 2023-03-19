@@ -43,7 +43,6 @@ compileTestKotlin {
 dependencies {
     api libs.libraryannotations
     implementation libs.kotlin.core
-    compileOnly libs.annotations
 
     testImplementation "junit:junit:4.13.2"
     testImplementation 'org.mockito:mockito-core:4.5.1'

@@ -1,7 +1,7 @@
 plugins {
     id "com.android.library"
     id "kotlin-android"
-    id "com.google.devtools.ksp" version "1.7.21-1.0.8"
+    id "com.google.devtools.ksp" version "1.8.10-1.0.9"
 }
 
 android {
@@ -45,15 +45,19 @@ android {
 
     resourcePrefix 'collar_'
 
+    kotlin {
+        jvmToolchain(8)
+    }
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
+
     lintOptions {
         disable 'RtlEnabled', 'VectorPath', 'IconLocation'
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += [
                 '-Xjvm-default=all',
                 '-Xexplicit-api=strict',

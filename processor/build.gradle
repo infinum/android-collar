@@ -5,33 +5,27 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(8)
     explicitApi()
 }
-
 java {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += [
-                '-Xjvm-default=all',
-                '-opt-in=com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview'
+                '-Xjvm-default=all'
         ]
-    }
-}
-compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
 dependencies {
     api libs.libraryannotations
     implementation libs.kotlin.core
-    implementation libs.poetmetadata
+    implementation libs.metadata
     implementation libs.poet
     implementation libs.kotlin.reflect
 
