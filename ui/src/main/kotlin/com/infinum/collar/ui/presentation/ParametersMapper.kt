@@ -1,8 +1,8 @@
 package com.infinum.collar.ui.presentation
 
 import android.os.Bundle
+import android.util.Log
 import com.infinum.collar.ui.extensions.redact
-import timber.log.Timber
 
 @Suppress("ComplexMethod")
 internal object ParametersMapper {
@@ -37,7 +37,8 @@ internal object ParametersMapper {
                         }
                     }
                     else -> {
-                        Timber.w(
+                        Log.w(
+                            "Collar",
                             "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""
                         )
                         ""
@@ -63,7 +64,8 @@ internal object ParametersMapper {
                 is Short -> putShort(key, value)
                 is CharSequence -> putCharSequence(key, value)
                 is Bundle -> putBundle(key, value)
-                else -> Timber.w(
+                else -> Log.w(
+                    "Collar",
                     "Illegal value type ${value.javaClass.canonicalName} for key \"$key\""
                 )
             }

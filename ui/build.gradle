@@ -43,6 +43,7 @@ android {
         }
     }
 
+    namespace "com.infinum.collar.ui"
     resourcePrefix 'collar_'
 
     kotlin {
@@ -99,7 +100,6 @@ dependencies {
     ksp libs.androidx.room.compiler
     implementation libs.material
     implementation libs.koin
-    implementation libs.timber
 
     testImplementation "junit:junit:4.13"
     testImplementation 'org.mockito:mockito-core:3.5.7'

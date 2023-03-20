@@ -17,7 +17,7 @@ import com.infinum.collar.ui.presentation.ParametersMapper
 import com.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
 import com.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -46,7 +46,7 @@ public open class LiveCollector(
     init {
         saveSettings()
 
-        GlobalScope.launch {
+        MainScope().launch {
             (koin.get(Repositories.Settings::class) as Repositories.Settings)
                 .load(SettingsParameters(entity = settings))
                 .flowOn(Dispatchers.IO)
@@ -136,7 +136,7 @@ public open class LiveCollector(
         }
 
     private fun saveEntity(entity: CollarEntity) =
-        GlobalScope.launch {
+        MainScope().launch {
             (koin.get(Repositories.Entity::class) as Repositories.Entity)
                 .save(
                     EntityParameters(entity = entity)
@@ -144,7 +144,7 @@ public open class LiveCollector(
         }
 
     private fun saveSettings() =
-        GlobalScope.launch {
+        MainScope().launch {
             (koin.get(Repositories.Settings::class) as Repositories.Settings)
                 .save(
                     SettingsParameters(entity = settings)

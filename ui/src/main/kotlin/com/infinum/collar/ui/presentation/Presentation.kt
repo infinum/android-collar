@@ -3,14 +3,12 @@ package com.infinum.collar.ui.presentation
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import com.infinum.collar.ui.BuildConfig
 import com.infinum.collar.ui.domain.Domain
 import com.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
 import com.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import timber.log.Timber
 
 @SuppressLint("StaticFieldLeak")
 internal object Presentation {
@@ -37,12 +35,6 @@ internal object Presentation {
         const val KEY_REQUEST_FILTERS_APPLY = "KEY_REQUEST_FILTERS_APPLY"
         const val KEY_REQUEST_SETTINGS_APPLY = "KEY_REQUEST_SETTINGS_APPLY"
         const val KEY_REQUEST_CLEAR = "KEY_REQUEST_CLEAR"
-    }
-
-    init {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
     }
 
     private lateinit var context: Context
