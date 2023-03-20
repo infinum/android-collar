@@ -12,13 +12,13 @@ import com.infinum.collar.ui.extensions.presentationItemFormat
 import com.infinum.collar.ui.presentation.Presentation
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
 import com.infinum.collar.ui.presentation.notifications.inapp.snackbar.CollarSnackbar
+import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityLifecycleCallbacks
 import java.util.Date
 
 internal class InAppNotificationFactory(
-    context: Context
+    context: Context,
+    private val callbacks: CollarActivityLifecycleCallbacks
 ) : NotificationFactory {
-
-    private val callbacks = CollarActivityLifecycleCallbacks()
 
     init {
         (context.applicationContext as Application).registerActivityLifecycleCallbacks(callbacks)

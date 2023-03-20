@@ -13,6 +13,8 @@ internal interface Spec {
 
     fun jvmName(): AnnotationSpec
 
+    fun suppress(): AnnotationSpec
+
     fun parameterName(): String
 
     fun extensions(): List<FunSpec>

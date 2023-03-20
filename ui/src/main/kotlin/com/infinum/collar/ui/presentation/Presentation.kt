@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.infinum.collar.ui.domain.Domain
 import com.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
+import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityLifecycleCallbacks
 import com.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -71,8 +72,9 @@ internal object Presentation {
         )
 
     private fun notifications() = module {
-        single { SystemNotificationFactory(get()) }
-        single { InAppNotificationFactory(get()) }
+        single { CollarActivityLifecycleCallbacks() }
+        single { SystemNotificationFactory(get(), get()) }
+        single { InAppNotificationFactory(get(), get()) }
     }
 
     private fun viewModels() = module {

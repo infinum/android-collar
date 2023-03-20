@@ -19,6 +19,8 @@ plugins {
 apply plugin: "com.infinum.collar.plugin"
 
 android {
+    namespace "com.infinum.collar.sample"
+
     compileSdkVersion buildConfig.compileSdk
     buildToolsVersion buildConfig.buildTools
 

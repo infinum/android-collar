@@ -1,13 +1,13 @@
 package com.infinum.collar.ui.presentation.notifications.system
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.util.LongSparseArray
 import androidx.core.app.ActivityCompat
@@ -16,11 +16,15 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
+import com.infinum.collar.ui.extensions.isPermissionGranted
 import com.infinum.collar.ui.presentation.CollarActivity
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
-import com.infinum.collar.ui.presentation.notifications.inapp.CollarActivityLifecycleCallbacks
+import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityLifecycleCallbacks
 
-internal class SystemNotificationFactory(private val context: Context) : NotificationFactory {
+internal class SystemNotificationFactory(
+    private val context: Context,
+    private val callbacks: CollarActivityLifecycleCallbacks
+) : NotificationFactory {
 
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"
@@ -28,8 +32,6 @@ internal class SystemNotificationFactory(private val context: Context) : Notific
         private const val INTERNAL_BUFFER_SIZE = 10
         private const val PERMISSION_REQUEST_CODE = 11
     }
-
-    private val callbacks = CollarActivityLifecycleCallbacks()
 
     private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
     private val buffer = LongSparseArray<CollarEntity>()
@@ -74,6 +76,7 @@ internal class SystemNotificationFactory(private val context: Context) : Notific
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun buildNotification() {
         val builder = NotificationCompat.Builder(context, NOTIFICATIONS_CHANNEL_ID)
             .setContentIntent(
@@ -115,7 +118,7 @@ internal class SystemNotificationFactory(private val context: Context) : Notific
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            if (context.isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
             } else {
                 callbacks.currentActivity?.let {

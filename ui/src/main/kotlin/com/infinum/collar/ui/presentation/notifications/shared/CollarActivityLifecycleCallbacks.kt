@@ -1,4 +1,4 @@
-package com.infinum.collar.ui.presentation.notifications.inapp
+package com.infinum.collar.ui.presentation.notifications.shared
 
 import android.app.Activity
 import android.app.Application

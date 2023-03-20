@@ -24,8 +24,6 @@ internal class AnalyticsEventsSpec(
         private const val STATEMENT_BUNDLE_START = "mapOf("
         private const val STATEMENT_BUNDLE_END = ")"
         private const val STATEMENT_EVENT_PARAMETER = "%S to %L.%L"
-
-//        private val CLASS_BUNDLE = ClassName("android.os", "Bundle")
     }
 
     override fun parameterName(): String = PARAMETER_NAME_EVENT

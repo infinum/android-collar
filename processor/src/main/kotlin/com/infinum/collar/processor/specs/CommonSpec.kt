@@ -22,11 +22,14 @@ internal abstract class CommonSpec(
         internal const val CONTROL_FLOW_WHEN = "when (%L)"
 
         private const val COMMENT = "This is a Collar generated extension file. Do not edit manually."
+
+        private val SUPPRESION = setOf("DEPRECATION", "REDUNDANT_ELSE_IN_WHEN")
     }
 
     override fun file(): FileSpec =
         FileSpec.builder(packageName, simpleName)
             .addAnnotation(jvmName())
+            .addAnnotation(suppress())
             .addFileComment(comment().toString())
             .apply { extensions().map { addFunction(it) } }
             .build()
@@ -34,6 +37,11 @@ internal abstract class CommonSpec(
     override fun jvmName(): AnnotationSpec =
         AnnotationSpec.builder(JvmName::class)
             .addMember(CodeBlock.of("%S", "${CLASS_COLLAR.simpleName}$simpleName"))
+            .build()
+
+    override fun suppress(): AnnotationSpec =
+        AnnotationSpec.builder(Suppress::class)
+            .addMember(SUPPRESION.joinToString(", ") { "%S" }, *SUPPRESION.toTypedArray())
             .build()
 
     override fun comment(): CodeBlock =
