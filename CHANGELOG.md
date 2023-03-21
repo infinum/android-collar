@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## Version 1.3.9
+
+_2023-03-21_
+
+* Update Kotlin to 1.8.10.
+* Update dependencies.
+* Implement Tiramisu post notification permission.
+
 ## Version 1.3.8
 
 _2023-01-31_
