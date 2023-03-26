@@ -8,10 +8,7 @@ import com.infinum.collar.ui.domain.shared.base.BaseRepository
 
 internal interface Repositories {
 
-    interface Entity : BaseRepository<EntityParameters, List<CollarEntity>> {
-
-        suspend fun clear()
-    }
+    interface Entity : BaseRepository<EntityParameters, List<CollarEntity>>
 
     interface Settings : BaseRepository<SettingsParameters, SettingsEntity>
 }

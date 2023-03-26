@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 internal interface SettingsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(entity: SettingsEntity)
+    suspend fun save(entity: SettingsEntity): Long
 
     @Query("SELECT * FROM settings WHERE id=1 LIMIT 1")
     fun load(): Flow<SettingsEntity>

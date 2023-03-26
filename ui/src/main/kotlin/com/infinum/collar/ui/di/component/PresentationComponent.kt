@@ -21,7 +21,7 @@ internal abstract class PresentationComponent(
 
     fun launchIntent(): Intent =
         Intent(context, CollarActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
 
     fun show() = context.startActivity(launchIntent())

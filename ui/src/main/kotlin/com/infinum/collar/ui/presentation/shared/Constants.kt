@@ -6,6 +6,7 @@ internal object Constants {
 
     const val MIME_TYPE_TEXT = "text/plain"
 
+    const val KEY_ENTITY_ID = "KEY_ENTITY_ID"
     const val KEY_ENTITY_TYPE = "KEY_ENTITY_TYPE"
     const val KEY_ENTITY_TIMESTAMP = "KEY_ENTITY_TIMESTAMP"
     const val KEY_ENTITY_NAME = "KEY_ENTITY_NAME"

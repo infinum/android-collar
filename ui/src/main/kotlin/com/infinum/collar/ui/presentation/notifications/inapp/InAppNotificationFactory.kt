@@ -3,12 +3,14 @@ package com.infinum.collar.ui.presentation.notifications.inapp
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.app.ShareCompat
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.extensions.presentationItemFormat
+import com.infinum.collar.ui.presentation.CollarActivity
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
 import com.infinum.collar.ui.presentation.notifications.inapp.snackbar.CollarSnackbar
 import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityCallbacks
@@ -60,16 +62,15 @@ internal class InAppNotificationFactory(
         entity: CollarEntity
     ) {
         CollarSnackbar.make(
-            activity?.findViewById(android.R.id.content),
-            backgroundTint,
-            icon,
-            entity.name,
-            entity.parameters,
-            Date(entity.timestamp).presentationItemFormat
-        ) {
-            activity?.let {
-                it.startActivity(
-                    ShareCompat.IntentBuilder(it)
+            parentLayout = activity?.findViewById(android.R.id.content),
+            backgroundTint = backgroundTint,
+            icon = icon,
+            title = entity.name,
+            message = entity.parameters,
+            time = Date(entity.timestamp).presentationItemFormat,
+            shareListener = {
+                activity?.startActivity(
+                    ShareCompat.IntentBuilder(it.context)
                         .setType(Constants.MIME_TYPE_TEXT)
                         .setText(
                             listOfNotNull(
@@ -79,7 +80,17 @@ internal class InAppNotificationFactory(
                         )
                         .createChooserIntent()
                 )
+            },
+            openListener = {
+                activity?.startActivity(
+                    Intent(it.context, CollarActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        entity.id?.let { entityId ->
+                            putExtra("com.infinum.collar.${Constants.KEY_ENTITY_ID}", entityId)
+                        }
+                    }
+                )
             }
-        }.show()
+        ).show()
     }
 }

@@ -19,7 +19,7 @@ internal class SettingsRepository(
         }
     }
 
-    override suspend fun save(input: SettingsParameters) =
+    override suspend fun save(input: SettingsParameters): Long =
         dao.save(input.entity)
 
     override suspend fun load(input: SettingsParameters): Flow<SettingsEntity> =

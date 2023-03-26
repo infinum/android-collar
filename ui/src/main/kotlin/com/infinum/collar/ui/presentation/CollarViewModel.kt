@@ -89,6 +89,20 @@ internal class CollarViewModel(
                 }
         }
 
+    fun entity(id: Long) {
+        launch {
+            io {
+                entityRepository.loadById(
+                    EntityParameters(entityId = id)
+                )
+            }
+                .takeIf { it.isNotEmpty() }
+                ?.let {
+                    emitEvent(CollarEvent.ShowEntity(entity = it.first()))
+                }
+        }
+    }
+
     fun settings() =
         launch {
             settingsRepository.load(SettingsParameters())

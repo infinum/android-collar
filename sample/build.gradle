@@ -94,7 +94,8 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.fragment
     implementation libs.material
-    debugImplementation libs.libraryui
+//    debugImplementation libs.libraryui
+    debugImplementation project(":ui")
     releaseImplementation libs.libraryuinoop
 }
 

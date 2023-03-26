@@ -13,7 +13,7 @@ internal class EntityRepository(
     private val dao: EntitiesDao
 ) : Repositories.Entity {
 
-    override suspend fun save(input: EntityParameters) =
+    override suspend fun save(input: EntityParameters): Long =
         input.entity?.let { dao.save(it) }
             ?: error("Cannot save null entity")
 
@@ -31,6 +31,9 @@ internal class EntityRepository(
                 else -> dao.load()
             }
         }
+
+    override suspend fun loadById(input: EntityParameters): List<CollarEntity> =
+        listOfNotNull(input.entityId?.let { dao.load(it) })
 
     override suspend fun clear() =
         dao.delete()

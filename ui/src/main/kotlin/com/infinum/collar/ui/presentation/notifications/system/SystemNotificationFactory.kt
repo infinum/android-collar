@@ -10,16 +10,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.LongSparseArray
+import android.view.View
+import android.widget.RemoteViews
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
+import com.infinum.collar.ui.data.models.local.EntityType
 import com.infinum.collar.ui.extensions.isPermissionGranted
+import com.infinum.collar.ui.extensions.presentationItemFormat
 import com.infinum.collar.ui.presentation.CollarActivity
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
 import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityCallbacks
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_ID
+import java.util.Date
 import me.tatarka.inject.annotations.Inject
 
 @Inject
@@ -31,7 +37,7 @@ internal class SystemNotificationFactory(
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"
         private const val NOTIFICATION_ID = 4578
-        private const val INTERNAL_BUFFER_SIZE = 10
+        private const val INTERNAL_BUFFER_SIZE = 5
         private const val PERMISSION_REQUEST_CODE = 11
     }
 
@@ -80,25 +86,16 @@ internal class SystemNotificationFactory(
 
     @SuppressLint("MissingPermission")
     private fun buildNotification() {
+        val notificationLayout = RemoteViews(context.packageName, R.layout.collar_notification)
+        val notificationLayoutExpanded = RemoteViews(context.packageName, R.layout.collar_notification_expanded)
+
         val builder = NotificationCompat.Builder(context, NOTIFICATIONS_CHANNEL_ID)
-            .setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    NOTIFICATION_ID,
-                    Intent(context, CollarActivity::class.java),
-                    when {
-                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
-                            PendingIntent.FLAG_MUTABLE
-                        else -> PendingIntent.FLAG_UPDATE_CURRENT
-                    }
-                )
-            )
             .setLocalOnly(true)
             .setSmallIcon(R.drawable.collar_ic_notification)
             .setColor(ContextCompat.getColor(context, R.color.collar_color_primary))
             .setContentTitle(context.getString(R.string.collar_name))
             .setAutoCancel(true)
-        val inboxStyle = NotificationCompat.InboxStyle()
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
 
         synchronized(buffer) {
             var count = 0
@@ -107,12 +104,20 @@ internal class SystemNotificationFactory(
                 if ((bufferedEntity != null) && count < INTERNAL_BUFFER_SIZE) {
                     if (count == 0) {
                         builder.setContentText(bufferedEntity.name)
+                        buildRemoteView(notificationLayout, bufferedEntity)
                     }
-                    inboxStyle.addLine(bufferedEntity.name)
+                    val itemView = RemoteViews(context.packageName, R.layout.collar_notification)
+                    println("_BOJAN_ building $i")
+                    buildRemoteView(itemView, bufferedEntity)
+                    notificationLayoutExpanded.addView(
+                        R.id.containerView,
+                        itemView
+                    )
                 }
                 count++
             }
-            builder.setStyle(inboxStyle)
+            builder.setCustomContentView(notificationLayout)
+            builder.setCustomBigContentView(notificationLayoutExpanded)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 builder.setSubText(idsSet.size.toString())
             } else {
@@ -135,4 +140,43 @@ internal class SystemNotificationFactory(
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         }
     }
+
+    private fun buildRemoteView(remoteViews: RemoteViews, entity: CollarEntity) {
+        when (entity.type) {
+            EntityType.SCREEN -> R.drawable.collar_ic_screen_notification
+            EntityType.EVENT -> R.drawable.collar_ic_event_notification
+            EntityType.PROPERTY -> R.drawable.collar_ic_property_notification
+            else -> null
+        }?.let { remoteViews.setImageViewResource(R.id.iconView, it) }
+        remoteViews.setTextViewText(R.id.nameView, entity.name)
+        entity.parameters?.let {
+            remoteViews.setTextViewText(R.id.valueView, it)
+            remoteViews.setViewVisibility(R.id.valueView, View.VISIBLE)
+        } ?: remoteViews.setViewVisibility(R.id.valueView, View.GONE)
+        remoteViews.setTextViewText(
+            R.id.timeView,
+            Date(entity.timestamp).presentationItemFormat
+        )
+        remoteViews.setOnClickPendingIntent(
+            R.id.containerView,
+            buildPendingIntent(entity)
+        )
+    }
+
+    private fun buildPendingIntent(entity: CollarEntity): PendingIntent =
+        PendingIntent.getActivity(
+            context,
+            NOTIFICATION_ID + (entity.id ?: 0L).toInt(),
+            Intent(context, CollarActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                entity.id?.let {
+                    putExtra("com.infinum.collar.$KEY_ENTITY_ID", it)
+                }
+            },
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                else -> PendingIntent.FLAG_UPDATE_CURRENT
+            }
+        )
 }

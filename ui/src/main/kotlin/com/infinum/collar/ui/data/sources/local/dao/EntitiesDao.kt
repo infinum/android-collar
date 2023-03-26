@@ -14,10 +14,13 @@ import kotlinx.coroutines.flow.Flow
 internal interface EntitiesDao {
 
     @Insert
-    suspend fun save(entity: CollarEntity)
+    suspend fun save(entity: CollarEntity): Long
 
     @Query("SELECT * FROM entities ORDER BY timestamp DESC")
     fun load(): Flow<List<CollarEntity>>
+
+    @Query("SELECT * FROM entities WHERE id = :id ORDER BY timestamp DESC")
+    fun load(id: Long): CollarEntity
 
     @Query("SELECT * FROM entities WHERE name LIKE '%' || :query || '%' OR value LIKE '%' || :query || '%' OR parameters LIKE '%' || :query || '%' ORDER BY timestamp DESC")
     fun load(query: String): Flow<List<CollarEntity>>

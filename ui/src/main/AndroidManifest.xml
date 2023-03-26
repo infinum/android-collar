@@ -10,6 +10,7 @@
             android:exported="true"
             android:label="@string/collar_name"
             android:taskAffinity="com.infinum.collar"
+            android:launchMode="singleTop"
             android:theme="@style/Collar.Theme">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

@@ -21,6 +21,7 @@ import com.infinum.collar.ui.presentation.decorations.DotDecoration
 import com.infinum.collar.ui.presentation.dialogs.CollarDetailDialog
 import com.infinum.collar.ui.presentation.dialogs.CollarFilterDialog
 import com.infinum.collar.ui.presentation.dialogs.CollarSettingsDialog
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_ID
 import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_EVENTS
 import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_PROPERTIES
 import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_SCREENS
@@ -111,6 +112,14 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
 
         viewModel.entities()
         viewModel.settings()
+
+        intent?.extras?.let { extractEntityId(it) }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        intent?.extras?.let { extractEntityId(it) }
+
+        super.onNewIntent(intent)
     }
 
     override fun onState(state: CollarState) {
@@ -134,6 +143,7 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
                 event.analyticsCollectionEnabled,
                 event.analyticsCollectionTimestamp
             )
+            is CollarEvent.ShowEntity -> showDetail(event.entity)
             is CollarEvent.Clear -> entryAdapter.submitList(null)
         }
     }
@@ -152,6 +162,12 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
             findItem(R.id.filter).isVisible = false
             findItem(R.id.settings).isVisible = false
         }
+
+    private fun extractEntityId(extras: Bundle) {
+        extras.getLong("com.infinum.collar.$KEY_ENTITY_ID", -1L)
+            .takeIf { it != -1L }
+            ?.let { viewModel.entity(it) }
+    }
 
     private fun showDetail(entity: CollarEntity) {
         CollarDetailDialog.newInstance(entity).show(supportFragmentManager, null)

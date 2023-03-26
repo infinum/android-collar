@@ -12,6 +12,7 @@
     <string name="collar_value">Value</string>
     <string name="collar_parameters">Parameters</string>
     <string name="collar_share">Share</string>
+    <string name="collar_open">Open</string>
     <string name="collar_apply">Apply</string>
     <string name="collar_settings">Settings</string>
     <string name="collar_notifications_system">System notifications</string>
