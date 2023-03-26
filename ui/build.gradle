@@ -99,7 +99,8 @@ dependencies {
     implementation libs.bundles.androidx
     ksp libs.androidx.room.compiler
     implementation libs.material
-    implementation libs.koin
+    ksp libs.inject.compiler
+    implementation libs.inject.runtime
 
     testImplementation "junit:junit:4.13"
     testImplementation 'org.mockito:mockito-core:3.5.7'
@@ -112,6 +113,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
 //    testImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 //    testImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
+}
+
+ksp {
+    arg("me.tatarka.inject.dumpGraph", "false")
 }
 
 apply from: "publish.gradle"

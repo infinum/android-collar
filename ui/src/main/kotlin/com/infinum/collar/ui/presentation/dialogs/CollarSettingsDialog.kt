@@ -6,10 +6,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.databinding.CollarDialogSettingsBinding
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_CLEAR
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_SETTINGS_APPLY
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_IN_APP_NOTIFICATIONS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_SYSTEM_NOTIFICATIONS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_CLEAR
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_SETTINGS_APPLY
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_SETTINGS_IN_APP_NOTIFICATIONS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_SETTINGS_SYSTEM_NOTIFICATIONS
 import com.infinum.collar.ui.presentation.shared.base.BaseBottomSheetDialogFragment
 import com.infinum.collar.ui.presentation.shared.base.BaseViewModel
 import com.infinum.collar.ui.presentation.shared.delegates.viewBinding

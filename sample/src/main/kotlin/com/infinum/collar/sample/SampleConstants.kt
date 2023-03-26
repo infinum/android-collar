@@ -2,7 +2,7 @@ package com.infinum.collar.sample
 
 object SampleConstants {
 
-    const val analyticsCollectionEnabled: Boolean = false
+    const val analyticsCollectionEnabled: Boolean = true
 
     const val showSystemNotifications: Boolean = true
 

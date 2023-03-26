@@ -11,12 +11,12 @@ import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.data.models.local.EntityType
 import com.infinum.collar.ui.databinding.CollarDialogDetailBinding
 import com.infinum.collar.ui.extensions.presentationFormat
-import com.infinum.collar.ui.presentation.Presentation
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_NAME
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_PARAMETERS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_TIMESTAMP
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_TYPE
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_ENTITY_VALUE
+import com.infinum.collar.ui.presentation.shared.Constants
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_NAME
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_PARAMETERS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_TIMESTAMP
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_TYPE
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_VALUE
 import com.infinum.collar.ui.presentation.shared.base.BaseBottomSheetDialogFragment
 import com.infinum.collar.ui.presentation.shared.base.BaseViewModel
 import com.infinum.collar.ui.presentation.shared.delegates.viewBinding
@@ -148,7 +148,7 @@ internal class CollarDetailDialog : BaseBottomSheetDialogFragment<Any, Any>(R.la
     private fun share() {
         ShareCompat.IntentBuilder(requireContext())
             .setChooserTitle(R.string.collar_name)
-            .setType(Presentation.Constants.MIME_TYPE_TEXT)
+            .setType(Constants.MIME_TYPE_TEXT)
             .setText(
                 listOfNotNull(
                     timestamp?.let { "time: ${Date(it).presentationFormat}" },

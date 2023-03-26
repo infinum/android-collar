@@ -3,6 +3,12 @@ Change Log
 
 ## Version 1.3.9
 
+_2023-03-217_
+
+* Replace Koin with Kotlin Inject.
+
+## Version 1.3.9
+
 _2023-03-21_
 
 * Update Kotlin to 1.8.10.
