@@ -9,15 +9,17 @@ import androidx.core.app.ShareCompat
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.extensions.presentationItemFormat
-import com.infinum.collar.ui.presentation.Presentation
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
 import com.infinum.collar.ui.presentation.notifications.inapp.snackbar.CollarSnackbar
-import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityLifecycleCallbacks
+import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityCallbacks
+import com.infinum.collar.ui.presentation.shared.Constants
 import java.util.Date
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 internal class InAppNotificationFactory(
     context: Context,
-    private val callbacks: CollarActivityLifecycleCallbacks
+    private val callbacks: CollarActivityCallbacks
 ) : NotificationFactory {
 
     init {
@@ -26,7 +28,7 @@ internal class InAppNotificationFactory(
 
     override fun showScreen(entity: CollarEntity) {
         buildNotification(
-            callbacks.currentActivity,
+            callbacks.current(),
             R.color.collar_color_screen,
             R.drawable.collar_ic_screen_white,
             entity
@@ -35,7 +37,7 @@ internal class InAppNotificationFactory(
 
     override fun showEvent(entity: CollarEntity) {
         buildNotification(
-            callbacks.currentActivity,
+            callbacks.current(),
             R.color.collar_color_event,
             R.drawable.collar_ic_event_white,
             entity
@@ -44,7 +46,7 @@ internal class InAppNotificationFactory(
 
     override fun showProperty(entity: CollarEntity) {
         buildNotification(
-            callbacks.currentActivity,
+            callbacks.current(),
             R.color.collar_color_property,
             R.drawable.collar_ic_property_white,
             entity
@@ -68,7 +70,7 @@ internal class InAppNotificationFactory(
             activity?.let {
                 it.startActivity(
                     ShareCompat.IntentBuilder(it)
-                        .setType(Presentation.Constants.MIME_TYPE_TEXT)
+                        .setType(Constants.MIME_TYPE_TEXT)
                         .setText(
                             listOfNotNull(
                                 entity.name,

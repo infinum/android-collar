@@ -15,24 +15,24 @@ import com.infinum.collar.ui.extensions.addBadge
 import com.infinum.collar.ui.extensions.presentationFormat
 import com.infinum.collar.ui.extensions.searchView
 import com.infinum.collar.ui.extensions.setup
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_EVENTS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_PROPERTIES
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_SCREENS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_CLEAR
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_FILTERS_APPLY
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_SETTINGS_APPLY
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_IN_APP_NOTIFICATIONS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_SYSTEM_NOTIFICATIONS
+import com.infinum.collar.ui.extensions.viewModels
 import com.infinum.collar.ui.presentation.decorations.Decoration
 import com.infinum.collar.ui.presentation.decorations.DotDecoration
 import com.infinum.collar.ui.presentation.dialogs.CollarDetailDialog
 import com.infinum.collar.ui.presentation.dialogs.CollarFilterDialog
 import com.infinum.collar.ui.presentation.dialogs.CollarSettingsDialog
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_EVENTS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_PROPERTIES
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_SCREENS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_CLEAR
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_FILTERS_APPLY
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_SETTINGS_APPLY
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_SETTINGS_IN_APP_NOTIFICATIONS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_SETTINGS_SYSTEM_NOTIFICATIONS
 import com.infinum.collar.ui.presentation.shared.base.BaseActivity
 import com.infinum.collar.ui.presentation.shared.delegates.viewBinding
 import com.infinum.collar.ui.presentation.shared.edgefactories.bounce.BounceEdgeEffectFactory
 import java.util.Date
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolbar.OnMenuItemClickListener {
 
@@ -41,7 +41,7 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
         onClick = this@CollarActivity::showDetail
     )
 
-    override val viewModel: CollarViewModel by viewModel()
+    override val viewModel: CollarViewModel by viewModels()
 
     override val binding by viewBinding(CollarActivityCollarBinding::inflate)
 

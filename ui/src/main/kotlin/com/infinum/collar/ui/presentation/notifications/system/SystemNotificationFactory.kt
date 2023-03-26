@@ -19,11 +19,13 @@ import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.extensions.isPermissionGranted
 import com.infinum.collar.ui.presentation.CollarActivity
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
-import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityLifecycleCallbacks
+import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityCallbacks
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 internal class SystemNotificationFactory(
     private val context: Context,
-    private val callbacks: CollarActivityLifecycleCallbacks
+    private val callbacks: CollarActivityCallbacks
 ) : NotificationFactory {
 
     companion object {
@@ -121,7 +123,7 @@ internal class SystemNotificationFactory(
             if (context.isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
             } else {
-                callbacks.currentActivity?.let {
+                callbacks.current()?.let {
                     ActivityCompat.requestPermissions(
                         it,
                         arrayOf(Manifest.permission.POST_NOTIFICATIONS),

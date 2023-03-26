@@ -6,7 +6,9 @@ import com.infinum.collar.ui.domain.Repositories
 import com.infinum.collar.ui.domain.entities.models.EntityParameters
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 internal class EntityRepository(
     private val dao: EntitiesDao
 ) : Repositories.Entity {

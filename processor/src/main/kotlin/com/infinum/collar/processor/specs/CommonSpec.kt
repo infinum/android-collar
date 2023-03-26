@@ -39,6 +39,7 @@ internal abstract class CommonSpec(
             .addMember(CodeBlock.of("%S", "${CLASS_COLLAR.simpleName}$simpleName"))
             .build()
 
+    @Suppress("SpreadOperator")
     override fun suppress(): AnnotationSpec =
         AnnotationSpec.builder(Suppress::class)
             .addMember(SUPPRESION.joinToString(", ") { "%S" }, *SUPPRESION.toTypedArray())

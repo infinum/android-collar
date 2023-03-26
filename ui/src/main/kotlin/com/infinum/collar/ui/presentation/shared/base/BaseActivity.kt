@@ -4,10 +4,9 @@ import android.os.Bundle
 import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
-import com.infinum.collar.ui.di.LibraryKoinComponent
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal abstract class BaseActivity<State, Event> : AppCompatActivity(), BaseView<State, Event>, LibraryKoinComponent {
+internal abstract class BaseActivity<State, Event> : AppCompatActivity(), BaseView<State, Event> {
 
     abstract val binding: ViewBinding
 

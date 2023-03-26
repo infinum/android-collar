@@ -13,12 +13,11 @@ import androidx.annotation.RestrictTo
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.infinum.collar.ui.R
-import com.infinum.collar.ui.di.LibraryKoinComponent
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 internal abstract class BaseBottomSheetDialogFragment<State, Event>(
     @LayoutRes private val contentLayoutId: Int
-) : BottomSheetDialogFragment(), BaseView<State, Event>, LibraryKoinComponent {
+) : BottomSheetDialogFragment(), BaseView<State, Event> {
 
     abstract val binding: ViewBinding
 
