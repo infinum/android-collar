@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+## Version 1.4.0
+
+_2023-03-27_
+
+* Replace Koin with Kotlin Inject.
+* Refactor notifications.
+
+## Version 1.3.9
+
+_2023-03-217_
+
+* Replace Koin with Kotlin Inject.
+
 ## Version 1.3.9
 
 _2023-03-21_

@@ -31,7 +31,8 @@ internal class CollarSnackbar(
             title: String?,
             message: String?,
             time: String?,
-            listener: View.OnClickListener? = null
+            shareListener: View.OnClickListener? = null,
+            openListener: View.OnClickListener? = null
         ): CollarSnackbar =
             parentLayout?.let {
                 CollarSnackbarView(it.context)
@@ -41,7 +42,8 @@ internal class CollarSnackbar(
                         setTitle(title)
                         setValue(message)
                         setTime(time)
-                        setAction(listener)
+                        setShareAction(shareListener)
+                        setOpenAction(openListener)
                     }.let { collarSnackbarView ->
                         CoordinatorLayout(it.context).let { coordinatorLayout ->
                             it.addView(coordinatorLayout)

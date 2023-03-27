@@ -2,16 +2,13 @@ package com.infinum.collar.ui
 
 import android.content.Context
 import androidx.startup.Initializer
-import com.infinum.collar.ui.di.LibraryKoin
-import com.infinum.collar.ui.presentation.Presentation
+import com.infinum.collar.ui.di.LibraryComponents
 
 internal class CollarInitializer : Initializer<Class<CollarInitializer>> {
 
     override fun create(context: Context): Class<CollarInitializer> {
 
-        LibraryKoin.init(context)
-
-        Presentation.init(context)
+        LibraryComponents.initialize(context)
 
         return CollarInitializer::class.java
     }

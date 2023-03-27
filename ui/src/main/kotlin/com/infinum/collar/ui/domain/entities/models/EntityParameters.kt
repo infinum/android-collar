@@ -7,5 +7,6 @@ import com.infinum.collar.ui.domain.shared.base.BaseParameters
 internal data class EntityParameters(
     val query: String? = null,
     val filters: List<EntityType> = listOf(),
-    val entity: CollarEntity? = null
+    val entity: CollarEntity? = null,
+    val entityId: Long? = null
 ) : BaseParameters

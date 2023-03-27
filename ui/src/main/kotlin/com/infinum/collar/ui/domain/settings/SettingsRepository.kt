@@ -6,7 +6,9 @@ import com.infinum.collar.ui.domain.Repositories
 import com.infinum.collar.ui.domain.settings.models.SettingsParameters
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 internal class SettingsRepository(
     private val dao: SettingsDao
 ) : Repositories.Settings {
@@ -17,7 +19,7 @@ internal class SettingsRepository(
         }
     }
 
-    override suspend fun save(input: SettingsParameters) =
+    override suspend fun save(input: SettingsParameters): Long =
         dao.save(input.entity)
 
     override suspend fun load(input: SettingsParameters): Flow<SettingsEntity> =

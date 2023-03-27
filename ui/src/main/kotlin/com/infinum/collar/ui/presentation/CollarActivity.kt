@@ -15,24 +15,25 @@ import com.infinum.collar.ui.extensions.addBadge
 import com.infinum.collar.ui.extensions.presentationFormat
 import com.infinum.collar.ui.extensions.searchView
 import com.infinum.collar.ui.extensions.setup
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_EVENTS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_PROPERTIES
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_SCREENS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_CLEAR
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_FILTERS_APPLY
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_SETTINGS_APPLY
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_IN_APP_NOTIFICATIONS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_SETTINGS_SYSTEM_NOTIFICATIONS
+import com.infinum.collar.ui.extensions.viewModels
 import com.infinum.collar.ui.presentation.decorations.Decoration
 import com.infinum.collar.ui.presentation.decorations.DotDecoration
 import com.infinum.collar.ui.presentation.dialogs.CollarDetailDialog
 import com.infinum.collar.ui.presentation.dialogs.CollarFilterDialog
 import com.infinum.collar.ui.presentation.dialogs.CollarSettingsDialog
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_ID
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_EVENTS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_PROPERTIES
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_SCREENS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_CLEAR
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_FILTERS_APPLY
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_SETTINGS_APPLY
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_SETTINGS_IN_APP_NOTIFICATIONS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_SETTINGS_SYSTEM_NOTIFICATIONS
 import com.infinum.collar.ui.presentation.shared.base.BaseActivity
 import com.infinum.collar.ui.presentation.shared.delegates.viewBinding
 import com.infinum.collar.ui.presentation.shared.edgefactories.bounce.BounceEdgeEffectFactory
 import java.util.Date
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolbar.OnMenuItemClickListener {
 
@@ -41,7 +42,7 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
         onClick = this@CollarActivity::showDetail
     )
 
-    override val viewModel: CollarViewModel by viewModel()
+    override val viewModel: CollarViewModel by viewModels()
 
     override val binding by viewBinding(CollarActivityCollarBinding::inflate)
 
@@ -111,6 +112,14 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
 
         viewModel.entities()
         viewModel.settings()
+
+        intent?.extras?.let { extractEntityId(it) }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        intent?.extras?.let { extractEntityId(it) }
+
+        super.onNewIntent(intent)
     }
 
     override fun onState(state: CollarState) {
@@ -134,6 +143,7 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
                 event.analyticsCollectionEnabled,
                 event.analyticsCollectionTimestamp
             )
+            is CollarEvent.ShowEntity -> showDetail(event.entity)
             is CollarEvent.Clear -> entryAdapter.submitList(null)
         }
     }
@@ -152,6 +162,12 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
             findItem(R.id.filter).isVisible = false
             findItem(R.id.settings).isVisible = false
         }
+
+    private fun extractEntityId(extras: Bundle) {
+        extras.getLong("com.infinum.collar.$KEY_ENTITY_ID", -1L)
+            .takeIf { it != -1L }
+            ?.let { viewModel.entity(it) }
+    }
 
     private fun showDetail(entity: CollarEntity) {
         CollarDetailDialog.newInstance(entity).show(supportFragmentManager, null)

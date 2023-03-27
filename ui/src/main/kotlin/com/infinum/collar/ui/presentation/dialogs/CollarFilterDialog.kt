@@ -7,10 +7,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.databinding.CollarDialogFilterBinding
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_EVENTS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_PROPERTIES
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_FILTER_SCREENS
-import com.infinum.collar.ui.presentation.Presentation.Constants.KEY_REQUEST_FILTERS_APPLY
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_EVENTS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_PROPERTIES
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_FILTER_SCREENS
+import com.infinum.collar.ui.presentation.shared.Constants.KEY_REQUEST_FILTERS_APPLY
 import com.infinum.collar.ui.presentation.shared.base.BaseBottomSheetDialogFragment
 import com.infinum.collar.ui.presentation.shared.base.BaseViewModel
 import com.infinum.collar.ui.presentation.shared.delegates.viewBinding

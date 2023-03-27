@@ -1,12 +1,15 @@
 package com.infinum.collar.ui.presentation.notifications.shared
 
 import android.app.Activity
-import android.app.Application
 import android.os.Bundle
+import me.tatarka.inject.annotations.Inject
 
-internal class CollarActivityLifecycleCallbacks : Application.ActivityLifecycleCallbacks {
+@Inject
+internal class CollarActivityLifecycleCallbacks : CollarActivityCallbacks {
 
-    var currentActivity: Activity? = null
+    private var currentActivity: Activity? = null
+
+    override fun current(): Activity? = currentActivity
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         currentActivity = activity
@@ -19,12 +22,4 @@ internal class CollarActivityLifecycleCallbacks : Application.ActivityLifecycleC
     override fun onActivityResumed(activity: Activity) {
         currentActivity = activity
     }
-
-    override fun onActivityPaused(activity: Activity) = Unit
-
-    override fun onActivityDestroyed(activity: Activity) = Unit
-
-    override fun onActivityStopped(activity: Activity) = Unit
-
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 }

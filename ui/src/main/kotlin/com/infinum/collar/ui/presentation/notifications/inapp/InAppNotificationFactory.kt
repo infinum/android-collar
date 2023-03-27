@@ -3,21 +3,25 @@ package com.infinum.collar.ui.presentation.notifications.inapp
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.app.ShareCompat
 import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.extensions.presentationItemFormat
-import com.infinum.collar.ui.presentation.Presentation
+import com.infinum.collar.ui.presentation.CollarActivity
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
 import com.infinum.collar.ui.presentation.notifications.inapp.snackbar.CollarSnackbar
-import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityLifecycleCallbacks
+import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityCallbacks
+import com.infinum.collar.ui.presentation.shared.Constants
 import java.util.Date
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 internal class InAppNotificationFactory(
     context: Context,
-    private val callbacks: CollarActivityLifecycleCallbacks
+    private val callbacks: CollarActivityCallbacks
 ) : NotificationFactory {
 
     init {
@@ -26,7 +30,7 @@ internal class InAppNotificationFactory(
 
     override fun showScreen(entity: CollarEntity) {
         buildNotification(
-            callbacks.currentActivity,
+            callbacks.current(),
             R.color.collar_color_screen,
             R.drawable.collar_ic_screen_white,
             entity
@@ -35,7 +39,7 @@ internal class InAppNotificationFactory(
 
     override fun showEvent(entity: CollarEntity) {
         buildNotification(
-            callbacks.currentActivity,
+            callbacks.current(),
             R.color.collar_color_event,
             R.drawable.collar_ic_event_white,
             entity
@@ -44,7 +48,7 @@ internal class InAppNotificationFactory(
 
     override fun showProperty(entity: CollarEntity) {
         buildNotification(
-            callbacks.currentActivity,
+            callbacks.current(),
             R.color.collar_color_property,
             R.drawable.collar_ic_property_white,
             entity
@@ -58,17 +62,16 @@ internal class InAppNotificationFactory(
         entity: CollarEntity
     ) {
         CollarSnackbar.make(
-            activity?.findViewById(android.R.id.content),
-            backgroundTint,
-            icon,
-            entity.name,
-            entity.parameters,
-            Date(entity.timestamp).presentationItemFormat
-        ) {
-            activity?.let {
-                it.startActivity(
-                    ShareCompat.IntentBuilder(it)
-                        .setType(Presentation.Constants.MIME_TYPE_TEXT)
+            parentLayout = activity?.findViewById(android.R.id.content),
+            backgroundTint = backgroundTint,
+            icon = icon,
+            title = entity.name,
+            message = entity.parameters,
+            time = Date(entity.timestamp).presentationItemFormat,
+            shareListener = {
+                activity?.startActivity(
+                    ShareCompat.IntentBuilder(it.context)
+                        .setType(Constants.MIME_TYPE_TEXT)
                         .setText(
                             listOfNotNull(
                                 entity.name,
@@ -77,7 +80,17 @@ internal class InAppNotificationFactory(
                         )
                         .createChooserIntent()
                 )
+            },
+            openListener = {
+                activity?.startActivity(
+                    Intent(it.context, CollarActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        entity.id?.let { entityId ->
+                            putExtra("com.infinum.collar.${Constants.KEY_ENTITY_ID}", entityId)
+                        }
+                    }
+                )
             }
-        }.show()
+        ).show()
     }
 }

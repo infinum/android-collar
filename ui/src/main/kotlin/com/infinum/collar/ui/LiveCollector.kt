@@ -8,19 +8,17 @@ import com.infinum.collar.Screen
 import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.data.models.local.EntityType
 import com.infinum.collar.ui.data.models.local.SettingsEntity
-import com.infinum.collar.ui.di.LibraryKoin
-import com.infinum.collar.ui.domain.Repositories
+import com.infinum.collar.ui.di.LibraryComponents
 import com.infinum.collar.ui.domain.entities.models.EntityParameters
 import com.infinum.collar.ui.domain.settings.models.SettingsParameters
 import com.infinum.collar.ui.extensions.redact
 import com.infinum.collar.ui.presentation.ParametersMapper
-import com.infinum.collar.ui.presentation.notifications.inapp.InAppNotificationFactory
-import com.infinum.collar.ui.presentation.notifications.system.SystemNotificationFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Implementation of Collector interface providing UI for collected screen name, analytics event or user property.
@@ -31,12 +29,12 @@ public open class LiveCollector(
     private val configuration: Configuration = Configuration()
 ) : Collector {
 
-    private val koin = LibraryKoin.koin()
+    private val systemNotifications = LibraryComponents.presentation().systemNotificationFactory
+    private val inAppNotifications = LibraryComponents.presentation().inAppNotificationFactory
+    private val entities = LibraryComponents.presentation().entities
+    private val settings = LibraryComponents.presentation().settings
 
-    private val systemNotificationFactory: SystemNotificationFactory = koin.get(SystemNotificationFactory::class)
-    private val inAppNotificationFactory: InAppNotificationFactory = koin.get(InAppNotificationFactory::class)
-
-    private var settings = SettingsEntity(
+    private var settingsEntity = SettingsEntity(
         analyticsCollectionEnabled = configuration.analyticsCollectionEnabled,
         analyticsCollectionTimestamp = System.currentTimeMillis(),
         showSystemNotifications = configuration.showSystemNotifications,
@@ -47,11 +45,11 @@ public open class LiveCollector(
         saveSettings()
 
         MainScope().launch {
-            (koin.get(Repositories.Settings::class) as Repositories.Settings)
-                .load(SettingsParameters(entity = settings))
+            settings
+                .load(SettingsParameters(entity = settingsEntity))
                 .flowOn(Dispatchers.IO)
                 .collectLatest {
-                    settings = it
+                    settingsEntity = it
                 }
         }
     }
@@ -64,7 +62,7 @@ public open class LiveCollector(
      */
     @CallSuper
     override fun setAnalyticsCollectionEnabled(enabled: Boolean) {
-        settings = settings.copy(
+        settingsEntity = settingsEntity.copy(
             analyticsCollectionEnabled = enabled,
             analyticsCollectionTimestamp = System.currentTimeMillis()
         )
@@ -77,19 +75,14 @@ public open class LiveCollector(
      * @param screen wrapper class.
      */
     @CallSuper
-    override fun onScreen(screen: Screen): Unit =
-        CollarEntity(
-            type = EntityType.SCREEN,
-            name = screen.name.redact(configuration.redactedKeywords)
-        ).let {
-            saveEntity(it)
-            if (settings.showSystemNotifications) {
-                systemNotificationFactory.showScreen(it)
-            }
-            if (settings.showInAppNotifications) {
-                inAppNotificationFactory.showScreen(it)
-            }
-        }
+    override fun onScreen(screen: Screen) {
+        saveEntity(
+            CollarEntity(
+                type = EntityType.SCREEN,
+                name = screen.name.redact(configuration.redactedKeywords)
+            )
+        )
+    }
 
     /**
      * Invoked when a new analytics event is emitted.
@@ -97,22 +90,17 @@ public open class LiveCollector(
      * @param event wrapper class.
      */
     @CallSuper
-    override fun onEvent(event: Event): Unit =
-        CollarEntity(
-            type = EntityType.EVENT,
-            name = event.name.redact(configuration.redactedKeywords),
-            parameters = event.params?.let {
-                ParametersMapper.toRedactedString(it, configuration.redactedKeywords)
-            }
-        ).let {
-            saveEntity(it)
-            if (settings.showSystemNotifications) {
-                systemNotificationFactory.showEvent(it)
-            }
-            if (settings.showInAppNotifications) {
-                inAppNotificationFactory.showEvent(it)
-            }
-        }
+    override fun onEvent(event: Event) {
+        saveEntity(
+            CollarEntity(
+                type = EntityType.EVENT,
+                name = event.name.redact(configuration.redactedKeywords),
+                parameters = event.params?.let {
+                    ParametersMapper.toRedactedString(it, configuration.redactedKeywords)
+                }
+            )
+        )
+    }
 
     /**
      * Invoked when a new user property is emitted.
@@ -120,34 +108,51 @@ public open class LiveCollector(
      * @param property wrapper class.
      */
     @CallSuper
-    override fun onProperty(property: Property): Unit =
-        CollarEntity(
-            type = EntityType.PROPERTY,
-            name = property.name.redact(configuration.redactedKeywords),
-            value = property.value?.redact(configuration.redactedKeywords)
-        ).let {
-            saveEntity(it)
-            if (settings.showSystemNotifications) {
-                systemNotificationFactory.showProperty(it)
-            }
-            if (settings.showInAppNotifications) {
-                inAppNotificationFactory.showProperty(it)
-            }
-        }
+    override fun onProperty(property: Property) {
+        saveEntity(
+            CollarEntity(
+                type = EntityType.PROPERTY,
+                name = property.name.redact(configuration.redactedKeywords),
+                value = property.value?.redact(configuration.redactedKeywords)
+            )
+        )
+    }
 
     private fun saveEntity(entity: CollarEntity) =
         MainScope().launch {
-            (koin.get(Repositories.Entity::class) as Repositories.Entity)
-                .save(
+            val result = withContext(Dispatchers.IO) {
+                entities.save(
                     EntityParameters(entity = entity)
                 )
+            }
+            showNotification(entity.copy(id = result))
         }
 
     private fun saveSettings() =
         MainScope().launch {
-            (koin.get(Repositories.Settings::class) as Repositories.Settings)
-                .save(
-                    SettingsParameters(entity = settings)
+            withContext(Dispatchers.IO) {
+                settings.save(
+                    SettingsParameters(entity = settingsEntity)
                 )
+            }
         }
+
+    private fun showNotification(entity: CollarEntity) {
+        if (settingsEntity.showSystemNotifications) {
+            when (entity.type) {
+                EntityType.SCREEN -> systemNotifications.showScreen(entity)
+                EntityType.EVENT -> systemNotifications.showEvent(entity)
+                EntityType.PROPERTY -> systemNotifications.showProperty(entity)
+                else -> Unit
+            }
+        }
+        if (settingsEntity.showInAppNotifications) {
+            when (entity.type) {
+                EntityType.SCREEN -> inAppNotifications.showScreen(entity)
+                EntityType.EVENT -> inAppNotifications.showEvent(entity)
+                EntityType.PROPERTY -> inAppNotifications.showProperty(entity)
+                else -> Unit
+            }
+        }
+    }
 }

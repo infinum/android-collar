@@ -13,7 +13,6 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.ContentViewCallback
-import com.infinum.collar.ui.CollarUi
 import com.infinum.collar.ui.databinding.CollarViewSnackbarBinding
 
 internal class CollarSnackbarView @JvmOverloads constructor(
@@ -28,7 +27,6 @@ internal class CollarSnackbarView @JvmOverloads constructor(
         true
     ).apply {
         this.valueView.movementMethod = ScrollingMovementMethod()
-        this.root.setOnClickListener { CollarUi.show() }
     }
 
     override fun animateContentIn(delay: Int, duration: Int) {
@@ -36,7 +34,11 @@ internal class CollarSnackbarView @JvmOverloads constructor(
             it.alpha = 0f
             it.animate().alpha(1f).setDuration(duration.toLong()).setStartDelay(delay.toLong()).start()
         }
-        with(viewBinding.actionButton) {
+        with(viewBinding.shareButton) {
+            alpha = 0f
+            animate().alpha(1f).setDuration(duration.toLong()).setStartDelay(delay.toLong()).start()
+        }
+        with(viewBinding.openButton) {
             alpha = 0f
             animate().alpha(1f).setDuration(duration.toLong()).setStartDelay(delay.toLong()).start()
         }
@@ -47,7 +49,11 @@ internal class CollarSnackbarView @JvmOverloads constructor(
             it.alpha = 1f
             it.animate().alpha(0f).setDuration(duration.toLong()).setStartDelay(delay.toLong()).start()
         }
-        with(viewBinding.actionButton) {
+        with(viewBinding.shareButton) {
+            alpha = 1f
+            animate().alpha(0f).setDuration(duration.toLong()).setStartDelay(delay.toLong()).start()
+        }
+        with(viewBinding.openButton) {
             alpha = 1f
             animate().alpha(0f).setDuration(duration.toLong()).setStartDelay(delay.toLong()).start()
         }
@@ -81,7 +87,11 @@ internal class CollarSnackbarView @JvmOverloads constructor(
         viewBinding.timeView.text = text
     }
 
-    fun setAction(listener: OnClickListener?) {
-        viewBinding.actionButton.setOnClickListener(listener)
+    fun setShareAction(listener: OnClickListener?) {
+        viewBinding.shareButton.setOnClickListener(listener)
+    }
+
+    fun setOpenAction(listener: OnClickListener?) {
+        viewBinding.openButton.setOnClickListener(listener)
     }
 }

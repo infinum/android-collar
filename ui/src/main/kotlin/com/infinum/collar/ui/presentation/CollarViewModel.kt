@@ -9,7 +9,9 @@ import com.infinum.collar.ui.presentation.shared.base.BaseViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 internal class CollarViewModel(
     private val entityRepository: Repositories.Entity,
     private val settingsRepository: Repositories.Settings
@@ -86,6 +88,20 @@ internal class CollarViewModel(
                     setState(CollarState.Data(entities = it))
                 }
         }
+
+    fun entity(id: Long) {
+        launch {
+            io {
+                entityRepository.loadById(
+                    EntityParameters(entityId = id)
+                )
+            }
+                .takeIf { it.isNotEmpty() }
+                ?.let {
+                    emitEvent(CollarEvent.ShowEntity(entity = it.first()))
+                }
+        }
+    }
 
     fun settings() =
         launch {
