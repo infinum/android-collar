@@ -88,6 +88,15 @@ task deployStage3(dependsOn: [
     description = "Deploy all stage 3 modules to repositories"
 }
 
+task deployAll(dependsOn: [
+        'deployStage1',
+        'deployStage2',
+        'deployStage3'
+]) {
+    group = "Deploy"
+    description = "Deploy all modules to repositories"
+}
+
 task deployDebug(dependsOn: [
         ':annotations:clean',
         ':lint:clean',
