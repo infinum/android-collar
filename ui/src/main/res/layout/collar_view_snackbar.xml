@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:textColor="@android:color/white"
-            tools:text="test_property_value\ntest_property_value\ntest_property_value\ntest_property_value" />
+            tools:text="" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/timeView"
@@ -59,36 +60,35 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical|end"
         android:layout_marginStart="16dp"
-        android:minWidth="48dp"
-        android:orientation="vertical">
+        android:minHeight="66dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/shareButton"
-            style="?attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top"
-            android:minWidth="48dp"
-            android:text="@string/collar_share"
-            android:textColor="@color/collar_color_primary"
-            android:visibility="visible" />
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top"
+            android:layout_marginBottom="1dp"
+            android:visibility="visible"
+            android:src="@drawable/collar_ic_share"
+            app:tint="@color/collar_color_primary" />
 
-        <Button
+        <ImageButton
             android:id="@+id/openButton"
-            style="?attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:minWidth="48dp"
-            android:text="@string/collar_open"
-            android:textColor="@color/collar_color_primary"
-            android:visibility="visible" />
+            style="@style/Widget.AppCompat.Toolbar.Button.Navigation"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="1dp"
+            android:visibility="visible"
+            android:src="@drawable/collar_ic_open"
+            app:tint="@color/collar_color_primary" />
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

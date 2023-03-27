@@ -76,7 +76,7 @@ internal class SystemNotificationFactory(
 
     private fun addToBuffer(entity: CollarEntity) {
         synchronized(buffer) {
-            idsSet.add(entity.hashCode().toLong())
+            entity.id?.let { idsSet.add(it) }
             buffer.put(entity.timestamp, entity)
             if (buffer.size() > INTERNAL_BUFFER_SIZE) {
                 buffer.removeAt(0)
