@@ -12,6 +12,21 @@ task javadocsJar(type: Jar, dependsOn: "dokkaJavadoc") {
 }
 
 afterEvaluate {
+    group = releaseConfig.group
+    version = releaseConfig.version
+    gradlePlugin {
+        website = "https://github.com/infinum/android-collar"
+        vcsUrl = "https://github.com/infinum/android-collar.git"
+        plugins {
+            collarPlugin {
+                id = "com.infinum.collar"
+                displayName = "Collar analytics collection plugin."
+                description = "Gradle plugin which provides single point for analytics collection."
+                tags.set(['analytics', 'debugView', 'tracking', 'generator', 'screens', 'events', 'properties'])
+                implementationClass = "com.infinum.collar.plugin.CollarPlugin"
+            }
+        }
+    }
     publishing {
         repositories {
             maven {

@@ -1,6 +1,7 @@
 plugins {
     id "java-gradle-plugin"
     id "org.jetbrains.kotlin.jvm"
+    id "com.gradle.plugin-publish" version "1.2.0"
 }
 
 kotlin {
@@ -23,17 +24,6 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
-    }
-}
-
-gradlePlugin {
-    plugins {
-        collar {
-            id = "com.infinum.collar.plugin"
-            displayName = "Collar Analytics"
-            description = "Gradle plugin which provides single point for analytics collection."
-            implementationClass = "com.infinum.collar.plugin.CollarPlugin"
-        }
     }
 }
 
