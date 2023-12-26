@@ -5,8 +5,8 @@ ext {
 
     buildConfig = [
             "minSdk"    : 19,
-            "compileSdk": 33,
-            "targetSdk" : 33,
+            "compileSdk": 34,
+            "targetSdk" : 34,
             "buildTools": "33.0.1"
     ]
     releaseConfig = [
