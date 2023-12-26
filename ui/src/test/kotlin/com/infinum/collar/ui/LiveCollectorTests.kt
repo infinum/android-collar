@@ -10,6 +10,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
 
 public class LiveCollectorTests : MockitoTest {
 
@@ -27,6 +28,7 @@ public class LiveCollectorTests : MockitoTest {
 
     @Before
     public fun attachCollarWithCollector() {
+        MockitoAnnotations.openMocks(this)
         Collar.attach(collector)
     }
 
