@@ -16,7 +16,7 @@ package com.infinum.collar.annotations
  * @property enabled Determines if this annotation will be processed or skipped.
  * @constructor Default values are provided with an empty value and enabled annotation ready for processing.
  */
-@Target(AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS,AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 public annotation class ScreenName(
     val value: String = "",
