@@ -10,6 +10,7 @@ import com.infinum.collar.processor.extensions.consume
 import com.infinum.collar.processor.options.AnalyticsEventsOptions
 import com.infinum.collar.processor.options.UserPropertiesOptions
 import com.infinum.collar.processor.subprocessors.AnalyticsEventsSubprocessor
+import com.infinum.collar.processor.subprocessors.ComposeScreenNamesSubprocessor
 import com.infinum.collar.processor.subprocessors.ScreenNamesSubprocessor
 import com.infinum.collar.processor.subprocessors.UserPropertiesSubprocessor
 import javax.annotation.processing.AbstractProcessor
@@ -21,6 +22,7 @@ import javax.lang.model.element.TypeElement
 internal class CollarProcessor : AbstractProcessor() {
 
     private val screenNamesSubprocessor: ScreenNamesSubprocessor = ScreenNamesSubprocessor()
+    private val composeScreenNamesSubprocessor: ComposeScreenNamesSubprocessor = ComposeScreenNamesSubprocessor()
     private val analyticsEventsSubprocessor: AnalyticsEventsSubprocessor = AnalyticsEventsSubprocessor()
     private val userPropertiesSubprocessor: UserPropertiesSubprocessor = UserPropertiesSubprocessor()
 
@@ -47,6 +49,7 @@ internal class CollarProcessor : AbstractProcessor() {
     override fun init(processingEnv: ProcessingEnvironment): Unit =
         super.init(processingEnv).run {
             screenNamesSubprocessor.init(ScreenNamesConfiguration(processingEnv))
+            composeScreenNamesSubprocessor.init(ScreenNamesConfiguration(processingEnv))
             analyticsEventsSubprocessor.init(AnalyticsEventsConfiguration(processingEnv))
             userPropertiesSubprocessor.init(UserPropertiesConfiguration(processingEnv))
         }
@@ -54,6 +57,7 @@ internal class CollarProcessor : AbstractProcessor() {
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean =
         consume {
             screenNamesSubprocessor.process(roundEnv)
+            composeScreenNamesSubprocessor.process(roundEnv)
             analyticsEventsSubprocessor.process(roundEnv)
             userPropertiesSubprocessor.process(roundEnv)
         }
