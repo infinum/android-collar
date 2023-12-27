@@ -30,7 +30,8 @@ internal class ComposeScreenNamesCollector(
                 ComposeScreenHolder(
                     enabled = enabled(it),
                     screenName = name(it),
-                    composableName = composableName(it)
+                    composableName = composableName(it),
+                    packageName = packageName(it)
                 )
             }
             .toSet()
@@ -46,7 +47,9 @@ internal class ComposeScreenNamesCollector(
         }
     }
 
-    private fun composableName(element: TypeElement): String = element.asClassName().toString()
+    private fun packageName(element: TypeElement) = element.asClassName().packageName
+
+    private fun composableName(element: TypeElement): String = element.asClassName().simpleName
 
     private fun hasComposableAnnotation(element: Element): Boolean {
         return element.annotationMirrors.any {
