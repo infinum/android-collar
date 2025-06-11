@@ -13,5 +13,10 @@ public data class Event(
     /**
      * Optional parameters of the tracked analytics event.
      */
-    val params: Map<String, *>? = null
+    val params: Map<String, *>? = null,
+
+    /**
+     * Optional transient data of the tracked analytics event.
+     */
+    val transientData: Map<String, *>? = null,
 )

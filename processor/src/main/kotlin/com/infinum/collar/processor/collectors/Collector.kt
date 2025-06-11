@@ -14,4 +14,8 @@ internal interface Collector<Holder> {
     fun parameterEnabled(element: Element): Boolean = throw UnsupportedOperationException()
 
     fun parameterName(element: Element): String = throw UnsupportedOperationException()
+
+    fun transientDataEnabled(element: Element): Boolean = throw UnsupportedOperationException()
+
+    fun transientDataName(element: Element): String = throw UnsupportedOperationException()
 }

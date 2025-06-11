@@ -56,11 +56,12 @@ public object Collar {
      * @param params value.
      */
     @JvmStatic
-    public fun trackEvent(eventName: String, params: Map<String, *>): Unit =
+    public fun trackEvent(eventName: String, params: Map<String, *>, transientData: Map<String, *>): Unit =
         collector?.onEvent(
             Event(
                 name = eventName,
-                params = params.ifEmpty { null }
+                params = params.ifEmpty { null },
+                transientData = transientData.ifEmpty { null },
             )
         ) ?: Unit
 
