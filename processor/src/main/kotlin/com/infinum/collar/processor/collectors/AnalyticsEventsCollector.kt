@@ -1,17 +1,17 @@
 package com.infinum.collar.processor.collectors
 
 import com.infinum.collar.annotations.AnalyticsEvents
-import com.infinum.collar.annotations.EventTransientData
 import com.infinum.collar.annotations.EventName
 import com.infinum.collar.annotations.EventParameterName
+import com.infinum.collar.annotations.EventTransientData
 import com.infinum.collar.processor.extensions.asClassName
 import com.infinum.collar.processor.extensions.fieldElements
 import com.infinum.collar.processor.extensions.isSupported
 import com.infinum.collar.processor.extensions.toLowerSnakeCase
 import com.infinum.collar.processor.models.AnalyticsEventsHolder
 import com.infinum.collar.processor.models.EventHolder
-import com.infinum.collar.processor.models.EventTransientDataHolder
 import com.infinum.collar.processor.models.EventParameterHolder
+import com.infinum.collar.processor.models.EventTransientDataHolder
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
@@ -52,7 +52,7 @@ internal class AnalyticsEventsCollector(
                                 className = enclosedClass.asClassName(),
                                 eventName = name(enclosedClass),
                                 eventParameters = enclosedClass.fieldElements()
-                                    .filter { variableElement ->  isEventTransientData(variableElement).not() }
+                                    .filter { variableElement -> isEventTransientData(variableElement).not() }
                                     .map { fieldParameter ->
                                         EventParameterHolder(
                                             enabled = parameterEnabled(fieldParameter),
