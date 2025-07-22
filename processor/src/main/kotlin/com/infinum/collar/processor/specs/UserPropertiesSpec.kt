@@ -16,7 +16,8 @@ internal class UserPropertiesSpec(
     companion object {
         private const val FUNCTION_TRACK_PROPERTY = "trackProperty"
         private const val PARAMETER_NAME_PROPERTY = "userProperty"
-        private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L)"
+        private const val STATEMENT = "is %T -> %T.%L(%S, %L.%L, %L)"
+        private const val STATEMENT_BUNDLE_EMPTY = "mapOf<String,Nothing>()"
     }
 
     override fun parameterName(): String = PARAMETER_NAME_PROPERTY
@@ -44,10 +45,20 @@ internal class UserPropertiesSpec(
                         FUNCTION_TRACK_PROPERTY,
                         it.propertyName,
                         parameterName(),
-                        it.propertyParameterNames.single()
+                        it.propertyParameterNames.first(),
+                        transientData(it)
                     )
                 }
                 addStatement("else -> Unit")
             }
             .build()
+
+    private fun transientData(holder: PropertyHolder): CodeBlock {
+        val hasTransientData = holder.propertyParameterNames.size > 1
+        return if (hasTransientData) {
+            CodeBlock.of("${parameterName()}.${holder.propertyParameterNames.last()}")
+        } else {
+            CodeBlock.of(STATEMENT_BUNDLE_EMPTY)
+        }
+    }
 }

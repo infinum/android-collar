@@ -12,7 +12,7 @@ internal class UserPropertiesOptions(
         private const val OPTION_RESERVED_PROPERTIES = "reserved_properties"
 
         private const val DEFAULT_COUNT_MAX_PROPERTIES = 25
-        private const val DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS = 1
+        private const val DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS = 2
         private const val DEFAULT_SIZE_PROPERTY_NAME = 24
         const val DEFAULT_REGEX_PROPERTY_NAME = "^[a-zA-Z0-9_]*$"
         private val DEFAULT_RESERVED_PREFIXES = listOf("firebase_", "google_", "ga_")

@@ -83,11 +83,12 @@ public object Collar {
      * @param value value.
      */
     @JvmStatic
-    public fun trackProperty(name: String, value: String?): Unit =
+    public fun trackProperty(name: String, value: String?, transientData: Map<String, *>): Unit =
         collector?.onProperty(
             Property(
                 name = name,
-                value = value
+                value = value,
+                transientData = transientData.ifEmpty { null },
             )
         ) ?: Unit
 
