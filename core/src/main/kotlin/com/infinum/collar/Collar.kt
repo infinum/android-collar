@@ -33,10 +33,11 @@ public object Collar {
      * @param screenName value.
      */
     @JvmStatic
-    public fun trackScreen(screenName: String): Unit =
+    public fun trackScreen(screenName: String, transientData: Map<String, *>): Unit =
         collector?.onScreen(
             Screen(
-                name = screenName
+                name = screenName,
+                transientData = transientData.ifEmpty { null },
             )
         ) ?: Unit
 
