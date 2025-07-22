@@ -69,7 +69,6 @@ internal class AnalyticsEventsSpec(
             addStatement(STATEMENT_BUNDLE_START)
             indent()
             holder.eventParameters
-                .filter { parameterHolder -> parameterHolder.enabled }
                 .forEachIndexed { index, eventParameterHolder ->
                     addStatement(
                         STATEMENT_EVENT_PARAMETER
