@@ -32,7 +32,8 @@ internal class AnalyticsEventsCollector(
         val SUPPORTED = setOf(
             ANNOTATION_ANALYTICS_EVENTS.name,
             ANNOTATION_ANALYTICS_EVENT_NAME.name,
-            ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name
+            ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name,
+            ANNOTATION_ANALYTICS_EVENT_TRANSIENT_DATA.name,
         )
     }
 
