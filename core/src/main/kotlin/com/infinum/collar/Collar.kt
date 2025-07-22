@@ -31,6 +31,14 @@ public object Collar {
      * Track screen names using a direct value.
      *
      * @param screenName value.
+     */
+    @JvmStatic
+    public fun trackScreen(screenName: String): Unit = trackScreen(screenName, emptyMap<String, Nothing>())
+
+    /**
+     * Track screen names using a direct value.
+     *
+     * @param screenName value.
      * @param transientData optional temporary data.
      */
     @JvmStatic
@@ -50,6 +58,15 @@ public object Collar {
     @JvmStatic
     public fun trackScreen(screen: Screen): Unit =
         collector?.onScreen(screen) ?: Unit
+
+    /**
+     * Track events using direct values for event name and optional event parameters.
+     *
+     * @param eventName value.
+     * @param params value.
+     */
+    @JvmStatic
+    public fun trackEvent(eventName: String, params: Map<String, *>): Unit = trackEvent(eventName, params, emptyMap<String, Nothing>())
 
     /**
      * Track events using direct values for event name and optional event parameters.
@@ -76,6 +93,16 @@ public object Collar {
     @JvmStatic
     public fun trackEvent(event: Event): Unit =
         collector?.onEvent(event) ?: Unit
+
+    /**
+     * Track user properties using direct values for property name and optional property value.
+     * If value is set as 'null', property is cleared.
+     *
+     * @param name value.
+     * @param value value.
+     */
+    @JvmStatic
+    public fun trackProperty(name: String, value: String?): Unit = trackProperty(name, value, emptyMap<String, Nothing>())
 
     /**
      * Track user properties using direct values for property name and optional property value.
