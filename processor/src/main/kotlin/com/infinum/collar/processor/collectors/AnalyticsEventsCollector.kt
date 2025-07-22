@@ -100,7 +100,7 @@ internal class AnalyticsEventsCollector(
 
     @Suppress("SimpleRedundantLet")
     override fun parameterName(element: Element): String =
-        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.let { it.value }
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.value?.takeIf { it.isNotEmpty() }
             ?: run { element.simpleName.toString().toLowerSnakeCase() }
 
     override fun transientDataEnabled(element: Element) =
