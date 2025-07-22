@@ -31,6 +31,7 @@ public object Collar {
      * Track screen names using a direct value.
      *
      * @param screenName value.
+     * @param transientData optional temporary data.
      */
     @JvmStatic
     public fun trackScreen(screenName: String, transientData: Map<String, *>): Unit =
@@ -55,6 +56,7 @@ public object Collar {
      *
      * @param eventName value.
      * @param params value.
+     * @param transientData optional temporary data.
      */
     @JvmStatic
     public fun trackEvent(eventName: String, params: Map<String, *>, transientData: Map<String, *>): Unit =
@@ -81,6 +83,7 @@ public object Collar {
      *
      * @param name value.
      * @param value value.
+     * @param transientData optional temporary data.
      */
     @JvmStatic
     public fun trackProperty(name: String, value: String?, transientData: Map<String, *>): Unit =
