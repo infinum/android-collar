@@ -54,11 +54,10 @@ internal class AnalyticsEventsCollector(
                                 eventName = name(enclosedClass),
                                 eventParameters = enclosedClass.fieldElements()
                                     .filter { variableElement ->
-                                        isEventTransientData(variableElement).not() &&  parameterEnabled(variableElement)
+                                        isEventTransientData(variableElement).not() && parameterEnabled(variableElement)
                                     }
                                     .map { fieldParameter ->
                                         EventParameterHolder(
-                                            enabled = parameterEnabled(fieldParameter),
                                             isSupported = fieldParameter.isSupported(typeUtils, elementUtils),
                                             resolvedName = parameterName(fieldParameter),
                                             variableName = fieldParameter.simpleName.toString()
