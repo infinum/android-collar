@@ -3,6 +3,7 @@ package com.infinum.collar
 /**
  * Singleton object entry point for screen names, events and properties collection.
  */
+@Suppress("TooManyFunctions")
 public object Collar {
 
     private var collector: Collector? = null
@@ -66,7 +67,8 @@ public object Collar {
      * @param params value.
      */
     @JvmStatic
-    public fun trackEvent(eventName: String, params: Map<String, *>): Unit = trackEvent(eventName, params, emptyMap<String, Nothing>())
+    public fun trackEvent(eventName: String, params: Map<String, *>): Unit =
+        trackEvent(eventName, params, emptyMap<String, Nothing>())
 
     /**
      * Track events using direct values for event name and optional event parameters.
@@ -102,7 +104,8 @@ public object Collar {
      * @param value value.
      */
     @JvmStatic
-    public fun trackProperty(name: String, value: String?): Unit = trackProperty(name, value, emptyMap<String, Nothing>())
+    public fun trackProperty(name: String, value: String?): Unit =
+        trackProperty(name, value, emptyMap<String, Nothing>())
 
     /**
      * Track user properties using direct values for property name and optional property value.
