@@ -8,7 +8,8 @@ sealed class UserProperty {
 
     @PropertyName(enabled = true)
     data class LanguageType(
-        val value: String
+        val value: String,
+        val myMap: Map<String, *>
     ) : UserProperty()
 
     @PropertyName(value = "my_id", enabled = true)

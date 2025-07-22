@@ -3,6 +3,7 @@ package com.infinum.collar.sample
 import com.infinum.collar.annotations.AnalyticsEvents
 import com.infinum.collar.annotations.EventName
 import com.infinum.collar.annotations.EventParameterName
+import com.infinum.collar.annotations.EventTransientData
 
 @AnalyticsEvents
 sealed class AnalyticsEvent {
@@ -80,6 +81,7 @@ sealed class AnalyticsEvent {
     data class EventThree(
         val myString: String,
         val myBoolean: Boolean,
+        @EventTransientData("my_filters")
         val myMap: Map<String, Any>
     ) : AnalyticsEvent()
 

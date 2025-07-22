@@ -35,7 +35,7 @@ class KotlinChildFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        trackScreen()
+        trackScreen(mapOf(Pair("shouldSendEventToProviderA", true)))
     }
 
     override fun onDestroy() {
