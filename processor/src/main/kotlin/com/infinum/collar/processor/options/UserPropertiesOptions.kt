@@ -37,7 +37,6 @@ internal class UserPropertiesOptions(
     private var maxPropertiesCount = DEFAULT_COUNT_MAX_PROPERTIES
     private var maxPropertyNameSize = DEFAULT_SIZE_PROPERTY_NAME
     private var propertyNameRegex = DEFAULT_REGEX_PROPERTY_NAME
-    private val maxPropertyParametersCount = DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS
     private var reservedPrefixes = DEFAULT_RESERVED_PREFIXES
     private var reservedProperties = DEFAULT_RESERVED_PROPERTIES
 
@@ -57,7 +56,7 @@ internal class UserPropertiesOptions(
 
     override fun nameRegex(): String = propertyNameRegex
 
-    override fun maxParametersCount(): Int = maxPropertyParametersCount
+    override fun maxParametersCount(): Int = DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS
 
     override fun reservedPrefixes(): List<String> = reservedPrefixes
 

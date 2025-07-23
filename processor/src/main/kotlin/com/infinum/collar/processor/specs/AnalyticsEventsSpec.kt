@@ -7,6 +7,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
+@Suppress("TooManyFunctions")
 internal class AnalyticsEventsSpec(
     outputDir: File,
     private val className: ClassName,
@@ -73,7 +74,9 @@ internal class AnalyticsEventsSpec(
                 .forEachIndexed { index, eventParameterHolder ->
                     addStatement(
                         STATEMENT_EVENT_PARAMETER
-                            .plus(",".takeIf { index != holder.eventParameters.size - 1 }.orEmpty()),
+                            .plus(
+                                conditionalComma(currentIndex = index, lastIndex = holder.eventParameters.size - 1)
+                            ),
                         eventParameterHolder.resolvedName,
                         parameterName(),
                         eventParameterHolder.variableName
@@ -111,7 +114,9 @@ internal class AnalyticsEventsSpec(
                 .forEachIndexed { index, eventTransientDataHolder ->
                     addStatement(
                         STATEMENT_EVENT_PARAMETER
-                            .plus(",".takeIf { index != holder.eventTransientData.size - 1 }.orEmpty()),
+                            .plus(
+                                conditionalComma(currentIndex = index, lastIndex = holder.eventTransientData.size - 1)
+                            ),
                         eventTransientDataHolder.resolvedName,
                         parameterName(),
                         eventTransientDataHolder.variableName
@@ -120,4 +125,6 @@ internal class AnalyticsEventsSpec(
             unindent()
             addStatement(STATEMENT_BUNDLE_END)
         }
+
+    private fun conditionalComma(currentIndex: Int, lastIndex: Int) = ",".takeIf { currentIndex != lastIndex }.orEmpty()
 }
