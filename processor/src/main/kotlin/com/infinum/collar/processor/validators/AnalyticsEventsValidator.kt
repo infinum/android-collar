@@ -126,6 +126,20 @@ internal class AnalyticsEventsValidator(
             )
             false
         } else {
+            validateParameterNames(holder)
+        }
+    }
+
+    private fun validateParameterNames(holder: EventHolder): Boolean {
+        val parameterNameGrouping = holder.eventParameters.map { it.resolvedName }.groupingBy { it }
+        val duplicatedParameterNames = parameterNameGrouping.eachCount().filter { it.value > 1 }.keys
+        return if (duplicatedParameterNames.isNotEmpty()) {
+            messager.showWarning(
+                "Event parameter names $duplicatedParameterNames" +
+                    " from event ${holder.className.simpleName} are duplicated."
+            )
+            false
+        } else {
             true
         }
     }

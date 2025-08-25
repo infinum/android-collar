@@ -53,10 +53,11 @@ internal class AnalyticsEventsCollector(
                                 className = enclosedClass.asClassName(),
                                 eventName = name(enclosedClass),
                                 eventParameters = enclosedClass.fieldElements()
-                                    .filter { variableElement -> isEventTransientData(variableElement).not() }
+                                    .filter { variableElement ->
+                                        isEventTransientData(variableElement).not() && parameterEnabled(variableElement)
+                                    }
                                     .map { fieldParameter ->
                                         EventParameterHolder(
-                                            enabled = parameterEnabled(fieldParameter),
                                             isSupported = fieldParameter.isSupported(typeUtils, elementUtils),
                                             resolvedName = parameterName(fieldParameter),
                                             variableName = fieldParameter.simpleName.toString()
@@ -98,7 +99,7 @@ internal class AnalyticsEventsCollector(
 
     @Suppress("SimpleRedundantLet")
     override fun parameterName(element: Element): String =
-        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.let { it.value }
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.value?.takeIf { it.isNotEmpty() }
             ?: run { element.simpleName.toString().toLowerSnakeCase() }
 
     override fun transientDataEnabled(element: Element) =
