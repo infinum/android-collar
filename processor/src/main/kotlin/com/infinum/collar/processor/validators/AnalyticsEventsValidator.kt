@@ -95,7 +95,7 @@ internal class AnalyticsEventsValidator(
             processorOptions
                 .reservedPrefixes()
                 .any { holder.eventName.startsWith(it, false) }.not() && processorOptions.reserved()
-                .any { holder.eventName.equals(it, false) }.not()
+                .any { holder.eventName == it }.not()
         ) {
             validateParameterCount(holder)
         } else {
