@@ -12,7 +12,7 @@ internal class UserPropertiesOptions(
         private const val OPTION_RESERVED_PROPERTIES = "reserved_properties"
 
         private const val DEFAULT_COUNT_MAX_PROPERTIES = 25
-        private const val DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS = 1
+        private const val DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS = 2
         private const val DEFAULT_SIZE_PROPERTY_NAME = 24
         const val DEFAULT_REGEX_PROPERTY_NAME = "^[a-zA-Z0-9_]*$"
         private val DEFAULT_RESERVED_PREFIXES = listOf("firebase_", "google_", "ga_")
@@ -37,7 +37,6 @@ internal class UserPropertiesOptions(
     private var maxPropertiesCount = DEFAULT_COUNT_MAX_PROPERTIES
     private var maxPropertyNameSize = DEFAULT_SIZE_PROPERTY_NAME
     private var propertyNameRegex = DEFAULT_REGEX_PROPERTY_NAME
-    private var maxPropertyParametersCount = DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS
     private var reservedPrefixes = DEFAULT_RESERVED_PREFIXES
     private var reservedProperties = DEFAULT_RESERVED_PROPERTIES
 
@@ -57,7 +56,7 @@ internal class UserPropertiesOptions(
 
     override fun nameRegex(): String = propertyNameRegex
 
-    override fun maxParametersCount(): Int = maxPropertyParametersCount
+    override fun maxParametersCount(): Int = DEFAULT_COUNT_MAX_PROPERTY_PARAMETERS
 
     override fun reservedPrefixes(): List<String> = reservedPrefixes
 

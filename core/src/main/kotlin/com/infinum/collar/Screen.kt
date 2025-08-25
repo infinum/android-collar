@@ -8,5 +8,10 @@ public data class Screen(
     /**
      * Name of the tracked screen.
      */
-    val name: String
+    val name: String,
+
+    /**
+     * Optional transient data of the tracked screen.
+     */
+    val transientData: Map<String, *>? = null,
 )

@@ -3,6 +3,7 @@ package com.infinum.collar
 /**
  * Singleton object entry point for screen names, events and properties collection.
  */
+@Suppress("TooManyFunctions")
 public object Collar {
 
     private var collector: Collector? = null
@@ -33,10 +34,20 @@ public object Collar {
      * @param screenName value.
      */
     @JvmStatic
-    public fun trackScreen(screenName: String): Unit =
+    public fun trackScreen(screenName: String): Unit = trackScreen(screenName, emptyMap<String, Nothing>())
+
+    /**
+     * Track screen names using a direct value.
+     *
+     * @param screenName value.
+     * @param transientData optional temporary data.
+     */
+    @JvmStatic
+    public fun trackScreen(screenName: String, transientData: Map<String, *>): Unit =
         collector?.onScreen(
             Screen(
-                name = screenName
+                name = screenName,
+                transientData = transientData.ifEmpty { null },
             )
         ) ?: Unit
 
@@ -57,10 +68,22 @@ public object Collar {
      */
     @JvmStatic
     public fun trackEvent(eventName: String, params: Map<String, *>): Unit =
+        trackEvent(eventName, params, emptyMap<String, Nothing>())
+
+    /**
+     * Track events using direct values for event name and optional event parameters.
+     *
+     * @param eventName value.
+     * @param params value.
+     * @param transientData optional temporary data.
+     */
+    @JvmStatic
+    public fun trackEvent(eventName: String, params: Map<String, *>, transientData: Map<String, *>): Unit =
         collector?.onEvent(
             Event(
                 name = eventName,
-                params = params.ifEmpty { null }
+                params = params.ifEmpty { null },
+                transientData = transientData.ifEmpty { null },
             )
         ) ?: Unit
 
@@ -82,10 +105,23 @@ public object Collar {
      */
     @JvmStatic
     public fun trackProperty(name: String, value: String?): Unit =
+        trackProperty(name, value, emptyMap<String, Nothing>())
+
+    /**
+     * Track user properties using direct values for property name and optional property value.
+     * If value is set as 'null', property is cleared.
+     *
+     * @param name value.
+     * @param value value.
+     * @param transientData optional temporary data.
+     */
+    @JvmStatic
+    public fun trackProperty(name: String, value: String?, transientData: Map<String, *>): Unit =
         collector?.onProperty(
             Property(
                 name = name,
-                value = value
+                value = value,
+                transientData = transientData.ifEmpty { null },
             )
         ) ?: Unit
 

@@ -13,5 +13,10 @@ public data class Property(
     /**
      * Optional value of the tracked user property.
      */
-    val value: String?
+    val value: String?,
+
+    /**
+     * Optional transient data of the tracked user property.
+     */
+    val transientData: Map<String, *>? = null,
 )

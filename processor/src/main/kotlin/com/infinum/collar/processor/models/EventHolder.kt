@@ -8,5 +8,6 @@ internal data class EventHolder(
     val type: TypeMirror,
     val className: ClassName,
     val eventName: String,
-    val eventParameters: Set<EventParameterHolder>
+    val eventParameters: Set<EventParameterHolder>,
+    val eventTransientData: Set<EventTransientDataHolder>,
 ) : Holder

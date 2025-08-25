@@ -34,7 +34,7 @@ class KotlinMainActivity : Activity() {
             showKotlinChild()
         }
 
-        trackProperty(UserProperty.LanguageType(value = "Kotlin"))
+        trackProperty(UserProperty.LanguageType(value = "Kotlin", mapOf("shouldSendEventToProviderB" to false)))
     }
 
     override fun onResume() {

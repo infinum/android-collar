@@ -3,6 +3,7 @@ package com.infinum.collar.processor.collectors
 import com.infinum.collar.annotations.AnalyticsEvents
 import com.infinum.collar.annotations.EventName
 import com.infinum.collar.annotations.EventParameterName
+import com.infinum.collar.annotations.EventTransientData
 import com.infinum.collar.processor.extensions.asClassName
 import com.infinum.collar.processor.extensions.fieldElements
 import com.infinum.collar.processor.extensions.isSupported
@@ -10,6 +11,7 @@ import com.infinum.collar.processor.extensions.toLowerSnakeCase
 import com.infinum.collar.processor.models.AnalyticsEventsHolder
 import com.infinum.collar.processor.models.EventHolder
 import com.infinum.collar.processor.models.EventParameterHolder
+import com.infinum.collar.processor.models.EventTransientDataHolder
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
@@ -26,10 +28,12 @@ internal class AnalyticsEventsCollector(
         val ANNOTATION_ANALYTICS_EVENTS = AnalyticsEvents::class.java
         val ANNOTATION_ANALYTICS_EVENT_NAME = EventName::class.java
         val ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME = EventParameterName::class.java
+        val ANNOTATION_ANALYTICS_EVENT_TRANSIENT_DATA = EventTransientData::class.java
         val SUPPORTED = setOf(
             ANNOTATION_ANALYTICS_EVENTS.name,
             ANNOTATION_ANALYTICS_EVENT_NAME.name,
-            ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name
+            ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME.name,
+            ANNOTATION_ANALYTICS_EVENT_TRANSIENT_DATA.name,
         )
     }
 
@@ -49,15 +53,30 @@ internal class AnalyticsEventsCollector(
                                 className = enclosedClass.asClassName(),
                                 eventName = name(enclosedClass),
                                 eventParameters = enclosedClass.fieldElements()
+                                    .filter { variableElement ->
+                                        isEventTransientData(variableElement).not() && parameterEnabled(variableElement)
+                                    }
                                     .map { fieldParameter ->
                                         EventParameterHolder(
-                                            enabled = parameterEnabled(fieldParameter),
                                             isSupported = fieldParameter.isSupported(typeUtils, elementUtils),
                                             resolvedName = parameterName(fieldParameter),
                                             variableName = fieldParameter.simpleName.toString()
                                         )
                                     }
-                                    .toSet()
+                                    .toSet(),
+                                eventTransientData = enclosedClass.fieldElements()
+                                    .filter { variableElement ->
+                                        isEventTransientData(variableElement) && transientDataEnabled(variableElement)
+                                    }
+                                    .map { fieldParameter ->
+                                        EventTransientDataHolder(
+                                            enabled = transientDataEnabled(fieldParameter),
+                                            isSupported = fieldParameter.isSupported(typeUtils, elementUtils),
+                                            resolvedName = transientDataName(fieldParameter),
+                                            variableName = fieldParameter.simpleName.toString()
+                                        )
+                                    }
+                                    .toSet(),
                             )
                         }.toSet()
                 )
@@ -80,6 +99,16 @@ internal class AnalyticsEventsCollector(
 
     @Suppress("SimpleRedundantLet")
     override fun parameterName(element: Element): String =
-        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.let { it.value }
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_PARAMETER_NAME)?.value?.takeIf { it.isNotEmpty() }
             ?: run { element.simpleName.toString().toLowerSnakeCase() }
+
+    override fun transientDataEnabled(element: Element) =
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_TRANSIENT_DATA)?.enabled ?: true
+
+    override fun transientDataName(element: Element): String =
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_TRANSIENT_DATA)?.value?.takeIf { it.isNotEmpty() }
+            ?: run { element.simpleName.toString().toLowerSnakeCase() }
+
+    private fun isEventTransientData(element: Element) =
+        element.getAnnotation(ANNOTATION_ANALYTICS_EVENT_TRANSIENT_DATA) != null
 }

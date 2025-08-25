@@ -7,6 +7,7 @@ import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
 import java.io.File
 
+@Suppress("TooManyFunctions")
 internal class AnalyticsEventsSpec(
     outputDir: File,
     private val className: ClassName,
@@ -21,8 +22,10 @@ internal class AnalyticsEventsSpec(
         private const val STATEMENT_EVENT_CLASS_END = ")"
         private const val STATEMENT_EVENT_NAME = "%S,"
         private const val STATEMENT_BUNDLE_EMPTY = "mapOf<String,Nothing>()"
+        private const val STATEMENT_BUNDLE_EMPTY_WITH_COMMA = "mapOf<String,Nothing>(),"
         private const val STATEMENT_BUNDLE_START = "mapOf("
         private const val STATEMENT_BUNDLE_END = ")"
+        private const val STATEMENT_BUNDLE_END_WITH_COMMA = "),"
         private const val STATEMENT_EVENT_PARAMETER = "%S to %L.%L"
     }
 
@@ -49,10 +52,8 @@ internal class AnalyticsEventsSpec(
                     indent()
                     eventName(this, holder)
                         .apply {
-                            when (holder.eventParameters.isEmpty()) {
-                                true -> eventParametersEmpty(this)
-                                false -> eventParameters(this, holder)
-                            }
+                            addEventParameters(this, holder)
+                            addEventTransientData(this, holder)
                         }
                     unindent()
                     addStatement(STATEMENT_EVENT_CLASS_END)
@@ -62,27 +63,67 @@ internal class AnalyticsEventsSpec(
             .build()
 
     private fun eventParametersEmpty(builder: CodeBlock.Builder): CodeBlock.Builder =
-        builder.addStatement(STATEMENT_BUNDLE_EMPTY)
+        builder.addStatement(STATEMENT_BUNDLE_EMPTY_WITH_COMMA)
 
     private fun eventParameters(builder: CodeBlock.Builder, holder: EventHolder): CodeBlock.Builder =
         with(builder) {
             addStatement(STATEMENT_BUNDLE_START)
             indent()
             holder.eventParameters
-                .filter { parameterHolder -> parameterHolder.enabled }
                 .forEachIndexed { index, eventParameterHolder ->
                     addStatement(
                         STATEMENT_EVENT_PARAMETER
-                            .plus(",".takeIf { index != holder.eventParameters.size - 1 }.orEmpty()),
+                            .plus(
+                                conditionalComma(currentIndex = index, lastIndex = holder.eventParameters.size - 1)
+                            ),
                         eventParameterHolder.resolvedName,
                         parameterName(),
                         eventParameterHolder.variableName
                     )
                 }
             unindent()
-            addStatement(STATEMENT_BUNDLE_END)
+            addStatement(STATEMENT_BUNDLE_END_WITH_COMMA)
         }
+
+    private fun addEventParameters(builder: CodeBlock.Builder, holder: EventHolder) {
+        when (holder.eventParameters.isEmpty()) {
+            true -> eventParametersEmpty(builder)
+            false -> eventParameters(builder, holder)
+        }
+    }
+
+    private fun addEventTransientData(builder: CodeBlock.Builder, holder: EventHolder) {
+        when (holder.eventTransientData.isEmpty()) {
+            true -> eventTransientDataEmpty(builder)
+            false -> eventTransientData(builder, holder)
+        }
+    }
 
     private fun eventName(builder: CodeBlock.Builder, holder: EventHolder): CodeBlock.Builder =
         builder.addStatement(STATEMENT_EVENT_NAME, holder.eventName)
+
+    private fun eventTransientDataEmpty(builder: CodeBlock.Builder): CodeBlock.Builder =
+        builder.addStatement(STATEMENT_BUNDLE_EMPTY)
+
+    private fun eventTransientData(builder: CodeBlock.Builder, holder: EventHolder): CodeBlock.Builder =
+        with(builder) {
+            addStatement(STATEMENT_BUNDLE_START)
+            indent()
+            holder.eventTransientData
+                .forEachIndexed { index, eventTransientDataHolder ->
+                    addStatement(
+                        STATEMENT_EVENT_PARAMETER
+                            .plus(
+                                conditionalComma(currentIndex = index, lastIndex = holder.eventTransientData.size - 1)
+                            ),
+                        eventTransientDataHolder.resolvedName,
+                        parameterName(),
+                        eventTransientDataHolder.variableName
+                    )
+                }
+            unindent()
+            addStatement(STATEMENT_BUNDLE_END)
+        }
+
+    private fun conditionalComma(currentIndex: Int, lastIndex: Int) = ",".takeIf { currentIndex != lastIndex }.orEmpty()
 }

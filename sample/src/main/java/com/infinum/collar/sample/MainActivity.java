@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
         viewBinding.buttonShowChild.setOnClickListener(v -> showChildScreen());
 
         CollarUserProperty.trackProperty(new UserProperty.MyUUID(UUID.randomUUID().toString()));
-        CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java"));
+        CollarUserProperty.trackProperty(new UserProperty.LanguageType("Java", new HashMap<>()));
     }
 
     @Override
