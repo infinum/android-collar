@@ -1,6 +1,6 @@
 [versions]
 collar = "1.4.0"
-gradle = "7.4.2"
+gradle = "8.8.2"
 lint = "30.3.1"
 kotlin = "1.8.10"
 coroutines = "1.6.4"

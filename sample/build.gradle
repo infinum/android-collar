@@ -22,7 +22,6 @@ android {
     namespace "com.infinum.collar.sample"
 
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
         applicationId releaseConfig.group

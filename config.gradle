@@ -5,9 +5,8 @@ ext {
 
     buildConfig = [
             "minSdk"    : 19,
-            "compileSdk": 33,
-            "targetSdk" : 33,
-            "buildTools": "33.0.1"
+            "compileSdk": 35,
+            "targetSdk" : 35,
     ]
     releaseConfig = [
             "group"      : "com.infinum.collar",
