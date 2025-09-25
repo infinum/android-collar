@@ -10,6 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fitsSystemWindows="true"
         android:layout_weight="1">
 
         <androidx.appcompat.widget.SwitchCompat
@@ -26,6 +27,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fitsSystemWindows="true"
         android:layout_weight="1">
 
         <Button
@@ -40,6 +42,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:fitsSystemWindows="true"
         android:layout_weight="1">
 
         <Button
