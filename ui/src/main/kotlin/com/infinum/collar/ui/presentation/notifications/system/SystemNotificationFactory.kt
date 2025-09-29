@@ -99,7 +99,7 @@ internal class SystemNotificationFactory(
 
         synchronized(buffer) {
             var count = 0
-            (buffer.size() - 1 downTo 0).forEach { i ->
+            for (i in buffer.size() - 1 downTo 0) {
                 val bufferedEntity = buffer.valueAt(i)
                 if ((bufferedEntity != null) && count < INTERNAL_BUFFER_SIZE) {
                     if (count == 0) {
