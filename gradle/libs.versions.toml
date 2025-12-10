@@ -2,10 +2,9 @@
 collar = "1.4.0"
 gradle = "8.8.2"
 lint = "30.3.1"
-kotlin = "1.8.10"
+kotlin = "2.1.20"
 coroutines = "1.6.4"
 serialization = "1.5.0"
-metadata = "0.6.0"
 poet = "1.12.0"
 inject = "0.6.1"
 core = "1.9.0"
@@ -18,7 +17,7 @@ room = "2.5.0"
 startup = "1.1.1"
 dynamicanimation = "1.0.0"
 design = "1.8.0"
-detekt = "1.21.0"
+detekt = "1.23.8"
 ktlintplugin = "10.3.0"
 ktlint = "0.45.2"
 cpd = "3.3"
@@ -47,7 +46,7 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", vers
 serialization-gradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
-metadata = { module = "org.jetbrains.kotlinx:kotlinx-metadata-jvm", version.ref = "metadata" }
+metadata = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }

@@ -12,24 +12,22 @@ import javax.lang.model.type.TypeKind
 import javax.lang.model.util.ElementFilter
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
-import kotlinx.metadata.Flag
-import kotlinx.metadata.jvm.KotlinClassMetadata
+import kotlin.metadata.Modality
+import kotlin.metadata.isSecondary
+import kotlin.metadata.jvm.KotlinClassMetadata
+import kotlin.metadata.modality
 
 internal fun Element.isSealedClass(): Boolean =
-    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.read(it) }) {
-        is KotlinClassMetadata.Class -> {
-            val kmClass = metadata.toKmClass()
-            Flag.Common.IS_SEALED(kmClass.flags)
-        }
+    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.readStrict(it) }) {
+        is KotlinClassMetadata.Class -> metadata.kmClass.modality == Modality.SEALED
         else -> false
     }
 
 internal fun Element.constructorParameterNames(): List<String> =
-    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.read(it) }) {
+    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.readStrict(it) }) {
         is KotlinClassMetadata.Class -> {
-            val kmClass = metadata.toKmClass()
-            kmClass.constructors
-                .filterNot { Flag.Constructor.IS_SECONDARY(it.flags) }
+            metadata.kmClass.constructors
+                .filterNot { it.isSecondary }
                 .firstOrNull()
                 ?.valueParameters
                 .orEmpty()
