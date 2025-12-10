@@ -18,13 +18,13 @@ import kotlin.metadata.jvm.KotlinClassMetadata
 import kotlin.metadata.modality
 
 internal fun Element.isSealedClass(): Boolean =
-    when (val metadata = KotlinClassMetadata.readStrict(this.getAnnotation(Metadata::class.java))) {
+    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.readStrict(it) }) {
         is KotlinClassMetadata.Class -> metadata.kmClass.modality == Modality.SEALED
         else -> false
     }
 
 internal fun Element.constructorParameterNames(): List<String> =
-    when (val metadata = KotlinClassMetadata.readStrict(this.getAnnotation(Metadata::class.java))) {
+    when (val metadata = this.getAnnotation(Metadata::class.java)?.let { KotlinClassMetadata.readStrict(it) }) {
         is KotlinClassMetadata.Class -> {
             metadata.kmClass.constructors
                 .filterNot { it.isSecondary }
