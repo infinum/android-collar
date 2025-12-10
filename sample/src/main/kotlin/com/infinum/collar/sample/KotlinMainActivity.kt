@@ -1,16 +1,18 @@
 package com.infinum.collar.sample
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import com.infinum.collar.annotations.ScreenName
 import com.infinum.collar.sample.databinding.ActivityMainKotlinBinding
 import com.infinum.collar.trackScreen
 
 @ScreenName(enabled = true)
-class KotlinMainActivity : Activity() {
+class KotlinMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         val viewBinding = ActivityMainKotlinBinding.inflate(layoutInflater)

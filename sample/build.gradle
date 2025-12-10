@@ -22,7 +22,6 @@ android {
     namespace "com.infinum.collar.sample"
 
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
         applicationId releaseConfig.group
@@ -92,6 +91,7 @@ android {
 dependencies {
     implementation libs.kotlin.core
     implementation libs.androidx.appcompat
+    implementation libs.androidx.activity
     implementation libs.androidx.fragment
     implementation libs.material
     debugImplementation libs.libraryui

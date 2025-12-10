@@ -1,15 +1,17 @@
 package com.infinum.collar.sample;
 
-import android.app.Activity;
 import android.os.Bundle;
-
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.infinum.collar.sample.databinding.ActivityChildBinding;
 
-public class ChildActivity extends Activity {
+public class ChildActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
         final ActivityChildBinding viewBinding = ActivityChildBinding.inflate(getLayoutInflater());

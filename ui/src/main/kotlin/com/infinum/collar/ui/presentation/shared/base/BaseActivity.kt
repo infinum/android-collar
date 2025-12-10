@@ -1,6 +1,7 @@
 package com.infinum.collar.ui.presentation.shared.base
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RestrictTo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
@@ -11,6 +12,7 @@ internal abstract class BaseActivity<State, Event> : AppCompatActivity(), BaseVi
     abstract val binding: ViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)

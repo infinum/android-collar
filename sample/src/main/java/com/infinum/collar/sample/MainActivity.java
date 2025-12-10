@@ -1,9 +1,9 @@
 package com.infinum.collar.sample;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 import com.infinum.collar.Collar;
 import com.infinum.collar.CollarScreenNames;
 import com.infinum.collar.annotations.ScreenName;
@@ -14,10 +14,11 @@ import java.util.Map;
 import java.util.UUID;
 
 @ScreenName(value = KotlinScreenNames.MAIN_SCREEN_JAVA)
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
         final ActivityMainBinding viewBinding = ActivityMainBinding.inflate(getLayoutInflater());

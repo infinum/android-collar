@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,9 @@ import com.infinum.collar.ui.R
 import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.databinding.CollarActivityCollarBinding
 import com.infinum.collar.ui.extensions.addBadge
+import com.infinum.collar.ui.extensions.applyBottomLeftAndRightEdgeToEdgeInsets
+import com.infinum.collar.ui.extensions.applyLeftAndRightEdgeToEdgeInsets
+import com.infinum.collar.ui.extensions.applyTopLeftAndRightEdgeToEdgeInsets
 import com.infinum.collar.ui.extensions.presentationFormat
 import com.infinum.collar.ui.extensions.searchView
 import com.infinum.collar.ui.extensions.setup
@@ -49,6 +53,7 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
     @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
 
         with(binding) {
             with(toolbar) {
@@ -89,6 +94,10 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
                         }
                 )
             }
+            binding.toolbar.applyTopLeftAndRightEdgeToEdgeInsets()
+            binding.collectionStatusCard.applyLeftAndRightEdgeToEdgeInsets()
+            binding.recyclerView.applyBottomLeftAndRightEdgeToEdgeInsets()
+            binding.emptyLayout.root.applyLeftAndRightEdgeToEdgeInsets()
         }
 
         with(supportFragmentManager) {
@@ -116,8 +125,8 @@ internal class CollarActivity : BaseActivity<CollarState, CollarEvent>(), Toolba
         intent?.extras?.let { extractEntityId(it) }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        intent?.extras?.let { extractEntityId(it) }
+    override fun onNewIntent(intent: Intent) {
+        intent.extras?.let { extractEntityId(it) }
 
         super.onNewIntent(intent)
     }
