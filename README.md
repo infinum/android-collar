@@ -3,6 +3,8 @@
 ### <img align="left" src="logo.svg" width="48">
 # Collar Android plugin
 
+## Description
+
 Gradle plugin which collects all analytics screen names, events and user properties for Android projects.  
 This plugin has been written in Kotlin but works both inside Kotlin and Java projects.
 
@@ -19,6 +21,25 @@ The project is organized in the following modules:
 - `generator` - contains a generator code for provided tracking plan
 - `lint` - contains custom Lint checks
 - `sample` - a sample app for testing the Gradle plugin
+
+## Table of contents
+
+* [Requirements](#requirements)
+* [Usage](#usage)
+* [Getting started](#getting-started)
+    - [Options](#options)
+    - [Lint checks](#lint-checks)
+    - [Debug UI](#debug-ui)
+    - [Tasks](#tasks)
+* [Contributing](#contributing)
+* [License](#license)
+* [Credits](#credits)
+
+## Requirements
+
+This plugin has been written in Kotlin but works both inside Kotlin and Java projects.
+Minimum required API level to use Collar is 19.
+
 
 ## Usage
 
@@ -65,7 +86,7 @@ plugins {
 Now you can sync your project.
 
 
-### Getting started
+## Getting started
 
 Create or inject an instance of _Collar_ in your Application class and attach a _Collector_:
 
@@ -224,9 +245,9 @@ class BrandFragment : Fragment(R.layout.fragment_brand) {
 
 }
 ```
-## Options
+### Options
 
-### Annotation processor
+#### Annotation processor
 
 _Collar_ plugin has been tuned per default for the most often used Firebase Analytics but additional options can be passed to annotation processor for fine tuning:
 
@@ -245,13 +266,13 @@ javaCompileOptions {
 }
 ```
 
-## Lint checks
+### Lint checks
 
 _Collar_ plugin provides it's own custom _Lint_ checks. These can be disabled, suppressed or fixed like any other Lint registered issues.    
 Checks:
 - `MissingScreenNameAnnotation` - All Activities and Fragments require a valid screen name annotation on the class.  You must annotate an Activity or Fragment with @ScreenName with a valid value parameter or set enabled parameter to false.
 
-## Debug UI
+### Debug UI
 
 ![UI](ui.png)![ui-dark](ui-dark.png)
 
@@ -318,14 +339,14 @@ The final *Configuration* parameter is a set of keywords to redact if found in s
 
 ![Notification](notification.jpg) ![In app notification](in_app_notification.jpg)
 
-### Redaction
+#### Redaction
 In order to prevent potential leaks of user sensitive data, developers have an option to implement a set of keywords to be replaced by a • in length of the matched keyword.  
 This set of keywords is provided to _LiveCollector_ via _Configuration_.  
 
 ![Redacted notification](redacted_notification.jpg)![UI](redacted_ui.jpg)
 
-## Tasks
-### Generate
+### Tasks
+#### Generate
 
 Gradle plugin supports code generation from a JSON formatted file.  
 You will need to specify `fileName` and `packageName` in  `collar` plugin extension.  
@@ -348,6 +369,15 @@ To run the task you can:
 
 `generate` Gradle task will create classes prepared for the _Collar_ annotation processor.
 
+## Contributing
+
+We believe that the community can help us improve and build better a product.
+Please refer to our [contributing guide](CONTRIBUTING.md) to learn about the types of contributions we accept and the process for submitting them.
+
+To ensure that our community remains respectful and professional, we defined a [code of conduct](CODE_OF_CONDUCT.md) <!-- and [coding standards](<link>) --> that we expect all contributors to follow.
+
+We appreciate your interest and look forward to your contributions.
+
 ## License
 
 ```
@@ -367,13 +397,14 @@ limitations under the License.
 ```
 
 ## Credits
-Maintained and sponsored by [Infinum](http://www.infinum.com).
 
-<p align="center">
-  <a href='https://infinum.com'>
+Maintained and sponsored by [Infinum](https://infinum.com).
+
+<div align="center">
+    <a href='https://infinum.com'>
     <picture>
         <source srcset="https://assets.infinum.com/brand/logo/static/white.svg" media="(prefers-color-scheme: dark)">
         <img src="https://assets.infinum.com/brand/logo/static/default.svg">
     </picture>
-  </a>
-</p>
+    </a>
+</div>
