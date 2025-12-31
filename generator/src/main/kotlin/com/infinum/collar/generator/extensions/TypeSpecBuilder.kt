@@ -21,6 +21,6 @@ internal fun TypeSpec.Builder.addValue(parameterName: String = "parameter"): Typ
                 .addModifiers(KModifier.OVERRIDE)
                 .returns(String::class)
                 .addStatement("return $parameterName")
-                .build()
+                .build(),
         )
 }

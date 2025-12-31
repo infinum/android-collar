@@ -5,7 +5,6 @@ import com.squareup.kotlinpoet.TypeSpec
 import java.nio.file.Path
 
 internal interface Generator {
-
     companion object {
         const val COLLAR_ANNOTATION_PACKAGE = "com.infinum.collar.annotations"
         const val COLLAR_ANNOTATION_USER_PROPERTIES = "UserProperties"
