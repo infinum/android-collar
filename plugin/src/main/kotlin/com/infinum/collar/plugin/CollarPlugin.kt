@@ -20,7 +20,9 @@ public class CollarPlugin : Plugin<Project> {
 
     private fun addRepositories(project: Project) =
         with(project.repositories) {
+            google()
             mavenCentral()
+            mavenLocal()
         }
 
     private fun addDependencies(project: Project) {
