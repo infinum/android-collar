@@ -30,7 +30,6 @@ import me.tatarka.inject.annotations.Inject
 internal class SystemNotificationFactory(
     private val context: Context,
 ) : NotificationFactory {
-
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"
         private const val NOTIFICATION_ID = 4578
@@ -44,11 +43,12 @@ internal class SystemNotificationFactory(
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                NOTIFICATIONS_CHANNEL_ID,
-                context.getString(R.string.collar_name),
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
+            val notificationChannel =
+                NotificationChannel(
+                    NOTIFICATIONS_CHANNEL_ID,
+                    context.getString(R.string.collar_name),
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                )
             notificationManager.createNotificationChannels(listOf(notificationChannel))
         }
     }
@@ -83,13 +83,15 @@ internal class SystemNotificationFactory(
         val notificationLayout = RemoteViews(context.packageName, R.layout.collar_notification)
         val notificationLayoutExpanded = RemoteViews(context.packageName, R.layout.collar_notification_expanded)
 
-        val builder = NotificationCompat.Builder(context, NOTIFICATIONS_CHANNEL_ID)
-            .setLocalOnly(true)
-            .setSmallIcon(R.drawable.collar_ic_notification)
-            .setColor(ContextCompat.getColor(context, R.color.collar_color_primary))
-            .setContentTitle(context.getString(R.string.collar_name))
-            .setAutoCancel(true)
-            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+        val builder =
+            NotificationCompat
+                .Builder(context, NOTIFICATIONS_CHANNEL_ID)
+                .setLocalOnly(true)
+                .setSmallIcon(R.drawable.collar_ic_notification)
+                .setColor(ContextCompat.getColor(context, R.color.collar_color_primary))
+                .setContentTitle(context.getString(R.string.collar_name))
+                .setAutoCancel(true)
+                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
 
         synchronized(buffer) {
             var count = 0
@@ -101,11 +103,10 @@ internal class SystemNotificationFactory(
                         buildRemoteView(notificationLayout, bufferedEntity)
                     }
                     val itemView = RemoteViews(context.packageName, R.layout.collar_notification)
-                    println("_BOJAN_ building $i")
                     buildRemoteView(itemView, bufferedEntity)
                     notificationLayoutExpanded.addView(
                         R.id.containerView,
-                        itemView
+                        itemView,
                     )
                 }
                 count++
@@ -128,7 +129,10 @@ internal class SystemNotificationFactory(
         }
     }
 
-    private fun buildRemoteView(remoteViews: RemoteViews, entity: CollarEntity) {
+    private fun buildRemoteView(
+        remoteViews: RemoteViews,
+        entity: CollarEntity,
+    ) {
         when (entity.type) {
             EntityType.SCREEN -> R.drawable.collar_ic_screen_notification
             EntityType.EVENT -> R.drawable.collar_ic_event_notification
@@ -142,11 +146,11 @@ internal class SystemNotificationFactory(
         } ?: remoteViews.setViewVisibility(R.id.valueView, View.GONE)
         remoteViews.setTextViewText(
             R.id.timeView,
-            Date(entity.timestamp).presentationItemFormat
+            Date(entity.timestamp).presentationItemFormat,
         )
         remoteViews.setOnClickPendingIntent(
             R.id.containerView,
-            buildPendingIntent(entity)
+            buildPendingIntent(entity),
         )
     }
 
@@ -161,9 +165,13 @@ internal class SystemNotificationFactory(
                 }
             },
             when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                else -> PendingIntent.FLAG_UPDATE_CURRENT
-            }
+                }
+
+                else -> {
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                }
+            },
         )
 }
