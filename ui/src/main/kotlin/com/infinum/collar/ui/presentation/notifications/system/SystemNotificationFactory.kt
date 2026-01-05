@@ -2,17 +2,16 @@ package com.infinum.collar.ui.presentation.notifications.system
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.util.LongSparseArray
 import android.view.View
 import android.widget.RemoteViews
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -23,7 +22,6 @@ import com.infinum.collar.ui.extensions.isPermissionGranted
 import com.infinum.collar.ui.extensions.presentationItemFormat
 import com.infinum.collar.ui.presentation.CollarActivity
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
-import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityCallbacks
 import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_ID
 import java.util.Date
 import me.tatarka.inject.annotations.Inject
@@ -31,14 +29,12 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 internal class SystemNotificationFactory(
     private val context: Context,
-    private val callbacks: CollarActivityCallbacks
 ) : NotificationFactory {
 
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"
         private const val NOTIFICATION_ID = 4578
         private const val INTERNAL_BUFFER_SIZE = 5
-        private const val PERMISSION_REQUEST_CODE = 11
     }
 
     private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
@@ -47,8 +43,6 @@ internal class SystemNotificationFactory(
     private val idsSet = HashSet<Long>()
 
     init {
-        (context.applicationContext as Application).registerActivityLifecycleCallbacks(callbacks)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 NOTIFICATIONS_CHANNEL_ID,
@@ -127,15 +121,8 @@ internal class SystemNotificationFactory(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (context.isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
-            } else {
-                callbacks.current()?.let {
-                    ActivityCompat.requestPermissions(
-                        it,
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                        PERMISSION_REQUEST_CODE
-                    )
-                }
             }
+            Log.w("Collar", "Notification skipped: Missing POST_NOTIFICATIONS permission.")
         } else {
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         }
