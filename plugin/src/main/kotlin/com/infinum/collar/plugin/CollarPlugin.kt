@@ -22,7 +22,6 @@ public class CollarPlugin : Plugin<Project> {
         with(project.repositories) {
             google()
             mavenCentral()
-            mavenLocal()
         }
 
     private fun addDependencies(project: Project) {
