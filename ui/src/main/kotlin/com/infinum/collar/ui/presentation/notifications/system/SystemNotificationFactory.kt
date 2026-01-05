@@ -122,8 +122,9 @@ internal class SystemNotificationFactory(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (context.isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
+            } else {
+                Log.w("Collar", "Notification skipped: Missing POST_NOTIFICATIONS permission.")
             }
-            Log.w("Collar", "Notification skipped: Missing POST_NOTIFICATIONS permission.")
         } else {
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         }
