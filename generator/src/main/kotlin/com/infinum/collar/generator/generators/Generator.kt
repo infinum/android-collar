@@ -2,9 +2,9 @@ package com.infinum.collar.generator.generators
 
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
+import java.nio.file.Path
 
 internal interface Generator {
-
     companion object {
         const val COLLAR_ANNOTATION_PACKAGE = "com.infinum.collar.annotations"
         const val COLLAR_ANNOTATION_USER_PROPERTIES = "UserProperties"
@@ -20,5 +20,5 @@ internal interface Generator {
 
     fun type(): TypeSpec?
 
-    fun write(fileSpec: FileSpec)
+    fun write(fileSpec: FileSpec): Path
 }

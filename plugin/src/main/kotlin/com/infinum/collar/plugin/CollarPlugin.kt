@@ -20,6 +20,7 @@ public class CollarPlugin : Plugin<Project> {
 
     private fun addRepositories(project: Project) =
         with(project.repositories) {
+            google()
             mavenCentral()
         }
 
@@ -43,18 +44,19 @@ public class CollarPlugin : Plugin<Project> {
     private fun addTasks(project: Project) {
         with(project) {
             (extensions.findByName(CollarExtension.NAME) as? CollarExtension)?.let { collarExtension ->
-                tasks.register(GenerateTask.NAME, GenerateTask::class.java) { task ->
-                    task.group = GenerateTask.GROUP
-                    task.description = GenerateTask.DESCRIPTION
-                    task.setSource(projectDir)
-                    task.include {
-                        it.name == collarExtension.fileName
+                tasks
+                    .register(GenerateTask.NAME, GenerateTask::class.java) { task ->
+                        task.group = GenerateTask.GROUP
+                        task.description = GenerateTask.DESCRIPTION
+                        task.setSource(projectDir)
+                        task.include {
+                            it.name == collarExtension.fileName
+                        }
+                    }.let { provider ->
+                        extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
+                            variant.registerJavaGeneratingTask(provider, provider.get().outputDirectory)
+                        }
                     }
-                }.let { provider ->
-                    extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
-                        variant.registerJavaGeneratingTask(provider, provider.get().outputDirectory)
-                    }
-                }
             }
         }
     }
