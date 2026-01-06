@@ -7,7 +7,7 @@
     <application>
         <activity
             android:name="com.infinum.collar.ui.presentation.CollarActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/collar_name"
             android:taskAffinity="com.infinum.collar"
             android:launchMode="singleTop"
