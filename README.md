@@ -38,7 +38,7 @@ The project is organized in the following modules:
 ## Requirements
 
 This plugin has been written in Kotlin but works both inside Kotlin and Java projects.
-Minimum required API level to use Collar is 19.
+Minimum required API level to use Collar is 23.
 
 
 ## Usage
