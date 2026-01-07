@@ -2,17 +2,16 @@ package com.infinum.collar.ui.presentation.notifications.system
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import android.util.LongSparseArray
 import android.view.View
 import android.widget.RemoteViews
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -23,7 +22,6 @@ import com.infinum.collar.ui.extensions.isPermissionGranted
 import com.infinum.collar.ui.extensions.presentationItemFormat
 import com.infinum.collar.ui.presentation.CollarActivity
 import com.infinum.collar.ui.presentation.notifications.NotificationFactory
-import com.infinum.collar.ui.presentation.notifications.shared.CollarActivityCallbacks
 import com.infinum.collar.ui.presentation.shared.Constants.KEY_ENTITY_ID
 import java.util.Date
 import me.tatarka.inject.annotations.Inject
@@ -31,14 +29,11 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 internal class SystemNotificationFactory(
     private val context: Context,
-    private val callbacks: CollarActivityCallbacks
 ) : NotificationFactory {
-
     companion object {
         private const val NOTIFICATIONS_CHANNEL_ID = "collar_analytics"
         private const val NOTIFICATION_ID = 4578
         private const val INTERNAL_BUFFER_SIZE = 5
-        private const val PERMISSION_REQUEST_CODE = 11
     }
 
     private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
@@ -47,14 +42,13 @@ internal class SystemNotificationFactory(
     private val idsSet = HashSet<Long>()
 
     init {
-        (context.applicationContext as Application).registerActivityLifecycleCallbacks(callbacks)
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                NOTIFICATIONS_CHANNEL_ID,
-                context.getString(R.string.collar_name),
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
+            val notificationChannel =
+                NotificationChannel(
+                    NOTIFICATIONS_CHANNEL_ID,
+                    context.getString(R.string.collar_name),
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                )
             notificationManager.createNotificationChannels(listOf(notificationChannel))
         }
     }
@@ -89,13 +83,15 @@ internal class SystemNotificationFactory(
         val notificationLayout = RemoteViews(context.packageName, R.layout.collar_notification)
         val notificationLayoutExpanded = RemoteViews(context.packageName, R.layout.collar_notification_expanded)
 
-        val builder = NotificationCompat.Builder(context, NOTIFICATIONS_CHANNEL_ID)
-            .setLocalOnly(true)
-            .setSmallIcon(R.drawable.collar_ic_notification)
-            .setColor(ContextCompat.getColor(context, R.color.collar_color_primary))
-            .setContentTitle(context.getString(R.string.collar_name))
-            .setAutoCancel(true)
-            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+        val builder =
+            NotificationCompat
+                .Builder(context, NOTIFICATIONS_CHANNEL_ID)
+                .setLocalOnly(true)
+                .setSmallIcon(R.drawable.collar_ic_notification)
+                .setColor(ContextCompat.getColor(context, R.color.collar_color_primary))
+                .setContentTitle(context.getString(R.string.collar_name))
+                .setAutoCancel(true)
+                .setStyle(NotificationCompat.DecoratedCustomViewStyle())
 
         synchronized(buffer) {
             var count = 0
@@ -107,11 +103,10 @@ internal class SystemNotificationFactory(
                         buildRemoteView(notificationLayout, bufferedEntity)
                     }
                     val itemView = RemoteViews(context.packageName, R.layout.collar_notification)
-                    println("_BOJAN_ building $i")
                     buildRemoteView(itemView, bufferedEntity)
                     notificationLayoutExpanded.addView(
                         R.id.containerView,
-                        itemView
+                        itemView,
                     )
                 }
                 count++
@@ -128,20 +123,17 @@ internal class SystemNotificationFactory(
             if (context.isPermissionGranted(Manifest.permission.POST_NOTIFICATIONS)) {
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
             } else {
-                callbacks.current()?.let {
-                    ActivityCompat.requestPermissions(
-                        it,
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                        PERMISSION_REQUEST_CODE
-                    )
-                }
+                Log.w("Collar", "Notification skipped: Missing POST_NOTIFICATIONS permission.")
             }
         } else {
             notificationManager.notify(NOTIFICATION_ID, builder.build())
         }
     }
 
-    private fun buildRemoteView(remoteViews: RemoteViews, entity: CollarEntity) {
+    private fun buildRemoteView(
+        remoteViews: RemoteViews,
+        entity: CollarEntity,
+    ) {
         when (entity.type) {
             EntityType.SCREEN -> R.drawable.collar_ic_screen_notification
             EntityType.EVENT -> R.drawable.collar_ic_event_notification
@@ -155,11 +147,11 @@ internal class SystemNotificationFactory(
         } ?: remoteViews.setViewVisibility(R.id.valueView, View.GONE)
         remoteViews.setTextViewText(
             R.id.timeView,
-            Date(entity.timestamp).presentationItemFormat
+            Date(entity.timestamp).presentationItemFormat,
         )
         remoteViews.setOnClickPendingIntent(
             R.id.containerView,
-            buildPendingIntent(entity)
+            buildPendingIntent(entity),
         )
     }
 
@@ -174,9 +166,13 @@ internal class SystemNotificationFactory(
                 }
             },
             when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
                     PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-                else -> PendingIntent.FLAG_UPDATE_CURRENT
-            }
+                }
+
+                else -> {
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                }
+            },
         )
 }
