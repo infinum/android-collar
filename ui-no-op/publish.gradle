@@ -6,9 +6,9 @@ task sourcesJar(type: Jar, dependsOn: assemble) {
     from android.sourceSets.main.kotlin.srcDirs
 }
 
-task javadocsJar(type: Jar, dependsOn: "dokkaJavadoc") {
+task javadocsJar(type: Jar, dependsOn: "dokkaGeneratePublicationHtml") {
     archiveClassifier.set("javadoc")
-    from dokkaJavadoc.outputDirectory
+    from(tasks.named("dokkaGeneratePublicationHtml"))
 }
 
 afterEvaluate {

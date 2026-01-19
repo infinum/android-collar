@@ -20,7 +20,7 @@ design = "1.12.0"
 detekt = "1.23.8"
 ktlintplugin = "14.0.1"
 ktlint = "1.8.0"
-dokka = "1.9.20"
+dokka = "2.1.0"
 
 [libraries]
 libraryannotations = { module = "com.infinum.collar:collar-annotations", version.ref = "collar" }

@@ -1,20 +1,16 @@
 apply plugin: "org.jetbrains.dokka"
 
-tasks.named("dokkaJavadoc") {
-    outputDirectory.set(file("$buildDir/javadoc"))
+if (project.extensions.findByName('dokka') != null) {
+    dokka {
+        pluginsConfiguration.html {
+            footerMessage.set("© 2025 Infinum")
+        }
 
-    dokkaSourceSets {
-        named("main") {
-            includeNonPublic.set(false)
-            skipDeprecated.set(true)
-            reportUndocumented.set(true)
-            skipEmptyPackages.set(true)
-            platform.set(org.jetbrains.dokka.Platform.jvm)
-            jdkVersion.set(8)
-            noStdlibLink.set(false)
-            noJdkLink.set(false)
-            noAndroidSdkLink.set(false)
-            androidVariants.set(["debug"])
+        dokkaPublications.html {
+            outputDirectory.set(file("$buildDir/dokka/html"))
+        }
+
+        dokkaSourceSets.configureEach {
             sourceLink {
                 localDirectory.set(file("src/main/kotlin"))
                 remoteUrl.set(uri("https://github.com/infinum/android-collar/"))
