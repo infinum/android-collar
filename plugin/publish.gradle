@@ -6,9 +6,9 @@ task sourcesJar(type: Jar, dependsOn: JavaPlugin.CLASSES_TASK_NAME) {
     from sourceSets.main.allSource
 }
 
-task javadocsJar(type: Jar, dependsOn: "dokkaJavadoc") {
+task javadocsJar(type: Jar, dependsOn: "dokkaGeneratePublicationHtml") {
     archiveClassifier.set("javadoc")
-    from dokkaJavadoc.outputDirectory
+    from(tasks.named("dokkaGeneratePublicationHtml"))
 }
 
 afterEvaluate {

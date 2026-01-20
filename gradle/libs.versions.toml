@@ -1,7 +1,7 @@
 [versions]
 collar = "1.4.0"
-gradle = "8.8.2"
-lint = "30.3.1"
+gradle = "8.13.2"
+lint = "31.13.2"
 kotlin = "2.1.20"
 coroutines = "1.8.1"
 serialization = "1.8.1"
@@ -20,8 +20,7 @@ design = "1.12.0"
 detekt = "1.23.8"
 ktlintplugin = "14.0.1"
 ktlint = "1.8.0"
-cpd = "3.5"
-dokka = "1.9.20"
+dokka = "2.1.0"
 
 [libraries]
 libraryannotations = { module = "com.infinum.collar:collar-annotations", version.ref = "collar" }
@@ -73,8 +72,6 @@ detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", v
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlintplugin" }
-
-cpd = { module = "de.aaschmid:gradle-cpd-plugin", version.ref = "cpd" }
 
 dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 
