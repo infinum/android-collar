@@ -19,3 +19,9 @@ if (project.extensions.findByName('dokka') != null) {
         }
     }
 }
+
+afterEvaluate {
+    tasks.named("dokkaGeneratePublicationHtml").configure {
+        dependsOn(':plugin:pluginVersion')
+    }
+}
