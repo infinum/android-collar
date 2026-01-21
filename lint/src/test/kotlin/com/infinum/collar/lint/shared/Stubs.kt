@@ -6,18 +6,20 @@ import com.android.tools.lint.checks.infrastructure.TestFile
 @Suppress("UnstableApiUsage")
 internal object Stubs {
 
-    val ACTIVITY: TestFile = java(
-        """
+    val ACTIVITY: TestFile =
+        java(
+            """
                 package android.app;
 
                 public class Activity {
                     
                 }
-            """
-    ).indented()
+            """,
+        ).indented()
 
-    val APPCOMPAT_ACTIVITY: TestFile = java(
-        """
+    val APPCOMPAT_ACTIVITY: TestFile =
+        java(
+            """
                 package androidx.appcompat.app;
 
                 import android.app.Activity;
@@ -25,6 +27,6 @@ internal object Stubs {
                 public class AppCompatActivity extends Activity {
                     
                 }
-            """
-    ).indented()
+            """,
+        ).indented()
 }
