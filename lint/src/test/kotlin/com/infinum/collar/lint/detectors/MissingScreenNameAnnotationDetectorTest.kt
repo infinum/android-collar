@@ -31,8 +31,10 @@ internal class MissingScreenNameAnnotationDetectorTest : LintDetectorTest() {
     @Test
     fun incorrectMethodUsage_shouldReportAWarning() {
         lint()
-            .files(Stubs.APPCOMPAT_ACTIVITY, missingAnnotationKotlin)
+            .files(Stubs.ACTIVITY, Stubs.APPCOMPAT_ACTIVITY, missingAnnotationKotlin)
+            .allowMissingSdk()
             .run()
-            .expectWarningCount(1)
+            .expectContains("KotlinChildActivity")
+            .expectContains("Missing screen name annotation")
     }
 }
