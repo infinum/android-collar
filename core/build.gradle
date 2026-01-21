@@ -44,7 +44,7 @@ dependencies {
     api libs.libraryannotations
     implementation libs.kotlin.core
 
-    testImplementation "junit:junit:4.13.2"
+    testImplementation libs.junit
     testImplementation 'org.mockito:mockito-core:4.5.1'
 }
 

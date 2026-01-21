@@ -39,7 +39,7 @@ dependencies {
     compileOnly libs.tools.lintapi
     compileOnly libs.tools.lintchecks
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation libs.junit
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.2"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.9.2"
     testImplementation libs.tools.lintapi

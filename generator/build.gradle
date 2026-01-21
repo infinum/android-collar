@@ -34,7 +34,7 @@ dependencies {
     implementation libs.kotlin.reflect
     implementation libs.serialization.core
 
-    testImplementation "junit:junit:4.13"
+    testImplementation libs.junit
     testImplementation 'org.mockito:mockito-core:3.3.3'
 }
 
