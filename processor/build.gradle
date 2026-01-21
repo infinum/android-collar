@@ -29,7 +29,7 @@ dependencies {
     implementation libs.poet
     implementation libs.kotlin.reflect
 
-    testImplementation "junit:junit:4.13"
+    testImplementation libs.junit
     testImplementation 'org.mockito:mockito-core:3.3.3'
 }
 

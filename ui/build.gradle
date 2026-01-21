@@ -98,7 +98,7 @@ dependencies {
     ksp libs.inject.compiler
     implementation libs.inject.runtime
 
-    testImplementation "junit:junit:4.13"
+    testImplementation libs.junit
     testImplementation 'org.mockito:mockito-core:3.5.7'
 
     androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
