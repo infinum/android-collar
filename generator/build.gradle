@@ -35,7 +35,7 @@ dependencies {
     implementation libs.serialization.core
 
     testImplementation libs.junit
-    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation libs.mockito.core
 }
 
 apply from: "publish.gradle"

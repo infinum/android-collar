@@ -4,14 +4,14 @@ import com.infinum.collar.Collar
 import com.infinum.collar.Event
 import com.infinum.collar.Property
 import com.infinum.collar.Screen
-import com.infinum.collar.ui.shared.MockitoTest
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
 
-public class LiveCollectorTests : MockitoTest {
+public class LiveCollectorTests {
 
     @Mock
     private lateinit var collector: LiveCollector
@@ -27,6 +27,7 @@ public class LiveCollectorTests : MockitoTest {
 
     @Before
     public fun attachCollarWithCollector() {
+        MockitoAnnotations.openMocks(this)
         Collar.attach(collector)
     }
 
