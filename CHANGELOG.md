@@ -1,6 +1,21 @@
 Change Log
 ==========
 
+## Version 2.0.0
+
+_2026-01-23_
+
+* **BREAKING**: Bump `minSdk` to `23`
+* **NEW**: Add events filtering for pre-processing before sending them to providers
+* **NEW**: Add edge-to-edge support
+* Update `Kotlin` to `2.1.20`
+* Update dependencies
+* Fix: Type inference issue when all event parameters are disabled
+* Fix: Empty key for event parameter name
+* Fix: Build issues with `Kotlin` `2.1.20`
+* Fix: Gradle dependency sync
+* Fix: Handling of missing notification permission
+
 ## Version 1.4.0
 
 _2023-03-27_

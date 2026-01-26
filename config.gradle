@@ -1,6 +1,6 @@
 ext {
-    def major = 1
-    def minor = 4
+    def major = 2
+    def minor = 0
     def patch = 0
 
     buildConfig = [
