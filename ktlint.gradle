@@ -5,3 +5,10 @@ ktlint {
     debug = false
     android = true
 }
+
+configurations.matching { it.name.contains("ktlint") }.configureEach {
+    resolutionStrategy {
+        force "ch.qos.logback:logback-classic:${libs.versions.logback.get()}"
+        force "ch.qos.logback:logback-core:${libs.versions.logback.get()}"
+    }
+}
