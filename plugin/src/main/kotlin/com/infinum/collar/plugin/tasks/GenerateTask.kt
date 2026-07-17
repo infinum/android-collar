@@ -60,10 +60,10 @@ internal abstract class GenerateTask : BaseSourceTask() {
     @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
     private fun generateTrackingPlan(packageName: String) {
         try {
-            val outputDirectory = outputDirectory.get().asFile
+            val outputDir = outputDirectory.get().asFile
             println("Tracking plan file path: ${source.first().absolutePath}")
-            if (collarGenerator.generate(source.first().absolutePath, outputDirectory.absolutePath, packageName)) {
-                println("Tracking plan classes generated on path: ${outputDirectory.absolutePath}")
+            if (collarGenerator.generate(source.first().absolutePath, outputDir.absolutePath, packageName)) {
+                println("Tracking plan classes generated on path: ${outputDir.absolutePath}")
             } else {
                 showError("Task generate failed")
             }
