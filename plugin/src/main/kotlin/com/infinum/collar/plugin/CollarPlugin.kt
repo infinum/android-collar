@@ -5,6 +5,8 @@ import com.infinum.collar.plugin.tasks.GenerateTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+private const val KOTLIN_KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
+
 public class CollarPlugin : Plugin<Project> {
 
     override fun apply(project: Project): Unit =
@@ -30,14 +32,14 @@ public class CollarPlugin : Plugin<Project> {
             dependencies.add("implementation", "com.infinum.collar:collar-core:$collarVersion")
             dependencies.add("lintChecks", "com.infinum.collar:collar-lint:$collarVersion")
 
-            if (pluginManager.hasPlugin("org.jetbrains.kotlin.kapt") || pluginManager.hasPlugin("kotlin-kapt")) {
+            if (pluginManager.hasPlugin(KOTLIN_KAPT_PLUGIN_ID) || pluginManager.hasPlugin("kotlin-kapt")) {
                 dependencies.add("kapt", "com.infinum.collar:collar-processor:$collarVersion")
             } else if (
                 pluginManager.hasPlugin("org.jetbrains.kotlin.android") ||
                 pluginManager.hasPlugin("kotlin-android")
             ) {
-                if (pluginManager.hasPlugin("org.jetbrains.kotlin.kapt").not()) {
-                    pluginManager.apply("org.jetbrains.kotlin.kapt")
+                if (pluginManager.hasPlugin(KOTLIN_KAPT_PLUGIN_ID).not()) {
+                    pluginManager.apply(KOTLIN_KAPT_PLUGIN_ID)
                 }
                 dependencies.add("kapt", "com.infinum.collar:collar-processor:$collarVersion")
             } else {

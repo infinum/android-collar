@@ -21,6 +21,16 @@ plugins.withId("org.jetbrains.dokka") {
         }
 
         dokkaSourceSets.configureEach {
+            if (
+                name == "main" &&
+                    (
+                        project.plugins.hasPlugin("com.android.application") ||
+                            project.plugins.hasPlugin("com.android.library")
+                    )
+            ) {
+                suppress.set(true)
+            }
+
             sourceLink {
                 localDirectory.set(file("src/main/kotlin"))
                 remoteUrl.set(uri("https://github.com/infinum/android-collar/"))
