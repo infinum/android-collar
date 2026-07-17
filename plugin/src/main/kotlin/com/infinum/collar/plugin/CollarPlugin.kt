@@ -1,6 +1,6 @@
 package com.infinum.collar.plugin
 
-import com.android.build.gradle.AppExtension
+import com.android.build.api.variant.AndroidComponentsExtension
 import com.infinum.collar.plugin.tasks.GenerateTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -30,9 +30,14 @@ public class CollarPlugin : Plugin<Project> {
             dependencies.add("implementation", "com.infinum.collar:collar-core:$collarVersion")
             dependencies.add("lintChecks", "com.infinum.collar:collar-lint:$collarVersion")
 
-            if (pluginManager.hasPlugin("kotlin-android")) {
-                if (pluginManager.hasPlugin("kotlin-kapt").not()) {
-                    pluginManager.apply("kotlin-kapt")
+            if (pluginManager.hasPlugin("org.jetbrains.kotlin.kapt") || pluginManager.hasPlugin("kotlin-kapt")) {
+                dependencies.add("kapt", "com.infinum.collar:collar-processor:$collarVersion")
+            } else if (
+                pluginManager.hasPlugin("org.jetbrains.kotlin.android") ||
+                pluginManager.hasPlugin("kotlin-android")
+            ) {
+                if (pluginManager.hasPlugin("org.jetbrains.kotlin.kapt").not()) {
+                    pluginManager.apply("org.jetbrains.kotlin.kapt")
                 }
                 dependencies.add("kapt", "com.infinum.collar:collar-processor:$collarVersion")
             } else {
@@ -48,13 +53,23 @@ public class CollarPlugin : Plugin<Project> {
                     .register(GenerateTask.NAME, GenerateTask::class.java) { task ->
                         task.group = GenerateTask.GROUP
                         task.description = GenerateTask.DESCRIPTION
+                        task.outputDirectory.set(
+                            layout.buildDirectory.dir("${GenerateTask.FD_GENERATED}/source/${CollarExtension.NAME}"),
+                        )
                         task.setSource(projectDir)
                         task.include {
                             it.name == collarExtension.fileName
                         }
                     }.let { provider ->
-                        extensions.findByType(AppExtension::class.java)?.applicationVariants?.all { variant ->
-                            variant.registerJavaGeneratingTask(provider, provider.get().outputDirectory)
+                        pluginManager.withPlugin("com.android.application") {
+                            extensions
+                                .findByType(AndroidComponentsExtension::class.java)
+                                ?.onVariants { variant ->
+                                    variant.sources.java?.addGeneratedSourceDirectory(
+                                        provider,
+                                        GenerateTask::outputDirectory,
+                                    )
+                                }
                         }
                     }
             }

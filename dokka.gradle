@@ -1,6 +1,16 @@
-apply plugin: "org.jetbrains.dokka"
+plugins.withId("org.jetbrains.kotlin.jvm") {
+    apply plugin: "org.jetbrains.dokka"
+}
 
-if (project.extensions.findByName('dokka') != null) {
+plugins.withId("org.jetbrains.kotlin.android") {
+    apply plugin: "org.jetbrains.dokka"
+}
+
+plugins.withId("kotlin-android") {
+    apply plugin: "org.jetbrains.dokka"
+}
+
+plugins.withId("org.jetbrains.dokka") {
     dokka {
         pluginsConfiguration.html {
             footerMessage.set("© 2025 Infinum")
@@ -18,10 +28,10 @@ if (project.extensions.findByName('dokka') != null) {
             }
         }
     }
-}
 
-afterEvaluate {
-    tasks.named("dokkaGeneratePublicationHtml").configure {
-        dependsOn(':plugin:pluginVersion')
+    afterEvaluate {
+        tasks.named("dokkaGeneratePublicationHtml").configure {
+            dependsOn(':plugin:pluginVersion')
+        }
     }
 }

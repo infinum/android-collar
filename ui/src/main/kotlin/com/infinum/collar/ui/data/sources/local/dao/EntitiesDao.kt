@@ -9,7 +9,6 @@ import com.infinum.collar.ui.data.models.local.CollarEntity
 import com.infinum.collar.ui.data.models.local.EntityType
 import kotlinx.coroutines.flow.Flow
 
-/* ktlint-disable max-line-length */
 @Dao
 internal interface EntitiesDao {
 
@@ -34,4 +33,3 @@ internal interface EntitiesDao {
     @Query("DELETE FROM entities")
     suspend fun delete()
 }
-/* ktlint-disable max-line-length */
