@@ -6,6 +6,7 @@ import com.infinum.collar.plugin.collarVersion
 import com.infinum.collar.plugin.tasks.shared.BaseSourceTask
 import com.infinum.collar.plugin.validate
 import java.io.File
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -17,8 +18,7 @@ import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 
 @CacheableTask
-internal open class GenerateTask : BaseSourceTask() {
-
+internal abstract class GenerateTask : BaseSourceTask() {
     companion object {
         const val GROUP = "collar"
         const val NAME = "generate"
@@ -36,21 +36,20 @@ internal open class GenerateTask : BaseSourceTask() {
     @InputFiles
     @SkipWhenEmpty
     @PathSensitive(PathSensitivity.ABSOLUTE)
-    override fun getSource(): FileTree =
-        super.getSource()
+    override fun getSource(): FileTree = super.getSource()
 
     @get:OutputDirectory
-    var outputDirectory: File = File(
-        project.buildDir,
-        "$FD_GENERATED${File.separatorChar}source${File.separatorChar}${CollarExtension.NAME}"
-    )
+    abstract val outputDirectory: DirectoryProperty
 
     @TaskAction
     fun doOnRun() {
         (project.extensions.findByName(CollarExtension.NAME) as CollarExtension).run {
             val errors = validate()
             when {
-                errors.isNotEmpty() -> showError(errors.joinToString(System.lineSeparator()))
+                errors.isNotEmpty() -> {
+                    showError(errors.joinToString(System.lineSeparator()))
+                }
+
                 else -> {
                     generateTrackingPlan(packageName)
                 }
@@ -61,9 +60,10 @@ internal open class GenerateTask : BaseSourceTask() {
     @Suppress("TooGenericExceptionCaught", "PrintStackTrace")
     private fun generateTrackingPlan(packageName: String) {
         try {
+            val outputDir = outputDirectory.get().asFile
             println("Tracking plan file path: ${source.first().absolutePath}")
-            if (collarGenerator.generate(source.first().absolutePath, outputDirectory.absolutePath, packageName)) {
-                println("Tracking plan classes generated on path: ${outputDirectory.absolutePath}")
+            if (collarGenerator.generate(source.first().absolutePath, outputDir.absolutePath, packageName)) {
+                println("Tracking plan classes generated on path: ${outputDir.absolutePath}")
             } else {
                 showError("Task generate failed")
             }

@@ -13,8 +13,8 @@ buildscript {
         classpath libs.tools.gradle
         classpath libs.kotlin.gradle
         classpath libs.serialization.gradle
+        classpath libs.ksp.gradle
         classpath libs.detekt.gradle
-        classpath libs.ktlint
         classpath libs.dokka
     }
 }
@@ -27,8 +27,19 @@ subprojects {
         mavenLocal()
     }
 
+    configurations.configureEach {
+        resolutionStrategy.dependencySubstitution {
+            substitute module("${releaseConfig.group}:collar-annotations") using project(":annotations")
+            substitute module("${releaseConfig.group}:collar-core") using project(":core")
+            substitute module("${releaseConfig.group}:collar-processor") using project(":processor")
+            substitute module("${releaseConfig.group}:collar-generator") using project(":generator")
+            substitute module("${releaseConfig.group}:collar-lint") using project(":lint")
+            substitute module("${releaseConfig.group}:collar-ui") using project(":ui")
+            substitute module("${releaseConfig.group}:collar-ui-no-op") using project(":ui-no-op")
+        }
+    }
+
     apply from: "$rootDir/dokka.gradle"
-    apply from: "$rootDir/ktlint.gradle"
     apply from: "$rootDir/detekt.gradle"
 }
 
@@ -61,24 +72,9 @@ task detektAll(dependsOn: [
     description = "Run Detekt on all modules"
 }
 
-task ktlintAll(dependsOn: [
-        ':annotations:ktlintCheck',
-        ':lint:ktlintCheck',
-        ':core:ktlintCheck',
-        ':ui:ktlintCheck',
-        ':ui-no-op:ktlintCheck',
-        ':processor:ktlintCheck',
-        ':plugin:ktlintCheck',
-        ':generator:ktlintCheck'
-]) {
-    group = "Verification"
-    description = "Run ktlint on all modules"
-}
-
 task runStaticChecks(dependsOn: [
         ':lintAll',
-        ':detektAll',
-        ':ktlintAll'
+        ':detektAll'
 ]) {
     group = "Verification"
     description = "Run static checks on all modules"
