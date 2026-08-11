@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+## Version 2.1.0
+
+_2026-08-11_
+
+* Update dependencies
+
 ## Version 2.0.0
 
 _2026-01-23_
