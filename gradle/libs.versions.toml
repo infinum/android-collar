@@ -1,7 +1,7 @@
 [versions]
 collar = "2.1.0"
-gradle = "9.3.3"
-lint = "32.3.2"
+gradle = "9.4.1"
+lint = "32.4.1"
 kotlin = "2.4.20"
 coroutines = "1.8.1"
 serialization = "1.8.1"
